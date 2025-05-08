@@ -41,7 +41,7 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .character{width:180px;height:180px;object-fit:contain;cursor:pointer;user-select:none;touch-action:manipulation;opacity:1;transition:opacity 0.5s ease}
 .click-effect{position:absolute;width:40px;height:40px;object-fit:contain;pointer-events:none;animation:fadeOut 1s ease forwards;z-index:2;transform:translate(-50%,-50%)}
 @keyframes fadeOut{0%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-70%)}}
-footer{width:100%;position:fixed;bottom:0;z-index:1;display:flex;justify-content:center;align-items:center;padding:0;opacity:1;transition:opacity 0.5s ease}
+footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-content:center;align-items:center;padding:0;opacity:1;transition:opacity 0.5s ease}
 .footer-menu-container{width:auto;background:var(--footer-bg);border-radius:20px 20px 0 0;display:flex;justify-content:center;align-items:center;padding:0.75rem}
 .footer-menu{display:flex;justify-content:space-around;align-items:center;width:100%;gap:1rem}
 .menu-item{display:flex;flex-direction:column;align-items:center;gap:0.4rem;cursor:pointer}
@@ -104,6 +104,8 @@ footer{width:100%;position:fixed;bottom:0;z-index:1;display:flex;justify-content
 .rewards-section ul{list-style:none;color:#FFF}
 .rewards-section li{font-size:0.9rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}
 .rewards-section li img{width:20px;height:20px}
+.claim-button{font-size:0.9rem;font-weight:600;color:#000;background:#FFF;padding:0.5rem 1rem;border-radius:12px;cursor:pointer;transition:background 0.3s ease}
+.claim-button:disabled{background:#666;color:#999;cursor:not-allowed}
 .friend-item-container{transition:transform 0.3s ease, background 0.3s ease}
 .friend-item-container:hover{transform:scale(1.05);background:#3A3A3A}
 .friend-status{font-size:0.8rem;color:#A0D4FF}
@@ -316,6 +318,8 @@ class GameState {
         this.hasSeenShopTutorial = false;
         this.inventory = [];
         this.selectedCharacter = null;
+        this.invitedFriendsCount = 0;
+        this.claimedRewards = new Set();
     }
     getCoins() { return this.coins; }
     addCoins(amount) { this.coins += amount; }
@@ -330,6 +334,10 @@ class GameState {
     getInventory() { return this.inventory; }
     setSelectedCharacter(character) { this.selectedCharacter = character; }
     getSelectedCharacter() { return this.selectedCharacter; }
+    incrementInvitedFriends() { this.invitedFriendsCount++; }
+    getInvitedFriendsCount() { return this.invitedFriendsCount; }
+    claimReward(friendCount) { this.claimedRewards.add(friendCount); }
+    hasClaimedReward(friendCount) { return this.claimedRewards.has(friendCount); }
 }
 class ParticleSystem {
     constructor(canvas, count) {
@@ -1122,21 +1130,6 @@ class Game {
             // Очистка предыдущего содержимого
             this.ui.elements.friendsContainer.innerHTML = '';
 
-            // Заголовок с кнопкой возврата
-            const friendsHeader = document.createElement('div');
-            friendsHeader.className = 'friends-header';
-            const friendsTitle = document.createElement('div');
-            friendsTitle.className = 'friends-title';
-            friendsTitle.textContent = 'Friends';
-            const backButton = document.createElement('img');
-            backButton.src = 'https://em-content.zobj.net/source/telegram/386/back-arrow_1f519.webp';
-            backButton.alt = 'Back';
-            backButton.addEventListener('pointerdown', () => {
-                this.handleMenuClick({ target: document.querySelector('.menu-item[data-menu="home"]') });
-            });
-            friendsHeader.appendChild(friendsTitle);
-            friendsHeader.appendChild(backButton);
-
             // Секция приглашения
             const inviteSection = document.createElement('div');
             inviteSection.className = 'invite-section';
@@ -1152,7 +1145,11 @@ class Game {
             const copyButton = document.createElement('button');
             copyButton.textContent = 'Copy';
             copyButton.addEventListener('pointerdown', () => {
-                navigator.clipboard.writeText(linkText.textContent).then(() => alert('Referral link copied!'));
+                navigator.clipboard.writeText(linkText.textContent).then(() => {
+                    alert('Referral link copied!');
+                    this.state.incrementInvitedFriends();
+                    this.handleMenuClick({ target: menuItem }); // Перезагрузка меню для обновления наград
+                });
             });
             inviteLink.appendChild(inviteIcon);
             inviteLink.appendChild(linkText);
@@ -1175,7 +1172,24 @@ class Game {
             ];
             rewardsData.forEach(reward => {
                 const li = document.createElement('li');
+                const canClaim = this.state.getInvitedFriendsCount() >= reward.count && !this.state.hasClaimedReward(reward.count);
                 li.innerHTML = `<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem"> ${reward.count} friend${reward.count > 1 ? 's' : ''} - ${reward.diamonds} diamonds`;
+                const claimButton = document.createElement('button');
+                claimButton.className = 'claim-button';
+                claimButton.textContent = this.state.hasClaimedReward(reward.count) ? 'Claimed' : 'Claim';
+                claimButton.disabled = !canClaim || this.state.hasClaimedReward(reward.count);
+                claimButton.addEventListener('pointerdown', () => {
+                    if (canClaim) {
+                        this.state.addCoins(reward.diamonds);
+                        this.state.claimReward(reward.count);
+                        this.ui.queueUpdate('coins', this.state.getCoins());
+                        this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                        this.ui.applyUpdates();
+                        claimButton.textContent = 'Claimed';
+                        claimButton.disabled = true;
+                    }
+                });
+                li.appendChild(claimButton);
                 rewardsList.appendChild(li);
             });
             rewardsSection.appendChild(rewardsTitle);
@@ -1207,7 +1221,6 @@ class Game {
             });
 
             // Сборка страницы
-            this.ui.elements.friendsContainer.appendChild(friendsHeader);
             this.ui.elements.friendsContainer.appendChild(inviteSection);
             this.ui.elements.friendsContainer.appendChild(rewardsSection);
             this.ui.elements.friendsContainer.appendChild(friendsListContainer);
