@@ -41,8 +41,8 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .character{width:180px;height:180px;object-fit:contain;cursor:pointer;user-select:none;touch-action:manipulation;opacity:1;transition:opacity 0.5s ease}
 .click-effect{position:absolute;width:40px;height:40px;object-fit:contain;pointer-events:none;animation:fadeOut 1s ease forwards;z-index:2;transform:translate(-50%,-50%)}
 @keyframes fadeOut{0%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-70%)}}
-footer{width:100%;height:16vh;position:fixed;bottom:0.8rem;z-index:1;display:flex;justify-content:flex-end;align-items:center;padding:0 1rem;opacity:1;transition:opacity 0.5s ease}
-.footer-menu-container{width:auto;background:var(--footer-bg);border-radius:20px;display:flex;justify-content:center;align-items:center;padding:0.75rem}
+footer{width:100%;position:fixed;bottom:0;z-index:1;display:flex;justify-content:center;align-items:center;padding:0;opacity:1;transition:opacity 0.5s ease}
+.footer-menu-container{width:auto;background:var(--footer-bg);border-radius:20px 20px 0 0;display:flex;justify-content:center;align-items:center;padding:0.75rem}
 .footer-menu{display:flex;justify-content:space-around;align-items:center;width:100%;gap:1rem}
 .menu-item{display:flex;flex-direction:column;align-items:center;gap:0.4rem;cursor:pointer}
 .menu-item img{width:64px;height:64px;object-fit:contain;border-radius:50%;background:#2E2E2E;padding:12px}
@@ -54,7 +54,9 @@ footer{width:100%;height:16vh;position:fixed;bottom:0.8rem;z-index:1;display:fle
 .shop-container.visible,.inventory-container.visible,.market-container.visible{opacity:1;pointer-events:auto}
 .shop-container.hidden,.inventory-container.hidden,.market-container.hidden{opacity:0;pointer-events:none}
 .shop-title,.inventory-title,.market-title{font-size:1.5rem;font-weight:700;color:#FFF;text-transform:uppercase}
-.cases-container,.inventory-items-container,.market-items-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap;height:60vh;overflow-y:auto}
+.cases-container,.inventory-items-container,.market-items-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap;overflow-y:auto}
+.cases-container,.inventory-items-container{min-height:20vh}
+.market-items-container{height:40vh}
 .case-container,.inventory-item-container,.market-item-container{width:150px;background:#2E2E2E;border-radius:16px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;cursor:pointer;transition:background 0.3s ease}
 .case-image,.inventory-image,.market-image{width:80px;height:80px;object-fit:contain}
 .case-name,.inventory-name,.market-name{font-size:1rem;font-weight:600;color:#FFF}
@@ -100,14 +102,15 @@ footer{width:100%;height:16vh;position:fixed;bottom:0.8rem;z-index:1;display:fle
 .coin-counter{font-size:1.5rem;padding:0.5rem 1rem;gap:0.4rem}
 .coin-icon{width:24px;height:24px;margin-left:0.4rem}
 .character{width:140px;height:140px}
-footer{height:14vh;bottom:0.6rem;padding:0 0.8rem}
-.footer-menu-container{border-radius:16px;padding:0.6rem}
+footer{bottom:0;padding:0}
+.footer-menu-container{border-radius:16px 16px 0 0;padding:0.6rem}
 .footer-menu{gap:0.8rem}
 .menu-item img{width:48px;height:48px;padding:10px}
 .menu-item span{font-size:0.9rem}
 .shop-container,.inventory-container,.market-container{width:85%;padding:1rem}
 .shop-title,.inventory-title,.market-title{font-size:1.2rem}
-.cases-container,.inventory-items-container,.market-items-container{height:50vh}
+.cases-container,.inventory-items-container{min-height:15vh}
+.market-items-container{height:30vh}
 .case-container,.inventory-item-container,.market-item-container{width:120px;padding:0.8rem}
 .case-image,.inventory-image,.market-image{width:60px;height:60px}
 .case-name,.inventory-name,.market-name{font-size:0.9rem}
@@ -216,6 +219,10 @@ footer{height:14vh;bottom:0.6rem;padding:0 0.8rem}
 <div class="menu-item" data-menu="market">
 <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market" draggable="false">
 <span>Market</span>
+</div>
+<div class="menu-item" data-menu="games">
+<img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Games" draggable="false">
+<span>Games</span>
 </div>
 </div>
 </div>
@@ -597,7 +604,8 @@ class Game {
             'https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp',
             'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp',
             'https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp',
-            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp'
+            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp',
+            'https://em-content.zobj.net/source/telegram/386/joystick_1f579-fe0f.webp'
         ];
         let loadedCount = 0;
         const totalImages = imageUrls.length;
@@ -1019,6 +1027,26 @@ class Game {
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.isInventoryView = false;
             this.updateMarketDisplay();
+        } else if (menuType === 'games') {
+            this.state.setShopViewActive(false);
+            this.state.setMarketViewActive(false);
+            this.ui.elements.mainContent.classList.remove('visible');
+            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.coinCounter.classList.remove('visible');
+            this.ui.elements.coinCounter.classList.add('hidden');
+            this.ui.elements.character.classList.remove('visible');
+            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.marketContainer.classList.remove('visible');
+            this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.isInventoryView = false;
         }
     }
     handleArrowClick(e) {
