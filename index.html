@@ -654,6 +654,7 @@ class Game {
         }
         const rouletteItems = [];
         const reward = this.generateCaseReward(caseType);
+        console.log('Generated reward before roulette:', { name: reward.name, src: reward.src, isMutated: reward.isMutated, value: reward.value });
         for (let i = 0; i < 60; i++) {
             if (i === 37) {
                 rouletteItems.push(reward);
@@ -672,6 +673,7 @@ class Game {
                 value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
             });
         }
+        console.log('Roulette item 37 before render:', { name: rouletteItems[37].name, src: rouletteItems[37].src, isMutated: rouletteItems[37].isMutated, value: rouletteItems[37].value });
         const renderRoulette = () => {
             rouletteStrip.innerHTML = '';
             rouletteItems.forEach((item, index) => {
@@ -729,24 +731,37 @@ class Game {
             const onAnimationEnd = () => {
                 const winnerIndex = 37;
                 const winnerItem = rouletteStrip.children[winnerIndex];
-                winnerItem.innerHTML = '';
+                if (!winnerItem) {
+                    console.error('Winner item not found at index 37!');
+                    return;
+                }
+                console.log('Before updating winner:', { winnerName: winnerItem.dataset.itemName, winnerSrc: winnerItem.querySelector('img')?.src });
+                const img = winnerItem.querySelector('img');
+                if (img) {
+                    img.src = reward.src;
+                    img.alt = reward.name;
+                    img.className = 'animation-character';
+                    if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
+                } else {
+                    console.warn('No img element in winnerItem, creating new one');
+                    const newImg = document.createElement('img');
+                    newImg.src = reward.src;
+                    newImg.alt = reward.name;
+                    newImg.className = 'animation-character';
+                    if (reward.isMutated && reward.name !== 'Diamonds') newImg.className += ' mutated';
+                    winnerItem.appendChild(newImg);
+                }
+                const bgDiv = winnerItem.querySelector('.animation-background');
+                if (bgDiv) {
+                    bgDiv.style.background = reward.background;
+                }
                 winnerItem.dataset.itemName = reward.name;
                 winnerItem.style.background = reward.background;
                 winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
-                const bgDiv = document.createElement('div');
-                bgDiv.className = 'animation-background';
-                bgDiv.style.background = reward.background;
-                winnerItem.appendChild(bgDiv);
-                const img = document.createElement('img');
-                img.src = reward.src;
-                img.alt = reward.name;
-                img.className = 'animation-character';
-                if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
-                winnerItem.appendChild(img);
                 winnerItem.dataset.winner = 'true';
-                console.log('Reward:', { name: reward.name, src: reward.src, isMutated: reward.isMutated, value: reward.value });
-                console.log('Winner element:', { name: winnerItem.dataset.itemName, src: winnerItem.querySelector('img').src });
-                console.log('Roulette item 37:', { name: rouletteItems[37].name, src: rouletteItems[37].src });
+                console.log('Reward after spin:', { name: reward.name, src: reward.src, isMutated: reward.isMutated, value: reward.value });
+                console.log('Winner element after update:', { name: winnerItem.dataset.itemName, src: winnerItem.querySelector('img')?.src });
+                console.log('Roulette item 37 after spin:', { name: rouletteItems[37].name, src: rouletteItems[37].src });
                 console.log('Total items:', rouletteStrip.children.length);
                 rouletteStrip.style.animation = 'roulette-slow-spin 64s linear infinite';
                 const isMobile = window.innerWidth <= 600;
