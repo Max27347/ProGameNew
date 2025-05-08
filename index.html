@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 *:focus,*:active{outline:none;-webkit-tap-highlight-color:transparent}
-:root{--bg-color:#000;--bg-gradient:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%);--highlight-color:#FFF;--text-color:#fff;--footer-bg:rgba(30,30,30,0.85);--counter-bg:rgba(30,30,30,0.85);--top-menu-bg:rgba(30,30,30,0.85);--tg-bg-color:linear-gradient(135deg,#1c2526,#2a1b3d);--tg-text-color:#fff;--tg-footer-bg:rgba(44,47,71,0.85);--tg-counter-bg:rgba(44,47,71,0.85);--tg-top-menu-bg:rgba(44,47,71,0.85);--progress-bar-bottom:1rem}
+:root{--bg-color:#000;--bg-gradient:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%);--highlight-color:#FFF;--text-color:#fff;--footer-bg:rgba(30,30,30,0.85);--counter-bg:rgba(30,30,30,0.85);--top-menu-bg:rgba(30,30,30,0.85);--tg-bg-color:linear-gradient(135deg,#1c2526,#2a1b3d);--tg-text-color:#fff;--tg-footer-bg:rgba(44,47,71,0.85);--tg-counter-bg:rgba(44,47,71,0.85);--tg-top-menu-bg:rgba(44,47,71,0.85)}
 [data-telegram="true"]{--bg-color:var(--tg-bg-color);--text-color:var(--tg-text-color);--footer-bg:var(--tg-footer-bg);--counter-bg:var(--tg-counter-bg);--top-menu-bg:var(--tg-top-menu-bg)}
 body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-color);background-image:var(--bg-gradient);color:var(--text-color);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;overflow:hidden;-webkit-user-select:none;user-select:none}
 .loading-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;opacity:1;transition:opacity 0.5s ease}
@@ -29,8 +29,7 @@ body{min-height:100vh;display:flex;flex-direction:column;align-items:center;just
 .player-max-coins{font-size:0.9rem;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
 .gem-icon{width:20px;height:20px;vertical-align:middle;margin-right:0.3rem}
 .player-rank{font-size:1rem;font-weight:600}
-.player-stats{font-size:0.9rem;opacity:0.8;transition:text-shadow 0.3s ease,opacity 0.3s ease}
-.player-stats.glowing{cursor:pointer;animation:blink-glow 1.5s ease-in-out infinite}
+.player-stats{font-size:0.9rem;opacity:0.8}
 #particleCanvas,#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:1;transition:opacity 0.5s ease}
 #particleCanvas{z-index:-1}
 #confettiCanvas{z-index:11}
@@ -39,34 +38,16 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .coin-counter.hidden{opacity:0;pointer-events:none}
 .coin-counter.visible{opacity:1;pointer-events:auto}
 .coin-icon{width:32px;height:32px;vertical-align:middle;margin-left:0.5rem}
-.energy-counter{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 1rem;background:var(--counter-bg);border-radius:16px;font-size:1.2rem;font-weight:600;opacity:1;transition:opacity 0.5s ease}
-.energy-counter img{width:32px;height:32px;object-fit:contain}
 .character{width:180px;height:180px;object-fit:contain;cursor:pointer;user-select:none;touch-action:manipulation;opacity:1;transition:opacity 0.5s ease}
 .click-effect{position:absolute;width:40px;height:40px;object-fit:contain;pointer-events:none;animation:fadeOut 1s ease forwards;z-index:2;transform:translate(-50%,-50%)}
 @keyframes fadeOut{0%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-70%)}}
-.progress-bar{position:fixed;bottom:var(--progress-bar-bottom);left:1rem;right:1rem;height:10px;background:rgba(255,255,255,0.2);border-radius:5px;z-index:3;opacity:1;transition:opacity 0.5s ease}
-.progress-fill{height:100%;background:var(--highlight-color);border-radius:5px;transition:width 0.3s ease;animation:blink 1.5s ease-in-out infinite}
-.progress-fill.dark{background:#666;box-shadow:0 0 10px rgba(0,0,0,0.5);animation:blink-dark 1.5s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.6}}
-@keyframes blink-dark{0%,100%{opacity:0.8}50%{opacity:0.4}}
-@keyframes blink-glow{0%,100%{opacity:1}50%{opacity:0.7}}
-footer{width:100%;height:16vh;position:fixed;bottom:calc(var(--progress-bar-bottom) + 10px);z-index:1;display:flex;justify-content:flex-end;align-items:center;padding:0 1rem;opacity:1;transition:opacity 0.5s ease}
+footer{width:100%;height:16vh;position:fixed;bottom:0.8rem;z-index:1;display:flex;justify-content:flex-end;align-items:center;padding:0 1rem;opacity:1;transition:opacity 0.5s ease}
 .footer-menu-container{width:auto;background:var(--footer-bg);border-radius:20px;display:flex;justify-content:center;align-items:center;padding:0.75rem}
 .footer-menu{display:flex;justify-content:space-around;align-items:center;width:100%;gap:1rem}
 .menu-item{display:flex;flex-direction:column;align-items:center;gap:0.4rem;cursor:pointer}
 .menu-item img{width:64px;height:64px;object-fit:contain;border-radius:50%;background:#2E2E2E;padding:12px}
 .menu-item.highlighted img{background:var(--highlight-color)}
 .menu-item span{font-size:1rem;font-weight:500;color:var(--text-color);text-transform:uppercase;letter-spacing:0.5px}
-.energy-container{position:fixed;left:1rem;bottom:calc(var(--progress-bar-bottom) + 10px);z-index:2}
-.world-overlay,.transition-overlay,.intro-overlay,.quest-overlay,.case-animation-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10;opacity:0;transition:opacity 0.5s ease}
-.world-overlay.visible,.transition-overlay.visible,.intro-overlay.visible,.quest-overlay.visible,.case-animation-overlay.visible{opacity:1;pointer-events:auto}
-.world-overlay.hidden,.transition-overlay.hidden,.intro-overlay.hidden,.quest-overlay.hidden,.case-animation-overlay.hidden{opacity:0;pointer-events:none}
-.world-message,.transition-message,.intro-message,.quest-message,.case-animation-message{font-size:2rem;font-weight:700;color:#FFF;text-align:center;max-width:90%;text-shadow:0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s ease,transform 0.3s ease}
-.world-message.visible,.transition-message.visible,.intro-message.visible,.quest-message.visible,.case-animation-message.visible{opacity:1;transform:scale(1)}
-.world-message.hidden,.transition-message.hidden,.intro-message.hidden,.quest-message.hidden,.case-animation-message.hidden{opacity:0;transform:scale(0.9)}
-.world-prompt,.transition-prompt,.intro-prompt,.quest-prompt,.case-animation-prompt{font-size:1rem;font-weight:500;color:#FFF;opacity:0;transition:opacity 0.3s ease;cursor:pointer}
-.world-prompt.visible,.transition-prompt.visible,.intro-prompt.visible,.quest-prompt.visible,.case-animation-prompt.visible{opacity:0.8}
-.world-prompt.hidden,.transition-prompt.hidden,.intro-prompt.hidden,.quest-prompt.hidden,.case-animation-prompt.hidden{opacity:0}
 .hidden-opacity{opacity:0;pointer-events:none;transition:opacity 0.5s ease}
 .hidden-opacity.visible{opacity:1;pointer-events:auto}
 .shop-container,.inventory-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:400px;background:var(--counter-bg);border-radius:20px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;z-index:3;opacity:0;transition:opacity 0.5s ease}
@@ -83,11 +64,16 @@ footer{width:100%;height:16vh;position:fixed;bottom:calc(var(--progress-bar-bott
 .shop-arrow.hidden{opacity:0;pointer-events:none}
 .shop-arrow.left{left:1rem}
 .shop-arrow.right{right:1rem}
+.case-animation-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10;opacity:0;transition:opacity 0.5s ease}
+.case-animation-overlay.visible{opacity:1;pointer-events:auto}
+.case-animation-overlay.hidden{opacity:0;pointer-events:none}
+.case-animation-message{font-size:2rem;font-weight:700;color:#FFF;text-align:center;max-width:90%;text-shadow:0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s ease,transform 0.3s ease}
+.case-animation-message.visible{opacity:1;transform:scale(1)}
+.case-animation-message.hidden{opacity:0;transform:scale(0.9)}
 .case-animation-container{width:480px;height:200px;background:#2E2E2E;border-radius:16px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}
 .roulette-strip{width:8160px;height:100%;display:flex;flex-direction:row;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 64s linear infinite}
 .roulette-item{width:120px;height:120px;margin:0 8px;display:flex;justify-content:center;align-items:center;background:#1E1E1E;border-radius:8px;position:relative;transition:transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease}
 .roulette-item img{width:100px;height:100px;object-fit:contain}
-.roulette-item.diamonds{font-size:1.2rem;color:#FFF;font-weight:600;display:flex;align-items:center;justify-content:center;background:#1E1E1E;border-radius:8px}
 .roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite;z-index:10}
 .animation-character{width:100px;height:100px;object-fit:contain;z-index:3}
 .animation-character.mutated{filter:brightness(1.5) hue-rotate(200deg)}
@@ -98,7 +84,7 @@ footer{width:100%;height:16vh;position:fixed;bottom:calc(var(--progress-bar-bott
 @keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-8160px)}}
 @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-7344px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 10px rgba(255,255,255,0.8)}50%{box-shadow:0 0 20px rgba(255,255,255,1)}}
-@media (max-width:600px){:root{--progress-bar-bottom:0.8rem}
+@media (max-width:600px){
 .loading-percent{font-size:1.2rem}
 .top-menu{top:0.8rem;width:calc(100% - 2rem);margin:0 1rem;padding:0.75rem;border-radius:16px}
 .player-avatar{width:32px;height:32px}
@@ -109,18 +95,12 @@ footer{width:100%;height:16vh;position:fixed;bottom:calc(var(--progress-bar-bott
 .player-stats{font-size:0.8rem}
 .coin-counter{font-size:1.5rem;padding:0.5rem 1rem;gap:0.4rem}
 .coin-icon{width:24px;height:24px;margin-left:0.4rem}
-.energy-counter{font-size:1rem;padding:0.4rem 0.8rem}
-.energy-counter img{width:28px;height:28px}
 .character{width:140px;height:140px}
-.progress-bar{bottom:var(--progress-bar-bottom);left:0.8rem;right:0.8rem;height:8px}
-footer{height:14vh;bottom:calc(var(--progress-bar-bottom) + 10px);padding:0 0.8rem}
-.energy-container{left:0.8rem;bottom:calc(var(--progress-bar-bottom) + 10px)}
+footer{height:14vh;bottom:0.6rem;padding:0 0.8rem}
 .footer-menu-container{border-radius:16px;padding:0.6rem}
 .footer-menu{gap:0.8rem}
 .menu-item img{width:48px;height:48px;padding:10px}
 .menu-item span{font-size:0.9rem}
-.world-message,.transition-message,.intro-message,.quest-message,.case-animation-message{font-size:1.5rem}
-.world-prompt,.transition-prompt,.intro-prompt,.quest-prompt,.case-animation-prompt{font-size:0.9rem}
 .shop-container,.inventory-container{width:85%;padding:1rem}
 .shop-title,.inventory-title{font-size:1.2rem}
 .case-container,.inventory-item-container{width:120px;padding:0.8rem}
@@ -130,12 +110,12 @@ footer{height:14vh;bottom:calc(var(--progress-bar-bottom) + 10px);padding:0 0.8r
 .shop-arrow{font-size:1.5rem;padding:0.4rem}
 .shop-arrow.left{left:0.8rem}
 .shop-arrow.right{right:0.8rem}
+.case-animation-message{font-size:1.5rem}
 .case-animation-container{width:384px;height:160px}
 .roulette-strip{width:6720px;animation:roulette-slow-spin 52s linear infinite}
 .roulette-item{width:96px;height:96px;margin:0 8px}
 .roulette-item img{width:80px;height:80px}
-.roulette-item.diamonds{font-size:1rem}
-.roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite;z-index:10}
+.roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite}
 .animation-character{width:80px;height:80px}
 .animation-background{width:100%;height:100%}
 .animation-bar{width:3px;height:80%}
@@ -175,9 +155,6 @@ footer{height:14vh;bottom:calc(var(--progress-bar-bottom) + 10px);padding:0 0.8r
 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
 </div>
 <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Game Controller" class="character" id="character" draggable="false">
-<div class="progress-bar" id="progressBar">
-<div class="progress-fill" id="progressFill"></div>
-</div>
 </main>
 <div class="shop-container hidden" id="shopContainer">
 <div class="shop-title">Cases</div>
@@ -201,21 +178,11 @@ footer{height:14vh;bottom:calc(var(--progress-bar-bottom) + 10px);padding:0 0.8r
 <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
 <div class="shop-arrow right hidden" id="shopArrowRight">></div>
 <footer class="game-hidden" id="footer">
-<div class="energy-container">
-<div class="energy-counter" id="energyCounter">
-<img src="https://em-content.zobj.net/source/telegram/386/dizzy_1f4ab.webp" alt="Energy" draggable="false">
-<span id="energyCount">1000/1000</span>
-</div>
-</div>
 <div class="footer-menu-container">
 <div class="footer-menu">
 <div class="menu-item highlighted" data-menu="home">
 <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false">
 <span>Home</span>
-</div>
-<div class="menu-item" data-menu="tasks">
-<img src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" alt="Tasks" draggable="false">
-<span>Tasks</span>
 </div>
 <div class="menu-item" data-menu="shop">
 <img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop" draggable="false">
@@ -225,8 +192,8 @@ footer{height:14vh;bottom:calc(var(--progress-bar-bottom) + 10px);padding:0 0.8r
 </div>
 </footer>
 <script>
-const CONFIG={MAX_ENERGY:1000,PARTICLE_COUNT:50,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,ENERGY_REGEN_INTERVAL:500,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,EXTRA_COINS:100}
-const SKINS=[{coins:0,src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'},{coins:100,src:'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,99,71,0.2),transparent 70%)',color:'#FF6347',worldName:'World of Cars'},{coins:300,src:'https://em-content.zobj.net/source/telegram/386/locomotive_1f682.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,165,0,0.2),transparent 70%)',color:'#FFA500',worldName:'World of Trains'},{coins:500,src:'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(135,206,235,0.2),rgba(255,255,255,0.1),transparent 70%)',color:'#87CEEB',worldName:'World of Planes'},{coins:700,src:'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,140,0,0.2),rgba(30,144,255,0.2),transparent 70%)',color:'#FF8C00',worldName:'World of Rockets'},{coins:900,src:'https://em-content.zobj.net/source/telegram/386/moai_1f5ff.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(128,128,128,0.2),transparent 70%)',color:'#808080',worldName:'World of Moai'},{coins:1100,src:'https://em-content.zobj.net/source/telegram/386/alien_1f47d.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(50,205,50,0.2),transparent 70%)',color:'#32CD32',worldName:'World of Aliens'},{coins:1300,src:'https://em-content.zobj.net/source/telegram/386/robot_1f916.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(70,130,180,0.2),rgba(169,169,169,0.2),transparent 70%)',color:'#4682B4',worldName:'World of Robots'}]
+const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1}
+const SKINS=[{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'}]
 const CHARACTERS=[
 {src:'https://em-content.zobj.net/source/telegram/386/monkey-face_1f435.webp',name:'Monkey'},
 {src:'https://em-content.zobj.net/source/telegram/386/gorilla_1f98d.webp',name:'Gorilla'},
@@ -252,14 +219,719 @@ const BACKGROUND_GRADIENTS=[
 'linear-gradient(270deg, #A1C4FD, #C2E9FB, #4B6CB7)'
 ]
 const MUTATION_GRADIENT='radial-gradient(circle at 50% 50%, #FFD700, #FF4500 70%)';
-class GameState{constructor(){this.coins=0;this.energy=CONFIG.MAX_ENERGY;this.scale=CONFIG.MIN_SCALE;this.canInteract=true;this.isOverlayActive=false;this.isTelegram=!!(window.Telegram?.WebApp?.initData);this.isWorldNameGlowing=false;this.glowColor='';this.questIndex=0;this.tapCount=0;this.tapRequirement=50;this.isTransitionOverlayActive=false;this.isShopActive=false;this.hasSeenShopTutorial=false;this.inventory=[];this.selectedCharacter=null}getCoins(){return this.coins}addCoins(amount){this.coins+=amount}resetCoins(value){this.coins=value}getEnergy(){return this.energy}deductEnergy(amount){this.energy=Math.max(this.energy-amount,0)}addEnergy(amount){this.energy=Math.min(this.energy+amount,CONFIG.MAX_ENERGY)}setEnergy(value){this.energy=Math.max(0,Math.min(value,CONFIG.MAX_ENERGY))}isTelegramEnvironment(){return this.isTelegram}resetExtraCoins(){}isShopViewActive(){return this.isShopActive}setShopViewActive(value){this.isShopActive=value}setShopTutorialSeen(){this.hasSeenShopTutorial=true}addToInventory(item){this.inventory.push(item)}getInventory(){return this.inventory}setSelectedCharacter(character){this.selectedCharacter=character}getSelectedCharacter(){return this.selectedCharacter}}
-class ParticleSystem{constructor(canvas,count){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.particles=new Array(count);this.time=0;for(let i=0;i<count;i++)this.particles[i]=this.createParticle()}createParticle(){return{x:Math.random()*this.canvas.width,y:Math.random()*this.canvas.height,size:Math.random()*3+1,speedX:Math.random()*0.5-0.25,speedY:Math.random()*0.5-0.25,opacity:Math.random()*0.5+0.3}}update(){this.time+=0.016;for(let i=0;i<this.particles.length;i++){const p=this.particles[i];p.x+=p.speedX;p.y+=p.speedY;p.speedX+=(Math.random()-0.5)*0.05;p.speedY+=(Math.random()-0.5)*0.05;p.speedX=Math.max(-0.5,Math.min(0.5,p.speedX));p.speedY=Math.max(-0.5,Math.min(0.5,p.speedY));p.opacity=0.3+0.5*(Math.sin(this.time+i)+1)/2;if(p.x<0||p.x>this.canvas.width)p.speedX*=-1;if(p.y<0||p.y>this.canvas.height)p.speedY*=-1}}draw(){this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);const highlightColor=getComputedStyle(document.documentElement).getPropertyValue('--highlight-color').trim();let r=255,g=255,b=255;if(highlightColor.startsWith('#')){const hex=highlightColor.replace('#','');r=parseInt(hex.substring(0,2),16);g=parseInt(hex.substring(2,4),16);b=parseInt(hex.substring(4,6),16)}for(let i=0;i<this.particles.length;i++){const p=this.particles[i];this.ctx.fillStyle=`rgba(${r},${g},${b},${p.opacity})`;this.ctx.beginPath();this.ctx.arc(p.x,p.y,p.size,0,Math.PI*2);this.ctx.fill()}}resize(){this.canvas.width=window.innerWidth;this.canvas.height=window.innerHeight;for(let i=0;i<this.particles.length;i++){const p=this.particles[i];p.x=Math.random()*this.canvas.width;p.y=Math.random()*this.canvas.height}}}
-class ConfettiSystem{constructor(canvas,count,nextColor){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.particles=[];this.isAnimating=false;this.nextColor=nextColor||'#FFFFFF';this.colors=['#FFFFFF',this.nextColor];this.maxCount=count;this.spawnRate=0.05;this.removeProbability=0.02}createParticle(){return{x:Math.random()*this.canvas.width,y:-Math.random()*50,width:Math.random()*3+3,height:Math.random()*3+3,speedY:Math.random()*2+2,opacity:1,color:this.colors[Math.floor(Math.random()*this.colors.length)],rotation:Math.random()*Math.PI*2}}update(){this.particles=this.particles.filter(p=>{p.y+=p.speedY;p.rotation+=0.05;if(p.y>this.canvas.height*0.9)return Math.random()>this.removeProbability;return true});if(this.particles.length<this.maxCount&&Math.random()<this.spawnRate)this.particles.push(this.createParticle())}draw(){this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);for(let i=0;i<this.particles.length;i++){const p=this.particles[i];this.ctx.save();this.ctx.translate(p.x+p.width/2,p.y+p.height/2);this.ctx.rotate(p.rotation);this.ctx.fillStyle=p.color;this.ctx.globalAlpha=p.opacity;this.ctx.fillRect(-p.width/2,-p.height/2,p.width,p.height);this.ctx.restore()}}start(nextColor){if(this.isAnimating)return;if(nextColor){this.nextColor=nextColor;this.colors=['#FFFFFF',this.nextColor]}this.particles=[];for(let i=0;i<this.maxCount;i++){const p=this.createParticle();p.y=Math.random()*this.canvas.height;this.particles.push(p)}this.isAnimating=true;this.canvas.classList.remove('game-hidden');this.canvas.classList.add('visible');this.animate()}stop(){this.isAnimating=false;this.canvas.classList.remove('visible');this.canvas.classList.add('game-hidden');this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);this.particles=[]}animate(){if(!this.isAnimating)return;this.update();this.draw();requestAnimationFrame(()=>this.animate())}resize(){this.canvas.width=window.innerWidth;this.canvas.height=window.innerHeight;this.particles=[];if(this.isAnimating){for(let i=0;i<this.maxCount;i++){const p=this.createParticle();p.y=Math.random()*this.canvas.height;this.particles.push(p)}}}}
-class ClickEffectPool{constructor(){this.pool=[];this.active=[]}getEffect(){let effect=this.pool.pop();if(!effect){effect=document.createElement('img');effect.src='https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp';effect.className='click-effect';effect.setAttribute('draggable','false')}return effect}showEffect(x,y){const effect=this.getEffect();effect.style.left=`${x}px`;effect.style.top=`${y}px`;document.body.appendChild(effect);this.active.push(effect);setTimeout(()=>{effect.remove();this.active=this.active.filter(e=>e!==effect);this.pool.push(effect)},CONFIG.CLICK_EFFECT_DURATION)}}
-class UIManager{constructor(elements){this.elements=elements;this.pendingUpdates={}}updateCoinCounterPosition(){const topMenuHeight=this.elements.topMenu.offsetHeight;this.elements.coinCounter.style.top=`${topMenuHeight+10}px`}updateLoadingPercent(percent){this.elements.loadingPercent.textContent=`${Math.round(percent)}%`}updateEnergyBar(energy){this.elements.energyCount.textContent=`${energy}/${CONFIG.MAX_ENERGY}`}showGameUI(){this.elements.loadingScreen.classList.add('hidden');this.elements.topMenu.classList.remove('game-hidden');this.elements.topMenu.classList.add('visible');this.elements.particleCanvas.classList.remove('game-hidden');this.elements.particleCanvas.classList.add('visible');this.elements.mainContent.classList.remove('game-hidden');this.elements.mainContent.classList.add('visible');this.elements.footer.classList.remove('game-hidden');this.elements.footer.classList.add('visible');setTimeout(()=>{this.elements.loadingScreen.style.display='none'},500)}queueUpdate(key,value){this.pendingUpdates[key]=value}applyUpdates(){requestAnimationFrame(()=>{for(const[key,value]of Object.entries(this.pendingUpdates)){if(key==='coins')this.elements.coinCount.textContent=value;if(key==='totalCoins')this.elements.totalCoins.textContent=value;if(key==='energy')this.elements.energyCount.textContent=`${value}/${CONFIG.MAX_ENERGY}`;if(key==='characterSrc')this.elements.character.src=value;if(key==='gradient')document.documentElement.style.setProperty('--bg-gradient',value);if(key==='highlightColor')document.documentElement.style.setProperty('--highlight-color',value);if(key==='progressPercent')this.elements.progressFill.style.width=`${value}%`;if(key==='worldName')this.elements.playerStats.textContent=value}this.pendingUpdates={};const digits=this.elements.coinCount.textContent.length;const translateX=digits>5?-(digits-5)*10:0;this.elements.coinCounter.style.transform=`translateX(${translateX}px)`})}updateCharacterScale(scale){this.elements.character.style.transform=`scale(${scale})`}}
-class CharacterController{constructor(state,ui,effectPool,confettiSystem,game){this.state=state;this.ui=ui;this.effectPool=effectPool;this.confettiSystem=confettiSystem;this.game=game;this.resetTimeout=null;this.listeners=[];this.lastWorldIndex=0;this.glowListener=null;this.lastTapTime=0}showIntroOverlays(){const messages=[{text:"Hello player! Welcome to the game",button:"Continue"},{text:"To enter the world, you need to complete a few quests",button:"Continue"},{text:"You need to complete the quest 100 diamonds",button:"Start"}];let index=0;const overlay=document.createElement('div');overlay.className='intro-overlay hidden';const message=document.createElement('div');message.className='intro-message hidden';const prompt=document.createElement('div');prompt.className='intro-prompt hidden';overlay.appendChild(message);overlay.appendChild(prompt);document.body.appendChild(overlay);const updateContent=()=>{if(index>=messages.length){overlay.classList.remove('visible');overlay.classList.add('hidden');setTimeout(()=>{overlay.remove();this.state.canInteract=true;this.attachListeners();this.updateAppearance();this.ui.applyUpdates()},500);return}message.textContent=messages[index]?.text||'';prompt.textContent=messages[index]?.button||'';message.classList.remove('hidden');message.classList.add('visible');setTimeout(()=>{prompt.classList.remove('hidden');prompt.classList.add('visible')},300)};const onClick=()=>{index++;if(index<messages.length){message.classList.remove('visible');message.classList.add('hidden');prompt.classList.remove('visible');prompt.classList.add('hidden');setTimeout(updateContent,300)}else{updateContent()}};prompt.addEventListener('pointerdown',onClick);setTimeout(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');updateContent()},100)}showQuestOverlay(text,buttonText,onStart){this.state.isOverlayActive=true;const overlay=document.createElement('div');overlay.className='quest-overlay hidden';const message=document.createElement('div');message.className='quest-message hidden';message.textContent=text;const prompt=document.createElement('div');prompt.className='quest-prompt hidden';prompt.textContent=buttonText;overlay.appendChild(message);overlay.appendChild(prompt);document.body.appendChild(overlay);requestAnimationFrame(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');message.classList.remove('hidden');message.classList.add('visible');setTimeout(()=>{prompt.classList.remove('hidden');prompt.classList.add('visible')},1500)});const onClick=()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');prompt.classList.remove('visible');prompt.classList.add('hidden');setTimeout(()=>{overlay.remove();this.state.isOverlayActive=false;onStart();this.updateAppearance()},500);prompt.removeEventListener('pointerdown',onClick)};prompt.addEventListener('pointerdown',onClick)}showCurrentQuest(){const currentSkin=SKINS[this.lastWorldIndex]||SKINS[0];const nextSkin=SKINS[this.lastWorldIndex+1]||null;const coinTarget=nextSkin?nextSkin.coins:1500;let questText='';if(this.state.questIndex===0){const coins=this.state.getCoins();if(coins<coinTarget){const coinsRemaining=Math.max(0,coinTarget-coins);questText=`You have ${coinsRemaining} diamonds left to complete the quest`}else{questText=`You need to complete the quest ${coinTarget} diamonds`}}else{if(this.state.tapCount===0){questText=`You need to tap the character ${this.state.tapRequirement} times`}else{const tapsRemaining=this.state.tapRequirement-this.state.tapCount;questText=`You have ${tapsRemaining} taps left to tap the character`}}const overlay=document.createElement('div');overlay.className='quest-overlay hidden';const message=document.createElement('div');message.className='quest-message hidden';message.textContent=questText;overlay.appendChild(message);document.body.appendChild(overlay);requestAnimationFrame(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');message.classList.remove('hidden');message.classList.add('visible')});setTimeout(()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');setTimeout(()=>overlay.remove(),500)},3000)}showShopTutorial(onComplete){const messages=[{text:"Welcome to the Shop!",button:"Continue"},{text:"Here you can explore new items and upgrades",button:"Continue"},{text:"Check back often for new deals. Good luck!",button:"Finish"}];let index=0;const overlay=document.createElement('div');overlay.className='intro-overlay hidden';const message=document.createElement('div');message.className='intro-message hidden';const prompt=document.createElement('div');prompt.className='intro-prompt hidden';overlay.appendChild(message);overlay.appendChild(prompt);document.body.appendChild(overlay);const updateContent=()=>{if(index>=messages.length){overlay.classList.remove('visible');overlay.classList.add('hidden');setTimeout(()=>{overlay.remove();this.state.isOverlayActive=false;this.state.setShopTutorialSeen();onComplete()},500);return}message.textContent=messages[index]?.text||'';prompt.textContent=messages[index]?.button||'';message.classList.remove('hidden');message.classList.add('visible');setTimeout(()=>{prompt.classList.remove('hidden');prompt.classList.add('visible')},300)};const onClick=()=>{index++;if(index<messages.length){message.classList.remove('visible');message.classList.add('hidden');prompt.classList.remove('visible');prompt.classList.add('hidden');setTimeout(updateContent,300)}else{updateContent()}};prompt.addEventListener('pointerdown',onClick);setTimeout(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');updateContent()},100)}showTransitionOverlay(currentSkin,nextSkin){if(this.state.isTransitionOverlayActive)return;this.state.isTransitionOverlayActive=true;this.state.isOverlayActive=true;const overlay=document.createElement('div');overlay.className='transition-overlay hidden';const message=document.createElement('div');message.className='transition-message hidden';message.textContent='Click to continue';const prompt=document.createElement('div');prompt.className='transition-prompt hidden';prompt.textContent="I'll stay here";overlay.appendChild(message);overlay.appendChild(prompt);document.body.appendChild(overlay);requestAnimationFrame(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');message.classList.remove('hidden');message.classList.add('visible');setTimeout(()=>{prompt.classList.remove('hidden');prompt.classList.add('visible')},1500)});const proceed=()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');prompt.classList.remove('visible');prompt.classList.add('hidden');setTimeout(()=>{overlay.remove();this.state.isTransitionOverlayActive=false;this.showWorldOverlay(currentSkin,nextSkin)},500);message.removeEventListener('pointerdown',proceed);prompt.removeEventListener('pointerdown',wait)};const wait=()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');prompt.classList.remove('visible');prompt.classList.add('hidden');setTimeout(()=>{overlay.remove();this.state.isTransitionOverlayActive=false;this.state.isOverlayActive=false;this.state.canInteract=true;this.state.isWorldNameGlowing=true;this.state.glowColor=nextSkin?nextSkin.color:currentSkin.color;this.ui.elements.playerStats.classList.add('glowing');this.ui.elements.playerStats.style.textShadow=`0 0 10px ${this.state.glowColor}`;this.ui.elements.progressFill.classList.add('dark');this.state.questIndex=0;this.state.tapCount=0;if(this.glowListener){this.ui.elements.playerStats.removeEventListener('pointerdown',this.glowListener)}this.glowListener=()=>{this.state.isOverlayActive=true;this.state.canInteract=false;this.showTransitionOverlay(currentSkin,nextSkin)};this.ui.elements.playerStats.addEventListener('pointerdown',this.glowListener)},500);message.removeEventListener('pointerdown',proceed);prompt.removeEventListener('pointerdown',wait)};message.addEventListener('pointerdown',proceed);prompt.addEventListener('pointerdown',wait)}showWorldOverlay(currentSkin,nextSkin){this.state.isWorldNameGlowing=false;this.ui.elements.playerStats.classList.remove('glowing');this.ui.elements.playerStats.style.textShadow='none';this.ui.elements.progressFill.classList.remove('dark');if(this.glowListener){this.ui.elements.playerStats.removeEventListener('pointerdown',this.glowListener);this.glowListener=null}this.state.resetExtraCoins();this.state.canInteract=true;const celebratorySrc=nextSkin?nextSkin.src:'https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp';const celebratoryColor=nextSkin?nextSkin.color:'#FFD700';this.ui.queueUpdate('characterSrc',celebratorySrc);this.ui.queueUpdate('highlightColor',celebratoryColor);const isMutated=Math.random()<0.01;const background='';this.state.addToInventory({src:currentSkin.src,name:currentSkin.worldName,isMutated,background});const overlay=document.createElement('div');overlay.className='world-overlay hidden';overlay.style.pointerEvents='none';const message=document.createElement('div');message.className='world-message hidden';const prompt=document.createElement('div');prompt.className='world-prompt hidden';prompt.textContent='Press to remove this';let nextQuest='';const newTapRequirement=nextSkin?this.state.tapRequirement*2:this.state.tapRequirement;if(nextSkin){message.textContent=`Congratulations! You've completed ${currentSkin.worldName}! Now entering: ${nextSkin.worldName}`;nextQuest=`You need to complete the quest ${nextSkin.coins} diamonds`}else{message.textContent=`Congratulations! You've completed ${currentSkin.worldName}! You're a master of all worlds!`;nextQuest=`You need to complete the quest 1500 diamonds`}message.textContent+=`\n${nextQuest}`;overlay.appendChild(message);overlay.appendChild(prompt);document.body.appendChild(overlay);const nextColor=nextSkin?nextSkin.color:'#FFD700';this.confettiSystem.start(nextColor);requestAnimationFrame(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');message.classList.remove('hidden');message.classList.add('visible');setTimeout(()=>{prompt.classList.remove('hidden');prompt.classList.add('visible');overlay.style.pointerEvents='auto';overlay.addEventListener('pointerdown',closeOverlay)},1500)});const closeOverlay=()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');prompt.classList.remove('visible');prompt.classList.add('hidden');this.confettiSystem.stop();setTimeout(()=>{overlay.remove();this.state.isOverlayActive=false;this.state.isTransitionOverlayActive=false;this.state.canInteract=true;this.lastWorldIndex=SKINS.indexOf(nextSkin||currentSkin);this.state.questIndex=0;this.state.tapCount=0;this.state.tapRequirement=newTapRequirement;const targetSkin=SKINS[this.lastWorldIndex]||SKINS[0];this.state.resetCoins(targetSkin.coins);this.ui.queueUpdate('progressPercent',0);this.ui.queueUpdate('characterSrc',targetSkin.src);this.ui.queueUpdate('highlightColor',targetSkin.color);this.ui.applyUpdates()},500);overlay.removeEventListener('pointerdown',closeOverlay)};this.ui.queueUpdate('energy',this.state.getEnergy());this.ui.applyUpdates()}updateAppearance(){const coins=this.state.getCoins();const currentSkin=SKINS[this.lastWorldIndex]||SKINS[0];const nextSkin=SKINS[this.lastWorldIndex+1]||null;const coinTarget=nextSkin?nextSkin.coins:1500;if(this.state.questIndex===0&&coins>=coinTarget&&this.state.tapCount===0){this.state.questIndex=1} else if(this.state.questIndex===1&&this.state.tapCount>=this.state.tapRequirement){this.state.questIndex=2} if(this.state.questIndex===2&&!this.state.isWorldNameGlowing&&!this.state.isTransitionOverlayActive){this.state.canInteract=false;this.showTransitionOverlay(currentSkin,nextSkin);return}const selectedCharacter=this.state.getSelectedCharacter();if(selectedCharacter&&!this.state.isWorldNameGlowing){this.ui.queueUpdate('characterSrc',selectedCharacter.src);if(selectedCharacter.isMutated){this.ui.queueUpdate('gradient',MUTATION_GRADIENT)}this.ui.queueUpdate('highlightColor',selectedCharacter.isMutated?'#FFD700':'#FFFFFF');this.ui.queueUpdate('worldName',currentSkin.worldName)}else if(!this.state.isWorldNameGlowing){this.ui.queueUpdate('characterSrc',currentSkin.src);this.ui.queueUpdate('highlightColor',currentSkin.color);this.ui.queueUpdate('worldName',currentSkin.worldName)}if(this.state.isWorldNameGlowing){this.ui.elements.progressFill.classList.add('dark')}else{this.ui.elements.progressFill.classList.remove('dark')}let progress=0;if(nextSkin){if(this.state.questIndex===0){const baseThreshold=currentSkin.coins;const worldThreshold=nextSkin.coins;progress=((coins-baseThreshold)/(worldThreshold-baseThreshold))*100}else if(this.state.questIndex===1){progress=(this.state.tapCount/this.state.tapRequirement)*100}else{progress=100}progress=Math.min(Math.max(progress,0),100)}else{const finalCoinTarget=1500;if(this.state.questIndex===0){const baseThreshold=currentSkin.coins;progress=((coins-baseThreshold)/(finalCoinTarget-baseThreshold))*100}else if(this.state.questIndex===1){progress=(this.state.tapCount/this.state.tapRequirement)*100}else{progress=100}progress=Math.min(Math.max(progress,0),100)}this.ui.queueUpdate('progressPercent',progress);this.ui.applyUpdates()}handleTap(e){e.preventDefault();const now=performance.now();if(now-this.lastTapTime<100)return;this.lastTapTime=now;const currentSkin=SKINS[this.lastWorldIndex]||SKINS[0];const nextSkin=SKINS[this.lastWorldIndex+1]||null;const coinLimit=nextSkin?nextSkin.coins:1500;if(!this.state.canInteract||this.state.isOverlayActive||this.state.getEnergy()<=0)return;this.state.scale=Math.min(this.state.scale+CONFIG.SCALE_INCREMENT,CONFIG.MAX_SCALE);this.ui.updateCharacterScale(this.state.scale);if(this.state.questIndex===0){if(this.state.getCoins()<coinLimit){const coinsToAdd=this.state.scale>=CONFIG.MAX_SCALE?2:1;this.state.addCoins(coinsToAdd);this.ui.queueUpdate('coins',this.state.getCoins());this.ui.queueUpdate('totalCoins',this.state.getCoins());if(this.state.getCoins()>=coinLimit){const tapQuestText=`You need to tap the character ${this.state.tapRequirement} times`;this.showQuestOverlay(tapQuestText,'Start',()=>{this.state.questIndex=1;this.state.tapCount=0})}}}else if(this.state.questIndex===1){this.state.tapCount+=1;this.ui.queueUpdate('progressPercent',(this.state.tapCount/this.state.tapRequirement)*100);if(this.state.tapCount>=this.state.tapRequirement){this.state.questIndex=2;this.updateAppearance()}}this.state.deductEnergy(1);this.ui.queueUpdate('energy',this.state.getEnergy());this.ui.updateEnergyBar(this.state.getEnergy());if(this.state.getEnergy()<CONFIG.MAX_ENERGY&&!this.game.energyInterval){this.game.startEnergyRegeneration()}this.updateAppearance();this.ui.applyUpdates();this.effectPool.showEffect(e.clientX,e.clientY);if(this.resetTimeout)clearTimeout(this.resetTimeout);this.resetTimeout=setTimeout(()=>{if(this.state.scale!==CONFIG.MIN_SCALE){this.state.scale=CONFIG.MIN_SCALE;this.ui.updateCharacterScale(this.state.scale)}},1000)}attachListeners(){const tapListener=this.handleTap.bind(this);this.ui.elements.character.addEventListener('pointerdown',tapListener);this.listeners.push({element:this.ui.elements.character,type:'pointerdown',listener:tapListener});const statsListener=()=>{if(this.state.isWorldNameGlowing){this.state.isOverlayActive=true;this.state.canInteract=false;const currentSkin=SKINS[this.lastWorldIndex]||SKINS[0];const nextSkin=SKINS[this.lastWorldIndex+1]||null;this.showTransitionOverlay(currentSkin,nextSkin)}else{this.showCurrentQuest()}};this.ui.elements.playerStats.addEventListener('pointerdown',statsListener);this.listeners.push({element:this.ui.elements.playerStats,type:'pointerdown',listener:statsListener})}destroy(){this.listeners.forEach(({element,type,listener})=>element.removeEventListener(type,listener));if(this.glowListener){this.ui.elements.playerStats.removeEventListener('pointerdown',this.glowListener)}if(this.resetTimeout)clearTimeout(this.resetTimeout)}}
-class Game{constructor(elements){this.state=new GameState();this.ui=new UIManager(elements);this.particleSystem=new ParticleSystem(elements.particleCanvas,CONFIG.PARTICLE_COUNT);this.confettiSystem=new ConfettiSystem(elements.confettiCanvas,CONFIG.CONFETTI_COUNT,'#FFFFFF');this.effectPool=new ClickEffectPool();this.characterController=new CharacterController(this.state,this.ui,this.effectPool,this.confettiSystem,this);this.energyInterval=null;this.resizeTimeout=null;this.listeners=[];this.isInventoryView=false}async preloadAssets(){const imageUrls=['https://placehold.co/40x40',...SKINS.map(skin=>skin.src),...CHARACTERS.map(char=>char.src),'https://em-content.zobj.net/source/telegram/386/dizzy_1f4ab.webp','https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp','https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp','https://em-content.zobj.net/source/telegram/386/crown_1f451.webp','https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp','https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp','https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp','https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp','https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp'];let loadedCount=0;const totalImages=imageUrls.length;const loadImage=url=>{return new Promise(resolve=>{const img=new Image();img.src=url;img.onload=()=>{loadedCount++;const percent=(loadedCount/totalImages)*100;this.ui.updateLoadingPercent(percent);resolve()};img.onerror=()=>{console.warn(`Failed to load image: ${url}. Attempting fallback.`);img.src='https://dummyimage.com/40x40/000/fff';img.onload=()=>{loadedCount++;const percent=(loadedCount/totalImages)*100;this.ui.updateLoadingPercent(percent);resolve()};img.onerror=()=>{console.error(`Failed to load fallback image for: ${url}`);loadedCount++;const percent=(loadedCount/totalImages)*100;this.ui.updateLoadingPercent(percent);resolve()}}})};await Promise.all(imageUrls.map(loadImage));this.ui.showGameUI();this.ui.updateEnergyBar(this.state.getEnergy());this.characterController.showIntroOverlays()}startEnergyRegeneration(){if(this.energyInterval)clearInterval(this.energyInterval);this.energyInterval=setInterval(()=>{if(this.state.getEnergy()<CONFIG.MAX_ENERGY){this.state.addEnergy(1);this.ui.queueUpdate('energy',this.state.getEnergy());this.ui.updateEnergyBar(this.state.getEnergy());this.ui.applyUpdates()}if(this.state.getEnergy()>=CONFIG.MAX_ENERGY&&this.energyInterval){clearInterval(this.energyInterval);this.energyInterval=null}},CONFIG.ENERGY_REGEN_INTERVAL)}updateInventoryDisplay(){const inventoryContainer=this.ui.elements.inventoryItems;inventoryContainer.innerHTML='';const inventory=this.state.getInventory();inventory.forEach(item=>{const itemDiv=document.createElement('div');itemDiv.className='inventory-item-container';itemDiv.style.background=item.background;itemDiv.style.boxShadow='0 0 10px rgba(255,255,255,0.3)';const img=document.createElement('img');img.src=item.src;img.alt=item.name;img.className='inventory-image';if(item.isMutated)img.className+=' mutated';const nameDiv=document.createElement('div');nameDiv.className='inventory-name';nameDiv.textContent=item.name;itemDiv.appendChild(img);itemDiv.appendChild(nameDiv);itemDiv.addEventListener('pointerdown',()=>{this.state.setSelectedCharacter(item);this.ui.elements.inventoryContainer.classList.remove('visible');this.ui.elements.inventoryContainer.classList.add('hidden');this.ui.elements.shopContainer.classList.remove('hidden');this.ui.elements.shopContainer.classList.add('visible');this.isInventoryView=false});inventoryContainer.appendChild(itemDiv)})}showCaseAnimation(caseType){const isDiamondCase=caseType==='diamond-rain';const currency=isDiamondCase?'Diamonds':'Telegram Stars';const overlay=document.createElement('div');overlay.className='case-animation-overlay hidden';const message=document.createElement('div');message.className='case-animation-message hidden';message.textContent=`Wondering what you'll get? Spin for 100 ${currency}!`;const animationContainer=document.createElement('div');animationContainer.id='caseAnimationContainer';animationContainer.className='case-animation-container';const rouletteStrip=document.createElement('div');rouletteStrip.className='roulette-strip';animationContainer.appendChild(rouletteStrip);const animationBar=document.createElement('div');animationBar.className='animation-bar';animationContainer.appendChild(animationBar);const spinButton=document.createElement('div');spinButton.className='case-animation-button';spinButton.textContent='Spin';const cancelButton=document.createElement('div');cancelButton.className='case-animation-cancel';cancelButton.textContent="I'll stop tempting fate";overlay.appendChild(message);overlay.appendChild(animationContainer);overlay.appendChild(spinButton);overlay.appendChild(cancelButton);document.body.appendChild(overlay);const items=[...CHARACTERS];if(isDiamondCase){items.push({src:'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp',name:'Diamonds'})}const rouletteItems=[];for(let i=0;i<60;i++){const randomItem=items[Math.floor(Math.random()*items.length)];rouletteItems.push({...randomItem,isMutated:Math.random()<0.1,background:BACKGROUND_GRADIENTS[Math.floor(Math.random()*BACKGROUND_GRADIENTS.length)]})}const renderRoulette=()=>{rouletteStrip.innerHTML='';rouletteItems.forEach(item=>{const itemDiv=document.createElement('div');itemDiv.className='roulette-item';itemDiv.style.background=item.background;itemDiv.style.boxShadow='0 0 10px rgba(255,255,255,0.3)';const bgDiv=document.createElement('div');bgDiv.className='animation-background';bgDiv.style.background=item.background;itemDiv.appendChild(bgDiv);if(item.name==='Diamonds'){itemDiv.className+=' diamonds';itemDiv.textContent=`${item.value||Math.floor(Math.random()*250)+1}`}else{const img=document.createElement('img');img.src=item.src;img.alt=item.name;img.className='animation-character';if(item.isMutated)img.className+=' mutated';itemDiv.appendChild(img)}rouletteStrip.appendChild(itemDiv)})};renderRoulette();requestAnimationFrame(()=>{overlay.classList.remove('hidden');overlay.classList.add('visible');message.classList.remove('hidden');message.classList.add('visible');setTimeout(()=>{spinButton.className+=' visible';cancelButton.className+=' visible'},300)});const onCancel=()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');spinButton.classList.remove('visible');cancelButton.classList.remove('visible');setTimeout(()=>{overlay.remove();this.state.isOverlayActive=false},500);cancelButton.removeEventListener('pointerdown',onCancel)};cancelButton.addEventListener('pointerdown',onCancel);const startRoulette=()=>{spinButton.style.pointerEvents='none';spinButton.style.opacity='0.5';const reward=this.generateCaseReward(caseType);rouletteItems[37]=reward;renderRoulette();rouletteStrip.style.opacity='1';rouletteStrip.style.animation='roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';const onAnimationEnd=()=>{rouletteStrip.style.animation='roulette-slow-spin 64s linear infinite';const isMobile=window.innerWidth<=600;rouletteStrip.style.transform=isMobile?'translateX(-6048px)':'translateX(-7344px)';const winnerIndex=37;const winnerItem=rouletteStrip.children[winnerIndex];winnerItem.classList.add('winner');message.textContent=`You won ${reward.name==='Diamonds'?`${reward.value} Diamonds`:reward.name}${reward.isMutated?' (Mutated)':''}!`;if(reward.name==='Diamonds'){this.state.addCoins(reward.value);this.ui.queueUpdate('coins',this.state.getCoins());this.ui.queueUpdate('totalCoins',this.state.getCoins());this.ui.applyUpdates()}else{this.state.addToInventory(reward)}setTimeout(()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');message.classList.remove('visible');message.classList.add('hidden');spinButton.classList.remove('visible');cancelButton.classList.remove('visible');setTimeout(()=>{overlay.remove();this.state.isOverlayActive=false;rouletteStrip.style.opacity='1'},500)},2000);rouletteStrip.removeEventListener('animationend',onAnimationEnd)};rouletteStrip.addEventListener('animationend',onAnimationEnd)};spinButton.addEventListener('pointerdown',startRoulette)}generateCaseReward(caseType){const isDiamondCase=caseType==='diamond-rain';if(isDiamondCase){const roll=Math.random();if(roll<0.95){const diamonds=Math.floor(Math.random()*250)+1;return{type:'diamonds',name:'Diamonds',value:diamonds,background:BACKGROUND_GRADIENTS[Math.floor(Math.random()*BACKGROUND_GRADIENTS.length)],src:'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'}}else{const characterIndex=Math.floor(Math.random()*CHARACTERS.length);const character=CHARACTERS[characterIndex];const isMutated=Math.random()<0.1;const background=BACKGROUND_GRADIENTS[Math.floor(Math.random()*BACKGROUND_GRADIENTS.length)];return{type:'character',character,isMutated,background,name:character.name,src:character.src}}}else{const characterIndex=Math.floor(Math.random()*CHARACTERS.length);const character=CHARACTERS[characterIndex];const isMutated=Math.random()<0.1;const background=BACKGROUND_GRADIENTS[Math.floor(Math.random()*BACKGROUND_GRADIENTS.length)];return{type:'character',character,isMutated,background,name:character.name,src:character.src}}}handleMenuClick(e){const menuItem=e.target.closest('.menu-item');if(!menuItem)return;const menuType=menuItem.dataset.menu;document.querySelectorAll('.menu-item').forEach(item=>item.classList.remove('highlighted'));menuItem.classList.add('highlighted');if(menuType==='home'){this.state.setShopViewActive(false);this.ui.elements.mainContent.classList.remove('hidden-opacity');this.ui.elements.mainContent.classList.add('visible');this.ui.elements.coinCounter.classList.remove('hidden');this.ui.elements.coinCounter.classList.add('visible');this.ui.elements.character.classList.remove('hidden-opacity');this.ui.elements.character.classList.add('visible');this.ui.elements.progressBar.classList.remove('hidden-opacity');this.ui.elements.progressBar.classList.add('visible');this.ui.elements.shopContainer.classList.remove('visible');this.ui.elements.shopContainer.classList.add('hidden');this.ui.elements.inventoryContainer.classList.remove('visible');this.ui.elements.inventoryContainer.classList.add('hidden');this.ui.elements.shopArrowLeft.classList.remove('visible');this.ui.elements.shopArrowLeft.classList.add('hidden');this.ui.elements.shopArrowRight.classList.remove('visible');this.ui.elements.shopArrowRight.classList.add('hidden');this.isInventoryView=false;const currentSkin=SKINS[this.characterController.lastWorldIndex]||SKINS[0];const nextSkin=SKINS[this.characterController.lastWorldIndex+1]||null;const coinTarget=nextSkin?nextSkin.coins:1500;if(this.state.getCoins()>=coinTarget&&this.state.questIndex===0){this.state.questIndex=1;this.state.tapCount=0}this.characterController.updateAppearance()}else if(menuType==='tasks'){this.state.setShopViewActive(false);this.ui.elements.mainContent.classList.remove('hidden-opacity');this.ui.elements.mainContent.classList.add('visible');this.ui.elements.coinCounter.classList.remove('hidden');this.ui.elements.coinCounter.classList.add('visible');this.ui.elements.character.classList.remove('hidden-opacity');this.ui.elements.character.classList.add('visible');this.ui.elements.progressBar.classList.remove('hidden-opacity');this.ui.elements.progressBar.classList.add('visible');this.ui.elements.shopContainer.classList.remove('visible');this.ui.elements.shopContainer.classList.add('hidden');this.ui.elements.inventoryContainer.classList.remove('visible');this.ui.elements.inventoryContainer.classList.add('hidden');this.ui.elements.shopArrowLeft.classList.remove('visible');this.ui.elements.shopArrowLeft.classList.add('hidden');this.ui.elements.shopArrowRight.classList.remove('visible');this.ui.elements.shopArrowRight.classList.add('hidden');this.isInventoryView=false;this.characterController.showCurrentQuest()}else if(menuType==='shop'){this.state.setShopViewActive(true);this.ui.elements.mainContent.classList.remove('visible');this.ui.elements.mainContent.classList.add('hidden-opacity');this.ui.elements.coinCounter.classList.remove('hidden');this.ui.elements.coinCounter.classList.add('visible');this.ui.elements.character.classList.remove('visible');this.ui.elements.character.classList.add('hidden-opacity');this.ui.elements.progressBar.classList.remove('visible');this.ui.elements.progressBar.classList.add('hidden-opacity');this.ui.elements.shopContainer.classList.remove('hidden');this.ui.elements.shopContainer.classList.add('visible');this.ui.elements.inventoryContainer.classList.remove('visible');this.ui.elements.inventoryContainer.classList.add('hidden');this.ui.elements.shopArrowLeft.classList.remove('hidden');this.ui.elements.shopArrowLeft.classList.add('visible');this.ui.elements.shopArrowRight.classList.remove('hidden');this.ui.elements.shopArrowRight.classList.add('visible');this.isInventoryView=false;if(!this.state.hasSeenShopTutorial){this.characterController.showShopTutorial(()=>{this.ui.elements.mainContent.classList.remove('visible');this.ui.elements.mainContent.classList.add('hidden-opacity');this.ui.elements.coinCounter.classList.remove('hidden');this.ui.elements.coinCounter.classList.add('visible');this.ui.elements.character.classList.remove('visible');this.ui.elements.character.classList.add('hidden-opacity');this.ui.elements.progressBar.classList.remove('visible');this.ui.elements.progressBar.classList.add('hidden-opacity');this.ui.elements.shopContainer.classList.remove('hidden');this.ui.elements.shopContainer.classList.add('visible');this.ui.elements.inventoryContainer.classList.remove('visible');this.ui.elements.inventoryContainer.classList.add('hidden');this.ui.elements.shopArrowLeft.classList.remove('hidden');this.ui.elements.shopArrowLeft.classList.add('visible');this.ui.elements.shopArrowRight.classList.remove('hidden');this.ui.elements.shopArrowRight.classList.add('visible');this.isInventoryView=false})}}}handleArrowClick(e){const arrow=e.target.closest('.shop-arrow');if(!arrow)return;if(arrow.id==='shopArrowRight'){this.isInventoryView=true;this.ui.elements.shopContainer.classList.remove('visible');this.ui.elements.shopContainer.classList.add('hidden');this.ui.elements.inventoryContainer.classList.remove('hidden');this.ui.elements.inventoryContainer.classList.add('visible');this.updateInventoryDisplay()}else if(arrow.id==='shopArrowLeft'){this.isInventoryView=false;this.ui.elements.shopContainer.classList.remove('hidden');this.ui.elements.shopContainer.classList.add('visible');this.ui.elements.inventoryContainer.classList.remove('visible');this.ui.elements.inventoryContainer.classList.add('hidden')}}init(){this.particleSystem.resize();this.confettiSystem.resize();this.ui.updateCoinCounterPosition();this.preloadAssets();const animate=()=>{this.particleSystem.update();this.particleSystem.draw();requestAnimationFrame(animate)};animate();const resizeHandler=()=>{clearTimeout(this.resizeTimeout);this.resizeTimeout=setTimeout(()=>{this.particleSystem.resize();this.confettiSystem.resize();this.ui.updateCoinCounterPosition()},CONFIG.RESIZE_DEBOUNCE)};window.addEventListener('resize',resizeHandler);this.listeners.push({element:window,type:'resize',listener:resizeHandler});const menuClickHandler=this.handleMenuClick.bind(this);this.ui.elements.footer.addEventListener('pointerdown',menuClickHandler);this.listeners.push({element:this.ui.elements.footer,type:'pointerdown',listener:menuClickHandler});const caseClickHandler=(e)=>{const caseItem=e.target.closest('.case-container');if(!caseItem)return;const caseType=caseItem.dataset.case;if(caseType){this.state.isOverlayActive=true;this.showCaseAnimation(caseType)}};this.ui.elements.shopContainer.addEventListener('pointerdown',caseClickHandler);this.listeners.push({element:this.ui.elements.shopContainer,type:'pointerdown',listener:caseClickHandler});const arrowClickHandler=this.handleArrowClick.bind(this);this.ui.elements.shopArrowLeft.addEventListener('pointerdown',arrowClickHandler);this.ui.elements.shopArrowRight.addEventListener('pointerdown',arrowClickHandler);this.listeners.push({element:this.ui.elements.shopArrowLeft,type:'pointerdown',listener:arrowClickHandler});this.listeners.push({element:this.ui.elements.shopArrowRight,type:'pointerdown',listener:arrowClickHandler});if(this.state.isTelegramEnvironment())document.documentElement.dataset.telegram='true'}destroy(){this.listeners.forEach(({element,type,listener})=>element.removeEventListener(type,listener));if(this.energyInterval)clearInterval(this.energyInterval);this.characterController.destroy()}}
-document.addEventListener('DOMContentLoaded',()=>{const elements={loadingScreen:document.getElementById('loadingScreen'),loadingPercent:document.getElementById('loadingPercent'),topMenu:document.getElementById('topMenu'),particleCanvas:document.getElementById('particleCanvas'),confettiCanvas:document.getElementById('confettiCanvas'),mainContent:document.getElementById('mainContent'),coinCounter:document.getElementById('coinCounter'),coinCount:document.getElementById('coinCount'),totalCoins:document.getElementById('totalCoins'),character:document.getElementById('character'),progressBar:document.getElementById('progressBar'),progressFill:document.getElementById('progressFill'),footer:document.getElementById('footer'),energyCounter:document.getElementById('energyCounter'),energyCount:document.getElementById('energyCount'),playerStats:document.querySelector('.player-stats'),shopContainer:document.getElementById('shopContainer'),inventoryContainer:document.getElementById('inventoryContainer'),inventoryItems:document.getElementById('inventoryItems'),shopArrowLeft:document.getElementById('shopArrowLeft'),shopArrowRight:document.getElementById('shopArrowRight')};const game=new Game(elements);game.init()});
+class GameState {
+    constructor() {
+        this.coins = 0;
+        this.scale = CONFIG.MIN_SCALE;
+        this.canInteract = true;
+        this.isOverlayActive = false;
+        this.isTelegram = !!(window.Telegram?.WebApp?.initData);
+        this.isShopActive = false;
+        this.hasSeenShopTutorial = false;
+        this.inventory = [];
+        this.selectedCharacter = null;
+    }
+    getCoins() { return this.coins; }
+    addCoins(amount) { this.coins += amount; }
+    resetCoins(value) { this.coins = value; }
+    isTelegramEnvironment() { return this.isTelegram; }
+    isShopViewActive() { return this.isShopActive; }
+    setShopViewActive(value) { this.isShopActive = value; }
+    setShopTutorialSeen() { this.hasSeenShopTutorial = true; }
+    addToInventory(item) { this.inventory.push(item); }
+    getInventory() { return this.inventory; }
+    setSelectedCharacter(character) { this.selectedCharacter = character; }
+    getSelectedCharacter() { return this.selectedCharacter; }
+}
+class ParticleSystem {
+    constructor(canvas, count) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = new Array(count);
+        this.time = 0;
+        for (let i = 0; i < count; i++) this.particles[i] = this.createParticle();
+    }
+    createParticle() {
+        return {
+            x: Math.random() * this.canvas.width,
+            y: Math.random() * this.canvas.height,
+            size: Math.random() * 3 + 1,
+            speedX: Math.random() * 0.5 - 0.25,
+            speedY: Math.random() * 0.5 - 0.25,
+            opacity: Math.random() * 0.5 + 0.3
+        };
+    }
+    update() {
+        this.time += 0.016;
+        for (let i = 0; i < this.particles.length; i++) {
+            const p = this.particles[i];
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.speedX += (Math.random() - 0.5) * 0.05;
+            p.speedY += (Math.random() - 0.5) * 0.05;
+            p.speedX = Math.max(-0.5, Math.min(0.5, p.speedX));
+            p.speedY = Math.max(-0.5, Math.min(0.5, p.speedY));
+            p.opacity = 0.3 + 0.5 * (Math.sin(this.time + i) + 1) / 2;
+            if (p.x < 0 || p.x > this.canvas.width) p.speedX *= -1;
+            if (p.y < 0 || p.y > this.canvas.height) p.speedY *= -1;
+        }
+    }
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const highlightColor = getComputedStyle(document.documentElement).getPropertyValue('--highlight-color').trim();
+        let r = 255, g = 255, b = 255;
+        if (highlightColor.startsWith('#')) {
+            const hex = highlightColor.replace('#', '');
+            r = parseInt(hex.substring(0, 2), 16);
+            g = parseInt(hex.substring(2, 4), 16);
+            b = parseInt(hex.substring(4, 6), 16);
+        }
+        for (let i = 0; i < this.particles.length; i++) {
+            const p = this.particles[i];
+            this.ctx.fillStyle = `rgba(${r},${g},${b},${p.opacity})`;
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+    }
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        for (let i = 0; i < this.particles.length; i++) {
+            const p = this.particles[i];
+            p.x = Math.random() * this.canvas.width;
+            p.y = Math.random() * this.canvas.height;
+        }
+    }
+}
+class ConfettiSystem {
+    constructor(canvas, count, nextColor) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.isAnimating = false;
+        this.nextColor = nextColor || '#FFFFFF';
+        this.colors = ['#FFFFFF', this.nextColor];
+        this.maxCount = count;
+        this.spawnRate = 0.05;
+        this.removeProbability = 0.02;
+    }
+    createParticle() {
+        return {
+            x: Math.random() * this.canvas.width,
+            y: -Math.random() * 50,
+            width: Math.random() * 3 + 3,
+            height: Math.random() * 3 + 3,
+            speedY: Math.random() * 2 + 2,
+            opacity: 1,
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+            rotation: Math.random() * Math.PI * 2
+        };
+    }
+    update() {
+        this.particles = this.particles.filter(p => {
+            p.y += p.speedY;
+            p.rotation += 0.05;
+            if (p.y > this.canvas.height * 0.9) return Math.random() > this.removeProbability;
+            return true;
+        });
+        if (this.particles.length < this.maxCount && Math.random() < this.spawnRate) this.particles.push(this.createParticle());
+    }
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        for (let i = 0; i < this.particles.length; i++) {
+            const p = this.particles[i];
+            this.ctx.save();
+            this.ctx.translate(p.x + p.width / 2, p.y + p.height / 2);
+            this.ctx.rotate(p.rotation);
+            this.ctx.fillStyle = p.color;
+            this.ctx.globalAlpha = p.opacity;
+            this.ctx.fillRect(-p.width / 2, -p.height / 2, p.width, p.height);
+            this.ctx.restore();
+        }
+    }
+    start(nextColor) {
+        if (this.isAnimating) return;
+        if (nextColor) {
+            this.nextColor = nextColor;
+            this.colors = ['#FFFFFF', this.nextColor];
+        }
+        this.particles = [];
+        for (let i = 0; i < this.maxCount; i++) {
+            const p = this.createParticle();
+            p.y = Math.random() * this.canvas.height;
+            this.particles.push(p);
+        }
+        this.isAnimating = true;
+        this.canvas.classList.remove('game-hidden');
+        this.canvas.classList.add('visible');
+        this.animate();
+    }
+    stop() {
+        this.isAnimating = false;
+        this.canvas.classList.remove('visible');
+        this.canvas.classList.add('game-hidden');
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.particles = [];
+    }
+    animate() {
+        if (!this.isAnimating) return;
+        this.update();
+        this.draw();
+        requestAnimationFrame(() => this.animate());
+    }
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.particles = [];
+        if (this.isAnimating) {
+            for (let i = 0; i < this.maxCount; i++) {
+                const p = this.createParticle();
+                p.y = Math.random() * this.canvas.height;
+                this.particles.push(p);
+            }
+        }
+    }
+}
+class ClickEffectPool {
+    constructor() {
+        this.pool = [];
+        this.active = [];
+    }
+    getEffect() {
+        let effect = this.pool.pop();
+        if (!effect) {
+            effect = document.createElement('img');
+            effect.src = 'https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp';
+            effect.className = 'click-effect';
+            effect.setAttribute('draggable', 'false');
+        }
+        return effect;
+    }
+    showEffect(x, y) {
+        const effect = this.getEffect();
+        effect.style.left = `${x}px`;
+        effect.style.top = `${y}px`;
+        document.body.appendChild(effect);
+        this.active.push(effect);
+        setTimeout(() => {
+            effect.remove();
+            this.active = this.active.filter(e => e !== effect);
+            this.pool.push(effect);
+        }, CONFIG.CLICK_EFFECT_DURATION);
+    }
+}
+class UIManager {
+    constructor(elements) {
+        this.elements = elements;
+        this.pendingUpdates = {};
+    }
+    updateCoinCounterPosition() {
+        const topMenuHeight = this.elements.topMenu.offsetHeight;
+        this.elements.coinCounter.style.top = `${topMenuHeight + 10}px`;
+    }
+    updateLoadingPercent(percent) {
+        this.elements.loadingPercent.textContent = `${Math.round(percent)}%`;
+    }
+    showGameUI() {
+        this.elements.loadingScreen.classList.add('hidden');
+        this.elements.topMenu.classList.remove('game-hidden');
+        this.elements.topMenu.classList.add('visible');
+        this.elements.particleCanvas.classList.remove('game-hidden');
+        this.elements.particleCanvas.classList.add('visible');
+        this.elements.mainContent.classList.remove('game-hidden');
+        this.elements.mainContent.classList.add('visible');
+        this.elements.footer.classList.remove('game-hidden');
+        this.elements.footer.classList.add('visible');
+        setTimeout(() => { this.elements.loadingScreen.style.display = 'none'; }, 500);
+    }
+    updateCharacterScale(scale) {
+        this.elements.character.style.transform = `scale(${scale})`;
+    }
+    queueUpdate(key, value) {
+        this.pendingUpdates[key] = value;
+    }
+    applyUpdates() {
+        requestAnimationFrame(() => {
+            for (const [key, value] of Object.entries(this.pendingUpdates)) {
+                if (key === 'coins') this.elements.coinCount.textContent = value;
+                if (key === 'totalCoins') this.elements.totalCoins.textContent = value;
+                if (key === 'characterSrc') this.elements.character.src = value;
+                if (key === 'gradient') document.documentElement.style.setProperty('--bg-gradient', value);
+                if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
+                if (key === 'worldName') this.elements.playerStats.textContent = value;
+            }
+            this.pendingUpdates = {};
+            const digits = this.elements.coinCount.textContent.length;
+            const translateX = digits > 5 ? -(digits - 5) * 10 : 0;
+            this.elements.coinCounter.style.transform = `translateX(${translateX}px)`;
+        });
+    }
+}
+class CharacterController {
+    constructor(state, ui, effectPool, confettiSystem) {
+        this.state = state;
+        this.ui = ui;
+        this.effectPool = effectPool;
+        this.confettiSystem = confettiSystem;
+        this.listeners = [];
+        this.lastTapTime = 0;
+        this.resetTimeout = null;
+    }
+    initialize() {
+        const currentSkin = SKINS[0];
+        this.ui.queueUpdate('characterSrc', currentSkin.src);
+        this.ui.queueUpdate('gradient', currentSkin.gradient);
+        this.ui.queueUpdate('highlightColor', currentSkin.color);
+        this.ui.queueUpdate('worldName', currentSkin.worldName);
+        this.ui.applyUpdates();
+        this.attachListeners();
+    }
+    updateAppearance() {
+        const currentSkin = SKINS[0];
+        const selectedCharacter = this.state.getSelectedCharacter();
+        if (selectedCharacter) {
+            this.ui.queueUpdate('characterSrc', selectedCharacter.src);
+            this.ui.queueUpdate('gradient', selectedCharacter.isMutated ? MUTATION_GRADIENT : selectedCharacter.background || currentSkin.gradient);
+            this.ui.queueUpdate('highlightColor', selectedCharacter.isMutated ? '#FFD700' : currentSkin.color);
+        } else {
+            this.ui.queueUpdate('characterSrc', currentSkin.src);
+            this.ui.queueUpdate('gradient', currentSkin.gradient);
+            this.ui.queueUpdate('highlightColor', currentSkin.color);
+        }
+        this.ui.queueUpdate('worldName', currentSkin.worldName);
+        this.ui.applyUpdates();
+    }
+    handleTap(e) {
+        e.preventDefault();
+        const now = performance.now();
+        if (now - this.lastTapTime < 100) return;
+        this.lastTapTime = now;
+        if (!this.state.canInteract || this.state.isOverlayActive) return;
+        this.state.scale = Math.min(this.state.scale + CONFIG.SCALE_INCREMENT, CONFIG.MAX_SCALE);
+        this.ui.updateCharacterScale(this.state.scale);
+        this.effectPool.showEffect(e.clientX, e.clientY);
+        if (this.resetTimeout) clearTimeout(this.resetTimeout);
+        this.resetTimeout = setTimeout(() => {
+            if (this.state.scale !== CONFIG.MIN_SCALE) {
+                this.state.scale = CONFIG.MIN_SCALE;
+                this.ui.updateCharacterScale(this.state.scale);
+            }
+        }, 1000);
+    }
+    attachListeners() {
+        const tapListener = this.handleTap.bind(this);
+        this.ui.elements.character.addEventListener('pointerdown', tapListener);
+        this.listeners.push({ element: this.ui.elements.character, type: 'pointerdown', listener: tapListener });
+    }
+    destroy() {
+        this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
+        if (this.resetTimeout) clearTimeout(this.resetTimeout);
+    }
+}
+class Game {
+    constructor(elements) {
+        this.state = new GameState();
+        this.ui = new UIManager(elements);
+        this.particleSystem = new ParticleSystem(elements.particleCanvas, CONFIG.PARTICLE_COUNT);
+        this.confettiSystem = new ConfettiSystem(elements.confettiCanvas, CONFIG.CONFETTI_COUNT, '#FFFFFF');
+        this.effectPool = new ClickEffectPool();
+        this.characterController = new CharacterController(this.state, this.ui, this.effectPool, this.confettiSystem);
+        this.resizeTimeout = null;
+        this.listeners = [];
+        this.isInventoryView = false;
+    }
+    async preloadAssets() {
+        const imageUrls = [
+            'https://placehold.co/40x40',
+            ...SKINS.map(skin => skin.src),
+            ...CHARACTERS.map(char => char.src),
+            'https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp',
+            'https://em-content.zobj.net/source/telegram/386/crown_1f451.webp',
+            'https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp',
+            'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp',
+            'https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp',
+            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp'
+        ];
+        let loadedCount = 0;
+        const totalImages = imageUrls.length;
+        const loadImage = url => {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    loadedCount++;
+                    const percent = (loadedCount / totalImages) * 100;
+                    this.ui.updateLoadingPercent(percent);
+                    resolve();
+                };
+                img.onerror = () => {
+                    console.warn(`Failed to load image: ${url}. Attempting fallback.`);
+                    img.src = 'https://dummyimage.com/40x40/000/fff';
+                    img.onload = () => {
+                        loadedCount++;
+                        const percent = (loadedCount / totalImages) * 100;
+                        this.ui.updateLoadingPercent(percent);
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        console.error(`Failed to load fallback image for: ${url}`);
+                        loadedCount++;
+                        const percent = (loadedCount / totalImages) * 100;
+                        this.ui.updateLoadingPercent(percent);
+                        resolve();
+                    };
+                };
+            });
+        };
+        await Promise.all(imageUrls.map(loadImage));
+        this.ui.showGameUI();
+        this.characterController.initialize();
+    }
+    updateInventoryDisplay() {
+        const inventoryContainer = this.ui.elements.inventoryItems;
+        inventoryContainer.innerHTML = '';
+        const inventory = this.state.getInventory();
+        inventory.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'inventory-item-container';
+            itemDiv.style.background = item.background;
+            itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.alt = item.name;
+            img.className = 'inventory-image';
+            if (item.isMutated) img.className += ' mutated';
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'inventory-name';
+            nameDiv.textContent = item.name;
+            itemDiv.appendChild(img);
+            itemDiv.appendChild(nameDiv);
+            itemDiv.addEventListener('pointerdown', () => {
+                this.state.setSelectedCharacter(item);
+                this.ui.elements.inventoryContainer.classList.remove('visible');
+                this.ui.elements.inventoryContainer.classList.add('hidden');
+                this.ui.elements.shopContainer.classList.remove('hidden');
+                this.ui.elements.shopContainer.classList.add('visible');
+                this.isInventoryView = false;
+                this.characterController.updateAppearance();
+            });
+            inventoryContainer.appendChild(itemDiv);
+        });
+    }
+    showCaseAnimation(caseType) {
+        const isDiamondCase = caseType === 'diamond-rain';
+        const currency = isDiamondCase ? 'Diamonds' : 'Telegram Stars';
+        const overlay = document.createElement('div');
+        overlay.className = 'case-animation-overlay hidden';
+        const message = document.createElement('div');
+        message.className = 'case-animation-message hidden';
+        message.textContent = `Wondering what you'll get? Spin for 100 ${currency}!`;
+        const animationContainer = document.createElement('div');
+        animationContainer.id = 'caseAnimationContainer';
+        animationContainer.className = 'case-animation-container';
+        const rouletteStrip = document.createElement('div');
+        rouletteStrip.className = 'roulette-strip';
+        animationContainer.appendChild(rouletteStrip);
+        const animationBar = document.createElement('div');
+        animationBar.className = 'animation-bar';
+        animationContainer.appendChild(animationBar);
+        const spinButton = document.createElement('div');
+        spinButton.className = 'case-animation-button';
+        spinButton.textContent = 'Spin';
+        const cancelButton = document.createElement('div');
+        cancelButton.className = 'case-animation-cancel';
+        cancelButton.textContent = "I'll stop tempting fate";
+        overlay.appendChild(message);
+        overlay.appendChild(animationContainer);
+        overlay.appendChild(spinButton);
+        overlay.appendChild(cancelButton);
+        document.body.appendChild(overlay);
+        const items = [...CHARACTERS];
+        if (isDiamondCase) {
+            items.push({ src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' });
+        }
+        const rouletteItems = [];
+        const reward = this.generateCaseReward(caseType);
+        for (let i = 0; i < 60; i++) {
+            if (i === 37) {
+                rouletteItems.push(reward);
+                continue;
+            }
+            const randomItem = items[Math.floor(Math.random() * items.length)];
+            rouletteItems.push({
+                ...randomItem,
+                isMutated: Math.random() < 0.1,
+                background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
+                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
+            });
+        }
+        const renderRoulette = () => {
+            rouletteStrip.innerHTML = '';
+            rouletteItems.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'roulette-item';
+                itemDiv.dataset.itemName = item.name;
+                itemDiv.style.background = item.background;
+                itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                const bgDiv = document.createElement('div');
+                bgDiv.className = 'animation-background';
+                bgDiv.style.background = item.background;
+                itemDiv.appendChild(bgDiv);
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = item.name;
+                img.className = 'animation-character';
+                if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
+                itemDiv.appendChild(img);
+                if (index === 37) {
+                    itemDiv.dataset.winner = 'true';
+                }
+                rouletteStrip.appendChild(itemDiv);
+            });
+        };
+        renderRoulette();
+        requestAnimationFrame(() => {
+            overlay.classList.remove('hidden');
+            overlay.classList.add('visible');
+            message.classList.remove('hidden');
+            message.classList.add('visible');
+            setTimeout(() => {
+                spinButton.className += ' visible';
+                cancelButton.className += ' visible';
+            }, 300);
+        });
+        const onCancel = () => {
+            overlay.classList.remove('visible');
+            overlay.classList.add('hidden');
+            message.classList.remove('visible');
+            message.classList.add('hidden');
+            spinButton.classList.remove('visible');
+            cancelButton.classList.remove('visible');
+            setTimeout(() => {
+                overlay.remove();
+                this.state.isOverlayActive = false;
+            }, 500);
+            cancelButton.removeEventListener('pointerdown', onCancel);
+        };
+        cancelButton.addEventListener('pointerdown', onCancel);
+        const startRoulette = () => {
+            spinButton.style.pointerEvents = 'none';
+            spinButton.style.opacity = '0.5';
+            rouletteStrip.style.opacity = '1';
+            rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
+            const onAnimationEnd = () => {
+                renderRoulette();
+                rouletteStrip.style.animation = 'roulette-slow-spin 64s linear infinite';
+                const isMobile = window.innerWidth <= 600;
+                rouletteStrip.style.transform = isMobile ? 'translateX(-6048px)' : 'translateX(-7344px)';
+                const winnerIndex = 37;
+                const winnerItem = rouletteStrip.children[winnerIndex];
+                winnerItem.classList.add('winner');
+                message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
+                if (reward.name === 'Diamonds') {
+                    this.state.addCoins(reward.value);
+                    this.ui.queueUpdate('coins', this.state.getCoins());
+                    this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                } else {
+                    this.state.addToInventory(reward);
+                }
+                this.ui.applyUpdates();
+                setTimeout(() => {
+                    overlay.classList.remove('visible');
+                    overlay.classList.add('hidden');
+                    message.classList.remove('visible');
+                    message.classList.add('hidden');
+                    spinButton.classList.remove('visible');
+                    cancelButton.classList.remove('visible');
+                    setTimeout(() => {
+                        overlay.remove();
+                        this.state.isOverlayActive = false;
+                        rouletteStrip.style.opacity = '1';
+                    }, 500);
+                }, 2000);
+                rouletteStrip.removeEventListener('animationend', onAnimationEnd);
+            };
+            rouletteStrip.addEventListener('animationend', onAnimationEnd);
+        };
+        spinButton.addEventListener('pointerdown', startRoulette);
+    }
+    generateCaseReward(caseType) {
+        const isDiamondCase = caseType === 'diamond-rain';
+        const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
+        if (isDiamondCase) {
+            const roll = Math.random();
+            if (roll < 0.95) {
+                const diamonds = Math.floor(Math.random() * 250) + 1;
+                return {
+                    type: 'diamonds',
+                    name: 'Diamonds',
+                    value: diamonds,
+                    isMutated: false,
+                    background,
+                    src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
+                };
+            } else {
+                const characterIndex = Math.floor(Math.random() * CHARACTERS.length);
+                const character = CHARACTERS[characterIndex];
+                const isMutated = Math.random() < 0.1;
+                return {
+                    type: 'character',
+                    character,
+                    isMutated,
+                    background,
+                    name: character.name,
+                    src: character.src
+                };
+            }
+        } else {
+            const characterIndex = Math.floor(Math.random() * CHARACTERS.length);
+            const character = CHARACTERS[characterIndex];
+            const isMutated = Math.random() < 0.1;
+            return {
+                type: 'character',
+                character,
+                isMutated,
+                background,
+                name: character.name,
+                src: character.src
+            };
+        }
+    }
+    handleMenuClick(e) {
+        const menuItem = e.target.closest('.menu-item');
+        if (!menuItem) return;
+        const menuType = menuItem.dataset.menu;
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
+        menuItem.classList.add('highlighted');
+        if (menuType === 'home') {
+            this.state.setShopViewActive(false);
+            this.ui.elements.mainContent.classList.remove('hidden-opacity');
+            this.ui.elements.mainContent.classList.add('visible');
+            this.ui.elements.coinCounter.classList.remove('hidden');
+            this.ui.elements.coinCounter.classList.add('visible');
+            this.ui.elements.character.classList.remove('hidden-opacity');
+            this.ui.elements.character.classList.add('visible');
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.isInventoryView = false;
+            this.characterController.updateAppearance();
+        } else if (menuType === 'shop') {
+            this.state.setShopViewActive(true);
+            this.ui.elements.mainContent.classList.remove('visible');
+            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.coinCounter.classList.remove('hidden');
+            this.ui.elements.coinCounter.classList.add('visible');
+            this.ui.elements.character.classList.remove('visible');
+            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.shopContainer.classList.remove('hidden');
+            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('hidden');
+            this.ui.elements.shopArrowLeft.classList.add('visible');
+            this.ui.elements.shopArrowRight.classList.remove('hidden');
+            this.ui.elements.shopArrowRight.classList.add('visible');
+            this.isInventoryView = false;
+            if (!this.state.hasSeenShopTutorial) {
+                this.state.setShopTutorialSeen();
+            }
+        }
+    }
+    handleArrowClick(e) {
+        const arrow = e.target.closest('.shop-arrow');
+        if (!arrow) return;
+        if (arrow.id === 'shopArrowRight') {
+            this.isInventoryView = true;
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('hidden');
+            this.ui.elements.inventoryContainer.classList.add('visible');
+            this.updateInventoryDisplay();
+        } else if (arrow.id === 'shopArrowLeft') {
+            this.isInventoryView = false;
+            this.ui.elements.shopContainer.classList.remove('hidden');
+            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+        }
+    }
+    init() {
+        this.particleSystem.resize();
+        this.confettiSystem.resize();
+        this.ui.updateCoinCounterPosition();
+        this.preloadAssets();
+        const animate = () => {
+            this.particleSystem.update();
+            this.particleSystem.draw();
+            requestAnimationFrame(animate);
+        };
+        animate();
+        const resizeHandler = () => {
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(() => {
+                this.particleSystem.resize();
+                this.confettiSystem.resize();
+                this.ui.updateCoinCounterPosition();
+            }, CONFIG.RESIZE_DEBOUNCE);
+        };
+        window.addEventListener('resize', resizeHandler);
+        this.listeners.push({ element: window, type: 'resize', listener: resizeHandler });
+        const menuClickHandler = this.handleMenuClick.bind(this);
+        this.ui.elements.footer.addEventListener('pointerdown', menuClickHandler);
+        this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuClickHandler });
+        const caseClickHandler = (e) => {
+            const caseItem = e.target.closest('.case-container');
+            if (!caseItem) return;
+            const caseType = caseItem.dataset.case;
+            if (caseType) {
+                this.state.isOverlayActive = true;
+                this.showCaseAnimation(caseType);
+            }
+        };
+        this.ui.elements.shopContainer.addEventListener('pointerdown', caseClickHandler);
+        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseClickHandler });
+        const arrowClickHandler = this.handleArrowClick.bind(this);
+        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', arrowClickHandler);
+        this.ui.elements.shopArrowRight.addEventListener('pointerdown', arrowClickHandler);
+        this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: arrowClickHandler });
+        this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: arrowClickHandler });
+        if (this.state.isTelegramEnvironment()) document.documentElement.dataset.telegram = 'true';
+    }
+    destroy() {
+        this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
+        this.characterController.destroy();
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const elements = {
+        loadingScreen: document.getElementById('loadingScreen'),
+        loadingPercent: document.getElementById('loadingPercent'),
+        topMenu: document.getElementById('topMenu'),
+        particleCanvas: document.getElementById('particleCanvas'),
+        confettiCanvas: document.getElementById('confettiCanvas'),
+        mainContent: document.getElementById('mainContent'),
+        coinCounter: document.getElementById('coinCounter'),
+        coinCount: document.getElementById('coinCount'),
+        totalCoins: document.getElementById('totalCoins'),
+        character: document.getElementById('character'),
+        footer: document.getElementById('footer'),
+        playerStats: document.querySelector('.player-stats'),
+        shopContainer: document.getElementById('shopContainer'),
+        inventoryContainer: document.getElementById('inventoryContainer'),
+        inventoryItems: document.getElementById('inventoryItems'),
+        shopArrowLeft: document.getElementById('shopArrowLeft'),
+        shopArrowRight: document.getElementById('shopArrowRight')
+    };
+    const game = new Game(elements);
+    game.init();
+});
 </script>
 </body>
 </html>
