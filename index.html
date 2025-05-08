@@ -648,8 +648,9 @@ class Game {
         overlay.appendChild(cancelButton);
         document.body.appendChild(overlay);
         const items = [...CHARACTERS];
+        const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
         if (isDiamondCase) {
-            items.push({ src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' });
+            items.push(diamondItem);
         }
         const rouletteItems = [];
         const reward = this.generateCaseReward(caseType);
@@ -658,10 +659,15 @@ class Game {
                 rouletteItems.push(reward);
                 continue;
             }
-            const randomItem = items[Math.floor(Math.random() * items.length)];
+            let randomItem;
+            if (isDiamondCase && Math.random() < 0.5) {
+                randomItem = diamondItem;
+            } else {
+                randomItem = items[Math.floor(Math.random() * items.length)];
+            }
             rouletteItems.push({
                 ...randomItem,
-                isMutated: Math.random() < 0.1,
+                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
                 background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
                 value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
             });
@@ -721,12 +727,30 @@ class Game {
             rouletteStrip.style.opacity = '1';
             rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
             const onAnimationEnd = () => {
-                renderRoulette();
+                const winnerIndex = 37;
+                const winnerItem = rouletteStrip.children[winnerIndex];
+                winnerItem.innerHTML = '';
+                winnerItem.dataset.itemName = reward.name;
+                winnerItem.style.background = reward.background;
+                winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                const bgDiv = document.createElement('div');
+                bgDiv.className = 'animation-background';
+                bgDiv.style.background = reward.background;
+                winnerItem.appendChild(bgDiv);
+                const img = document.createElement('img');
+                img.src = reward.src;
+                img.alt = reward.name;
+                img.className = 'animation-character';
+                if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
+                winnerItem.appendChild(img);
+                winnerItem.dataset.winner = 'true';
+                console.log('Reward:', { name: reward.name, src: reward.src, isMutated: reward.isMutated, value: reward.value });
+                console.log('Winner element:', { name: winnerItem.dataset.itemName, src: winnerItem.querySelector('img').src });
+                console.log('Roulette item 37:', { name: rouletteItems[37].name, src: rouletteItems[37].src });
+                console.log('Total items:', rouletteStrip.children.length);
                 rouletteStrip.style.animation = 'roulette-slow-spin 64s linear infinite';
                 const isMobile = window.innerWidth <= 600;
                 rouletteStrip.style.transform = isMobile ? 'translateX(-6048px)' : 'translateX(-7344px)';
-                const winnerIndex = 37;
-                const winnerItem = rouletteStrip.children[winnerIndex];
                 winnerItem.classList.add('winner');
                 message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
                 if (reward.name === 'Diamonds') {
