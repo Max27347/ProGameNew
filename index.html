@@ -55,8 +55,9 @@ footer{width:100%;position:fixed;bottom:0;z-index:1;display:flex;justify-content
 .shop-container.hidden,.inventory-container.hidden,.market-container.hidden,.friends-container.hidden{opacity:0;pointer-events:none}
 .shop-title,.inventory-title,.market-title,.friends-title{font-size:1.5rem;font-weight:700;color:#FFF;text-transform:uppercase}
 .cases-container,.inventory-items-container,.market-items-container,.friends-list-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap;overflow-y:auto}
-.cases-container,.inventory-items-container,.friends-list-container{min-height:20vh}
-.market-items-container{height:55vh}
+.cases-container,.inventory-items-container{min-height:20vh}
+.market-items-container{height:53vh}
+.friends-list-container{height:40vh; overflow-y: auto;}
 .case-container,.inventory-item-container,.market-item-container,.friend-item-container{width:150px;background:#2E2E2E;border-radius:16px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;cursor:pointer;transition:background 0.3s ease}
 .case-image,.inventory-image,.market-image,.friend-avatar{width:80px;height:80px;object-fit:contain;border-radius:50%}
 .case-name,.inventory-name,.market-name,.friend-name{font-size:1rem;font-weight:600;color:#FFF}
@@ -99,6 +100,7 @@ footer{width:100%;position:fixed;bottom:0;z-index:1;display:flex;justify-content
 .invite-link span{font-size:0.9rem;color:#A0D4FF;cursor:pointer}
 .invite-link button{font-size:0.9rem;color:#000;background:#FFF;padding:0.5rem 1rem;border-radius:12px;cursor:pointer;transition:background 0.3s ease}
 .invite-link button:hover{background:#E0E0E0}
+.invite-link img{width:24px;height:24px;}
 .rewards-section ul{list-style:none;color:#FFF}
 .rewards-section li{font-size:0.9rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}
 .rewards-section li img{width:20px;height:20px}
@@ -125,7 +127,8 @@ footer{bottom:0;padding:0}
 .shop-container,.inventory-container,.market-container,.friends-container{width:85%;padding:1rem}
 .shop-title,.inventory-title,.market-title,.friends-title{font-size:1.2rem}
 .cases-container,.inventory-items-container,.friends-list-container{min-height:15vh}
-.market-items-container{height:55vh}
+.market-items-container{height:53vh}
+.friends-list-container{height:35vh;}
 .case-container,.inventory-item-container,.market-item-container,.friend-item-container{width:120px;padding:0.8rem}
 .case-image,.inventory-image,.market-image,.friend-avatar{width:60px;height:60px}
 .case-name,.inventory-name,.market-name,.friend-name{font-size:0.9rem}
@@ -151,6 +154,7 @@ footer{bottom:0;padding:0}
 .invite-section p,.rewards-section p{font-size:0.9rem}
 .invite-link span{font-size:0.8rem}
 .invite-link button{font-size:0.8rem;padding:0.4rem 0.8rem}
+.invite-link img{width:20px;height:20px;}
 .rewards-section li{font-size:0.8rem}
 .rewards-section li img{width:16px;height:16px}
 .friend-status{font-size:0.7rem}
@@ -640,6 +644,8 @@ class Game {
             'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp',
             'https://em-content.zobj.net/source/telegram/386/joystick_1f579-fe0f.webp',
             'https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp',
+            'https://em-content.zobj.net/source/telegram/386/dizzy_1f4ab.webp',
+            'https://em-content.zobj.net/source/telegram/386/back-arrow_1f519.webp',
             ...FRIENDS_DATA.map(friend => friend.avatar)
         ];
         let loadedCount = 0;
@@ -1140,11 +1146,15 @@ class Game {
             inviteLink.className = 'invite-link';
             const linkText = document.createElement('span');
             linkText.textContent = 'https://yourgame.com/referral?code=' + Math.random().toString(36).substr(2, 9);
+            const inviteIcon = document.createElement('img');
+            inviteIcon.src = 'https://em-content.zobj.net/source/telegram/386/dizzy_1f4ab.webp';
+            inviteIcon.alt = 'Invite';
             const copyButton = document.createElement('button');
             copyButton.textContent = 'Copy';
             copyButton.addEventListener('pointerdown', () => {
                 navigator.clipboard.writeText(linkText.textContent).then(() => alert('Referral link copied!'));
             });
+            inviteLink.appendChild(inviteIcon);
             inviteLink.appendChild(linkText);
             inviteLink.appendChild(copyButton);
             inviteSection.appendChild(inviteTitle);
