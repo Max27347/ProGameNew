@@ -71,7 +71,7 @@ footer{width:100%;height:16vh;position:fixed;bottom:0.8rem;z-index:1;display:fle
 .case-animation-message.visible{opacity:1;transform:scale(1)}
 .case-animation-message.hidden{opacity:0;transform:scale(0.9)}
 .case-animation-container{width:480px;height:200px;background:#2E2E2E;border-radius:16px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}
-.roulette-strip{width:8160px;height:100%;display:flex;flex-direction:row;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 64s linear infinite}
+.roulette-strip{width:5440px;height:100%;display:flex;flex-direction:row;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 40s linear infinite}
 .roulette-item{width:120px;height:120px;margin:0 8px;display:flex;justify-content:center;align-items:center;background:#1E1E1E;border-radius:8px;position:relative;transition:transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease}
 .roulette-item img{width:100px;height:100px;object-fit:contain}
 .roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite;z-index:10}
@@ -81,8 +81,8 @@ footer{width:100%;height:16vh;position:fixed;bottom:0.8rem;z-index:1;display:fle
 .animation-bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:90%;background:#FFF;border-radius:2px}
 .case-animation-button{font-size:1.2rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.75rem 1.5rem;border-radius:16px;cursor:pointer;margin-top:1rem}
 .case-animation-cancel{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;cursor:pointer;margin-top:0.5rem}
-@keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-8160px)}}
-@keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-7344px)}}
+@keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-5440px)}}
+@keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2434px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 10px rgba(255,255,255,0.8)}50%{box-shadow:0 0 20px rgba(255,255,255,1)}}
 @media (max-width:600px){
 .loading-percent{font-size:1.2rem}
@@ -112,7 +112,7 @@ footer{height:14vh;bottom:0.6rem;padding:0 0.8rem}
 .shop-arrow.right{right:0.8rem}
 .case-animation-message{font-size:1.5rem}
 .case-animation-container{width:384px;height:160px}
-.roulette-strip{width:6720px;animation:roulette-slow-spin 52s linear infinite}
+.roulette-strip{width:4480px;animation:roulette-slow-spin 32s linear infinite}
 .roulette-item{width:96px;height:96px;margin:0 8px}
 .roulette-item img{width:80px;height:80px}
 .roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite}
@@ -121,8 +121,8 @@ footer{height:14vh;bottom:0.6rem;padding:0 0.8rem}
 .animation-bar{width:3px;height:80%}
 .case-animation-button{font-size:1rem;padding:0.6rem 1.2rem;color:#000}
 .case-animation-cancel{font-size:0.8rem}
-@keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-6720px)}}
-@keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-6048px)}}
+@keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-4480px)}}
+@keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
 </style>
 </head>
@@ -654,17 +654,16 @@ class Game {
         }
         const rouletteItems = [];
         const reward = this.generateCaseReward(caseType);
-        console.log('Generated reward before roulette:', { name: reward.name, src: reward.src, isMutated: reward.isMutated, value: reward.value });
-        for (let i = 0; i < 60; i++) {
-            if (i === 37) {
+        for (let i = 0; i < 40; i++) {
+            if (i === 19) {
                 rouletteItems.push(reward);
                 continue;
             }
             let randomItem;
-            if (isDiamondCase && Math.random() < 0.5) {
+            if (isDiamondCase && Math.random() < 0.6) {
                 randomItem = diamondItem;
             } else {
-                randomItem = items[Math.floor(Math.random() * items.length)];
+                randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length))];
             }
             rouletteItems.push({
                 ...randomItem,
@@ -673,7 +672,6 @@ class Game {
                 value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
             });
         }
-        console.log('Roulette item 37 before render:', { name: rouletteItems[37].name, src: rouletteItems[37].src, isMutated: rouletteItems[37].isMutated, value: rouletteItems[37].value });
         const renderRoulette = () => {
             rouletteStrip.innerHTML = '';
             rouletteItems.forEach((item, index) => {
@@ -692,7 +690,7 @@ class Game {
                 img.className = 'animation-character';
                 if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
                 itemDiv.appendChild(img);
-                if (index === 37) {
+                if (index === 19) {
                     itemDiv.dataset.winner = 'true';
                 }
                 rouletteStrip.appendChild(itemDiv);
@@ -729,28 +727,17 @@ class Game {
             rouletteStrip.style.opacity = '1';
             rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
             const onAnimationEnd = () => {
-                const winnerIndex = 37;
+                const isMobile = window.innerWidth <= 600;
+                rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
+                const winnerIndex = 19;
                 const winnerItem = rouletteStrip.children[winnerIndex];
-                if (!winnerItem) {
-                    console.error('Winner item not found at index 37!');
-                    return;
-                }
-                console.log('Before updating winner:', { winnerName: winnerItem.dataset.itemName, winnerSrc: winnerItem.querySelector('img')?.src });
-                setTimeout(() => {
+                if (winnerItem) {
                     const img = winnerItem.querySelector('img');
                     if (img) {
-                        img.src = reward.src + '?t=' + new Date().getTime();
+                        img.src = reward.src;
                         img.alt = reward.name;
                         img.className = 'animation-character';
                         if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
-                    } else {
-                        console.warn('No img element in winnerItem, creating new one');
-                        const newImg = document.createElement('img');
-                        newImg.src = reward.src + '?t=' + new Date().getTime();
-                        newImg.alt = reward.name;
-                        newImg.className = 'animation-character';
-                        if (reward.isMutated && reward.name !== 'Diamonds') newImg.className += ' mutated';
-                        winnerItem.appendChild(newImg);
                     }
                     const bgDiv = winnerItem.querySelector('.animation-background');
                     if (bgDiv) {
@@ -760,15 +747,6 @@ class Game {
                     winnerItem.style.background = reward.background;
                     winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
                     winnerItem.dataset.winner = 'true';
-                    const winnerRect = winnerItem.getBoundingClientRect();
-                    console.log('Winner position:', { top: winnerRect.top, left: winnerRect.left, width: winnerRect.width, height: winnerRect.height });
-                    console.log('Reward after spin:', { name: reward.name, src: reward.src, isMutated: reward.isMutated, value: reward.value });
-                    console.log('Winner element after update:', { name: winnerItem.dataset.itemName, src: winnerItem.querySelector('img')?.src });
-                    console.log('Roulette item 37 after spin:', { name: rouletteItems[37].name, src: rouletteItems[37].src });
-                    console.log('Total items:', rouletteStrip.children.length);
-                    rouletteStrip.style.animation = 'roulette-slow-spin 64s linear infinite';
-                    const isMobile = window.innerWidth <= 600;
-                    rouletteStrip.style.transform = isMobile ? 'translateX(-6048px)' : 'translateX(-7344px)';
                     winnerItem.classList.add('winner');
                     message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
                     if (reward.name === 'Diamonds') {
@@ -780,7 +758,6 @@ class Game {
                     }
                     this.ui.applyUpdates();
                     setTimeout(() => {
-                        console.log('Final winner check before overlay close:', { name: winnerItem.dataset.itemName, src: winnerItem.querySelector('img')?.src });
                         overlay.classList.remove('visible');
                         overlay.classList.add('hidden');
                         message.classList.remove('visible');
@@ -793,7 +770,7 @@ class Game {
                             rouletteStrip.style.opacity = '1';
                         }, 500);
                     }, 2000);
-                }, 100);
+                }
                 rouletteStrip.removeEventListener('animationend', onAnimationEnd);
             };
             rouletteStrip.addEventListener('animationend', onAnimationEnd);
