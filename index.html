@@ -1299,43 +1299,42 @@ class Game {
         this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: backgroundFilterListener });
         this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: priceSortListener });
     }
-    destroy() {
+destroy() {
         this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
         this.characterController.destroy();
     }
 }
-document.addEventListener('DOMContentLoaded', () => {
-    const elements = {
-        loadingScreen: document.getElementById('loadingScreen'),
-        loadingPercent: document.getElementById('loadingPercent'),
-        topMenu: document.getElementById('topMenu'),
-        particleCanvas: document.getElementById('particleCanvas'),
-        confettiCanvas: document.getElementById('confettiCanvas'),
-        mainContent: document.getElementById('mainContent'),
-        incomeCounter: document.getElementById('incomeCounter'),
-        incomeRate: document.getElementById('incomeRate'),
-        incomeTimer: document.getElementById('incomeTimer'),
-        timerDisplay: document.getElementById('timerDisplay'),
-        coinCounter: document.getElementById('coinCounter'),
-        coinCount: document.getElementById('coinCount'),
-        character: document.getElementById('character'),
-        shopContainer: document.getElementById('shopContainer'),
-        inventoryContainer: document.getElementById('inventoryContainer'),
-        inventoryItems: document.getElementById('inventoryItems'),
-        marketContainer: document.getElementById('marketContainer'),
-        marketItems: document.getElementById('marketItems'),
-        characterFilter: document.getElementById('characterFilter'),
-        backgroundFilter: document.getElementById('backgroundFilter'),
-        priceSort: document.getElementById('priceSort'),
-        shopArrowLeft: document.getElementById('shopArrowLeft'),
-        shopArrowRight: document.getElementById('shopArrowRight'),
-        footer: document.getElementById('footer'),
-        totalCoins: document.getElementById('totalCoins'),
-        playerStats: document.getElementById('playerStats') || document.querySelector('.player-stats')
-    };
-    const game = new Game(elements);
-    game.init();
-});
+const elements = {
+    loadingScreen: document.getElementById('loadingScreen'),
+    loadingPercent: document.getElementById('loadingPercent'),
+    topMenu: document.getElementById('topMenu'),
+    particleCanvas: document.getElementById('particleCanvas'),
+    confettiCanvas: document.getElementById('confettiCanvas'),
+    mainContent: document.getElementById('mainContent'),
+    incomeCounter: document.getElementById('incomeCounter'),
+    incomeRate: document.getElementById('incomeRate'),
+    incomeTimer: document.getElementById('incomeTimer'),
+    timerDisplay: document.getElementById('timerDisplay'),
+    coinCounter: document.getElementById('coinCounter'),
+    coinCount: document.getElementById('coinCount'),
+    character: document.getElementById('character'),
+    shopContainer: document.getElementById('shopContainer'),
+    inventoryContainer: document.getElementById('inventoryContainer'),
+    inventoryItems: document.getElementById('inventoryItems'),
+    marketContainer: document.getElementById('marketContainer'),
+    marketItems: document.getElementById('marketItems'),
+    gamesContainer: document.getElementById('gamesContainer'),
+    shopArrowLeft: document.getElementById('shopArrowLeft'),
+    shopArrowRight: document.getElementById('shopArrowRight'),
+    footer: document.getElementById('footer'),
+    totalCoins: document.getElementById('totalCoins'),
+    playerStats: document.getElementById('playerStats'),
+    characterFilter: document.getElementById('characterFilter'),
+    backgroundFilter: document.getElementById('backgroundFilter'),
+    priceSort: document.getElementById('priceSort')
+};
+const game = new Game(elements);
+game.init();
 </script>
 </body>
 </html>
