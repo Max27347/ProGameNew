@@ -96,6 +96,12 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .filter-select option,.sort-select option{background:#2E2E2E;color:#FFF}
 .buy-button{font-size:0.9rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem}
 .upgrade-button{font-size:0.9rem;font-weight:600;color:#FFF;background:#808080;padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem;display:flex;align-items:center;gap:0.3rem}
+.wallet-container{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem}
+#ton-connect{display:none}
+.market-container.visible #ton-connect{display:flex;justify-content:flex-end}
+#wallet-status{font-size:0.9rem;opacity:0.8}
+#disconnect-wallet{font-size:0.9rem;padding:0.5rem 1rem;background:#007bff;color:#fff;border-radius:12px;cursor:pointer;display:none}
+#disconnect-wallet:hover{background:#0056b3}
 @media (max-width:600px){
 .loading-percent{font-size:1.2rem}
 .top-menu{top:0.8rem;width:calc(100% - 2rem);margin:0 1rem;padding:0.75rem;border-radius:16px}
@@ -143,6 +149,7 @@ footer{bottom:0;padding:0}
 @keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-4480px)}}
 @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
+}
 </style>
 </head>
 <body>
@@ -205,6 +212,11 @@ footer{bottom:0;padding:0}
 </div>
 <div class="market-container hidden" id="marketContainer">
 <div class="market-title">Market</div>
+<div class="wallet-container">
+<div id="ton-connect"></div>
+<span id="wallet-status">Not connected</span>
+<div id="disconnect-wallet">Disconnect</div>
+</div>
 <div class="filters-container">
 <select class="filter-select" id="characterFilter">
 <option value="">All Characters</option>
@@ -244,6 +256,7 @@ footer{bottom:0;padding:0}
 </div>
 </div>
 </footer>
+<script src="https://unpkg.com/@tonconnect/ui@1.0.0/dist/tonconnect-ui.min.js"></script>
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
 const SKINS=[{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'}]
@@ -300,6 +313,8 @@ class GameState {
         this.selectedCharacter = null;
         this.nextIncomeTime = 0;
         this.isTimerStarted = false;
+        this.isWalletConnected = false;
+        this.walletAddress = null;
     }
     getCoins() { return this.coins; }
     addCoins(amount) { this.coins += amount; }
@@ -347,6 +362,12 @@ class GameState {
     setNextIncomeTime(time) { this.nextIncomeTime = time; }
     startTimer() { this.isTimerStarted = true; }
     isTimerActive() { return this.isTimerStarted; }
+    setWalletConnected(status, address) {
+        this.isWalletConnected = status;
+        this.walletAddress = address;
+    }
+    isWalletConnected() { return this.isWalletConnected; }
+    getWalletAddress() { return this.walletAddress; }
 }
 class ParticleSystem {
     constructor(canvas, count) {
@@ -571,12 +592,16 @@ class UIManager {
                 if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
                 if (key === 'worldName') this.elements.playerStats.textContent = value;
                 if (key === 'incomeRate') this.elements.incomeRate.textContent = value;
+                if (key === 'walletStatus') this.elements.walletStatus.textContent = value;
             }
             this.pendingUpdates = {};
             const digits = this.elements.coinCount.textContent.length;
             const translateX = digits > 5 ? -(digits - 5) * 10 : 0;
             this.elements.coinCounter.style.transform = `translateX(${translateX}px)`;
         });
+    }
+    toggleDisconnectButton(show) {
+        this.elements.disconnectWallet.style.display = show ? 'block' : 'none';
     }
 }
 class CharacterController {
@@ -717,6 +742,58 @@ class Game {
         this.listeners = [];
         this.isInventoryView = false;
         this.availableMarketSkins = [...MARKET_SKINS];
+        this.tonConnectUI = null;
+    }
+    initializeWallet() {
+        try {
+            this.tonConnectUI = new TONConnectUI({
+                manifestUrl: 'https://tonconnect.github.io/demo-dapp/tonconnect-manifest.json',
+                buttonRootId: 'ton-connect'
+            });
+            if (this.state.isTelegramEnvironment()) {
+                this.tonConnectUI.uiOptions = {
+                    twaReturnUrl: 'https://t.me/YOUR_BOT_NAME'
+                };
+            }
+            this.tonConnectUI.onStatusChange(walletInfo => {
+                if (walletInfo) {
+                    const address = walletInfo.account.address;
+                    this.state.setWalletConnected(true, address);
+                    this.ui.queueUpdate('walletStatus', `Connected: ${address.slice(0, 4)}...${address.slice(-4)}`);
+                    this.ui.toggleDisconnectButton(true);
+                } else {
+                    this.state.setWalletConnected(false, null);
+                    this.ui.queueUpdate('walletStatus', 'Not connected');
+                    this.ui.toggleDisconnectButton(false);
+                }
+                this.ui.applyUpdates();
+            });
+            const disconnectListener = async () => {
+                try {
+                    await this.tonConnectUI.disconnect();
+                    console.log('Wallet disconnected');
+                } catch (error) {
+                    console.error('Error disconnecting wallet:', error);
+                    alert(`Failed to disconnect wallet: ${error.message}`);
+                }
+            };
+            this.ui.elements.disconnectWallet.addEventListener('pointerdown', disconnectListener);
+            this.listeners.push({
+                element: this.ui.elements.disconnectWallet,
+                type: 'pointerdown',
+                listener: disconnectListener
+            });
+            if (this.tonConnectUI.wallet) {
+                this.state.setWalletConnected(true, this.tonConnectUI.wallet.account.address);
+                this.ui.queueUpdate('walletStatus', `Connected: ${this.tonConnectUI.wallet.account.address.slice(0, 4)}...${this.tonConnectUI.wallet.account.address.slice(-4)}`);
+                this.ui.toggleDisconnectButton(true);
+                this.ui.applyUpdates();
+            }
+        } catch (error) {
+            console.error('Error initializing TON Connect UI:', error);
+            this.ui.queueUpdate('walletStatus', `Error: ${error.message}`);
+            this.ui.applyUpdates();
+        }
     }
     async preloadAssets() {
         const imageUrls = [
@@ -766,6 +843,7 @@ class Game {
         await Promise.all(imageUrls.map(loadImage));
         this.ui.showGameUI();
         this.characterController.initialize();
+        this.initializeWallet();
     }
     updateInventoryDisplay() {
         const inventoryContainer = this.ui.elements.inventoryItems;
