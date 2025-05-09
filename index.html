@@ -35,9 +35,7 @@ body{min-height:100vh;display:flex;flex-direction:column;align-items:center;just
 #confettiCanvas{z-index:11}
 main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:800px;padding:1rem;z-index:1;opacity:1;transition:opacity 0.5s ease}
 .income-counter{position:fixed;top:6rem;left:1rem;padding:0.75rem 1.5rem;font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:0.5rem;border-radius:12px;opacity:1;transition:opacity 0.5s ease}
-.income-timer{position:fixed;top:8.5rem;left:1rem;padding:0.75rem 1.5rem;font-size:1rem;font-weight:600;display:flex;align-items:center;
-
-gap:0.5rem;border-radius:12px;opacity:1;transition:opacity 0.5s ease}
+.income-timer{position:fixed;top:8.5rem;left:1rem;padding:0.75rem 1.5rem;font-size:1rem;font-weight:600;display:flex;align-items:center;gap:0.5rem;border-radius:12px;opacity:1;transition:opacity 0.5s ease}
 .coin-counter{position:fixed;right:1rem;padding:0.75rem 1.5rem;background:none;font-size:2rem;font-weight:700;display:flex;align-items:center;gap:0.5rem;opacity:1;transition:opacity 0.5s ease;z-index:2}
 .coin-counter.hidden{opacity:0;pointer-events:none}
 .coin-counter.visible{opacity:1;pointer-events:auto}
@@ -197,7 +195,7 @@ footer{bottom:0;padding:0}
 <div class="case-container" data-case="character-magic">
 <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false">
 <div class="case-name">Character Magic</div>
-<div class="case-price">100 Telegram Stars</div>
+<div class="case-price">Free (Test)</div>
 </div>
 </div>
 </div>
@@ -637,7 +635,7 @@ class CharacterController {
         if (!this.state.isTimerActive()) {
             this.state.startTimer();
             this.state.setNextIncomeTime(Date.now() + CONFIG.INCOME_INTERVAL);
-            this.startTimer();
+            this.startTimer(); // Запускаем таймер сразу после первого клика
         }
         this.state.scale = Math.min(this.state.scale + CONFIG.SCALE_INCREMENT, CONFIG.MAX_SCALE);
         this.ui.updateCharacterScale(this.state.scale);
@@ -923,12 +921,12 @@ class Game {
     }
     showCaseAnimation(caseType) {
         const isDiamondCase = caseType === 'diamond-rain';
-        const currency = isDiamondCase ? 'Diamonds' : 'Telegram Stars';
+        const currency = isDiamondCase ? 'Diamonds' : 'Free (Test)';
         const overlay = document.createElement('div');
         overlay.className = 'case-animation-overlay hidden';
         const message = document.createElement('div');
         message.className = 'case-animation-message hidden';
-        message.textContent = `Wondering what you'll get? Spin for 100 ${currency}!`;
+        message.textContent = `Wondering what you'll get? Spin for ${currency}!`;
         const animationContainer = document.createElement('div');
         animationContainer.id = 'caseAnimationContainer';
         animationContainer.className = 'case-animation-container';
@@ -1244,7 +1242,9 @@ class Game {
                 alert('Not enough diamonds!');
             }
         } else if (caseType === 'character-magic') {
-            alert('Please use Telegram Stars to purchase this case.');
+            // Для теста кейс бесплатный, сразу запускаем анимацию
+            this.state.isOverlayActive = true;
+            this.showCaseAnimation(caseType);
         }
     }
     init() {
