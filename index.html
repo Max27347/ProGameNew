@@ -273,7 +273,18 @@ const BACKGROUND_GRADIENTS=[
 'linear-gradient(270deg, #A1C4FD, #C2E9FB, #4B6CB7)'
 ]
 const MUTATION_GRADIENT='radial-gradient(circle at 50% 50%, #FFD700, #FF4500 70%)';
-const MARKET_SKINS=[];
+const MARKET_SKINS=[
+    {id: 'skin1', character: CHARACTERS[1], background: BACKGROUND_GRADIENTS[0], price: 500, timestamp: Date.now() - 10000},
+    {id: 'skin2', character: CHARACTERS[2], background: BACKGROUND_GRADIENTS[1], price: 750, timestamp: Date.now() - 9000},
+    {id: 'skin3', character: CHARACTERS[3], background: BACKGROUND_GRADIENTS[2], price: 300, timestamp: Date.now() - 8000},
+    {id: 'skin4', character: CHARACTERS[4], background: BACKGROUND_GRADIENTS[3], price: 1000, timestamp: Date.now() - 7000},
+    {id: 'skin5', character: CHARACTERS[5], background: BACKGROUND_GRADIENTS[4], price: 600, timestamp: Date.now() - 6000},
+    {id: 'skin6', character: CHARACTERS[6], background: BACKGROUND_GRADIENTS[5], price: 450, timestamp: Date.now() - 5000},
+    {id: 'skin7', character: CHARACTERS[7], background: BACKGROUND_GRADIENTS[6], price: 800, timestamp: Date.now() - 4000},
+    {id: 'skin8', character: CHARACTERS[8], background: BACKGROUND_GRADIENTS[7], price: 550, timestamp: Date.now() - 3000},
+    {id: 'skin9', character: CHARACTERS[9], background: BACKGROUND_GRADIENTS[8], price: 700, timestamp: Date.now() - 2000},
+    {id: 'skin10', character: CHARACTERS[10], background: BACKGROUND_GRADIENTS[9], price: 400, timestamp: Date.now() - 1000}
+];
 class GameState {
     constructor() {
         this.coins = 0;
