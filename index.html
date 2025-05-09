@@ -142,6 +142,10 @@ footer{bottom:0;padding:0}
 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
 <span id="totalCoins">0</span>
 </div>
+<div class="player-max-coins">
+<img src="https://em-content.zobj.net/source/telegram/386/glowing-star_1f31f.webp" alt="Star" class="star-icon">
+<span id="totalStars">0</span>
+</div>
 </div>
 </div>
 <div class="top-menu-right">
@@ -332,7 +336,7 @@ class GameState {
         const item = this.inventory[index];
         if (!item) return false;
         if (item.level >= 2) return false;
-        if (item.isMutated) return false;
+        if (item.isMutated) return false; // Mutated characters use stars, not applicable here
         if (this.coins < 1000) return false;
         this.coins -= 1000;
         item.level = 2;
@@ -732,7 +736,7 @@ class Game {
             const upgradeButton = document.createElement('div');
             upgradeButton.className = 'upgrade-button';
             if (item.level < 2 && !item.isMutated) {
-                upgradeButton.innerHTML = `Up 1000<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">`;
+                upgradeButton.textContent = `Upgrade (1000 Diamonds)`;
                 upgradeButton.addEventListener('pointerdown', () => {
                     if (this.state.upgradeCharacter(index)) {
                         this.updateInventoryDisplay();
