@@ -1,242 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="description" content="Notcoin-inspired clicker game">
-<title>Clicker Game</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-*:focus,*:active{outline:none;-webkit-tap-highlight-color:transparent}
-:root{--bg-color:#000;--bg-gradient:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%);--highlight-color:#FFF;--text-color:#fff;--footer-bg:rgba(30,30,30,0.85);--counter-bg:rgba(30,30,30,0.85);--top-menu-bg:rgba(30,30,30,0.85);--tg-bg-color:linear-gradient(135deg,#1c2526,#2a1b3d);--tg-text-color:#fff;--tg-footer-bg:rgba(44,47,71,0.85);--tg-counter-bg:rgba(44,47,71,0.85);--tg-top-menu-bg:rgba(44,47,71,0.85)}
-[data-telegram="true"]{--bg-color:var(--tg-bg-color);--text-color:var(--tg-text-color);--footer-bg:var(--tg-footer-bg);--counter-bg:var(--tg-counter-bg);--top-menu-bg:var(--tg-top-menu-bg)}
-body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-color);background-image:var(--bg-gradient);color:var(--text-color);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;overflow:hidden;-webkit-user-select:none;user-select:none}
-.loading-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;opacity:1;transition:opacity 0.5s ease}
-.loading-screen.hidden{opacity:0;pointer-events:none}
-.loading-ring{width:100px;height:100px;border:8px solid transparent;border-top-color:rgba(255,255,255,0.8);border-right-color:rgba(255,255,255,0.4);border-radius:50%;animation:spin 1.5s linear infinite;opacity:1;transition:opacity 0.5s ease}
-.loading-ring.hidden{opacity:0}
-@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-.loading-percent{position:absolute;bottom:2rem;font-size:1.5rem;font-weight:600;color:#FFF;opacity:1;transition:opacity 0.5s ease}
-.loading-percent.hidden{opacity:0}
-.game-hidden{opacity:0;pointer-events:none;transition:opacity 0.5s ease}
-.game-hidden.visible{opacity:1;pointer-events:auto}
-.top-menu{position:fixed;top:1rem;width:calc(100% - 3rem);margin:0 1.5rem;background:var(--top-menu-bg);border-radius:20px;padding:1rem;display:flex;justify-content:space-between;align-items:center;z-index:2;opacity:1;transition:opacity 0.5s ease}
-.top-menu-left{display:flex;align-items:center;gap:0.75rem}
-.top-menu-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.2rem}
-.player-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover}
-.player-info{display:flex;flex-direction:column;gap:0.2rem}
-.player-nickname{font-size:1rem;font-weight:600}
-.player-max-coins{font-size:0.9rem;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
-.gem-icon{width:20px;height:20px;vertical-align:middle;margin-right:0.3rem}
-.star-icon{width:20px;height:20px;vertical-align:middle;margin-right:0.3rem}
-.player-rank{font-size:1rem;font-weight:600}
-.player-stats{font-size:0.9rem;opacity:0.8}
-#particleCanvas,#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:1;transition:opacity 0.5s ease}
-#particleCanvas{z-index:-1}
-#confettiCanvas{z-index:11}
-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:800px;padding:1rem;z-index:1;opacity:1;transition:opacity 0.5s ease}
-.hourly-income{position:fixed;left:1rem;top:6rem;padding:0.75rem 1.5rem;background:none;font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:0.5rem;opacity:1;transition:opacity 0.5s ease;z-index:2}
-.hourly-income.hidden{opacity:0;pointer-events:none}
-.hourly-income.visible{opacity:1;pointer-events:auto}
-.coin-counter{position:fixed;right:1rem;padding:0.75rem 1.5rem;background:none;font-size:2rem;font-weight:700;display:flex;align-items:center;gap:0.5rem;opacity:1;transition:opacity 0.5s ease;z-index:2}
-.star-counter{position:fixed;right:1rem;padding:0.75rem 1.5rem;background:none;font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:0.5rem;opacity:1;transition:opacity 0.5s ease;z-index:2}
-.coin-counter.hidden,.star-counter.hidden{opacity:0;pointer-events:none}
-.coin-counter.visible,.star-counter.visible{opacity:1;pointer-events:auto}
-.coin-icon,.star-icon{width:32px;height:32px;vertical-align:middle;margin-left:0.5rem}
-.character{width:180px;height:180px;object-fit:contain;cursor:pointer;user-select:none;touch-action:manipulation;opacity:1;transition:opacity 0.5s ease}
-.click-effect{position:absolute;width:40px;height:40px;object-fit:contain;pointer-events:none;animation:fadeOut 1s ease forwards;z-index:2;transform:translate(-50%,-50%)}
-@keyframes fadeOut{0%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-70%)}}
-footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-content:center;align-items:center;padding:0;opacity:1;transition:opacity 0.5s ease}
-.footer-menu-container{width:auto;background:var(--footer-bg);border-radius:20px 20px 0 0;display:flex;justify-content:center;align-items:center;padding:0.75rem}
-.footer-menu{display:flex;justify-content:space-around;align-items:center;width:100%;gap:1rem}
-.menu-item{display:flex;flex-direction:column;align-items:center;gap:0.4rem;cursor:pointer}
-.menu-item img{width:64px;height:64px;object-fit:contain;border-radius:50%;background:#2E2E2E;padding:12px}
-.menu-item.highlighted img{background:var(--highlight-color)}
-.menu-item span{font-size:1rem;font-weight:500;color:var(--text-color);text-transform:uppercase;letter-spacing:0.5px}
-.hidden-opacity{opacity:0;pointer-events:none;transition:opacity 0.5s ease}
-.hidden-opacity.visible{opacity:1;pointer-events:auto}
-.shop-container,.inventory-container,.market-container,.friends-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:400px;background:var(--counter-bg);border-radius:20px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;z-index:3;opacity:0;transition:opacity 0.5s ease}
-.shop-container.visible,.inventory-container.visible,.market-container.visible,.friends-container.visible{opacity:1;pointer-events:auto}
-.shop-container.hidden,.inventory-container.hidden,.market-container.hidden,.friends-container.hidden{opacity:0;pointer-events:none}
-.shop-title,.inventory-title,.market-title,.friends-title{font-size:1.5rem;font-weight:700;color:#FFF;text-transform:uppercase}
-.cases-container,.inventory-items-container,.market-items-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap;overflow-y:auto}
-.cases-container,.inventory-items-container{min-height:20vh}
-.market-items-container{height:53vh}
-.case-container,.inventory-item-container,.market-item-container{width:150px;background:#2E2E2E;border-radius:16px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;cursor:pointer;transition:background 0.3s ease}
-.case-image,.inventory-image,.market-image{width:80px;height:80px;object-fit:contain;border-radius:50%}
-.case-name,.inventory-name,.market-name{font-size:1rem;font-weight:600;color:#FFF}
-.case-price,.market-price{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
-.level-info{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8}
-.farming-rate{font-size:0.8rem;color:#FFD700}
-.upgrade-button{font-size:0.9rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem}
-.shop-arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#FFF;cursor:pointer;padding:0.5rem;background:rgba(30,30,30,0.85);border-radius:50%;z-index:3;opacity:0;transition:opacity 0.5s ease}
-.shop-arrow.visible{opacity:1;pointer-events:auto}
-.shop-arrow.hidden{opacity:0;pointer-events:none}
-.shop-arrow.left{left:1rem}
-.shop-arrow.right{right:1rem}
-.case-animation-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10;opacity:0;transition:opacity 0.5s ease}
-.case-animation-overlay.visible{opacity:1;pointer-events:auto}
-.case-animation-overlay.hidden{opacity:0;pointer-events:none}
-.case-animation-message{font-size:2rem;font-weight:700;color:#FFF;text-align:center;max-width:90%;text-shadow:0 2px 4px rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s ease,transform 0.3s ease}
-.case-animation-message.visible{opacity:1;transform:scale(1)}
-.case-animation-message.hidden{opacity:0;transform:scale(0.9)}
-.case-animation-container{width:480px;height:200px;background:#2E2E2E;border-radius:16px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}
-.roulette-strip{width:5440px;height:100%;display:flex;flex-direction:row;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 40s linear infinite}
-.roulette-item{width:120px;height:120px;margin:0 8px;display:flex;justify-content:center;align-items:center;background:#1E1E1E;border-radius:8px;position:relative;transition:transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease}
-.roulette-item img{width:100px;height:100px;object-fit:contain}
-.roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite;z-index:10}
-.animation-character{width:100px;height:100px;object-fit:contain;z-index:3}
-.animation-character.mutated{filter:brightness(1.5) hue-rotate(200deg)}
-.animation-background{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;opacity:0.8;z-index:1}
-.animation-bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:90%;background:#FFF;border-radius:2px}
-.case-animation-button{font-size:1.2rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.75rem 1.5rem;border-radius:16px;cursor:pointer;margin-top:1rem}
-.case-animation-cancel{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;cursor:pointer;margin-top:0.5rem}
-@keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-5440px)}}
-@keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2434px)}}
-@keyframes glow-winner{0%,100%{box-shadow:0 0 10px rgba(255,255,255,0.8)}50%{box-shadow:0 0 20px rgba(255,255,255,1)}}
-.filters-container{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;width:100%;margin-bottom:1rem}
-.filter-select,.sort-select{width:100%;max-width:150px;padding:0.5rem;background:#2E2E2E;border-radius:8px;color:#FFF;font-size:0.9rem;border:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');background-repeat:no-repeat;background-position:right 0.5rem center;background-size:16px}
-.filter-select option,.sort-select option{background:#2E2E2E;color:#FFF}
-.buy-button{font-size:0.9rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem}
-@media (max-width:600px){
-.loading-percent{font-size:1.2rem}
-.top-menu{top:0.8rem;width:calc(100% - 2rem);margin:0 1rem;padding:0.75rem;border-radius:16px}
-.player-avatar{width:32px;height:32px}
-.hourly-income{top:5rem;font-size:1.2rem}
-.coin-counter{font-size:1.5rem;padding:0.5rem 1rem}
-.star-counter{font-size:1.2rem;padding:0.5rem 1rem}
-.character{width:140px;height:140px}
-footer{bottom:0;padding:0}
-.footer-menu-container{border-radius:16px 16px 0 0;padding:0.6rem}
-.menu-item img{width:48px;height:48px;padding:10px}
-.shop-container,.inventory-container,.market-container,.friends-container{width:85%;padding:1rem}
-.cases-container,.inventory-items-container{min-height:15vh}
-.market-items-container{height:53vh}
-.case-container,.inventory-item-container,.market-item-container{width:120px;padding:0.8rem}
-.case-image,.inventory-image,.market-image{width:60px;height:60px}
-.shop-arrow{font-size:1.5rem;padding:0.4rem}
-.shop-arrow.left{left:0.8rem}
-.shop-arrow.right{right:0.8rem}
-.case-animation-message{font-size:1.5rem}
-.case-animation-container{width:384px;height:160px}
-.roulette-strip{width:4480px;animation:roulette-slow-spin 32s linear infinite}
-.roulette-item{width:96px;height:96px}
-.roulette-item img{width:80px;height:80px}
-.animation-character{width:80px;height:80px}
-@keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-4480px)}}
-@keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="description" content="Notcoin-inspired clicker game">
+    <title>Clicker Game</title>
+    <style>
+        :root{--bg:#000;--grad:radial-gradient(circle at 50% 50%,rgba(255,255,255,.2),transparent 70%);--hi:#FFF;--txt:#fff;--panel:rgba(30,30,30,.85);--r1:20px;--r2:16px;--r3:12px;--p1:1.5rem;--p2:1rem;--p3:.75rem;--g1:1rem;--g2:.5rem;--tg-bg:linear-gradient(135deg,#1c2526,#2a1b3d);--tg-panel:rgba(44,47,71,.85)}
+        [data-telegram="true"]{--bg:var(--tg-bg);--txt:#fff;--panel:var(--tg-panel)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        *:focus,*:active{outline:none;-webkit-tap-highlight-color:transparent}
+        body{min-height:100vh;display:flex;flex-direction:column;align-items:center;background:var(--bg);background-image:var(--grad);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;overflow:hidden;user-select:none}
+        .loading-screen{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;opacity:1;transition:opacity .5s}
+        .loading-screen.hidden{opacity:0;pointer-events:none}
+        .loading-ring{width:100px;height:100px;border:8px solid transparent;border-top-color:rgba(255,255,255,.8);border-right-color:rgba(255,255,255,.4);border-radius:50%;animation:spin 1.5s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-percent{position:absolute;bottom:2rem;font-size:1.5rem;font-weight:600}
+        .game-hidden{opacity:0;pointer-events:none}
+        .game-hidden.visible{opacity:1;pointer-events:auto}
+        .trans{transition:opacity .5s}
+        .top-menu{position:fixed;top:1rem;width:calc(100% - 3rem);margin:0 1.5rem;background:var(--panel);border-radius:var(--r1);padding:1rem;display:flex;justify-content:space-between;align-items:center;z-index:2}
+        .top-menu-left,.top-menu-right{display:flex;align-items:center}
+        .top-menu-left{gap:.75rem}
+        .top-menu-right{flex-direction:column;align-items:flex-end;gap:.2rem}
+        .player-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover}
+        .player-info{display:flex;flex-direction:column;gap:.2rem}
+        .player-nickname{font-size:1rem;font-weight:600}
+        .player-max-coins{font-size:.9rem;opacity:.8;display:flex;align-items:center;gap:.3rem}
+        .gem-icon,.star-icon{width:20px;height:20px}
+        .player-rank{font-size:1rem;font-weight:600}
+        .player-stats{font-size:.9rem;opacity:.8}
+        #particleCanvas,#confettiCanvas{position:fixed;inset:0;pointer-events:none}
+        #particleCanvas{z-index:-1}
+        #confettiCanvas{z-index:11}
+        main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:800px;padding:1rem;z-index:1}
+        .hourly-income,.coin-counter,.star-counter{position:fixed;padding:.75rem 1.5rem;background:none;font-weight:600;display:flex;align-items:center;gap:.5rem;z-index:2}
+        .hourly-income{left:1rem;top:6rem;font-size:1.5rem}
+        .coin-counter{right:1rem;font-size:2rem;font-weight:700}
+        .star-counter{right:1rem;font-size:1.5rem}
+        .coin-icon,.star-icon{width:32px;height:32px}
+        .character{width:180px;height:180px;object-fit:contain;cursor:pointer;user-select:none;touch-action:manipulation}
+        .click-effect{position:absolute;width:40px;height:40px;object-fit:contain;pointer-events:none;animation:fadeOut 1s ease forwards;transform:translate(-50%,-50%)}
+        @keyframes fadeOut{to{opacity:0;transform:translate(-50%,-70%)}}
+        footer{position:fixed;bottom:0;width:100%;z-index:12}
+        .footer-menu-container{background:var(--panel);border-radius:20px 20px 0 0;display:flex;justify-content:center;padding:.75rem}
+        .footer-menu{display:flex;justify-content:space-around;align-items:center;width:100%;gap:1rem}
+        .menu-item{display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer}
+        .menu-item img{width:64px;height:64px;border-radius:50%;background:#2E2E2E;padding:12px}
+        .menu-item.highlighted img{background:var(--hi)}
+        .menu-item span{font-size:1rem;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+        .panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:400px;background:var(--panel);border-radius:var(--r1);padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;z-index:3}
+        .panel.hidden{opacity:0;pointer-events:none}
+        .panel.visible{opacity:1;pointer-events:auto}
+        .shop-title,.inventory-title,.market-title,.friends-title{font-size:1.5rem;font-weight:700;text-transform:uppercase}
+        .cases-container,.inventory-items-container,.market-items-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap}
+        .cases-container,.inventory-items-container{min-height:20vh;overflow-y:auto}
+        .market-items-container{height:53vh;overflow-y:auto}
+        .case-container,.inventory-item-container,.market-item-container{width:150px;background:#2E2E2E;border-radius:16px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;cursor:pointer}
+        .case-image,.inventory-image,.market-image{width:80px;height:80px;border-radius:50%;object-fit:contain}
+        .case-name,.inventory-name,.market-name{font-size:1rem;font-weight:600}
+        .case-price,.market-price,.level-info{font-size:.9rem;font-weight:500;opacity:.8}
+        .case-price,.market-price{display:flex;align-items:center;gap:.3rem}
+        .farming-rate{font-size:.8rem;color:#FFD700}
+        .upgrade-button,.buy-button{font-size:.85rem;font-weight:600;color:#000;background:var(--hi);padding:.5rem 1rem;border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:.3rem}
+        .shop-arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;background:var(--panel);border-radius:50%;padding:.5rem;cursor:pointer;z-index:3}
+        .shop-arrow.hidden{opacity:0;pointer-events:none}
+        .shop-arrow.visible{opacity:1;pointer-events:auto}
+        .shop-arrow.left{left:1rem}
+        .shop-arrow.right{right:1rem}
+        .case-animation-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10}
+        .case-animation-overlay.hidden{opacity:0;pointer-events:none}
+        .case-animation-overlay.visible{opacity:1;pointer-events:auto}
+        .case-animation-message{font-size:2rem;font-weight:700;text-align:center;max-width:90%;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+        .case-animation-message.hidden{opacity:0;transform:scale(.9)}
+        .case-animation-message.visible{opacity:1;transform:scale(1)}
+        .case-animation-container{width:480px;height:200px;background:#2E2E2E;border-radius:16px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}
+        .roulette-strip{width:5440px;height:100%;display:flex;align-items:center;position:absolute;left:0;animation:roulette-slow-spin 40s linear infinite}
+        .roulette-item{width:120px;height:120px;margin:0 8px;background:#1E1E1E;border-radius:8px;display:flex;justify-content:center;align-items:center}
+        .roulette-item img{width:100px;height:100px;object-fit:contain}
+        .roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite}
+        .animation-character{width:100px;height:100px;object-fit:contain}
+        .animation-character.mutated{filter:brightness(1.5) hue-rotate(200deg)}
+        .animation-background{position:absolute;inset:0;border-radius:8px;opacity:.8}
+        .animation-bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:90%;background:#FFF;border-radius:2px}
+        .case-animation-button{font-size:1.2rem;font-weight:600;color:#000;background:var(--hi);padding:.75rem 1.5rem;border-radius:16px;cursor:pointer}
+        .case-animation-cancel{font-size:.9rem;font-weight:500;color:#FFF;opacity:.8;cursor:pointer}
+        @keyframes roulette-slow-spin{to{transform:translateX(-5440px)}}
+        @keyframes roulette-spin{to{transform:translateX(-2434px)}}
+        @keyframes glow-winner{50%{box-shadow:0 0 20px #FFF}}
+        .filters-container{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;width:100%;margin-bottom:1rem}
+        .filter-select,.sort-select{width:100%;max-width:150px;padding:.5rem;background:#2E2E2E;border-radius:8px;color:#FFF;font-size:.9rem;border:none;background-image:url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');background-repeat:no-repeat;background-position:right .5rem center;background-size:16px}
+        .filter-select option,.sort-select option{background:#2E2E2E;color:#FFF}
+        @media (max-width:600px){
+            .loading-percent{font-size:1.2rem}
+            .top-menu{top:.8rem;width:calc(100% - 2rem);margin:0 1rem;padding:.75rem;border-radius:16px}
+            .player-avatar{width:32px;height:32px}
+            .hourly-income{top:5rem;font-size:1.2rem}
+            .coin-counter{font-size:1.5rem;padding:.5rem 1rem}
+            .star-counter{font-size:1.2rem;padding:.5rem 1rem}
+            .character{width:140px;height:140px}
+            .footer-menu-container{border-radius:16px 16px 0 0;padding:.6rem}
+            .menu-item img{width:48px;height:48px;padding:10px}
+            .panel{width:85%;padding:1rem}
+            .cases-container,.inventory-items-container{min-height:15vh}
+            .market-items-container{height:53vh}
+            .case-container,.inventory-item-container,.market-item-container{width:120px;padding:.8rem}
+            .case-image,.inventory-image,.market-image{width:60px;height:60px}
+            .shop-arrow{font-size:1.5rem;padding:.4rem}
+            .shop-arrow.left{left:.8rem}
+            .shop-arrow.right{right:.8rem}
+            .case-animation-message{font-size:1.5rem}
+            .case-animation-container{width:384px;height:160px}
+            .roulette-strip{width:4480px;animation:roulette-slow-spin 32s linear infinite}
+            .roulette-item{width:96px;height:96px}
+            .roulette-item img,.animation-character{width:80px;height:80px}
+            @keyframes roulette-slow-spin{to{transform:translateX(-4480px)}}
+            @keyframes roulette-spin{to{transform:translateX(-2008px)}}
+        }
+    </style>
 </head>
 <body>
 <div class="loading-screen" id="loadingScreen">
-<div class="loading-ring"></div>
-<span class="loading-percent" id="loadingPercent">0%</span>
+    <div class="loading-ring"></div>
+    <span class="loading-percent" id="loadingPercent">0%</span>
 </div>
 <header class="top-menu game-hidden" id="topMenu">
-<div class="top-menu-left">
-<img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false">
-<div class="player-info">
-<span class="player-nickname">Player123</span>
-<div class="player-max-coins">
-<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
-<span id="totalCoins">0</span>
-</div>
-<div class="player-max-coins">
-<img src="https://em-content.zobj.net/source/telegram/386/glowing-star_1f31f.webp" alt="Star" class="star-icon">
-<span id="totalStars">0</span>
-</div>
-</div>
-</div>
-<div class="top-menu-right">
-<span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
-</div>
+    <div class="top-menu-left">
+        <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false">
+        <div class="player-info">
+            <span class="player-nickname">Player123</span>
+            <div class="player-max-coins">
+                <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
+                <span id="totalCoins">0</span>
+            </div>
+            <div class="player-max-coins">
+                <img src="https://em-content.zobj.net/source/telegram/386/glowing-star_1f31f.webp" alt="Star" class="star-icon">
+                <span id="totalStars">0</span>
+            </div>
+        </div>
+    </div>
+    <div class="top-menu-right">
+        <span class="player-rank">Rank: 1</span>
+        <span class="player-stats">World of Consoles</span>
+    </div>
 </header>
 <canvas id="particleCanvas" class="game-hidden"></canvas>
 <canvas id="confettiCanvas" class="game-hidden"></canvas>
 <main class="game-hidden" id="mainContent">
-<div class="hourly-income visible" id="hourlyIncome">
-<span id="hourlyIncomeValue">0</span>
-<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
-/hr
-</div>
-<div class="coin-counter visible" id="coinCounter">
-<span id="coinCount">0</span>
-<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
-</div>
-<div class="star-counter visible" id="starCounter">
-<span id="starCount">0</span>
-<img src="https://em-content.zobj.net/source/telegram/386/glowing-star_1f31f.webp" alt="Star" class="star-icon" draggable="false">
-</div>
-<img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Game Controller" class="character" id="character" draggable="false">
+    <div class="hourly-income visible" id="hourlyIncome">
+        <span id="hourlyIncomeValue">0</span>
+        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
+        /hr
+    </div>
+    <div class="coin-counter visible" id="coinCounter">
+        <span id="coinCount">0</span>
+        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
+    </div>
+    <div class="star-counter visible" id="starCounter">
+        <span id="starCount">0</span>
+        <img src="https://em-content.zobj.net/source/telegram/386/glowing-star_1f31f.webp" alt="Star" class="star-icon" draggable="false">
+    </div>
+    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Game Controller" class="character" id="character" draggable="false">
 </main>
-<div class="shop-container hidden" id="shopContainer">
-<div class="shop-title">Cases</div>
-<div class="cases-container">
-<div class="case-container" data-case="diamond-rain">
-<img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false">
-<div class="case-name">Diamond Rain</div>
-<div class="case-price">100 Diamonds</div>
+<div class="shop-container hidden trans" id="shopContainer">
+    <div class="shop-title">Cases</div>
+    <div class="cases-container">
+        <div class="case-container" data-case="diamond-rain">
+            <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false">
+            <div class="case-name">Diamond Rain</div>
+            <div class="case-price">100 Diamonds</div>
+        </div>
+        <div class="case-container" data-case="character-magic">
+            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false">
+            <div class="case-name">Character Magic</div>
+            <div class="case-price">100 Stars</div>
+        </div>
+    </div>
 </div>
-<div class="case-container" data-case="character-magic">
-<img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false">
-<div class="case-name">Character Magic</div>
-<div class="case-price">100 Stars</div>
+<div class="inventory-container hidden trans" id="inventoryContainer">
+    <div class="inventory-title">Inventory</div>
+    <div class="inventory-items-container" id="inventoryItems"></div>
 </div>
+<div class="market-container hidden trans" id="marketContainer">
+    <div class="market-title">Market</div>
+    <div class="filters-container">
+        <select class="filter-select" id="characterFilter">
+            <option value="">All Characters</option>
+        </select>
+        <select class="filter-select" id="backgroundFilter">
+            <option value="">All Backgrounds</option>
+        </select>
+        <select class="sort-select" id="priceSort">
+            <option value="newest">Newest First</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="price-asc">Price: Low to High</option>
+        </select>
+    </div>
+    <div class="market-items-container" id="marketItems"></div>
 </div>
+<div class="friends-container hidden trans" id="friendsContainer">
+    <div class="friends-title">Friends</div>
 </div>
-<div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-title">Inventory</div>
-<div class="inventory-items-container" id="inventoryItems"></div>
-</div>
-<div class="market-container hidden" id="marketContainer">
-<div class="market-title">Market</div>
-<div class="filters-container">
-<select class="filter-select" id="characterFilter">
-<option value="">All Characters</option>
-</select>
-<select class="filter-select" id="backgroundFilter">
-<option value="">All Backgrounds</option>
-</select>
-<select class="sort-select" id="priceSort">
-<option value="newest">Newest First</option>
-<option value="price-desc">Price: High to Low</option>
-<option value="price-asc">Price: Low to High</option>
-</select>
-</div>
-<div class="market-items-container" id="marketItems"></div>
-</div>
-<div class="friends-container hidden" id="friendsContainer">
-<div class="friends-title">Friends</div>
-</div>
-<div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
-<div class="shop-arrow right hidden" id="shopArrowRight">></div>
+<div class="shop-arrow left hidden trans" id="shopArrowLeft"><</div>
+<div class="shop-arrow right hidden trans" id="shopArrowRight">></div>
 <footer class="game-hidden" id="footer">
-<div class="footer-menu-container">
-<div class="footer-menu">
-<div class="menu-item highlighted" data-menu="home">
-<img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false">
-<span>Home</span>
-</div>
-<div class="menu-item" data-menu="shop">
-<img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop" draggable="false">
-<span>Shop</span>
-</div>
-<div class="menu-item" data-menu="market">
-<img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market" draggable="false">
-<span>Market</span>
-</div>
-<div class="menu-item" data-menu="games">
-<img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Games" draggable="false">
-<span>Games</span>
-</div>
-<div class="menu-item" data-menu="friends">
-<img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Friends" draggable="false">
-<span>Friends</span>
-</div>
-</div>
-</div>
+    <div class="footer-menu-container">
+        <div class="footer-menu">
+            <div class="menu-item highlighted" data-menu="home">
+                <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false">
+                <span>Home</span>
+            </div>
+            <div class="menu-item" data-menu="shop">
+                <img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop" draggable="false">
+                <span>Shop</span>
+            </div>
+            <div class="menu-item" data-menu="market">
+                <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market" draggable="false">
+                <span>Market</span>
+            </div>
+            <div class="menu-item" data-menu="games">
+                <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Games" draggable="false">
+                <span>Games</span>
+            </div>
+            <div class="menu-item" data-menu="friends">
+                <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Friends" draggable="false">
+                <span>Friends</span>
+            </div>
+        </div>
+    </div>
 </footer>
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1}
@@ -336,7 +327,7 @@ class GameState {
         const item = this.inventory[index];
         if (!item) return false;
         if (item.level >= 2) return false;
-        if (item.isMutated) return false; // Mutated characters use stars, not applicable here
+        if (item.isMutated) return false;
         if (this.coins < 1000) return false;
         this.coins -= 1000;
         item.level = 2;
@@ -736,7 +727,7 @@ class Game {
             const upgradeButton = document.createElement('div');
             upgradeButton.className = 'upgrade-button';
             if (item.level < 2 && !item.isMutated) {
-                upgradeButton.textContent = `Upgrade (1000 Diamonds)`;
+                upgradeButton.innerHTML = `Up 1000 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" class="gem-icon">`;
                 upgradeButton.addEventListener('pointerdown', () => {
                     if (this.state.upgradeCharacter(index)) {
                         this.updateInventoryDisplay();
@@ -1066,7 +1057,7 @@ class Game {
         if (menuType === 'home') {
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(false);
-            this.ui.elements.mainContent.classList.remove('hidden-opacity');
+            this.ui.elements.mainContent.classList.remove('hidden');
             this.ui.elements.mainContent.classList.add('visible');
             this.ui.elements.hourlyIncome.classList.remove('hidden');
             this.ui.elements.hourlyIncome.classList.add('visible');
@@ -1074,7 +1065,7 @@ class Game {
             this.ui.elements.coinCounter.classList.add('visible');
             this.ui.elements.starCounter.classList.remove('hidden');
             this.ui.elements.starCounter.classList.add('visible');
-            this.ui.elements.character.classList.remove('hidden-opacity');
+            this.ui.elements.character.classList.remove('hidden');
             this.ui.elements.character.classList.add('visible');
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
@@ -1094,7 +1085,7 @@ class Game {
             this.state.setShopViewActive(true);
             this.state.setMarketViewActive(false);
             this.ui.elements.mainContent.classList.remove('visible');
-            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.mainContent.classList.add('hidden');
             this.ui.elements.hourlyIncome.classList.remove('visible');
             this.ui.elements.hourlyIncome.classList.add('hidden');
             this.ui.elements.coinCounter.classList.remove('hidden');
@@ -1102,7 +1093,7 @@ class Game {
             this.ui.elements.starCounter.classList.remove('hidden');
             this.ui.elements.starCounter.classList.add('visible');
             this.ui.elements.character.classList.remove('visible');
-            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.character.classList.add('hidden');
             this.ui.elements.shopContainer.classList.remove('hidden');
             this.ui.elements.shopContainer.classList.add('visible');
             this.ui.elements.inventoryContainer.classList.remove('visible');
@@ -1121,7 +1112,7 @@ class Game {
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(true);
             this.ui.elements.mainContent.classList.remove('visible');
-            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.mainContent.classList.add('hidden');
             this.ui.elements.hourlyIncome.classList.remove('visible');
             this.ui.elements.hourlyIncome.classList.add('hidden');
             this.ui.elements.coinCounter.classList.remove('hidden');
@@ -1129,7 +1120,7 @@ class Game {
             this.ui.elements.starCounter.classList.remove('hidden');
             this.ui.elements.starCounter.classList.add('visible');
             this.ui.elements.character.classList.remove('visible');
-            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.character.classList.add('hidden');
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
             this.ui.elements.inventoryContainer.classList.remove('visible');
@@ -1148,7 +1139,7 @@ class Game {
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(false);
             this.ui.elements.mainContent.classList.remove('visible');
-            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.mainContent.classList.add('hidden');
             this.ui.elements.hourlyIncome.classList.remove('visible');
             this.ui.elements.hourlyIncome.classList.add('hidden');
             this.ui.elements.coinCounter.classList.remove('visible');
@@ -1156,7 +1147,7 @@ class Game {
             this.ui.elements.starCounter.classList.remove('visible');
             this.ui.elements.starCounter.classList.add('hidden');
             this.ui.elements.character.classList.remove('visible');
-            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.character.classList.add('hidden');
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
             this.ui.elements.inventoryContainer.classList.remove('visible');
@@ -1174,7 +1165,7 @@ class Game {
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(false);
             this.ui.elements.mainContent.classList.remove('visible');
-            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.mainContent.classList.add('hidden');
             this.ui.elements.hourlyIncome.classList.remove('visible');
             this.ui.elements.hourlyIncome.classList.add('hidden');
             this.ui.elements.coinCounter.classList.remove('visible');
@@ -1182,7 +1173,7 @@ class Game {
             this.ui.elements.starCounter.classList.remove('visible');
             this.ui.elements.starCounter.classList.add('hidden');
             this.ui.elements.character.classList.remove('visible');
-            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.character.classList.add('hidden');
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
             this.ui.elements.inventoryContainer.classList.remove('visible');
