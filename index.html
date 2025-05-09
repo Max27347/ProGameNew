@@ -32,7 +32,7 @@ body{min-height:100vh;display:flex;flex-direction:column;align-items:center;just
 .player-rank{font-size:1rem;font-weight:600}
 .player-stats{font-size:0.9rem;opacity:0.8}
 .wallet-container{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem}
-#ton-connect{display:flex;justify-content:flex-end}
+#ton-connect{display:none;justify-content:flex}
 #wallet-status{font-size:0.9rem;opacity:0.8}
 #disconnect-wallet{font-size:0.9rem;padding:0.5rem 1rem;background:#007bff;color:#fff;border-radius:12px;cursor:pointer;display:none}
 #disconnect-wallet:hover{background:#0056b3}
@@ -760,6 +760,8 @@ class Game {
                     twaReturnUrl: 'https://t.me/YOUR_BOT_NAME'
                 };
             }
+            // Скрываем кнопку по умолчанию
+            this.ui.elements.tonConnect.style.display = 'none';
             this.tonConnectUI.onStatusChange(walletInfo => {
                 if (walletInfo) {
                     const address = walletInfo.account.address;
@@ -936,6 +938,8 @@ class Game {
     updateMarketDisplay() {
         const marketContainer = this.ui.elements.marketItems;
         marketContainer.innerHTML = '';
+        // Показываем кнопку TON Connect в маркете
+        this.ui.elements.tonConnect.style.display = 'flex';
         let filteredSkins = [...this.availableMarketSkins];
         const characterFilter = this.ui.elements.characterFilter.value;
         const backgroundFilter = this.ui.elements.backgroundFilter.value;
@@ -1226,6 +1230,7 @@ class Game {
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.isInventoryView = false;
+            this.ui.elements.tonConnect.style.display = 'none';
             this.characterController.updateAppearance();
         } else if (menuType === 'shop') {
             this.state.setShopViewActive(true);
@@ -1247,6 +1252,7 @@ class Game {
             this.ui.elements.shopArrowRight.classList.remove('hidden');
             this.ui.elements.shopArrowRight.classList.add('visible');
             this.isInventoryView = false;
+            this.ui.elements.tonConnect.style.display = 'none';
             if (!this.state.hasSeenShopTutorial) {
                 this.state.setShopTutorialSeen();
             }
@@ -1270,6 +1276,7 @@ class Game {
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.isInventoryView = false;
+            this.ui.elements.tonConnect.style.display = 'flex';
             this.updateMarketDisplay();
         } else if (menuType === 'games') {
             this.state.setShopViewActive(false);
@@ -1291,6 +1298,7 @@ class Game {
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.isInventoryView = false;
+            this.ui.elements.tonConnect.style.display = 'none';
         }
     }
     handleShopArrowClick(direction) {
