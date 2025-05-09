@@ -32,7 +32,8 @@ body{min-height:100vh;display:flex;flex-direction:column;align-items:center;just
 .player-rank{font-size:1rem;font-weight:600}
 .player-stats{font-size:0.9rem;opacity:0.8}
 .wallet-container{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem}
-#ton-connect{display:none;justify-content:flex}
+#ton-connect{display:none}
+.market-container.visible ~ .top-menu #ton-connect{display:flex;justify-content:flex-end}
 #wallet-status{font-size:0.9rem;opacity:0.8}
 #disconnect-wallet{font-size:0.9rem;padding:0.5rem 1rem;background:#007bff;color:#fff;border-radius:12px;cursor:pointer;display:none}
 #disconnect-wallet:hover{background:#0056b3}
