@@ -721,6 +721,7 @@ class Game {
         this.isInventoryView = false;
         this.availableMarketSkins = [...MARKET_SKINS];
     }
+
     async preloadAssets() {
         const imageUrls = [
             'https://placehold.co/40x40',
@@ -1271,8 +1272,7 @@ class Game {
             }
         });
     }
-    init() {
-    init() {
+ init() {
         this.state.addCoins(1000);
         this.state.addToInventory({
             src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
@@ -1386,7 +1386,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inventoryItems: document.getElementById('inventoryItems'),
         marketItems: document.getElementById('marketItems'),
         shopArrowLeft: document.getElementById('shopArrowLeft'),
-        shopArrowRight: document.getElement.Concurrent call limit reached, retrying in 1s... Concurrent call limit reached, retrying in 2s... shopArrowRight'),
+        shopArrowRight: document.getElementById('shopArrowRight'),
         footer: document.getElementById('footer'),
         characterFilter: document.getElementById('characterFilter'),
         backgroundFilter: document.getElementById('backgroundFilter'),
