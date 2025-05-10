@@ -627,6 +627,8 @@ class CharacterController {
         this.updateIncomeRate();
         this.ui.applyUpdates();
         this.attachListeners();
+        this.startCoinUpdate();
+        this.startTimer();
     }
     updateIncomeRate() {
         const selectedCharacter = this.state.getSelectedCharacter();
@@ -652,16 +654,13 @@ class CharacterController {
     }
     handleTap(e) {
         e.preventDefault();
-        const now = performance.now();
-        if (now - this.lastTapTime < 100) return;
-        this.lastTapTime = now;
         if (!this.state.canInteract || this.state.isOverlayActive) return;
+        const now = performance.now();
+        if (now - this.lastTapTime < 200) return;
+        this.lastTapTime = now;
         if (!this.state.isTimerActive()) {
             this.state.startTimer();
             this.state.setNextIncomeTime(Date.now() + CONFIG.INCOME_INTERVAL);
-            this.startTimer();
-            this.startIncomeTimer();
-            this.startCoinUpdate();
         }
         this.state.scale = Math.min(this.state.scale + CONFIG.SCALE_INCREMENT, CONFIG.MAX_SCALE);
         this.ui.updateCharacterScale(this.state.scale);
@@ -690,7 +689,6 @@ class CharacterController {
                 const totalIncomeRate = selectedCharacter ? selectedCharacter.incomeRate || 100 : 100;
                 const incomePerSecond = totalIncomeRate / 3600;
                 this.state.addCoins(incomePerSecond);
-                console.log('Coins:', this.state.getCoins(), 'Income per second:', incomePerSecond);
                 this.ui.queueUpdate('coins', this.state.getCoins());
                 this.ui.queueUpdate('totalCoins', this.state.getCoins());
                 this.ui.applyUpdates();
@@ -706,7 +704,9 @@ class CharacterController {
             } else {
                 const timeLeft = this.state.getNextIncomeTime() - Date.now();
                 if (timeLeft <= 0) {
-                    this.ui.updateTimerDisplay(0);
+                    this.state.startTimer();
+                    this.state.setNextIncomeTime(Date.now() + CONFIG.INCOME_INTERVAL);
+                    this.ui.updateTimerDisplay(CONFIG.INCOME_INTERVAL);
                 } else {
                     this.ui.updateTimerDisplay(timeLeft);
                 }
@@ -716,6 +716,8 @@ class CharacterController {
         updateTimer();
     }
     attachListeners() {
+        this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
+        this.listeners = [];
         const tapListener = this.handleTap.bind(this);
         this.ui.elements.character.addEventListener('pointerdown', tapListener);
         this.listeners.push({ element: this.ui.elements.character, type: 'pointerdown', listener: tapListener });
@@ -796,7 +798,7 @@ class Game {
             ...SKINS.map(skin => skin.src),
             ...CHARACTERS.map(char => char.src),
             'https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp',
-            'https://em-content.zobj.net/source/telegram/386/crown_1f Nicholls_1f451.webp',
+            'https://em-content.zobj.net/source/telegram/386/crown_1f451.webp',
             'https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp',
             'https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp',
             'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp',
@@ -1260,6 +1262,7 @@ class Game {
             this.ui.elements.tonConnect.style.display = this.state.isWalletConnected() ? 'none' : 'flex';
             this.isInventoryView = false;
             this.updateMarketDisplay();
+            this.initializeMarketFilters();
         }
     }
     handleShopArrowClick(direction) {
@@ -1278,33 +1281,16 @@ class Game {
             this.updateInventoryDisplay();
         }
     }
-    handleCaseClick(caseType) {
+    handleCaseClick(e) {
+        const caseElement = e.target.closest('.case-container');
+        if (!caseElement) return;
+        const caseType = caseElement.dataset.case;
         this.state.isOverlayActive = true;
         this.showCaseAnimation(caseType);
     }
-    init() {
-        this.state.addCoins(1000);
-        this.state.addToInventory({
-            src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
-            name: 'Controller',
-            background: SKINS[0].gradient,
-            isMutated: false
-        });
-        this.ui.queueUpdate('coins', this.state.getCoins());
-        this.ui.queueUpdate('totalCoins', this.state.getCoins());
-        this.ui.applyUpdates();
-        this.particleSystem.resize();
-        this.confettiSystem.resize();
-        this.ui.updateCoinCounterPosition();
-        this.initializeMarketFilters();
-        this.updateMarketDisplay();
-        this.updateInventoryDisplay();
-        const animate = () => {
-            this.particleSystem.update();
-            this.particleSystem.draw();
-            requestAnimationFrame(animate);
-        };
-        animate();
+    attachListeners() {
+        this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
+        this.listeners = [];
         const menuListener = this.handleMenuClick.bind(this);
         this.ui.elements.footer.addEventListener('pointerdown', menuListener);
         this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuListener });
@@ -1314,24 +1300,18 @@ class Game {
         this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
         this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
         this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
-        const caseClickListener = (e) => {
-            const caseElement = e.target.closest('.case-container');
-            if (caseElement) {
-                const caseType = caseElement.dataset.case;
-                this.handleCaseClick(caseType);
-            }
-        };
-        this.ui.elements.shopContainer.addEventListener('pointerdown', caseClickListener);
-        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseClickListener });
-        const filterChangeListener = () => this.updateMarketDisplay();
-        this.ui.elements.characterFilter.addEventListener('change', filterChangeListener);
-        this.ui.elements.backgroundFilter.addEventListener('change', filterChangeListener);
-        this.ui.elements.priceSort.addEventListener('change', filterChangeListener);
-        this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterChangeListener });
-        this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterChangeListener });
-        this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterChangeListener });
+        const caseListener = this.handleCaseClick.bind(this);
+        this.ui.elements.shopContainer.addEventListener('pointerdown', caseListener);
+        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseListener });
+        const filterListener = () => this.updateMarketDisplay();
+        this.ui.elements.characterFilter.addEventListener('change', filterListener);
+        this.ui.elements.backgroundFilter.addEventListener('change', filterListener);
+        this.ui.elements.priceSort.addEventListener('change', filterListener);
+        this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterListener });
+        this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterListener });
+        this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterListener });
         const resizeListener = () => {
-            if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+            clearTimeout(this.resizeTimeout);
             this.resizeTimeout = setTimeout(() => {
                 this.particleSystem.resize();
                 this.confettiSystem.resize();
@@ -1340,16 +1320,27 @@ class Game {
         };
         window.addEventListener('resize', resizeListener);
         this.listeners.push({ element: window, type: 'resize', listener: resizeListener });
-
-        this.preloadAssets();
+    }
+    animate() {
+        this.particleSystem.update();
+        this.particleSystem.draw();
+        requestAnimationFrame(() => this.animate());
+    }
+    async start() {
+        this.attachListeners();
+        await this.preloadAssets();
+        this.particleSystem.resize();
+        this.confettiSystem.resize();
+        this.ui.updateCoinCounterPosition();
+        this.animate();
     }
     destroy() {
         this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
         this.characterController.destroy();
         this.confettiSystem.stop();
+        clearTimeout(this.resizeTimeout);
     }
 }
-
 const elements = {
     loadingScreen: document.getElementById('loadingScreen'),
     loadingPercent: document.getElementById('loadingPercent'),
@@ -1369,21 +1360,19 @@ const elements = {
     inventoryItems: document.getElementById('inventoryItems'),
     marketContainer: document.getElementById('marketContainer'),
     marketItems: document.getElementById('marketItems'),
+    characterFilter: document.getElementById('characterFilter'),
+    backgroundFilter: document.getElementById('backgroundFilter'),
+    priceSort: document.getElementById('priceSort'),
     shopArrowLeft: document.getElementById('shopArrowLeft'),
     shopArrowRight: document.getElementById('shopArrowRight'),
     footer: document.getElementById('footer'),
     totalCoins: document.getElementById('totalCoins'),
     playerStats: document.getElementById('playerStats'),
     disconnectWallet: document.getElementById('disconnect-wallet'),
-    tonConnect: document.getElementById('ton-connect'),
-    characterFilter: document.getElementById('characterFilter'),
-    backgroundFilter: document.getElementById('backgroundFilter'),
-    priceSort: document.getElementById('priceSort')
+    tonConnect: document.getElementById('ton-connect')
 };
-
 const game = new Game(elements);
-game.init();
-
+game.start().catch(error => console.error('Failed to start game:', error));
 </script>
 </body>
 </html>
