@@ -937,7 +937,7 @@ class Game {
             filteredSkins = filteredSkins.filter(skin => skin.background === backgroundFilter);
         }
         if (sortOption === 'price-desc') {
-            filteredSkins.sort((a, b) => b.price - a.price);
+            filteredSkins = filteredSkins.filter((a, b) => b.price - a.price);
         } else if (sortOption === 'price-asc') {
             filteredSkins.sort((a, b) => a.price - b.price);
         } else {
@@ -1040,7 +1040,7 @@ class Game {
                 ...randomItem,
                 isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
                 background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
-                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
+                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 180) + 1 : undefined
             });
         }
         const renderRoulette = () => {
@@ -1093,6 +1093,18 @@ class Game {
         };
         cancelButton.addEventListener('pointerdown', onCancel);
         const startRoulette = () => {
+            if (isDiamondCase) {
+                if (this.state.getCoins() >= 100) {
+                    this.state.addCoins(-100);
+                    this.ui.queueUpdate('coins', this.state.getCoins());
+                    this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                    this.ui.applyUpdates();
+                } else {
+                    alert('Not enough diamonds!');
+                    onCancel();
+                    return;
+                }
+            }
             spinButton.style.pointerEvents = 'none';
             spinButton.style.opacity = '0.5';
             rouletteStrip.style.opacity = '1';
@@ -1154,7 +1166,7 @@ class Game {
         if (isDiamondCase) {
             const roll = Math.random();
             if (roll < 0.95) {
-                const diamonds = Math.floor(Math.random() * 250) + 1;
+                const diamonds = Math.floor(Math.random() * 180) + 1;
                 return {
                     type: 'diamonds',
                     name: 'Diamonds',
@@ -1283,119 +1295,116 @@ class Game {
         }
     }
     handleCaseClick(caseType) {
-        if (caseType === 'diamond-rain') {
-            if (this.state.getCoins() >= 100) {
-                this.state.addCoins(-100);
-                this.ui.queueUpdate('coins', this.state.getCoins());
-                this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                this.ui.applyUpdates();
-                this.state.isOverlayActive = true;
-                this.showCaseAnimation(caseType);
-            } else {
-                alert('Not enough diamonds!');
-            }
-        } else if (caseType === 'character-magic') {
-            this.state.isOverlayActive = true;
-            this.showCaseAnimation(caseType);
+        this.state.isOverlayActive = true;
+        this.showCaseAnimation(caseType);
+    }
+init() {
+    this.state.addCoins(1000);
+    this.state.addToInventory({
+        src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
+        name: 'Controller',
+        background: SKINS[0].gradient,
+        isMutated: false
+    });
+    this.ui.queueUpdate('coins', this.state.getCoins());
+    this.ui.queueUpdate('totalCoins', this.state.getCoins());
+    this.ui.applyUpdates();
+    this.particleSystem.resize();
+    this.confettiSystem.resize();
+    this.ui.updateCoinCounterPosition();
+    this.initializeMarketFilters();
+    this.updateMarketDisplay();
+    this.updateInventoryDisplay();
+    const animate = () => {
+        this.particleSystem.update();
+        this.particleSystem.draw();
+        requestAnimationFrame(animate);
+    };
+    animate();
+    const menuListener = this.handleMenuClick.bind(this);
+    this.ui.elements.footer.addEventListener('pointerdown', menuListener);
+    this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuListener });
+    const shopArrowLeftListener = () => this.handleShopArrowClick('left');
+    const shopArrowRightListener = () => this.handleShopArrowClick('right');
+    this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
+    this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
+    this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
+    this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
+    const caseClickListener = (e) => {
+        const caseElement = e.target.closest('.case-container');
+        if (caseElement) {
+            const caseType = caseElement.dataset.case;
+            this.handleCaseClick(caseType);
+        }
+    };
+    this.ui.elements.shopContainer.addEventListener('pointerdown', caseClickListener);
+    this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseClickListener });
+    const filterChangeListener = () => this.updateMarketDisplay();
+    this.ui.elements.characterFilter.addEventListener('change', filterChangeListener);
+    this.ui.elements.backgroundFilter.addEventListener('change', filterChangeListener);
+    this.ui.elements.priceSort.addEventListener('change', filterChangeListener);
+    this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterChangeListener });
+    this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterChangeListener });
+    this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterChangeListener });
+    const resizeListener = () => {
+        if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.particleSystem.resize();
+            this.confettiSystem.resize();
+            this.ui.updateCoinCounterPosition();
+        }, CONFIG.RESIZE_DEBOUNCE);
+    };
+    window.addEventListener('resize', resizeListener);
+    this.listeners.push({ element: window, type: 'resize', listener: resizeListener });
+    if (this.state.isTelegramEnvironment()) {
+        document.documentElement.dataset.telegram = 'true';
+        if (window.Telegram?.WebApp) {
+            window.Telegram.WebApp.expand();
+            window.Telegram.WebApp.enableClosingConfirmation();
         }
     }
-    init() {
-        this.state.addCoins(1000);
-        this.state.addToInventory({
-            src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
-            name: 'Controller',
-            background: SKINS[0].gradient,
-            isMutated: false
-        });
-        this.ui.queueUpdate('coins', this.state.getCoins());
-        this.ui.queueUpdate('totalCoins', this.state.getCoins());
-        this.ui.applyUpdates();
-        this.particleSystem.resize();
-        this.confettiSystem.resize();
-        this.ui.updateCoinCounterPosition();
-        this.preloadAssets();
-        this.initializeMarketFilters();
-        const animate = () => {
-            this.particleSystem.update();
-            this.particleSystem.draw();
-            requestAnimationFrame(animate);
-        };
-        animate();
-        const menuListener = this.handleMenuClick.bind(this);
-        this.ui.elements.footer.addEventListener('pointerdown', menuListener);
-        this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuListener });
-        const shopArrowLeftListener = () => this.handleShopArrowClick('left');
-        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
-        this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
-        const shopArrowRightListener = () => this.handleShopArrowClick('right');
-        this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
-        this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
-        const caseListener = (e) => {
-            const caseElement = e.target.closest('.case-container');
-            if (caseElement) {
-                const caseType = caseElement.dataset.case;
-                this.handleCaseClick(caseType);
-            }
-        };
-        this.ui.elements.shopContainer.addEventListener('pointerdown', caseListener);
-        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseListener });
-        const resizeListener = () => {
-            clearTimeout(this.resizeTimeout);
-            this.resizeTimeout = setTimeout(() => {
-                this.particleSystem.resize();
-                this.confettiSystem.resize();
-                this.ui.updateCoinCounterPosition();
-            }, CONFIG.RESIZE_DEBOUNCE);
-        };
-        window.addEventListener('resize', resizeListener);
-        this.listeners.push({ element: window, type: 'resize', listener: resizeListener });
-        const characterFilterListener = () => this.updateMarketDisplay();
-        const backgroundFilterListener = () => this.updateMarketDisplay();
-        const priceSortListener = () => this.updateMarketDisplay();
-        this.ui.elements.characterFilter.addEventListener('change', characterFilterListener);
-        this.ui.elements.backgroundFilter.addEventListener('change', backgroundFilterListener);
-        this.ui.elements.priceSort.addEventListener('change', priceSortListener);
-        this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: characterFilterListener });
-        this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: backgroundFilterListener });
-        this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: priceSortListener });
-    }
-    destroy() {
-        this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
-        this.characterController.destroy();
-    }
+    this.preloadAssets();
 }
-document.addEventListener('DOMContentLoaded', () => {
-    const elements = {
-        loadingScreen: document.getElementById('loadingScreen'),
-        loadingPercent: document.getElementById('loadingPercent'),
-        topMenu: document.getElementById('topMenu'),
-        particleCanvas: document.getElementById('particleCanvas'),
-        confettiCanvas: document.getElementById('confettiCanvas'),
-        mainContent: document.getElementById('mainContent'),
-        incomeCounter: document.getElementById('incomeCounter'),
-        incomeRate: document.getElementById('incomeRate'),
-        incomeTimer: document.getElementById('incomeTimer'),
-        timerDisplay: document.getElementById('timerDisplay'),
-        coinCounter: document.getElementById('coinCounter'),
-        coinCount: document.getElementById('coinCount'),
-        character: document.getElementById('character'),
-        shopContainer: document.getElementById('shopContainer'),
-        inventoryContainer: document.getElementById('inventoryContainer'),
-        inventoryItems: document.getElementById('inventoryItems'),
-        marketContainer: document.getElementById('marketContainer'),
-        marketItems: document.getElementById('marketItems'),
-        characterFilter: document.getElementById('characterFilter'),
-        backgroundFilter: document.getElementById('backgroundFilter'),
-        priceSort: document.getElementById('priceSort'),
-        shopArrowLeft: document.getElementById('shopArrowLeft'),
-        shopArrowRight: document.getElementById('shopArrowRight'),
-        footer: document.getElementById('footer'),
-        totalCoins: document.getElementById('totalCoins'),
-        playerStats: document.getElementById('playerStats') || document.querySelector('.player-stats')
-    };
-    const game = new Game(elements);
-    game.init();
-});
+destroy() {
+    this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
+    this.characterController.destroy();
+    this.confettiSystem.stop();
+}
+}
+const elements = {
+loadingScreen: document.getElementById('loadingScreen'),
+loadingPercent: document.getElementById('loadingPercent'),
+topMenu: document.getElementById('topMenu'),
+particleCanvas: document.getElementById('particleCanvas'),
+confettiCanvas: document.getElementById('confettiCanvas'),
+mainContent: document.getElementById('mainContent'),
+incomeCounter: document.getElementById('incomeCounter'),
+incomeRate: document.getElementById('incomeRate'),
+incomeTimer: document.getElementById('incomeTimer'),
+timerDisplay: document.getElementById('timerDisplay'),
+coinCounter: document.getElementById('coinCounter'),
+coinCount: document.getElementById('coinCount'),
+character: document.getElementById('character'),
+shopContainer: document.getElementById('shopContainer'),
+inventoryContainer: document.getElementById('inventoryContainer'),
+inventoryItems: document.getElementById('inventoryItems'),
+marketContainer: document.getElementById('marketContainer'),
+marketItems: document.getElementById('marketItems'),
+characterFilter: document.getElementById('characterFilter'),
+backgroundFilter: document.getElementById('backgroundFilter'),
+priceSort: document.getElementById('priceSort'),
+footer: document.getElementById('footer'),
+totalCoins: document.getElementById('totalCoins'),
+playerStats: document.getElementById('playerStats'),
+shopArrowLeft: document.getElementById('shopArrowLeft'),
+shopArrowRight: document.getElementById('shopArrowRight'),
+tonConnect: document.getElementById('ton-connect'),
+disconnectWallet: document.getElementById('disconnectWallet')
+};
+const game = new Game(elements);
+game.init();
 </script>
 </body>
 </html>
+
+
