@@ -283,6 +283,7 @@ footer{bottom:0;padding:0}
     </div>
 </footer>
 <script>
+<script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
 const SKINS=[{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'}]
 const CHARACTERS=[
@@ -960,6 +961,10 @@ class Game {
                     this.ui.elements.shopContainer.classList.remove('hidden');
                     this.ui.elements.shopContainer.classList.add('visible');
                     this.isInventoryView = false;
+                    this.ui.elements.shopArrowLeft.classList.remove('hidden');
+                    this.ui.elements.shopArrowLeft.classList.add('visible');
+                    this.ui.elements.shopArrowRight.classList.remove('hidden');
+                    this.ui.elements.shopArrowRight.classList.add('visible');
                     this.characterController.updateAppearance();
                 }
             });
@@ -967,7 +972,7 @@ class Game {
         });
     }
     updateLeaderboardDisplay() {
-        const tbody = this.ui.elements.leaderboardTable.querySelector('tbody');
+        const tbody = this.ui.elements.leaderboardGeneartedTable.querySelector('tbody');
         tbody.innerHTML = '';
         const leaderboard = this.state.getLeaderboard();
         leaderboard.forEach(player => {
@@ -1113,7 +1118,7 @@ class Game {
                 ...randomItem,
                 isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
                 background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
-                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
+                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 180) + 1 : undefined
             });
         }
         const renderRoulette = () => {
@@ -1238,7 +1243,7 @@ class Game {
         if (isDiamondCase) {
             const roll = Math.random();
             if (roll < 0.95) {
-                const diamonds = Math.floor(Math.random() * 250) + 1;
+                const diamonds = Math.floor(Math.random() * 180) + 1;
                 return {
                     type: 'diamonds',
                     name: 'Diamonds',
@@ -1302,6 +1307,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
             this.isInventoryView = false;
             this.characterController.updateAppearance();
@@ -1327,6 +1336,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
             this.ui.elements.shopArrowRight.classList.add('visible');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
             this.isInventoryView = false;
             if (!this.state.hasSeenShopTutorial) {
@@ -1354,6 +1367,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = this.state.isWalletConnected() ? 'none' : 'flex';
             this.isInventoryView = false;
             this.updateMarketDisplay();
@@ -1382,6 +1399,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
             this.isInventoryView = false;
             this.characterController.updateAppearance();
@@ -1407,6 +1428,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
             this.isInventoryView = false;
             this.updateLeaderboardDisplay();
@@ -1419,6 +1444,11 @@ class Game {
             const casesContainer = this.ui.elements.shopContainer.querySelector('.cases-container');
             const scrollAmount = -150;
             casesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    }
+    handleInventoryArrowClick(direction) {
+        if (direction === 'left') {
+            this.toggleInventory();
         }
     }
     handleCaseClick(e) {
@@ -1438,6 +1468,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
             this.ui.elements.shopArrowRight.classList.add('visible');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
         } else {
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
@@ -1447,6 +1481,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.add('visible');
+            this.ui.elements.inventoryArrowRight.classList.remove('hidden');
+            this.ui.elements.inventoryArrowRight.classList.add('visible');
             this.updateInventoryDisplay();
         }
         this.isInventoryView = !this.isInventoryView;
@@ -1482,6 +1520,12 @@ class Game {
         const shopArrowRightListener = () => this.handleShopArrowClick('right');
         this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
         this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
+        const inventoryArrowLeftListener = () => this.handleInventoryArrowClick('left');
+        this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', inventoryArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: inventoryArrowLeftListener });
+        const inventoryArrowRightListener = () => this.handleInventoryArrowClick('right');
+        this.ui.elements.inventoryArrowRight.addEventListener('pointerdown', inventoryArrowRightListener);
+        this.listeners.push({ element: this.ui.elements.inventoryArrowRight, type: 'pointerdown', listener: inventoryArrowRightListener });
         const caseListener = this.handleCaseClick.bind(this);
         this.ui.elements.shopContainer.addEventListener('pointerdown', caseListener);
         this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseListener });
@@ -1517,6 +1561,8 @@ const elements = {
     leaderboardContainer: document.getElementById('leaderboardContainer'),
     shopArrowLeft: document.getElementById('shopArrowLeft'),
     shopArrowRight: document.getElementById('shopArrowRight'),
+    inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
+    inventoryArrowRight: document.getElementById('inventoryArrowRight'),
     footer: document.getElementById('footer'),
     coinCount: document.getElementById('coinCount'),
     totalCoins: document.getElementById('totalCoins'),
