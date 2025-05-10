@@ -325,7 +325,7 @@ const MARKET_SKINS=[
 ];
 class GameState {
     constructor() {
-        this.coins = 1000; // Initialize with 1000 diamonds
+        this.coins = 1000;
         this.scale = CONFIG.MIN_SCALE;
         this.canInteract = true;
         this.isOverlayActive = false;
@@ -1413,9 +1413,13 @@ class Game {
         }
     }
     handleShopArrowClick(direction) {
-        const casesContainer = this.ui.elements.shopContainer.querySelector('.cases-container');
-        const scrollAmount = direction === 'left' ? -150 : 150;
-        casesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        if (direction === 'right') {
+            this.toggleInventory();
+        } else {
+            const casesContainer = this.ui.elements.shopContainer.querySelector('.cases-container');
+            const scrollAmount = -150;
+            casesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
     }
     handleCaseClick(e) {
         const caseContainer = e.target.closest('.case-container');
@@ -1488,12 +1492,6 @@ class Game {
         this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterListener });
         this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterListener });
         this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterListener });
-        const inventoryToggleListener = (e) => {
-            e.preventDefault();
-            this.toggleInventory();
-        };
-        this.ui.elements.shopContainer.addEventListener('contextmenu', inventoryToggleListener);
-        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'contextmenu', listener: inventoryToggleListener });
     }
     destroy() {
         this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
