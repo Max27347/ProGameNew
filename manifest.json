@@ -1,8 +1,9 @@
 {
-  "name": "Nexari",
+  "name": "ProGameNew",
   "description": "Фантастическая игра с подарками, наградами и приключениями.",
-  "url": "https://github.com/Max27347/ProGameNew.git",
-  "short_name": "Nexari",
+  "url": "https://max27347.github.io/ProGameNew/",
+  "iconUrl": "https://max27347.github.io/ProGameNew/icon.png",
+  "short_name": "ProGameNew",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
