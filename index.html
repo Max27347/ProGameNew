@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="description" content="Notcoin-inspired clicker game">
-    <title>Clicker Game</title>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="description" content="Notcoin-inspired clicker game">
+<title>Clicker Game</title>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<style>
 *{margin:0;padding:0;box-sizing:border-box}
 *:focus,*:active{outline:none;-webkit-tap-highlight-color:transparent}
 :root{--bg-color:#000;--bg-gradient:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%);--highlight-color:#FFF;--text-color:#fff;--footer-bg:rgba(30,30,30,0.85);--counter-bg:rgba(30,30,30,0.85);--top-menu-bg:rgba(30,30,30,0.85);--tg-bg-color:linear-gradient(135deg,#1c2526,#2a1b3d);--tg-text-color:#fff;--tg-footer-bg:rgba(44,47,71,0.85);--tg-counter-bg:rgba(44,47,71,0.85);--tg-top-menu-bg:rgba(44,47,71,0.85)}
@@ -152,115 +152,106 @@ footer{bottom:0;padding:0}
 @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
 }
-
-    </style>
+</style>
 </head>
 <body>
 <div class="loading-screen" id="loadingScreen">
-    <div class="loading-ring"></div>
-    <span class="loading-percent" id="loadingPercent">0%</span>
+<div class="loading-ring"></div>
+<span class="loading-percent" id="loadingPercent">0%</span>
 </div>
 <header class="top-menu game-hidden" id="topMenu">
-    <div class="top-menu-left">
-        <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false">
-        <div class="player-info">
-            <span class="player-nickname">Player123</span>
-            <span class="player-max-coins">
+<div class="top-menu-left">
+<img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false">
+<div class="player-info">
+<span class="player-nickname">Player123</span>
+<span class="player-max-coins">
 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
 <span id="totalCoins">0</span>
 </span>
-        </div>
-    </div>
-    <div class="top-menu-right">
-        <span class="player-rank">Rank: 1</span>
-        <span class="player-stats">World of Consoles</span>
-        <div class="wallet-container">
-            <button id="disconnect-wallet">Disconnect Wallet</button>
-        </div>
-    </div>
+</div>
+</div>
+<div class="top-menu-right">
+<span class="player-rank">Rank: 1</span>
+<span class="player-stats">World of Consoles</span>
+<div class="wallet-container">
+<button id="disconnect-wallet">Disconnect Wallet</button>
+</div>
+</div>
 </header>
 <canvas id="particleCanvas" class="game-hidden"></canvas>
 <canvas id="confettiCanvas" class="game-hidden"></canvas>
 <main class="game-hidden" id="mainContent">
-    <div class="income-counter" id="incomeCounter">
-        <span id="incomeRate">0</span> Diamonds/h
-        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon"
-             draggable="false">
-    </div>
-    <div class="income-timer" id="incomeTimer">
-        <span id="timerDisplay">00:00</span>
-    </div>
-    <div class="coin-counter visible" id="coinCounter">
-        <span id="coinCount">0</span>
-        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone"
-             class="coin-icon" draggable="false">
-    </div>
-    <div class="character-container">
-        <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller"
-             class="character" id="character" draggable="false">
-    </div>
+<div class="income-counter" id="incomeCounter">
+<span id="incomeRate">0</span> Diamonds/h
+<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" draggable="false">
+</div>
+<div class="income-timer" id="incomeTimer">
+<span id="timerDisplay">00:00</span>
+</div>
+<div class="coin-counter visible" id="coinCounter">
+<span id="coinCount">0</span>
+<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
+</div>
+<div class="character-container">
+<img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller" class="character" id="character" draggable="false">
+</div>
 </main>
 <div class="shop-container hidden" id="shopContainer">
-    <div class="shop-title">Cases</div>
-    <div class="cases-container">
-        <div class="case-container" data-case="diamond-rain">
-            <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain"
-                 class="case-image" draggable="false">
-            <div class="case-name">Diamond Rain</div>
-            <div class="case-price">100 Diamonds</div>
-        </div>
-        <div class="case-container" data-case="character-magic">
-            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic"
-                 class="case-image" draggable="false">
-            <div class="case-name">Character Magic</div>
-            <div class="case-price">Free (Test)</div>
-        </div>
-    </div>
+<div class="shop-title">Cases</div>
+<div class="cases-container">
+<div class="case-container" data-case="diamond-rain">
+<img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false">
+<div class="case-name">Diamond Rain</div>
+<div class="case-price">100 Diamonds</div>
+</div>
+<div class="case-container" data-case="character-magic">
+<img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false">
+<div class="case-name">Character Magic</div>
+<div class="case-price">Free (Test)</div>
+</div>
+</div>
 </div>
 <div class="inventory-container hidden" id="inventoryContainer">
-    <div class="inventory-title">Inventory</div>
-    <div class="inventory-items-container" id="inventoryItems"></div>
+<div class="inventory-title">Inventory</div>
+<div class="inventory-items-container" id="inventoryItems"></div>
 </div>
 <div class="market-container hidden" id="marketContainer">
-    <div class="market-title">Market</div>
-    <div id="ton-connect"></div>
-    <div class="filters-container">
-        <select class="filter-select" id="characterFilter">
-            <option value="">All Characters</option>
-        </select>
-        <select class="filter-select" id="backgroundFilter">
-            <option value="">All Backgrounds</option>
-        </select>
-        <select class="sort-select" id="priceSort">
-            <option value="newest">Newest First</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="price-asc">Price: Low to High</option>
-        </select>
-    </div>
-    <div class="market-items-container" id="marketItems"></div>
+<div class="market-title">Market</div>
+<div id="ton-connect"></div>
+<div class="filters-container">
+<select class="filter-select" id="characterFilter">
+<option value="">All Characters</option>
+</select>
+<select class="filter-select" id="backgroundFilter">
+<option value="">All Backgrounds</option>
+</select>
+<select class="sort-select" id="priceSort">
+<option value="newest">Newest First</option>
+<option value="price-desc">Price: High to Low</option>
+<option value="price-asc">Price: Low to High</option>
+</select>
+</div>
+<div class="market-items-container" id="marketItems"></div>
 </div>
 <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
 <div class="shop-arrow right hidden" id="shopArrowRight">></div>
 <footer class="game-hidden" id="footer">
-    <div class="footer-menu-container">
-        <div class="footer-menu">
-            <div class="menu-item highlighted" data-menu="home">
-                <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home"
-                     draggable="false">
-                <span>Home</span>
-            </div>
-            <div class="menu-item" data-menu="shop">
-                <img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop"
-                     draggable="false">
-                <span>Shop</span>
-            </div>
-            <div class="menu-item" data-menu="market">
-                <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market"
-                     draggable="false">
-                <span>Market</span>
-            </div>
-        </div>
-    </div>
+<div class="footer-menu-container">
+<div class="footer-menu">
+<div class="menu-item highlighted" data-menu="home">
+<img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false">
+<span>Home</span>
+</div>
+<div class="menu-item" data-menu="shop">
+<img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop" draggable="false">
+<span>Shop</span>
+</div>
+<div class="menu-item" data-menu="market">
+<img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market" draggable="false">
+<span>Market</span>
+</div>
+</div>
+</div>
 </footer>
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
@@ -322,8 +313,7 @@ class GameState {
         this.walletAddress = null;
     }
     getCoins() { return this.coins; }
-    setCoins(amount) { this.coins = Math.max(0, amount); }
-    addCoins(amount) { this.coins = Math.max(0, this.coins + amount); }
+    addCoins(amount) { this.coins += amount; }
     resetCoins(value) { this.coins = value; }
     isTelegramEnvironment() { return this.isTelegram; }
     isShopViewActive() { return this.isShopActive; }
@@ -592,19 +582,21 @@ class UIManager {
         this.pendingUpdates[key] = value;
     }
     applyUpdates() {
-        for (const [key, value] of Object.entries(this.pendingUpdates)) {
-            if (key === 'coins') this.elements.coinCount.textContent = Math.floor(value);
-            if (key === 'totalCoins') this.elements.totalCoins.textContent = Math.floor(value);
-            if (key === 'characterSrc') this.elements.character.src = value;
-            if (key === 'gradient') document.documentElement.style.setProperty('--bg-gradient', value);
-            if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
-            if (key === 'worldName') this.elements.playerStats.textContent = value;
-            if (key === 'incomeRate') this.elements.incomeRate.textContent = value;
-        }
-        this.pendingUpdates = {};
-        const digits = this.elements.coinCount.textContent.length;
-        const translateX = digits > 5 ? -(digits - 5) * 10 : 0;
-        this.elements.coinCounter.style.transform = `translateX(${translateX}px)`;
+        requestAnimationFrame(() => {
+            for (const [key, value] of Object.entries(this.pendingUpdates)) {
+                if (key === 'coins') this.elements.coinCount.textContent = Math.floor(value);
+                if (key === 'totalCoins') this.elements.totalCoins.textContent = Math.floor(value);
+                if (key === 'characterSrc') this.elements.character.src = value;
+                if (key === 'gradient') document.documentElement.style.setProperty('--bg-gradient', value);
+                if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
+                if (key === 'worldName') this.elements.playerStats.textContent = value;
+                if (key === 'incomeRate') this.elements.incomeRate.textContent = value;
+            }
+            this.pendingUpdates = {};
+            const digits = this.elements.coinCount.textContent.length;
+            const translateX = digits > 5 ? -(digits - 5) * 10 : 0;
+            this.elements.coinCounter.style.transform = `translateX(${translateX}px)`;
+        });
     }
 }
 class CharacterController {
@@ -945,7 +937,7 @@ class Game {
             filteredSkins = filteredSkins.filter(skin => skin.background === backgroundFilter);
         }
         if (sortOption === 'price-desc') {
-            filteredSkins = filteredSkins.sort((a, b) => b.price - a.price);
+            filteredSkins = filteredSkins.filter((a, b) => b.price - a.price);
         } else if (sortOption === 'price-asc') {
             filteredSkins.sort((a, b) => a.price - b.price);
         } else {
@@ -998,181 +990,181 @@ class Game {
             marketContainer.appendChild(itemDiv);
         });
     }
-    showCaseAnimation(caseType) {
-        const isDiamondCase = caseType === 'diamond-rain';
-        const currency = isDiamondCase ? '100 Diamonds' : 'Free (Test)';
-        const overlay = document.createElement('div');
-        overlay.className = 'case-animation-overlay hidden';
-        const message = document.createElement('div');
-        message.className = 'case-animation-message hidden';
-        message.textContent = `Spin for ${currency}!`;
-        const animationContainer = document.createElement('div');
-        animationContainer.id = 'caseAnimationContainer';
-        animationContainer.className = 'case-animation-container';
-        const rouletteStrip = document.createElement('div');
-        rouletteStrip.className = 'roulette-strip';
-        animationContainer.appendChild(rouletteStrip);
-        const animationBar = document.createElement('div');
-        animationBar.className = 'animation-bar';
-        animationContainer.appendChild(animationBar);
-        const spinButton = document.createElement('div');
-        spinButton.className = 'case-animation-button';
-        spinButton.textContent = 'Spin';
-        const cancelButton = document.createElement('div');
-        cancelButton.className = 'case-animation-cancel';
-        cancelButton.textContent = "I'll stop tempting fate";
-        overlay.appendChild(message);
-        overlay.appendChild(animationContainer);
-        overlay.appendChild(spinButton);
-        overlay.appendChild(cancelButton);
-        document.body.appendChild(overlay);
-        const items = [...CHARACTERS.slice(1)];
-        const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
-        if (isDiamondCase) {
-            items.push(diamondItem);
+showCaseAnimation(caseType) {
+    const isDiamondCase = caseType === 'diamond-rain';
+    const currency = isDiamondCase ? '100 Diamonds' : 'Free (Test)';
+    const overlay = document.createElement('div');
+    overlay.className = 'case-animation-overlay hidden';
+    const message = document.createElement('div');
+    message.className = 'case-animation-message hidden';
+    message.textContent = `Spin for ${currency}!`;
+    const animationContainer = document.createElement('div');
+    animationContainer.id = 'caseAnimationContainer';
+    animationContainer.className = 'case-animation-container';
+    const rouletteStrip = document.createElement('div');
+    rouletteStrip.className = 'roulette-strip';
+    animationContainer.appendChild(rouletteStrip);
+    const animationBar = document.createElement('div');
+    animationBar.className = 'animation-bar';
+    animationContainer.appendChild(animationBar);
+    const spinButton = document.createElement('div');
+    spinButton.className = 'case-animation-button';
+    spinButton.textContent = 'Spin';
+    const cancelButton = document.createElement('div');
+    cancelButton.className = 'case-animation-cancel';
+    cancelButton.textContent = "I'll stop tempting fate";
+    overlay.appendChild(message);
+    overlay.appendChild(animationContainer);
+    overlay.appendChild(spinButton);
+    overlay.appendChild(cancelButton);
+    document.body.appendChild(overlay);
+    const items = [...CHARACTERS.slice(1)];
+    const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
+    if (isDiamondCase) {
+        items.push(diamondItem);
+    }
+    const rouletteItems = [];
+    const reward = this.generateCaseReward(caseType);
+    for (let i = 0; i < 40; i++) {
+        if (i === 19) {
+            rouletteItems.push(reward);
+            continue;
         }
-        const rouletteItems = [];
-        const reward = this.generateCaseReward(caseType);
-        for (let i = 0; i < 40; i++) {
-            if (i === 19) {
-                rouletteItems.push(reward);
-                continue;
-            }
-            let randomItem;
-            if (isDiamondCase && Math.random() < 0.6) {
-                randomItem = diamondItem;
-            } else {
-                randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
-            }
-            rouletteItems.push({
-                ...randomItem,
-                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
-                background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
-                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 180) + 1 : undefined
-            });
+        let randomItem;
+        if (isDiamondCase && Math.random() < 0.6) {
+            randomItem = diamondItem;
+        } else {
+            randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
         }
-        const renderRoulette = () => {
-            rouletteStrip.innerHTML = '';
-            rouletteItems.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'roulette-item';
-                itemDiv.dataset.itemName = item.name;
-                itemDiv.style.background = item.background;
-                itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
-                const bgDiv = document.createElement('div');
-                bgDiv.className = 'animation-background';
-                bgDiv.style.background = item.background;
-                itemDiv.appendChild(bgDiv);
-                const img = document.createElement('img');
-                img.src = item.src;
-                img.alt = item.name;
-                img.className = 'animation-character';
-                if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
-                itemDiv.appendChild(img);
-                if (index === 19) {
-                    itemDiv.dataset.winner = 'true';
-                }
-                rouletteStrip.appendChild(itemDiv);
-            });
-        };
-        renderRoulette();
-        requestAnimationFrame(() => {
-            overlay.classList.remove('hidden');
-            overlay.classList.add('visible');
-            message.classList.remove('hidden');
-            message.classList.add('visible');
-            setTimeout(() => {
-                spinButton.className += ' visible';
-                cancelButton.className += ' visible';
-            }, 300);
+        rouletteItems.push({
+            ...randomItem,
+            isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
+            background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
+            value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 180) + 1 : undefined
         });
-        const onCancel = () => {
-            overlay.classList.remove('visible');
-            overlay.classList.add('hidden');
-            message.classList.remove('visible');
-            message.classList.add('hidden');
-            spinButton.classList.remove('visible');
-            cancelButton.classList.remove('visible');
-            setTimeout(() => {
-                overlay.remove();
-                this.state.isOverlayActive = false;
-            }, 500);
-            cancelButton.removeEventListener('pointerdown', onCancel);
-        };
-        cancelButton.addEventListener('pointerdown', onCancel);
-        const startRoulette = () => {
-            if (isDiamondCase) {
-                if (this.state.getCoins() >= 100) {
-                    this.state.setCoins(this.state.getCoins() - 100);
+    }
+    const renderRoulette = () => {
+        rouletteStrip.innerHTML = '';
+        rouletteItems.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'roulette-item';
+            itemDiv.dataset.itemName = item.name;
+            itemDiv.style.background = item.background;
+            itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+            const bgDiv = document.createElement('div');
+            bgDiv.className = 'animation-background';
+            bgDiv.style.background = item.background;
+            itemDiv.appendChild(bgDiv);
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.alt = item.name;
+            img.className = 'animation-character';
+            if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
+            itemDiv.appendChild(img);
+            if (index === 19) {
+                itemDiv.dataset.winner = 'true';
+            }
+            rouletteStrip.appendChild(itemDiv);
+        });
+    };
+    renderRoulette();
+    requestAnimationFrame(() => {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('visible');
+        message.classList.remove('hidden');
+        message.classList.add('visible');
+        setTimeout(() => {
+            spinButton.className += ' visible';
+            cancelButton.className += ' visible';
+        }, 300);
+    });
+    const onCancel = () => {
+        overlay.classList.remove('visible');
+        overlay.classList.add('hidden');
+        message.classList.remove('visible');
+        message.classList.add('hidden');
+        spinButton.classList.remove('visible');
+        cancelButton.classList.remove('visible');
+        setTimeout(() => {
+            overlay.remove();
+            this.state.isOverlayActive = false;
+        }, 500);
+        cancelButton.removeEventListener('pointerdown', onCancel);
+    };
+    cancelButton.addEventListener('pointerdown', onCancel);
+    const startRoulette = () => {
+        if (isDiamondCase) {
+            if (this.state.getCoins() >= 100) {
+                this.state.addCoins(-100);
+                this.ui.queueUpdate('coins', this.state.getCoins());
+                this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                this.ui.applyUpdates();
+            } else {
+                alert('Not enough diamonds!');
+                onCancel();
+                return;
+            }
+        }
+        spinButton.style.pointerEvents = 'none';
+        spinButton.style.opacity = '0.5';
+        rouletteStrip.style.opacity = '1';
+        rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
+        const onAnimationEnd = () => {
+            const isMobile = window.innerWidth <= 600;
+            rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
+            const winnerIndex = 19;
+            const winnerItem = rouletteStrip.children[winnerIndex];
+            if (winnerItem) {
+                const img = winnerItem.querySelector('img');
+                if (img) {
+                    img.src = reward.src;
+                    img.alt = reward.name;
+                    img.className = 'animation-character';
+                    if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
+                }
+                const bgDiv = winnerItem.querySelector('.animation-background');
+                if (bgDiv) {
+                    bgDiv.style.background = reward.background;
+                }
+                winnerItem.dataset.itemName = reward.name;
+                winnerItem.style.background = reward.background;
+                winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                winnerItem.dataset.winner = 'true';
+                winnerItem.classList.add('winner');
+                message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
+                if (reward.name === 'Diamonds') {
+                    this.state.addCoins(reward.value);
                     this.ui.queueUpdate('coins', this.state.getCoins());
                     this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                    this.ui.applyUpdates();
                 } else {
-                    alert('Not enough diamonds!');
-                    onCancel();
-                    return;
+                    this.state.addToInventory({
+                        src: reward.src,
+                        name: reward.name,
+                        background: reward.background,
+                        isMutated: reward.isMutated
+                    });
                 }
-            }
-            spinButton.style.pointerEvents = 'none';
-            spinButton.style.opacity = '0.5';
-            rouletteStrip.style.opacity = '1';
-            rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
-            const onAnimationEnd = () => {
-                const isMobile = window.innerWidth <= 600;
-                rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
-                const winnerIndex = 19;
-                const winnerItem = rouletteStrip.children[winnerIndex];
-                if (winnerItem) {
-                    const img = winnerItem.querySelector('img');
-                    if (img) {
-                        img.src = reward.src;
-                        img.alt = reward.name;
-                        img.className = 'animation-character';
-                        if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
-                    }
-                    const bgDiv = winnerItem.querySelector('.animation-background');
-                    if (bgDiv) {
-                        bgDiv.style.background = reward.background;
-                    }
-                    winnerItem.dataset.itemName = reward.name;
-                    winnerItem.style.background = reward.background;
-                    winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
-                    winnerItem.dataset.winner = 'true';
-                    winnerItem.classList.add('winner');
-                    message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
-                    if (reward.name === 'Diamonds') {
-                        this.state.setCoins(this.state.getCoins() + reward.value);
-                        this.ui.queueUpdate('coins', this.state.getCoins());
-                        this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                    } else {
-                        this.state.addToInventory({
-                            src: reward.src,
-                            name: reward.name,
-                            background: reward.background,
-                            isMutated: reward.isMutated
-                        });
-                    }
-                    this.ui.applyUpdates();
+                this.ui.applyUpdates();
+                setTimeout(() => {
+                    overlay.classList.remove('visible');
+                    overlay.classList.add('hidden');
+                    message.classList.remove('visible');
+                    message.classList.add('hidden');
+                    spinButton.classList.remove('visible');
+                    cancelButton.classList.remove('visible');
                     setTimeout(() => {
-                        overlay.classList.remove('visible');
-                        overlay.classList.add('hidden');
-                        message.classList.remove('visible');
-                        message.classList.add('hidden');
-                        spinButton.classList.remove('visible');
-                        cancelButton.classList.remove('visible');
-                        setTimeout(() => {
-                            overlay.remove();
-                            this.state.isOverlayActive = false;
-                            rouletteStrip.style.opacity = '1';
-                        }, 500);
-                    }, 2000);
-                }
-                rouletteStrip.removeEventListener('animationend', onAnimationEnd);
-            };
-            rouletteStrip.addEventListener('animationend', onAnimationEnd);
+                        overlay.remove();
+                        this.state.isOverlayActive = false;
+                        rouletteStrip.style.opacity = '1';
+                    }, 500);
+                }, 2000);
+            }
+            rouletteStrip.removeEventListener('animationend', onAnimationEnd);
         };
-        spinButton.addEventListener('pointerdown', startRoulette);
-    }
+        rouletteStrip.addEventListener('animationend', onAnimationEnd);
+    };
+    spinButton.addEventListener('pointerdown', startRoulette);
+}
     generateCaseReward(caseType) {
         const isDiamondCase = caseType === 'diamond-rain';
         const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
@@ -1311,39 +1303,39 @@ class Game {
         this.state.isOverlayActive = true;
         this.showCaseAnimation(caseType);
     }
-    init() {
-        this.state.setCoins(1000);
-        this.state.addToInventory({
-            src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
-            name: 'Controller',
-            background: SKINS[0].gradient,
-            isMutated: false
-        });
-        this.ui.queueUpdate('coins', this.state.getCoins());
-        this.ui.queueUpdate('totalCoins', this.state.getCoins());
-        this.ui.applyUpdates();
-        this.particleSystem.resize();
-        this.confettiSystem.resize();
-        this.ui.updateCoinCounterPosition();
-        this.initializeMarketFilters();
-        this.updateMarketDisplay();
-        this.updateInventoryDisplay();
-        const animate = () => {
-            this.particleSystem.update();
-            this.particleSystem.draw();
-            requestAnimationFrame(animate);
-        };
-        animate();
-        const menuListener = this.handleMenuClick.bind(this);
-        this.ui.elements.footer.addEventListener('pointerdown', menuListener);
-        this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuListener });
-        const shopArrowLeftListener = () => this.handleShopArrowClick('left');
-        const shopArrowRightListener = () => this.handleShopArrowClick('right');
-        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
-        this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
-        this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
-        this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
-        const caseClickListener = (e) => {
+init() {
+    this.state.addCoins(1000);
+    this.state.addToInventory({
+        src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
+        name: 'Controller',
+        background: SKINS[0].gradient,
+        isMutated: false
+    });
+    this.ui.queueUpdate('coins', this.state.getCoins());
+    this.ui.queueUpdate('totalCoins', this.state.getCoins());
+    this.ui.applyUpdates();
+    this.particleSystem.resize();
+    this.confettiSystem.resize();
+    this.ui.updateCoinCounterPosition();
+    this.initializeMarketFilters();
+    this.updateMarketDisplay();
+    this.updateInventoryDisplay();
+    const animate = () => {
+        this.particleSystem.update();
+        this.particleSystem.draw();
+        requestAnimationFrame(animate);
+    };
+    animate();
+    const menuListener = this.handleMenuClick.bind(this);
+    this.ui.elements.footer.addEventListener('pointerdown', menuListener);
+    this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuListener });
+    const shopArrowLeftListener = () => this.handleShopArrowClick('left');
+    const shopArrowRightListener = () => this.handleShopArrowClick('right');
+    this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
+    this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
+    this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
+    this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
+    const caseClickListener = (e) => {
         const caseElement = e.target.closest('.case-container');
         if (caseElement) {
             const caseType = caseElement.dataset.case;
@@ -1416,7 +1408,6 @@ disconnectWallet: document.getElementById('disconnectWallet')
 };
 const game = new Game(elements);
 game.init();
-
 </script>
 </body>
 </html>
