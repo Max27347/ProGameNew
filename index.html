@@ -72,11 +72,11 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .case-image,.inventory-image,.market-image{width:80px;height:80px;object-fit:contain;border-radius:50%}
 .case-name,.inventory-name,.market-name{font-size:1rem;font-weight:600;color:#FFF}
 .case-price,.market-price{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
-.shop-arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#FFF;cursor:pointer;padding:0.5rem;background:rgba(30,30,30,0.85);border-radius:50%;z-index:3;opacity:0;transition:opacity 0.5s ease}
-.shop-arrow.visible{opacity:1;pointer-events:auto}
-.shop-arrow.hidden{opacity:0;pointer-events:none}
-.shop-arrow.left{left:1rem}
-.shop-arrow.right{right:1rem}
+.shop-arrow,.inventory-arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#FFF;cursor:pointer;padding:0.5rem;background:rgba(30,30,30,0.85);border-radius:50%;z-index:3;opacity:0;transition:opacity 0.5s ease}
+.shop-arrow.visible,.inventory-arrow.visible{opacity:1;pointer-events:auto}
+.shop-arrow.hidden,.inventory-arrow.hidden{opacity:0;pointer-events:none}
+.shop-arrow.left,.inventory-arrow.left{left:1rem}
+.shop-arrow.right,.inventory-arrow.right{right:1rem}
 .case-animation-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10;opacity:0;transition:opacity 0.5s ease}
 .case-animation-overlay.visible{opacity:1;pointer-events:auto}
 .case-animation-overlay.hidden{opacity:0;pointer-events:none}
@@ -135,9 +135,9 @@ footer{bottom:0;padding:0}
 .case-image,.inventory-image,.market-image{width:60px;height:60px}
 .case-name,.inventory-name,.market-name{font-size:0.9rem}
 .case-price,.market-price{font-size:0.8rem;gap:0.2rem}
-.shop-arrow{font-size:1.5rem;padding:0.4rem}
-.shop-arrow.left{left:0.8rem}
-.shop-arrow.right{right:0.8rem}
+.shop-arrow,.inventory-arrow{font-size:1.5rem;padding:0.4rem}
+.shop-arrow.left,.inventory-arrow.left{left:0.8rem}
+.shop-arrow.right,.inventory-arrow.right{right:0.8rem}
 .case-animation-message{font-size:1.5rem}
 .case-animation-container{width:384px;height:160px}
 .roulette-strip{width:4480px;animation:roulette-slow-spin 32s linear infinite}
@@ -157,7 +157,6 @@ footer{bottom:0;padding:0}
 @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
 }
-
     </style>
 </head>
 <body>
@@ -261,6 +260,8 @@ footer{bottom:0;padding:0}
 </div>
 <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
 <div class="shop-arrow right hidden" id="shopArrowRight">></div>
+<div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
+<div class="inventory-arrow right hidden" id="inventoryArrowRight">></div>
 <footer class="game-hidden" id="footer">
     <div class="footer-menu-container">
         <div class="footer-menu">
@@ -1302,6 +1303,10 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
             this.isInventoryView = false;
             this.characterController.updateAppearance();
@@ -1320,16 +1325,21 @@ class Game {
             this.ui.elements.inventoryContainer.classList.remove('visible');
             this.ui.elements.inventoryContainer.classList.add('hidden');
             this.ui.elements.marketContainer.classList.remove('visible');
-            this.ui.elements.marketContainer.classList.add('hidden');
+                this.ui.elements.marketContainer.classList.add('hidden');
             this.ui.elements.leaderboardContainer.classList.remove('visible');
             this.ui.elements.leaderboardContainer.classList.add('hidden');
             this.ui.elements.shopArrowLeft.classList.remove('hidden');
             this.ui.elements.shopArrowLeft.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
             this.ui.elements.shopArrowRight.classList.add('visible');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
             this.isInventoryView = false;
             if (!this.state.hasSeenShopTutorial) {
+                alert('Welcome to the Shop! Open cases to win characters or diamonds.');
                 this.state.setShopTutorialSeen();
             }
         } else if (menuType === 'market') {
@@ -1354,38 +1364,14 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = this.state.isWalletConnected() ? 'none' : 'flex';
-            this.isInventoryView = false;
             this.updateMarketDisplay();
-        }
-    }
-    handleTopMenuClick() {
-        if (this.state.isLeaderboardViewActive()) {
-            this.state.setShopViewActive(false);
-            this.state.setMarketViewActive(false);
-            this.state.setLeaderboardViewActive(false);
-            this.ui.elements.mainContent.classList.remove('hidden-opacity');
-            this.ui.elements.mainContent.classList.add('visible');
-            this.ui.elements.coinCounter.classList.remove('hidden');
-            this.ui.elements.coinCounter.classList.add('visible');
-            this.ui.elements.character.classList.remove('hidden-opacity');
-            this.ui.elements.character.classList.add('visible');
-            this.ui.elements.shopContainer.classList.remove('visible');
-            this.ui.elements.shopContainer.classList.add('hidden');
-            this.ui.elements.inventoryContainer.classList.remove('visible');
-            this.ui.elements.inventoryContainer.classList.add('hidden');
-            this.ui.elements.marketContainer.classList.remove('visible');
-            this.ui.elements.marketContainer.classList.add('hidden');
-            this.ui.elements.leaderboardContainer.classList.remove('visible');
-            this.ui.elements.leaderboardContainer.classList.add('hidden');
-            this.ui.elements.shopArrowLeft.classList.remove('visible');
-            this.ui.elements.shopArrowLeft.classList.add('hidden');
-            this.ui.elements.shopArrowRight.classList.remove('visible');
-            this.ui.elements.shopArrowRight.classList.add('hidden');
-            this.ui.elements.tonConnect.style.display = 'none';
-            this.isInventoryView = false;
-            this.characterController.updateAppearance();
-        } else {
+            this.initializeMarketFilters();
+        } else if (menuType === 'leaderboard') {
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(false);
             this.state.setLeaderboardViewActive(true);
@@ -1407,18 +1393,12 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.ui.elements.tonConnect.style.display = 'none';
-            this.isInventoryView = false;
             this.updateLeaderboardDisplay();
-        }
-    }
-    handleShopArrowClick(direction) {
-        if (direction === 'right') {
-            this.toggleInventory();
-        } else {
-            const casesContainer = this.ui.elements.shopContainer.querySelector('.cases-container');
-            const scrollAmount = -150;
-            casesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     }
     handleCaseClick(e) {
@@ -1428,17 +1408,9 @@ class Game {
         this.state.isOverlayActive = true;
         this.showCaseAnimation(caseType);
     }
-    toggleInventory() {
-        if (this.isInventoryView) {
-            this.ui.elements.shopContainer.classList.remove('hidden');
-            this.ui.elements.shopContainer.classList.add('visible');
-            this.ui.elements.inventoryContainer.classList.remove('visible');
-            this.ui.elements.inventoryContainer.classList.add('hidden');
-            this.ui.elements.shopArrowLeft.classList.remove('hidden');
-            this.ui.elements.shopArrowLeft.classList.add('visible');
-            this.ui.elements.shopArrowRight.classList.remove('hidden');
-            this.ui.elements.shopArrowRight.classList.add('visible');
-        } else {
+    handleArrowClick(e) {
+        const arrow = e.target;
+        if (arrow.id === 'shopArrowLeft' || arrow.id === 'shopArrowRight') {
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
             this.ui.elements.inventoryContainer.classList.remove('hidden');
@@ -1447,19 +1419,74 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.add('visible');
+            this.ui.elements.inventoryArrowRight.classList.remove('hidden');
+            this.ui.elements.inventoryArrowRight.classList.add('visible');
+            this.isInventoryView = true;
             this.updateInventoryDisplay();
+        } else if (arrow.id === 'inventoryArrowLeft' || arrow.id === 'inventoryArrowRight') {
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.shopContainer.classList.remove('hidden');
+            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('hidden');
+            this.ui.elements.shopArrowLeft.classList.add('visible');
+            this.ui.elements.shopArrowRight.classList.remove('hidden');
+            this.ui.elements.shopArrowRight.classList.add('visible');
+            this.isInventoryView = false;
         }
-        this.isInventoryView = !this.isInventoryView;
     }
     initialize() {
+        if (this.state.isTelegramEnvironment()) {
+            document.documentElement.dataset.telegram = 'true';
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.expand();
+                window.Telegram.WebApp.disableVerticalSwipes();
+            }
+        }
         this.preloadAssets();
         this.particleSystem.resize();
         this.confettiSystem.resize();
         this.ui.updateCoinCounterPosition();
-        this.initializeMarketFilters();
-        this.updateMarketDisplay();
-        this.updateInventoryDisplay();
-        this.updateLeaderboardDisplay();
+        const menuListener = this.handleMenuClick.bind(this);
+        this.ui.elements.footer.addEventListener('pointerdown', menuListener);
+        this.listeners.push({
+            element: this.ui.elements.footer,
+            type: 'pointerdown',
+            listener: menuListener
+        });
+        const caseListener = this.handleCaseClick.bind(this);
+        this.ui.elements.shopContainer.addEventListener('pointerdown', caseListener);
+        this.listeners.push({
+            element: this.ui.elements.shopContainer,
+            type: 'pointerdown',
+            listener: caseListener
+        });
+        const arrowListener = this.handleArrowClick.bind(this);
+        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', arrowListener);
+        this.ui.elements.shopArrowRight.addEventListener('pointerdown', arrowListener);
+        this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', arrowListener);
+        this.ui.elements.inventoryArrowRight.addEventListener('pointerdown', arrowListener);
+        this.listeners.push(
+            { element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: arrowListener },
+            { element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: arrowListener },
+            { element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: arrowListener },
+            { element: this.ui.elements.inventoryArrowRight, type: 'pointerdown', listener: arrowListener }
+        );
+        const filterListener = () => this.updateMarketDisplay();
+        this.ui.elements.characterFilter.addEventListener('change', filterListener);
+        this.ui.elements.backgroundFilter.addEventListener('change', filterListener);
+        this.ui.elements.priceSort.addEventListener('change', filterListener);
+        this.listeners.push(
+            { element: this.ui.elements.characterFilter, type: 'change', listener: filterListener },
+            { element: this.ui.elements.backgroundFilter, type: 'change', listener: filterListener },
+            { element: this.ui.elements.priceSort, type: 'change', listener: filterListener }
+        );
         const resizeListener = () => {
             if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
             this.resizeTimeout = setTimeout(() => {
@@ -1469,34 +1496,21 @@ class Game {
             }, CONFIG.RESIZE_DEBOUNCE);
         };
         window.addEventListener('resize', resizeListener);
-        this.listeners.push({ element: window, type: 'resize', listener: resizeListener });
-        const menuListener = this.handleMenuClick.bind(this);
-        this.ui.elements.footer.addEventListener('pointerdown', menuListener);
-        this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuListener });
-        const topMenuListener = this.handleTopMenuClick.bind(this);
-        this.ui.elements.topMenu.addEventListener('pointerdown', topMenuListener);
-        this.listeners.push({ element: this.ui.elements.topMenu, type: 'pointerdown', listener: topMenuListener });
-        const shopArrowLeftListener = () => this.handleShopArrowClick('left');
-        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
-        this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
-        const shopArrowRightListener = () => this.handleShopArrowClick('right');
-        this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
-        this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
-        const caseListener = this.handleCaseClick.bind(this);
-        this.ui.elements.shopContainer.addEventListener('pointerdown', caseListener);
-        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseListener });
-        const filterListener = () => this.updateMarketDisplay();
-        this.ui.elements.characterFilter.addEventListener('change', filterListener);
-        this.ui.elements.backgroundFilter.addEventListener('change', filterListener);
-        this.ui.elements.priceSort.addEventListener('change', filterListener);
-        this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterListener });
-        this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterListener });
-        this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterListener });
+        this.listeners.push({
+            element: window,
+            type: 'resize',
+            listener: resizeListener
+        });
+        this.animate();
+    }
+    animate() {
+        this.particleSystem.update();
+        this.particleSystem.draw();
+        requestAnimationFrame(() => this.animate());
     }
     destroy() {
         this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
         this.characterController.destroy();
-        this.confettiSystem.stop();
         if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
     }
 }
@@ -1510,6 +1524,8 @@ const elements = {
     incomeCounter: document.getElementById('incomeCounter'),
     incomeTimer: document.getElementById('incomeTimer'),
     coinCounter: document.getElementById('coinCounter'),
+    coinCount: document.getElementById('coinCount'),
+    totalCoins: document.getElementById('totalCoins'),
     character: document.getElementById('character'),
     shopContainer: document.getElementById('shopContainer'),
     inventoryContainer: document.getElementById('inventoryContainer'),
@@ -1517,19 +1533,19 @@ const elements = {
     leaderboardContainer: document.getElementById('leaderboardContainer'),
     shopArrowLeft: document.getElementById('shopArrowLeft'),
     shopArrowRight: document.getElementById('shopArrowRight'),
+    inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
+    inventoryArrowRight: document.getElementById('inventoryArrowRight'),
     footer: document.getElementById('footer'),
-    coinCount: document.getElementById('coinCount'),
-    totalCoins: document.getElementById('totalCoins'),
-    incomeRate: document.getElementById('incomeRate'),
-    timerDisplay: document.getElementById('timerDisplay'),
+    disconnectWallet: document.getElementById('disconnect-wallet'),
+    tonConnect: document.getElementById('ton-connect'),
     inventoryItems: document.getElementById('inventoryItems'),
     marketItems: document.getElementById('marketItems'),
-    leaderboardTable: document.getElementById('leaderboardTable'),
     characterFilter: document.getElementById('characterFilter'),
     backgroundFilter: document.getElementById('backgroundFilter'),
     priceSort: document.getElementById('priceSort'),
-    disconnectWallet: document.getElementById('disconnect-wallet'),
-    tonConnect: document.getElementById('ton-connect'),
+    leaderboardTable: document.getElementById('leaderboardTable'),
+    timerDisplay: document.getElementById('timerDisplay'),
+    incomeRate: document.getElementById('incomeRate'),
     playerStats: document.querySelector('.player-stats')
 };
 const game = new Game(elements);
