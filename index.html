@@ -34,7 +34,6 @@ body{min-height:100vh;display:flex;flex-direction:column;align-items:center;just
 .wallet-container{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem}
 #ton-connect{display:none;justify-content:flex-end;padding:0.5rem;background:#007bff;border-radius:12px;color:#fff;font-size:0.9rem;font-weight:600;cursor:pointer}
 .market-container.visible #ton-connect{display:flex}
-#wallet-status{font-size:0.9rem;opacity:0.8}
 #disconnect-wallet{font-size:0.9rem;padding:0.5rem 1rem;background:#007bff;color:#fff;border-radius:12px;cursor:pointer;display:none}
 #disconnect-wallet:hover{background:#0056b3}
 #particleCanvas,#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:1;transition:opacity 0.5s ease}
@@ -113,7 +112,6 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .player-rank{font-size:0.9rem}
 .player-stats{font-size:0.8rem}
 .wallet-container{gap:0.3rem}
-#wallet-status{font-size:0.8rem}
 #disconnect-wallet{font-size:0.8rem;padding:0.4rem 0.8rem}
 .income-counter{font-size:1rem;padding:0.5rem 1rem;top:4.5rem}
 .income-timer{font-size:0.9rem;padding:0.5rem 1rem;top:6.5rem}
@@ -176,7 +174,6 @@ footer{bottom:0;padding:0}
 <span class="player-rank">Rank: 1</span>
 <span class="player-stats">World of Consoles</span>
 <div class="wallet-container">
-<div id="wallet-status">Not connected</div>
 <button id="disconnect-wallet">Disconnect Wallet</button>
 </div>
 </div>
@@ -252,10 +249,6 @@ footer{bottom:0;padding:0}
 <div class="menu-item" data-menu="market">
 <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market" draggable="false">
 <span>Market</span>
-</div>
-<div class="menu-item" data-menu="games">
-<img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Games" draggable="false">
-<span>Games</span>
 </div>
 </div>
 </div>
@@ -582,9 +575,6 @@ class UIManager {
         const seconds = Math.floor((timeLeft % 60000) / 1000);
         this.elements.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
-    updateWalletStatus(status) {
-        this.elements.walletStatus.textContent = status;
-    }
     toggleDisconnectButton(show) {
         this.elements.disconnectWallet.style.display = show ? 'block' : 'none';
     }
@@ -601,7 +591,6 @@ class UIManager {
                 if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
                 if (key === 'worldName') this.elements.playerStats.textContent = value;
                 if (key === 'incomeRate') this.elements.incomeRate.textContent = value;
-                if (key === 'walletStatus') this.elements.walletStatus.textContent = value;
             }
             this.pendingUpdates = {};
             const digits = this.elements.coinCount.textContent.length;
@@ -753,7 +742,7 @@ class Game {
     initializeWallet() {
         try {
             this.tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                manifestUrl: 'https://tonconnect.github.io/demo-dapp/tonconnect-manifest.json',
+                manifestUrl: 'https://Max27347.github.io/ProGameNew/manifest.json',
                 buttonRootId: 'ton-connect'
             });
             if (this.state.isTelegramEnvironment()) {
@@ -765,12 +754,10 @@ class Game {
                 if (walletInfo) {
                     const address = walletInfo.account.address;
                     this.state.setWalletConnected(true, address);
-                    this.ui.queueUpdate('walletStatus', `Connected: ${address.slice(0, 4)}...${address.slice(-4)}`);
                     this.ui.toggleDisconnectButton(true);
                     this.ui.elements.tonConnect.style.display = 'none';
                 } else {
                     this.state.setWalletConnected(false, null);
-                    this.ui.queueUpdate('walletStatus', 'Not connected');
                     this.ui.toggleDisconnectButton(false);
                     if (this.ui.elements.marketContainer.classList.contains('visible')) {
                         this.ui.elements.tonConnect.style.display = 'flex';
@@ -795,13 +782,11 @@ class Game {
             });
             if (this.tonConnectUI.wallet) {
                 this.state.setWalletConnected(true, this.tonConnectUI.wallet.account.address);
-                this.ui.queueUpdate('walletStatus', `Connected: ${this.tonConnectUI.wallet.account.address.slice(0, 4)}...${this.tonConnectUI.wallet.account.address.slice(-4)}`);
                 this.ui.toggleDisconnectButton(true);
                 this.ui.applyUpdates();
             }
         } catch (error) {
             console.error('Error initializing TON Connect UI:', error);
-            this.ui.queueUpdate('walletStatus', `Error: ${error.message}`);
             this.ui.applyUpdates();
         }
     }
@@ -1279,27 +1264,6 @@ class Game {
             this.ui.elements.tonConnect.style.display = this.state.isWalletConnected() ? 'none' : 'flex';
             this.isInventoryView = false;
             this.updateMarketDisplay();
-        } else if (menuType === 'games') {
-            this.state.setShopViewActive(false);
-            this.state.setMarketViewActive(false);
-            this.ui.elements.mainContent.classList.remove('visible');
-            this.ui.elements.mainContent.classList.add('hidden-opacity');
-            this.ui.elements.coinCounter.classList.remove('hidden');
-            this.ui.elements.coinCounter.classList.add('visible');
-            this.ui.elements.character.classList.remove('visible');
-            this.ui.elements.character.classList.add('hidden-opacity');
-            this.ui.elements.shopContainer.classList.remove('visible');
-            this.ui.elements.shopContainer.classList.add('hidden');
-            this.ui.elements.inventoryContainer.classList.remove('visible');
-            this.ui.elements.inventoryContainer.classList.add('hidden');
-            this.ui.elements.marketContainer.classList.remove('visible');
-            this.ui.elements.marketContainer.classList.add('hidden');
-            this.ui.elements.shopArrowLeft.classList.remove('visible');
-            this.ui.elements.shopArrowLeft.classList.add('hidden');
-            this.ui.elements.shopArrowRight.classList.remove('visible');
-            this.ui.elements.shopArrowRight.classList.add('hidden');
-            this.ui.elements.tonConnect.style.display = 'none';
-            this.isInventoryView = false;
         }
     }
     handleShopArrowClick(direction) {
