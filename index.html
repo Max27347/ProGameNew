@@ -935,56 +935,56 @@ class Game {
         this.tonConnectUI = null;
     }
     initializeWallet() {
-        try {
-            this.tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                manifestUrl: 'https://max27347.github.io/ProGameNew/manifest.json',
-                buttonRootId: 'ton-connect'
-            });
-            if (this.state.isTelegramEnvironment()) {
-                this.tonConnectUI.uiOptions = {
-                    twaReturnUrl: 'https://t.me/Heroes_coin_bot'
-                };
-            }
-            this.tonConnectUI.onStatusChange(walletInfo => {
-                if (walletInfo) {
-                    const address = walletInfo.account.address;
-                    this.state.setWalletConnected(true, address);
-                    this.ui.toggleDisconnectButton(true);
-                    this.ui.toggleConnectButton(false);
-                } else {
-                    this.state.setWalletConnected(false, null);
-                    this.ui.toggleDisconnectButton(false);
-                    if (this.ui.elements.marketContainer.classList.contains('visible')) {
-                        this.ui.toggleConnectButton(true);
-                    }
-                }
-                this.ui.applyUpdates();
-            });
-            const disconnectListener = async () => {
-                try {
-                    await this.tonConnectUI.disconnect();
-                    console.log('Wallet disconnected');
-                } catch (error) {
-                    console.error('Error disconnecting wallet:', error);
-                    alert(`Failed to disconnect wallet: ${error.message}`);
-                }
+    try {
+        this.tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://max27347.github.io/ProGameNew/manifest.json',
+            buttonRootId: 'ton-connect'
+        });
+        if (this.state.isTelegramEnvironment()) {
+            this.tonConnectUI.uiOptions = {
+                twaReturnUrl: 'https://t.me/Heroes_coin_bot'
             };
-            this.ui.elements.disconnectWallet.addEventListener('pointerdown', disconnectListener);
-            this.listeners.push({
-                element: this.ui.elements.disconnectudiator,
-                type: 'pointerdown',
-                listener: disconnectListener
-            });
-            if (this.tonConnectUI.wallet) {
-                this.state.setWalletConnected(true, this.tonConnectUI.wallet.account.address);
+        }
+        this.tonConnectUI.onStatusChange(walletInfo => {
+            if (walletInfo) {
+                const address = walletInfo.account.address;
+                this.state.setWalletConnected(true, address);
                 this.ui.toggleDisconnectButton(true);
-                this.ui.applyUpdates();
+                this.ui.toggleConnectButton(false);
+            } else {
+                this.state.setWalletConnected(false, null);
+                this.ui.toggleDisconnectButton(false);
+                if (this.ui.elements.marketContainer.classList.contains('visible')) {
+                    this.ui.toggleConnectButton(true);
+                }
             }
-        } catch (error) {
-            console.error('Error initializing TON Connect UI:', error);
+            this.ui.applyUpdates();
+        });
+        const disconnectListener = async () => {
+            try {
+                await this.tonConnectUI.disconnect();
+                console.log('Wallet disconnected');
+            } catch (error) {
+                console.error('Error disconnecting wallet:', error);
+                alert(`Failed to disconnect wallet: ${error.message}`);
+            }
+        };
+        this.ui.elements.disconnectWallet.addEventListener('pointerdown', disconnectListener);
+        this.listeners.push({
+            element: this.ui.elements.disconnectWallet,
+            type: 'pointerdown',
+            listener: disconnectListener
+        });
+        if (this.tonConnectUI.wallet) {
+            this.state.setWalletConnected(true, this.tonConnectUI.wallet.account.address);
+            this.ui.toggleDisconnectButton(true);
             this.ui.applyUpdates();
         }
+    } catch (error) {
+        console.error('Error initializing TON Connect UI:', error);
+        this.ui.applyUpdates();
     }
+}
     async preloadAssets() {
         const imageUrls = [
             'https://placehold.co/40x40',
