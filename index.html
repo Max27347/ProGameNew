@@ -1003,17 +1003,12 @@ class Game {
                         this.ui.applyUpdates();
                         this.updateInventoryDisplay();
                         if (this.state.getSelectedCharacter() === item) {
-                            this.characterController.updateAppearance Athena(this.ui.queueUpdate('coins', this.state.getCoins());
-                            this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                            this.ui.applyUpdates();
-                            this.updateInventoryDisplay();
-                            if (this.state.getSelectedCharacter() === item) {
-                                this.characterController.updateAppearance();
-                            }
-                            this.characterController.updateIncomeRate();
-                        } else {
-                            alert('Not enough diamonds or max level reached!');
+                            this.characterController.updateAppearance();
                         }
+                        this.characterController.updateIncomeRate();
+                    } else {
+                        alert('Not enough diamonds or max level reached!');
+                    }
                     });
                 }
             } else {
