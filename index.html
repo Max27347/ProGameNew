@@ -567,12 +567,6 @@ class ConfettiSystem {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.particles = [];
     }
-    animate() {
-        if (!this.isAnimating) return;
-        this.update();
-        this.draw();
-        requestAnimationFrame(() => this.animate());
-    }
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
@@ -1420,10 +1414,39 @@ class Game {
     }
     handleTopMenuClick() {
         if (this.state.isLeaderboardViewActive()) {
+            // Hide leaderboard and return to home view
             this.state.setLeaderboardViewActive(false);
             this.ui.elements.leaderboardContainer.classList.remove('visible');
             this.ui.elements.leaderboardContainer.classList.add('hidden');
+            // Restore home view elements
+            this.state.setShopViewActive(false);
+            this.state.setMarketViewActive(false);
+            this.ui.elements.mainContent.classList.remove('hidden-opacity');
+            this.ui.elements.mainContent.classList.add('visible');
+            this.ui.elements.coinCounter.classList.remove('hidden');
+            this.ui.elements.coinCounter.classList.add('visible');
+            this.ui.elements.character.classList.remove('hidden-opacity');
+            this.ui.elements.character.classList.add('visible');
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.marketContainer.classList.remove('visible');
+            this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.isInventoryView = false;
+            this.ui.toggleConnectButton(false);
+            this.state.canInteract = true;
+            // Highlight home menu item
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
+            document.querySelector('.menu-item[data-menu="home"]').classList.add('highlighted');
         } else {
+            // Show leaderboard
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(false);
             this.state.setLeaderboardViewActive(true);
@@ -1476,7 +1499,7 @@ class Game {
         this.ui.elements.topMenu.addEventListener('pointerdown', topMenuClickListener);
         this.listeners.push({ element: this.ui.elements.topMenu, type: 'pointerdown', listener: topMenuClickListener });
         const resizeListener = () => {
-            if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+            ifthis.resizeTimeout) clearTimeout(this.resizeTimeout);
             this.resizeTimeout = setTimeout(() => {
                 this.particleSystem.resize();
                 this.confettiSystem.resize();
