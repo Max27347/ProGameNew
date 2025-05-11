@@ -50,7 +50,7 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .character{width:180px;height:180px;object-fit:contain;cursor:pointer;user-select:none;touch-action:manipulation;opacity:1;transition:transform 0.3s ease}
 .click-effect{position:absolute;width:40px;height:40px;object-fit:contain;pointer-events:none;animation:fadeOut 1s ease forwards;z-index:2;transform:translate(-50%,-50%)}
 @keyframes fadeOut{0%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-70%)}}
-footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-content:center;align-items:center;padding:0;opacity:1;transition:opacity 0.5s ease}
+footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-content:center;align-items:center;padding:0;opacity:1}
 .footer-menu-container{width:auto;background:var(--footer-bg);border-radius:20px 20px 0 0;display:flex;justify-content:center;align-items:center;padding:0.75rem}
 .footer-menu{display:flex;justify-content:space-around;align-items:center;width:100%;gap:1rem}
 .menu-item{display:flex;flex-direction:column;align-items:center;gap:0.4rem;cursor:pointer}
@@ -89,10 +89,7 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .roulette-strip{width:5440px;height:100%;display:flex;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 40s linear infinite}
 .roulette-item{width:120px;height:120px;margin:0 8px;display:flex;justify-content:center;align-items:center;background:#1E1E1E;border-radius:8px;position:relative}
 .roulette-item img{width:100px;height:100px;object-fit:contain}
-.roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite;z-index:10}
-.animation-character{width:100px;height:100px;object-fit:contain;z-index:3}
-.animation-character.mutated{filter:brightness(1.5) hue-rotate(200deg)}
-.animation-background{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;opacity:0.8;z-index:1}
+.roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite}
 .animation-bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:90%;background:#FFF;border-radius:2px}
 .case-animation-button{font-size:1.2rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.75rem 1.5rem;border-radius:16px;cursor:pointer;margin-top:1rem}
 .case-animation-cancel{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;cursor:pointer;margin-top:0.5rem}
@@ -108,8 +105,7 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .leaderboard-table th,.leaderboard-table td{padding:0.5rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.1)}
 .leaderboard-table th{font-weight:600;background:#2E2E2E}
 .leaderboard-table tr:hover{background:rgba(255,255,255,0.05)}
-.quests-items-container{max-height:40vh}
-.friends-items-container{max-height:40vh}
+.quests-items-container,.friends-items-container{max-height:40vh}
 .quest-item-container,.friend-item-container{width:100%;max-width:300px}
 .invite-button{font-size:1rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.75rem 1.5rem;border-radius:12px;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;gap:0.3rem}
 .invite-button:hover{background:#FFD700}
@@ -153,8 +149,6 @@ footer{bottom:0;padding:0}
 .roulette-item{width:96px;height:96px;margin:0 8px}
 .roulette-item img{width:80px;height:80px}
 .roulette-item.winner{transform:scale(1.5)}
-.animation-character{width:80px;height:80px}
-.animation-background{width:100%;height:100%}
 .animation-bar{width:3px;height:80%}
 .case-animation-button{font-size:1rem;padding:0.6rem 1.2rem;color:#000}
 .case-animation-cancel{font-size:0.8rem}
@@ -279,7 +273,7 @@ footer{bottom:0;padding:0}
 <div class="shop-arrow right hidden" id="shopArrowRight">></div>
 <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
 <div class="inventory-arrow right hidden" id="inventoryArrowRight">></div>
-<footer class="game-hidden" id="footer">
+<footer id="footer">
     <div class="footer-menu-container">
         <div class="footer-menu">
             <div class="menu-item highlighted" data-menu="home">
@@ -763,6 +757,7 @@ class CharacterController {
         this.updateIncomeRate();
         this.ui.applyUpdates();
         this.attachListeners();
+        this.startCoinUpdate();
     }
     updateIncomeRate() {
         const selectedCharacter = this.state.getSelectedCharacter();
@@ -795,12 +790,14 @@ class CharacterController {
             this.state.startTimer();
             this.state.setNextIncomeTime(Date.now() + CONFIG.INCOME_INTERVAL);
             this.startTimer();
-            this.startIncomeTimer();
-            this.startCoinUpdate();
         }
         this.state.scale = Math.min(this.state.scale + CONFIG.SCALE_INCREMENT, CONFIG.MAX_SCALE);
         this.ui.updateCharacterScale(this.state.scale);
         this.effectPool.showEffect(e.clientX, e.clientY);
+        this.state.addCoins(10);
+        this.ui.queueUpdate('coins', this.state.getCoins());
+        this.ui.queueUpdate('totalCoins', this.state.getCoins());
+        this.ui.applyUpdates();
         this.state.updateQuestProgress('quest1', 1);
         if (this.resetTimeout) clearTimeout(this.resetTimeout);
         this.resetTimeout = setTimeout(() => {
@@ -809,15 +806,6 @@ class CharacterController {
                 this.ui.updateCharacterScale(this.state.scale);
             }
         }, 1000);
-    }
-    startIncomeTimer() {
-        setInterval(() => {
-            const selectedCharacter = this.state.getSelectedCharacter();
-            const totalIncomeRate = selectedCharacter ? selectedCharacter.incomeRate || 100 : 100;
-            this.ui.queueUpdate('incomeRate', totalIncomeRate);
-            this.ui.applyUpdates();
-            this.state.setNextIncomeTime(Date.now() + CONFIG.INCOME_INTERVAL);
-        }, CONFIG.INCOME_INTERVAL);
     }
     startCoinUpdate() {
         const updateCoins = () => {
@@ -842,6 +830,7 @@ class CharacterController {
                 const timeLeft = this.state.getNextIncomeTime() - Date.now();
                 if (timeLeft <= 0) {
                     this.ui.updateTimerDisplay(0);
+                    this.state.setNextIncomeTime(Date.now() + CONFIG.INCOME_INTERVAL);
                 } else {
                     this.ui.updateTimerDisplay(timeLeft);
                 }
@@ -932,8 +921,7 @@ class Game {
             'https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp',
             'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp',
             'https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp',
-            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp',
-            'https://em-content.zobj.net/source/telegram/386/joystick_1f579-fe0f.webp'
+            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp'
         ];
         let loadedCount = 0;
         const totalImages = imageUrls.length;
@@ -1233,7 +1221,6 @@ class Game {
         message.className = 'case-animation-message hidden';
         message.textContent = `Spin for ${currency}!`;
         const animationContainer = document.createElement('div');
-        animationContainer.id = 'caseAnimationContainer';
         animationContainer.className = 'case-animation-container';
         const rouletteStrip = document.createElement('div');
         rouletteStrip.className = 'roulette-strip';
@@ -1270,7 +1257,7 @@ class Game {
             }
             rouletteItems.push({
                 ...randomItem,
-                isMutated: randomnessItem.name !== 'Diamonds' && Math.random<0.2
+                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0 .2
             });
         }
         rouletteItems.forEach(item => {
@@ -1300,6 +1287,11 @@ class Game {
         spinButton.addEventListener('pointerdown', () => {
             if (!this.state.isOverlayActive) return;
             if (isDiamondCase) {
+                if (this.state.getCoins() < 100) {
+                    alert('Not enough diamonds!');
+                    closeOverlay();
+                    return;
+                }
                 this.state.addCoins(-100);
                 this.ui.queueUpdate('coins', this.state.getCoins());
                 this.ui.queueUpdate('totalCoins', this.state.getCoins());
@@ -1321,12 +1313,13 @@ class Game {
                     this.ui.applyUpdates();
                     this.confettiSystem.start('#FFD700');
                 } else {
-                    this.state.addToInventory({
+                    const newItem = {
                         src: winnerItem.src,
                         name: winnerItem.name,
                         background: winnerItem.isMutated ? MUTATION_GRADIENT : BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
                         isMutated: winnerItem.isMutated
-                    });
+                    };
+                    this.state.addToInventory(newItem);
                     this.confettiSystem.start(winnerItem.isMutated ? '#FFD700' : '#FFFFFF');
                     this.updateInventoryDisplay();
                 }
@@ -1357,16 +1350,7 @@ class Game {
         };
     }
     toggleMainElements(show) {
-        const elements = [
-            this.ui.elements.topMenu,
-            this.ui.elements.particleCanvas,
-            this.ui.elements.mainContent,
-            this.ui.elements.footer,
-            this.ui.elements.incomeCounter,
-            this.ui.elements.incomeTimer,
-            this.ui.elements.coinCounter,
-            this.ui.elements.character
-        ];
+        const elements = [            this.ui.elements.topMenu,            this.ui.elements.particleCanvas,            this.ui.elements.mainContent,            this.ui.elements.incomeCounter,            this.ui.elements.incomeTimer,            this.ui.elements.coinCounter,            this.ui.elements.character        ];
         elements.forEach(el => {
             if (show) {
                 el.classList.remove('hidden-opacity');
@@ -1376,6 +1360,9 @@ class Game {
                 el.classList.add('hidden-opacity');
             }
         });
+        // Footer всегда виден
+        this.ui.elements.footer.classList.remove('hidden-opacity');
+        this.ui.elements.footer.classList.add('visible');
     }
     initialize() {
         this.ui.updateCoinCounterPosition();
@@ -1387,26 +1374,22 @@ class Game {
         this.updateLeaderboardDisplay();
         this.updateQuestsDisplay();
         this.updateFriendsDisplay();
+        // Исправление клика по персонажу
         this.ui.elements.character.addEventListener('pointerdown', (e) => {
+            if (this.state.isOverlayActive) return;
             this.characterController.handleTap(e);
             this.state.addCoins(10);
             this.ui.queueUpdate('coins', this.state.getCoins());
             this.ui.queueUpdate('totalCoins', this.state.getCoins());
             this.ui.applyUpdates();
         });
+        // Меню навигации
         this.ui.elements.footer.querySelectorAll('.menu-item').forEach(item => {
             const menu = item.dataset.menu;
             const handler = () => {
                 this.ui.elements.footer.querySelectorAll('.menu-item').forEach(i => i.classList.remove('highlighted'));
                 item.classList.add('highlighted');
-                const containers = [
-                    this.ui.elements.shopContainer,
-                    this.ui.elements.inventoryContainer,
-                    this.ui.elements.marketContainer,
-                    this.ui.elements.leaderboardContainer,
-                    this.ui.elements.questsContainer,
-                    this.ui.elements.friendsContainer
-                ];
+                const containers = [                    this.ui.elements.shopContainer,                    this.ui.elements.inventoryContainer,                    this.ui.elements.marketContainer,                    this.ui.elements.leaderboardContainer,                    this.ui.elements.questsContainer,                    this.ui.elements.friendsContainer                ];
                 containers.forEach(container => {
                     container.classList.remove('visible');
                     container.classList.add('hidden');
@@ -1455,9 +1438,14 @@ class Game {
             item.addEventListener('pointerdown', handler);
             this.listeners.push({ element: item, type: 'pointerdown', listener: handler });
         });
+        // Исправление открытия кейсов
         this.ui.elements.shopContainer.querySelectorAll('.case-container').forEach(caseElement => {
             const caseType = caseElement.dataset.case;
-            const handler = () => this.showCaseAnimation(caseType);
+            const handler = () => {
+                if (!this.state.isOverlayActive) {
+                    this.showCaseAnimation(caseType);
+                }
+            };
             caseElement.addEventListener('pointerdown', handler);
             this.listeners.push({ element: caseElement, type: 'pointerdown', listener: handler });
         });
@@ -1471,9 +1459,9 @@ class Game {
             this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
-            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
             this.ui.elements.inventoryArrowLeft.classList.add('visible');
-            this.ui.elements.inventoryArrowRight.classList.remove('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
             this.ui.elements.inventoryArrowRight.classList.add('visible');
             this.updateInventoryDisplay();
         });
