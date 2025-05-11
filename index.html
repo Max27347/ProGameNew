@@ -1451,6 +1451,19 @@ handleTopMenuClick() {
         this.ui.elements.marketContainer.classList.remove('visible');
         this.ui.elements.marketContainer.classList.add('hidden');
 
+        // Скрываем Quests и Friends
+        const quests = document.getElementById('questsContainer');
+        if (quests) {
+            quests.classList.remove('visible');
+            quests.classList.add('hidden');
+        }
+
+        const friends = document.getElementById('friendsContainer');
+        if (friends) {
+            friends.classList.remove('visible');
+            friends.classList.add('hidden');
+        }
+
         // Скрываем стрелки навигации
         this.ui.elements.shopArrowLeft.classList.remove('visible');
         this.ui.elements.shopArrowLeft.classList.add('hidden');
@@ -1485,6 +1498,20 @@ handleTopMenuClick() {
         this.ui.elements.inventoryContainer.classList.add('hidden');
         this.ui.elements.marketContainer.classList.remove('visible');
         this.ui.elements.marketContainer.classList.add('hidden');
+
+        // Скрываем Quests и Friends
+        const quests = document.getElementById('questsContainer');
+        if (quests) {
+            quests.classList.remove('visible');
+            quests.classList.add('hidden');
+        }
+
+        const friends = document.getElementById('friendsContainer');
+        if (friends) {
+            friends.classList.remove('visible');
+            friends.classList.add('hidden');
+        }
+
         this.ui.elements.leaderboardContainer.classList.remove('hidden');
         this.ui.elements.leaderboardContainer.classList.add('visible');
         this.ui.elements.shopArrowLeft.classList.remove('visible');
@@ -1499,6 +1526,7 @@ handleTopMenuClick() {
         this.updateLeaderboardDisplay();
     }
 }
+
     attachEventListeners() {
         const menuClickListener = this.handleMenuClick.bind(this);
         this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
