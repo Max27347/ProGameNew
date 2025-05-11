@@ -803,7 +803,7 @@ class UIManager {
     }
 }
 class CharacterController {
-    constructor(state, ui, effectPool, confettiSystem)body {
+    constructor(state, ui, effectPool, confettiSystem) {
         this.state = state;
         this.ui = ui;
         this.effectPool = effectPool;
@@ -969,7 +969,7 @@ class Game {
                     alert(`Failed to disconnect wallet: ${error.message}`);
                 }
             };
-            this.listeners.push({ element: this.ui.elements.disconnectWallet, type: 'pointerdown', listener: disconnectListener });
+            this.ui.elements.disconnectWallet.addEventListener('pointerdown', disconnectListener);
             this.listeners.push({
                 element: this.ui.elements.disconnectudiator,
                 type: 'pointerdown',
