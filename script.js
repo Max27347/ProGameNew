@@ -543,6 +543,7 @@ class Game {
         this.resizeTimeout = null;
         this.listeners = [];
         this.isInventoryView = false;
+        this.isMarketView = false;
         this.availableMarketSkins = [...MARKET_SKINS];
         this.tonConnectUI = null;
     }
@@ -656,7 +657,6 @@ class Game {
         inventory.forEach(item => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'inventory-item-container';
-            // Используем SKINS[0].gradient для Controller, если фон не задан
             itemDiv.style.background = item.name === 'Controller' ? SKINS[0].gradient : (item.background || BACKGROUND_GRADIENTS[0]);
             itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
             const img = document.createElement('img');
@@ -717,6 +717,7 @@ class Game {
                     this.ui.elements.shopArrowRight.classList.remove('hidden');
                     this.ui.elements.shopArrowRight.classList.add('visible');
                     this.isInventoryView = false;
+                    this.isMarketView = false;
                     this.characterController.updateAppearance();
                 }
             });
@@ -1055,7 +1056,7 @@ class Game {
         this.state.addToInventory({
             src: CHARACTERS[0].src,
             name: CHARACTERS[0].name,
-            background: SKINS[0].gradient, // Используем правильный фон для Controller
+            background: SKINS[0].gradient,
             isMutated: false
         });
         this.preloadAssets();
@@ -1079,7 +1080,6 @@ class Game {
             const listener = () => {
                 menuItems.forEach(i => i.classList.remove('highlighted'));
                 item.classList.add('highlighted');
-                // Скрываем все контейнеры
                 this.ui.elements.shopContainer.classList.remove('visible');
                 this.ui.elements.shopContainer.classList.add('hidden');
                 this.ui.elements.inventoryContainer.classList.remove('visible');
@@ -1094,13 +1094,15 @@ class Game {
                 this.ui.elements.shopArrowRight.classList.add('hidden');
                 this.ui.elements.inventoryArrowLeft.classList.remove('visible');
                 this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+                this.ui.elements.marketArrowLeft.classList.remove('visible');
+                this.ui.elements.marketArrowLeft.classList.add('hidden');
                 this.state.setShopViewActive(false);
                 this.state.setMarketViewActive(false);
                 this.state.setLeaderboardViewActive(false);
-                // Управляем видимостью элементов Home
+                this.isInventoryView = false;
+                this.isMarketView = false;
                 if (menuType === 'home') {
                     this.toggleHomeElements(true);
-                    this.isInventoryView = false;
                 } else {
                     this.toggleHomeElements(false);
                     if (menuType === 'shop') {
@@ -1111,17 +1113,6 @@ class Game {
                         this.ui.elements.shopArrowRight.classList.remove('hidden');
                         this.ui.elements.shopArrowRight.classList.add('visible');
                         this.state.setShopViewActive(true);
-                        this.isInventoryView = false;
-                    } else if (menuType === 'market') {
-                        this.ui.elements.marketContainer.classList.remove('hidden');
-                        this.ui.elements.marketContainer.classList.add('visible');
-                        this.state.setMarketViewActive(true);
-                        this.updateMarketDisplay();
-                        if (!this.state.isWalletConnected()) {
-                            this.ui.toggleConnectButton(true);
-                        } else {
-                            this.ui.toggleDisconnectButton(true);
-                        }
                     } else if (menuType === 'leaderboard') {
                         this.ui.elements.leaderboardContainer.classList.remove('hidden');
                         this.ui.elements.leaderboardContainer.classList.add('visible');
@@ -1155,6 +1146,7 @@ class Game {
             this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
             this.ui.elements.inventoryArrowLeft.classList.add('visible');
             this.isInventoryView = true;
+            this.isMarketView = false;
             this.updateInventoryDisplay();
         };
         this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
@@ -1171,6 +1163,7 @@ class Game {
             this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
             this.ui.elements.inventoryArrowLeft.classList.add('visible');
             this.isInventoryView = true;
+            this.isMarketView = false;
             this.updateInventoryDisplay();
         };
         this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
@@ -1178,18 +1171,43 @@ class Game {
         const inventoryArrowLeftListener = () => {
             this.ui.elements.inventoryContainer.classList.remove('visible');
             this.ui.elements.inventoryContainer.classList.add('hidden');
-            this.ui.elements.shopContainer.classList.remove('hidden');
-            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.marketContainer.classList.remove('hidden');
+            this.ui.elements.marketContainer.classList.add('visible');
             this.ui.elements.inventoryArrowLeft.classList.remove('visible');
             this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.marketArrowLeft.classList.remove('hidden');
+            this.ui.elements.marketArrowLeft.classList.add('visible');
+            this.isInventoryView = false;
+            this.isMarketView = true;
+            this.state.setMarketViewActive(true);
+            this.updateMarketDisplay();
+            if (!this.state.isWalletConnected()) {
+                this.ui.toggleConnectButton(true);
+            } else {
+                this.ui.toggleDisconnectButton(true);
+            }
+        };
+        this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', inventoryArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: inventoryArrowLeftListener });
+        const marketArrowLeftListener = () => {
+            this.ui.elements.marketContainer.classList.remove('visible');
+            this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.shopContainer.classList.remove('hidden');
+            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.marketArrowLeft.classList.remove('visible');
+            this.ui.elements.marketArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowLeft.classList.remove('hidden');
             this.ui.elements.shopArrowLeft.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
             this.ui.elements.shopArrowRight.classList.add('visible');
             this.isInventoryView = false;
+            this.isMarketView = false;
+            this.state.setMarketViewActive(false);
+            this.ui.toggleConnectButton(false);
+            this.ui.toggleDisconnectButton(false);
         };
-        this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', inventoryArrowLeftListener);
-        this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: inventoryArrowLeftListener });
+        this.ui.elements.marketArrowLeft.addEventListener('pointerdown', marketArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.marketArrowLeft, type: 'pointerdown', listener: marketArrowLeftListener });
         const filterListener = () => this.updateMarketDisplay();
         this.ui.elements.characterFilter.addEventListener('change', filterListener);
         this.ui.elements.backgroundFilter.addEventListener('change', filterListener);
@@ -1234,6 +1252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shopArrowLeft: document.getElementById('shopArrowLeft'),
         shopArrowRight: document.getElementById('shopArrowRight'),
         inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
+        marketArrowLeft: document.getElementById('marketArrowLeft'),
         tonConnect: document.getElementById('ton-connect'),
         disconnectWallet: document.getElementById('disconnect-wallet'),
         characterFilter: document.getElementById('characterFilter'),
