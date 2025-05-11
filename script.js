@@ -55,6 +55,62 @@ const MARKET_SKINS = [
     { id: 'skin10', character: CHARACTERS[10], background: BACKGROUND_GRADIENTS[9], price: 400, timestamp: Date.now() - 1000 }
 ];
 
+const QUESTS = [
+    {
+        id: 'subscribe_telegram',
+        title: 'Join Our Community',
+        description: 'Subscribe to our Telegram channel to stay updated and earn a reward!',
+        reward: 200,
+        type: 'main',
+        completed: false,
+        progress: 0,
+        goal: 1,
+        action: () => {
+            window.open('https://t.me/Heroes_coin_bot', '_blank');
+        }
+    },
+    {
+        id: 'open_cases',
+        title: 'Case Opener',
+        description: 'Open 3 cases to earn a reward.',
+        reward: 150,
+        type: 'game',
+        completed: false,
+        progress: 0,
+        goal: 3
+    },
+    {
+        id: 'upgrade_character',
+        title: 'Power Up',
+        description: 'Upgrade any character to level 2.',
+        reward: 100,
+        type: 'game',
+        completed: false,
+        progress: 0,
+        goal: 1
+    },
+    {
+        id: 'collect_coins',
+        title: 'Coin Collector',
+        description: 'Collect 500 coins through gameplay.',
+        reward: 200,
+        type: 'game',
+        completed: false,
+        progress: 0,
+        goal: 500
+    },
+    {
+        id: 'buy_market_skin',
+        title: 'Market Shopper',
+        description: 'Purchase a skin from the market.',
+        reward: 250,
+        type: 'game',
+        completed: false,
+        progress: 0,
+        goal: 1
+    }
+];
+
 class GameState {
     constructor() {
         this.coins = 1000;
@@ -65,6 +121,7 @@ class GameState {
         this.isShopActive = false;
         this.isMarketActive = false;
         this.isLeaderboardActive = false;
+        this.isQuestsActive = false;
         this.inventory = [];
         this.characters = [];
         this.selectedCharacter = null;
@@ -79,10 +136,15 @@ class GameState {
             { nickname: 'DiamondKing', coins: 400, rank: 4 },
             { nickname: 'CryptoStar', coins: 200, rank: 5 }
         ];
+        this.quests = QUESTS;
+        this.caseOpenCount = 0;
+        this.collectedCoins = 0;
     }
     getCoins() { return this.coins; }
     addCoins(amount) {
         this.coins += amount;
+        this.collectedCoins += amount > 0 ? amount : 0;
+        this.updateQuestProgress('collect_coins', this.collectedCoins);
         this.updateLeaderboard();
     }
     resetCoins(value) {
@@ -96,6 +158,8 @@ class GameState {
     setMarketViewActive(value) { this.isMarketActive = value; }
     isLeaderboardViewActive() { return this.isLeaderboardActive; }
     setLeaderboardViewActive(value) { this.isLeaderboardActive = value; }
+    isQuestsViewActive() { return this.isQuestsActive; }
+    setQuestsViewActive(value) { this.isQuestsActive = value; }
     addToInventory(item) {
         const character = {
             ...item,
@@ -135,6 +199,7 @@ class GameState {
                 this.coins -= upgradeCost;
                 character.level += 1;
                 character.incomeRate = character.level * 100;
+                this.updateQuestProgress('upgrade_character', character.level >= 2 ? 1 : 0);
                 this.updateLeaderboard();
                 return true;
             }
@@ -151,6 +216,24 @@ class GameState {
     }
     isWalletConnected() { return this.walletConnected; }
     getWalletAddress() { return this.walletAddress; }
+    incrementCaseOpenCount() {
+        this.caseOpenCount += 1;
+        this.updateQuestProgress('open_cases', this.caseOpenCount);
+    }
+    recordMarketPurchase() {
+        this.updateQuestProgress('buy_market_skin', 1);
+    }
+    updateQuestProgress(questId, progress) {
+        const quest = this.quests.find(q => q.id === questId);
+        if (quest && !quest.completed) {
+            quest.progress = Math.min(progress, quest.goal);
+            if (quest.progress >= quest.goal) {
+                quest.completed = true;
+                this.addCoins(quest.reward);
+            }
+        }
+    }
+    getQuests() { return this.quests; }
 }
 
 class ParticleSystem {
@@ -542,14 +625,14 @@ class Game {
         this.characterController = new CharacterController(this.state, this.ui, this.effectPool, this.confettiSystem);
         this.resizeTimeout = null;
         this.listeners = [];
-        this.currentSection = 'home'; // Изменил начальное состояние на 'home'
+        this.currentSection = 'home';
         this.availableMarketSkins = [...MARKET_SKINS];
         this.tonConnectUI = null;
     }
     initializeWallet() {
         try {
             this.tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                manifestUrl: 'https://max27347.github.io/ProGameNew/manifest.json',
+                manifestUrl: 'https://max27312.github.io/ProGameNew/manifest.json',
                 buttonRootId: 'ton-connect'
             });
             if (this.state.isTelegramEnvironment()) {
@@ -705,7 +788,7 @@ class Game {
             itemDiv.addEventListener('pointerdown', (e) => {
                 if (e.target !== upgradeButton && !e.target.closest('.upgrade-button')) {
                     this.state.setSelectedCharacter(item);
-                    this.switchSection('home'); // Изменил с 'shop' на 'home', чтобы возвращаться на главный экран
+                    this.switchSection('home');
                     this.characterController.updateAppearance();
                 }
             });
@@ -724,6 +807,59 @@ class Game {
                 <td>${Math.floor(player.coins)}</td>
             `;
             tbody.appendChild(row);
+        });
+    }
+    updateQuestsDisplay() {
+        const questsContainer = this.ui.elements.questsItems;
+        questsContainer.innerHTML = '';
+        const quests = this.state.getQuests();
+        quests.forEach(quest => {
+            const questDiv = document.createElement('div');
+            questDiv.className = 'quest-item-container';
+            questDiv.style.background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
+            questDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'quest-title';
+            titleDiv.textContent = quest.title;
+            const descDiv = document.createElement('div');
+            descDiv.className = 'quest-description';
+            descDiv.textContent = quest.description;
+            const progressDiv = document.createElement('div');
+            progressDiv.className = 'quest-progress';
+            progressDiv.textContent = quest.type === 'main' ?
+                (quest.completed ? 'Completed' : 'Not Completed') :
+                `Progress: ${quest.progress}/${quest.goal}`;
+            const rewardDiv = document.createElement('div');
+            rewardDiv.className = 'quest-reward';
+            rewardDiv.innerHTML = `${quest.reward} <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">`;
+            const actionButton = document.createElement('div');
+            actionButton.className = 'quest-action-button';
+            actionButton.textContent = quest.completed ? 'Completed' : (quest.type === 'main' ? 'Join' : 'Claim');
+            if (!quest.completed) {
+                actionButton.addEventListener('pointerdown', () => {
+                    if (quest.type === 'main') {
+                        quest.action();
+                        // Assuming manual verification for Telegram subscription
+                        alert('Please verify your subscription in the Telegram channel.');
+                    } else if (quest.progress >= quest.goal) {
+                        quest.completed = true;
+                        this.state.addCoins(quest.reward);
+                        this.ui.queueUpdate('coins', this.state.getCoins());
+                        this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                        this.ui.applyUpdates();
+                        this.updateQuestsDisplay();
+                    }
+                });
+            } else {
+                actionButton.style.opacity = '0.5';
+                actionButton.style.pointerEvents = 'none';
+            }
+            questDiv.appendChild(titleDiv);
+            questDiv.appendChild(descDiv);
+            questDiv.appendChild(progressDiv);
+            questDiv.appendChild(rewardDiv);
+            questDiv.appendChild(actionButton);
+            questsContainer.appendChild(questDiv);
         });
     }
     initializeMarketFilters() {
@@ -793,6 +929,7 @@ class Game {
                         background: skin.background,
                         isMutated: false
                     });
+                    this.state.recordMarketPurchase();
                     this.availableMarketSkins = this.availableMarketSkins.filter(s => s.id !== skin.id);
                     this.updateMarketDisplay();
                     this.updateInventoryDisplay();
@@ -811,6 +948,7 @@ class Game {
         });
     }
     showCaseAnimation(caseType) {
+        this.state.incrementCaseOpenCount();
         const isDiamondCase = caseType === 'diamond-rain';
         const currency = isDiamondCase ? '100 Diamonds' : 'Free (Test)';
         const overlay = document.createElement('div');
@@ -1045,6 +1183,7 @@ class Game {
         this.currentSection = section;
         this.state.setShopViewActive(section === 'shop');
         this.state.setMarketViewActive(section === 'market');
+        this.state.setQuestsViewActive(section === 'quests');
         this.state.setLeaderboardViewActive(false);
 
         // Скрываем все контейнеры и стрелки
@@ -1054,8 +1193,12 @@ class Game {
         this.ui.elements.inventoryContainer.classList.add('hidden');
         this.ui.elements.marketContainer.classList.remove('visible');
         this.ui.elements.marketContainer.classList.add('hidden');
+        this.ui.elements.questsContainer.classList.remove('visible');
+        this.ui.elements.questsContainer.classList.add('hidden');
         this.ui.elements.leaderboardContainer.classList.remove('visible');
         this.ui.elements.leaderboardContainer.classList.add('hidden');
+        this.ui.elements.shopArrowLeft.classList.remove('visible');
+        this.ui.elements.shopArrowLeft.classList.add('hidden');
         this.ui.elements.shopArrowRight.classList.remove('visible');
         this.ui.elements.shopArrowRight.classList.add('hidden');
         this.ui.elements.inventoryArrowLeft.classList.remove('visible');
@@ -1066,6 +1209,10 @@ class Game {
         this.ui.elements.marketArrowLeft.classList.add('hidden');
         this.ui.elements.marketArrowRight.classList.remove('visible');
         this.ui.elements.marketArrowRight.classList.add('hidden');
+        this.ui.elements.questsArrowLeft.classList.remove('visible');
+        this.ui.elements.questsArrowLeft.classList.add('hidden');
+        this.ui.elements.questsArrowRight.classList.remove('visible');
+        this.ui.elements.questsArrowRight.classList.add('hidden');
         this.toggleHomeElements(false);
 
         // Показываем нужный контейнер и стрелки
@@ -1075,6 +1222,25 @@ class Game {
         } else if (section === 'shop') {
             this.ui.elements.shopContainer.classList.remove('hidden');
             this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.shopArrowLeft.classList.remove('hidden');
+            this.ui.elements.shopArrowLeft.classList.add('visible');
+            this.ui.elements.shopArrowRight.classList.remove('hidden');
+            this.ui.elements.shopArrowRight.classList.add('visible');
+            console.log('Showing Shop');
+        } else if (section === 'inventory') {
+            this.ui.elements.inventory LGContainer.classList.remove('hidden');
+            this.ui.elements.inventoryContainer.classList.add('visible');
+            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.add('visible');
+            this.ui.elements.inventoryArrowRight.classList.remove('hidden');
+            this.ui.elements.inventoryArrowRight.classList.add('visible');
+            this.updateInventoryDisplay();
+            console.log('Showing Inventory');
+        } else if (section === 'market') {
+            this.ui.elements.shopContainer.classList.remove('hidden');
+            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.shopArrowLeft.classList.remove('hidden');
+            this.ui.elements.shopArrowLeft.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
             this.ui.elements.shopArrowRight.classList.add('visible');
             console.log('Showing Shop');
@@ -1101,33 +1267,42 @@ class Game {
                 this.ui.toggleDisconnectButton(true);
             }
             console.log('Showing Market');
+        } else if (section === 'quests') {
+            this.ui.elements.questsContainer.classList.remove('hidden');
+            this.ui.elements.questsContainer.classList.add('visible');
+            this.ui.elements.questsArrowLeft.classList.remove('hidden');
+            this.ui.elements.questsArrowLeft.classList.add('visible');
+            this.ui.elements.questsArrowRight.classList.remove('hidden');
+            this.ui.elements.questsArrowRight.classList.add('visible');
+            this.updateQuestsDisplay();
+            console.log('Showing Quests');
         }
     }
     toggleLeaderboard() {
         console.log('Toggling Leaderboard');
         const isVisible = this.ui.elements.leaderboardContainer.classList.contains('visible');
         if (isVisible) {
-            // Скрываем таблицу лидеров и восстанавливаем текущий раздел
             this.ui.elements.leaderboardContainer.classList.remove('visible');
             this.ui.elements.leaderboardContainer.classList.add('hidden');
             this.state.setLeaderboardViewActive(false);
             console.log('Hiding Leaderboard');
-            // Восстанавливаем текущий раздел
             this.switchSection(this.currentSection);
         } else {
-            // Показываем таблицу лидеров и скрываем все остальное
             this.ui.elements.leaderboardContainer.classList.remove('hidden');
             this.ui.elements.leaderboardContainer.classList.add('visible');
             this.state.setLeaderboardViewActive(true);
             this.updateLeaderboardDisplay();
             console.log('Showing Leaderboard');
-            // Скрываем все контейнеры и стрелки
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
             this.ui.elements.inventoryContainer.classList.remove('visible');
             this.ui.elements.inventoryContainer.classList.add('hidden');
             this.ui.elements.marketContainer.classList.remove('visible');
             this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.questsContainer.classList.remove('visible');
+            this.ui.elements.questsContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
             this.ui.elements.shopArrowRight.classList.remove('visible');
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.ui.elements.inventoryArrowLeft.classList.remove('visible');
@@ -1138,6 +1313,10 @@ class Game {
             this.ui.elements.marketArrowLeft.classList.add('hidden');
             this.ui.elements.marketArrowRight.classList.remove('visible');
             this.ui.elements.marketArrowRight.classList.add('hidden');
+            this.ui.elements.questsArrowLeft.classList.remove('visible');
+            this.ui.elements.questsArrowLeft.classList.add('hidden');
+            this.ui.elements.questsArrowRight.classList.remove('visible');
+            this.ui.elements.questsArrowRight.classList.add('hidden');
             this.toggleHomeElements(false);
         }
     }
@@ -1152,6 +1331,7 @@ class Game {
         this.initializeMarketFilters();
         this.updateInventoryDisplay();
         this.updateLeaderboardDisplay();
+        this.updateQuestsDisplay();
         this.ui.updateCoinCounterPosition();
         const resizeListener = () => {
             if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
@@ -1184,6 +1364,12 @@ class Game {
             container.addEventListener('pointerdown', listener);
             this.listeners.push({ element: container, type: 'pointerdown', listener });
         });
+        const shopArrowLeftListener = () => {
+            console.log('Shop arrow left clicked');
+            this.switchSection('market');
+        };
+        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
         const shopArrowRightListener = () => {
             console.log('Shop arrow right clicked');
             this.switchSection('inventory');
@@ -1210,10 +1396,22 @@ class Game {
         this.listeners.push({ element: this.ui.elements.marketArrowLeft, type: 'pointerdown', listener: marketArrowLeftListener });
         const marketArrowRightListener = () => {
             console.log('Market arrow right clicked');
-            this.switchSection('shop');
+            this.switchSection('quests');
         };
         this.ui.elements.marketArrowRight.addEventListener('pointerdown', marketArrowRightListener);
         this.listeners.push({ element: this.ui.elements.marketArrowRight, type: 'pointerdown', listener: marketArrowRightListener });
+        const questsArrowLeftListener = () => {
+            console.log('Quests arrow left clicked');
+            this.switchSection('market');
+        };
+        this.ui.elements.questsArrowLeft.addEventListener('pointerdown', questsArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.questsArrowLeft, type: 'pointerdown', listener: questsArrowLeftListener });
+        const questsArrowRightListener = () => {
+            console.log('Quests arrow right clicked');
+            this.switchSection('shop');
+        };
+        this.ui.elements.questsArrowRight.addEventListener('pointerdown', questsArrowRightListener);
+        this.listeners.push({ element: this.ui.elements.questsArrowRight, type: 'pointerdown', listener: questsArrowRightListener });
         const topMenuListener = () => {
             this.toggleLeaderboard();
         };
@@ -1230,7 +1428,7 @@ class Game {
             document.body.dataset.telegram = 'true';
             if (window.Telegram?.WebApp) {
                 window.Telegram.WebApp.ready();
-                window.Telegram.WebApp.expand();
+                window.Telegram.Web WApp.expand();
             }
         }
     }
@@ -1259,12 +1457,16 @@ document.addEventListener('DOMContentLoaded', () => {
         shopContainer: document.getElementById('shopContainer'),
         inventoryContainer: document.getElementById('inventoryContainer'),
         marketContainer: document.getElementById('marketContainer'),
+        questsContainer: document.getElementById('questsContainer'),
         leaderboardContainer: document.getElementById('leaderboardContainer'),
+        shopArrowLeft: document.getElementById('shopArrowLeft'),
         shopArrowRight: document.getElementById('shopArrowRight'),
         inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
         inventoryArrowRight: document.getElementById('inventoryArrowRight'),
         marketArrowLeft: document.getElementById('marketArrowLeft'),
         marketArrowRight: document.getElementById('marketArrowRight'),
+        questsArrowLeft: document.getElementById('questsArrowLeft'),
+        questsArrowRight: document.getElementById('questsArrowRight'),
         tonConnect: document.getElementById('ton-connect'),
         disconnectWallet: document.getElementById('disconnect-wallet'),
         characterFilter: document.getElementById('characterFilter'),
@@ -1272,6 +1474,7 @@ document.addEventListener('DOMContentLoaded', () => {
         priceSort: document.getElementById('priceSort'),
         marketItems: document.getElementById('marketItems'),
         inventoryItems: document.getElementById('inventoryItems'),
+        questsItems: document.getElementById('questsItems'),
         leaderboardTable: document.getElementById('leaderboardTable'),
         playerStats: document.querySelector('.player-stats'),
         incomeCounter: document.getElementById('incomeCounter'),
