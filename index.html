@@ -1255,9 +1255,11 @@ class Game {
             } else {
                 randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
             }
-            rouletteItems.push({
+           rouletteItems.push({
                 ...randomItem,
-                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0 .2
+                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
+                background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
+                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
             });
         }
         rouletteItems.forEach(item => {
