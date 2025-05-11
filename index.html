@@ -969,7 +969,7 @@ class Game {
                     alert(`Failed to disconnect wallet: ${error.message}`);
                 }
             };
-            this.ui.elements.disconnectWallet.addEventListener('pointerdown', disconnectListener);
+            this.listeners.push({ element: this.ui.elements.disconnectWallet, type: 'pointerdown', listener: disconnectListener });
             this.listeners.push({
                 element: this.ui.elements.disconnectudiator,
                 type: 'pointerdown',
