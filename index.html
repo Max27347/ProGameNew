@@ -158,53 +158,7 @@ footer{bottom:0;padding:0}
 @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
 }
-
-.quests-container, .friends-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 400px;
-    background: var(--counter-bg);
-    border-radius: 20px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    z-index: 3;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-.quests-container.visible, .friends-container.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-.quests-container.hidden, .friends-container.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-.quests-title, .friends-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #FFF;
-    text-transform: uppercase;
-}
-.quests-list, .friends-list {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-}
-.quest-item, .friend-item {
-    background: #2E2E2E;
-    padding: 1rem;
-    border-radius: 12px;
-    color: white;
-}
-
-</style>
+    </style>
 </head>
 <body>
 <div class="loading-screen" id="loadingScreen">
@@ -308,22 +262,6 @@ footer{bottom:0;padding:0}
 <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
 <div class="shop-arrow right hidden" id="shopArrowRight">></div>
 <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
-
-<div class="quests-container hidden" id="questsContainer">
-    <div class="quests-title">Quests</div>
-    <div class="quests-list" id="questsList">
-        <div class="quest-item">Collect 100 diamonds</div>
-        <div class="quest-item">Buy your first item</div>
-    </div>
-</div>
-<div class="friends-container hidden" id="friendsContainer">
-    <div class="friends-title">Friends</div>
-    <div class="friends-list" id="friendsList">
-        <div class="friend-item">Player123</div>
-        <div class="friend-item">GamerX</div>
-    </div>
-</div>
-
 <footer class="game-hidden" id="footer">
     <div class="footer-menu-container">
         <div class="footer-menu">
@@ -341,16 +279,14 @@ footer{bottom:0;padding:0}
                 <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market"
                      draggable="false">
                 <span>Market</span>
-
-<div class="menu-item" data-menu="quests">
-    <img src="https://em-content.zobj.net/source/telegram/386/scroll_1f4dc.webp" alt="Quests" draggable="false">
-    <span>Quests</span>
+            </div>
+            <div class="menu-item" data-menu="quests">
+  <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false">
+  <span>Quests</span>
 </div>
 <div class="menu-item" data-menu="friends">
-    <img src="https://em-content.zobj.net/source/telegram/386/busts-in-silhouette_1f465.webp" alt="Friends" draggable="false">
-    <span>Friends</span>
-</div>
-
+  <img src="https://em-content.zobj.net/source/telegram/386/busts-in-silhouette_1f465.webp" alt="Friends" draggable="false">
+  <span>Friends</span>
 </div>
         </div>
     </div>
@@ -1367,23 +1303,7 @@ class Game {
         const menuType = menuItem.dataset.menu;
         document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
         menuItem.classList.add('highlighted');
-        if (menuType === 'quests') {
-        this.ui.elements.questsContainer.classList.add('visible');
-        this.ui.elements.questsContainer.classList.remove('hidden');
-        this.ui.elements.friendsContainer.classList.remove('visible');
-        this.ui.elements.friendsContainer.classList.add('hidden');
-        this.ui.elements.shopContainer.classList.add('hidden');
-        this.ui.elements.marketContainer.classList.add('hidden');
-        this.ui.elements.leaderboardContainer.classList.add('hidden');
-    } else if (menuType === 'friends') {
-        this.ui.elements.friendsContainer.classList.add('visible');
-        this.ui.elements.friendsContainer.classList.remove('hidden');
-        this.ui.elements.questsContainer.classList.remove('visible');
-        this.ui.elements.questsContainer.classList.add('hidden');
-        this.ui.elements.shopContainer.classList.add('hidden');
-        this.ui.elements.marketContainer.classList.add('hidden');
-        this.ui.elements.leaderboardContainer.classList.add('hidden');
-    } else if (menuType === 'home') {
+        if (menuType === 'home') {
             this.state.setShopViewActive(false);
             this.state.setMarketViewActive(false);
             this.state.setLeaderboardViewActive(false);
