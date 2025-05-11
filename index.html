@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="description" content="Notcoin-inspired clicker game">
-    <title>Heroes Coin</title>
+    <title>Clicker Game</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
@@ -59,25 +59,24 @@
         .menu-item span{font-size:1rem;font-weight:500;color:var(--text-color);text-transform:uppercase;letter-spacing:0.5px}
         .hidden-opacity{opacity:0;pointer-events:none;transition:opacity 0.5s ease}
         .hidden-opacity.visible{opacity:1;pointer-events:auto}
-        .shop-container,.inventory-container,.market-container,.leaderboard-container,.quests-container,.friends-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:400px;background:var(--counter-bg);border-radius:20px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;z-index:3;opacity:0;transition:opacity 0.5s ease}
-        .shop-container.visible,.inventory-container.visible,.market-container.visible,.leaderboard-container.visible,.quests-container.visible,.friends-container.visible{opacity:1;pointer-events:auto}
-        .shop-container.hidden,.inventory-container.hidden,.market-container.hidden,.leaderboard-container.hidden,.quests-container.hidden,.friends-container.hidden{opacity:0;pointer-events:none}
-        .shop-title,.inventory-title,.market-title,.leaderboard-title,.quests-title,.friends-title{font-size:1.5rem;font-weight:700;color:#FFF;text-transform:uppercase}
-        .cases-container,.inventory-items-container,.market-items-container,.leaderboard-table-container,.quests-items-container,.friends-items-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap;overflow-y:auto}
-        .cases-container,.inventory-items-container,.leaderboard-table-container,.quests-items-container,.friends-items-container{min-height:20vh}
+        .shop-container,.inventory-container,.market-container,.leaderboard-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:400px;background:var(--counter-bg);border-radius:20px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;z-index:3;opacity:0;transition:opacity 0.5s ease}
+        .shop-container.visible,.inventory-container.visible,.market-container.visible,.leaderboard-container.visible{opacity:1;pointer-events:auto}
+        .shop-container.hidden,.inventory-container.hidden,.market-container.hidden,.leaderboard-container.hidden{opacity:0;pointer-events:none}
+        .shop-title,.inventory-title,.market-title,.leaderboard-title{font-size:1.5rem;font-weight:700;color:#FFF;text-transform:uppercase}
+        .cases-container,.inventory-items-container,.market-items-container,.leaderboard-table-container{display:flex;justify-content:center;gap:1rem;width:100%;flex-wrap:wrap;overflow-y:auto}
+        .cases-container,.inventory-items-container,.leaderboard-table-container{min-height:20vh}
         .market-items-container{height:53vh}
-        .case-container,.inventory-item-container,.market-item-container,.quest-item-container,.friend-item-container{width:150px;background:#2E2E2E;border-radius:16px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;cursor:pointer;transition:background 0.3s ease}
+        .case-container,.inventory-item-container,.market-item-container{width:150px;background:#2E2E2E;border-radius:16px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;cursor:pointer;transition:background 0.3s ease}
         .upgrade-anim{animation:upgradeGlow 0.5s ease-in-out}
         @keyframes upgradeGlow{0%{box-shadow:0 0 5px rgba(255,215,0,0.5);transform:scale(1)}50%{box-shadow:0 0 20px rgba(255,215,0,1);transform:scale(1.05)}100%{box-shadow:0 0 5px rgba(255,215,0,0.5);transform:scale(1)}}
         .case-image,.inventory-image,.market-image{width:80px;height:80px;object-fit:contain;border-radius:50%}
-        .case-name,.inventory-name,.market-name,.quest-name,.friend-name{font-size:1rem;font-weight:600;color:#FFF}
-        .case-price,.market-price,.quest-reward,.friend-reward{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
-        .quest-description,.friend-joined{font-size:0.8rem;color:#FFF;opacity:0.7}
+        .case-name,.inventory-name,.market-name{font-size:1rem;font-weight:600;color:#FFF}
+        .case-price,.market-price{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
         .arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#FFF;cursor:pointer;padding:0.5rem;background:rgba(30,30,30,0.85);border-radius:50%;z-index:3;opacity:0;transition:opacity 0.5s ease}
         .arrow.visible{opacity:1;pointer-events:auto}
         .arrow.hidden{opacity:0;pointer-events:none}
-        #shopArrowRight,#inventoryArrowRight,#marketArrowRight,#questsArrowRight,#friendsArrowRight{right:1rem}
-        #shopArrowLeft,#inventoryArrowLeft,#marketArrowLeft,#questsArrowLeft,#friendsArrowLeft{left:1rem}
+        #shopArrowRight,#inventoryArrowRight,#marketArrowRight{right:1rem}
+        #inventoryArrowLeft,#marketArrowLeft{left:1rem}
         .case-animation-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10;opacity:0;transition:opacity 0.5s ease}
         .case-animation-overlay.visible{opacity:1;pointer-events:auto}
         .case-animation-overlay.hidden{opacity:0;pointer-events:none}
@@ -101,8 +100,8 @@
         .filters-container{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;width:100%;margin-bottom:1rem}
         .filter-select,.sort-select{width:100%;max-width:150px;padding:0.5rem;background:#2E2E2E;border-radius:8px;color:#FFF;font-size:0.9rem;border:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');background-repeat:no-repeat;background-position:right 0.5rem center;background-size:16px}
         .filter-select option,.sort-select option{background:#2E2E2E;color:#FFF}
-        .buy-button,.quest-button{font-size:0.9rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem}
-        .upgrade-button,.invite-button{font-size:0.9rem;font-weight:600;color:#FFF;background:#808080;padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem;display:flex;align-items:center;gap:0.3rem}
+        .buy-button{font-size:0.9rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem}
+        .upgrade-button{font-size:0.9rem;font-weight:600;color:#FFF;background:#808080;padding:0.5rem 1rem;border-radius:12px;cursor:pointer;margin-top:0.5rem;display:flex;align-items:center;gap:0.3rem}
         .leaderboard-table{width:100%;border-collapse:collapse;color:#FFF}
         .leaderboard-table th,.leaderboard-table td{padding:0.5rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.1)}
         .leaderboard-table th{font-weight:600;background:#2E2E2E}
@@ -128,17 +127,17 @@
             .footer-menu{gap:0.8rem}
             .menu-item img{width:48px;height:48px;padding:10px}
             .menu-item span{font-size:0.9rem}
-            .shop-container,.inventory-container,.market-container,.leaderboard-container,.quests-container,.friends-container{width:85%;padding:1rem}
-            .shop-title,.inventory-title,.market-title,.leaderboard-title,.quests-title,.friends-title{font-size:1.2rem}
-            .cases-container,.inventory-items-container,.leaderboard-table-container,.quests-items-container,.friends-items-container{min-height:15vh}
+            .shop-container,.inventory-container,.market-container,.leaderboard-container{width:85%;padding:1rem}
+            .shop-title,.inventory-title,.market-title,.leaderboard-title{font-size:1.2rem}
+            .cases-container,.inventory-items-container,.leaderboard-table-container{min-height:15vh}
             .market-items-container{height:53vh}
-            .case-container,.inventory-item-container,.market-item-container,.quest-item-container,.friend-item-container{width:120px;padding:0.8rem}
+            .case-container,.inventory-item-container,.market-item-container{width:120px;padding:0.8rem}
             .case-image,.inventory-image,.market-image{width:60px;height:60px}
-            .case-name,.inventory-name,.market-name,.quest-name,.friend-name{font-size:0.9rem}
-            .case-price,.market-price,.quest-reward,.friend-reward{font-size:0.8rem;gap:0.2rem}
+            .case-name,.inventory-name,.market-name{font-size:0.9rem}
+            .case-price,.market-price{font-size:0.8rem;gap:0.2rem}
             .arrow{font-size:1.5rem;padding:0.4rem}
-            #shopArrowLeft,#inventoryArrowLeft,#marketArrowLeft,#questsArrowLeft,#friendsArrowLeft{left:0.8rem}
-            #shopArrowRight,#inventoryArrowRight,#marketArrowRight,#questsArrowRight,#friendsArrowRight{right:0.8rem}
+            #inventoryArrowLeft,#marketArrowLeft{left:0.8rem}
+            #shopArrowRight,#inventoryArrowRight,#marketArrowRight{right:0.8rem}
             .case-animation-message{font-size:1.5rem}
             .case-animation-container{width:384px;height:160px}
             .roulette-strip{width:4480px;animation:roulette-slow-spin 32s linear infinite}
@@ -152,7 +151,7 @@
             .case-animation-cancel{font-size:0.8rem}
             .filters-container{gap:0.4rem}
             .filter-select,.sort-select{max-width:120px;padding:0.4rem;font-size:0.8rem;background-size:14px}
-            .buy-button,.upgrade-button,.quest-button,.invite-button{font-size:0.8rem;padding:0.4rem 0.8rem}
+            .buy-button,.upgrade-button{font-size:0.8rem;padding:0.4rem 0.8rem}
             .leaderboard-table th,.leaderboard-table td{padding:0.4rem;font-size:0.8rem}
             @keyframes roulette-slow-spin{0%{transform:translateX(0)}100%{transform:translateX(-4480px)}}
             @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
@@ -167,12 +166,12 @@
 </div>
 <header class="top-menu game-hidden" id="topMenu">
     <div class="top-menu-left">
-        <img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Leaderboard" class="player-avatar" draggable="false">
+        <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false">
         <div class="player-info">
             <span class="player-nickname">Player123</span>
             <span class="player-max-coins">
                 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
-                <span id="totalCoins">1000</span>
+                <span id="totalCoins">0</span>
             </span>
         </div>
     </div>
@@ -188,14 +187,14 @@
 <canvas id="confettiCanvas" class="game-hidden"></canvas>
 <main class="game-hidden" id="mainContent">
     <div class="income-counter" id="incomeCounter">
-        <span id="incomeRate">100</span> Diamonds/h
+        <span id="incomeRate">0</span> Diamonds/h
         <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" draggable="false">
     </div>
     <div class="income-timer" id="incomeTimer">
         <span id="timerDisplay">00:00</span>
     </div>
     <div class="coin-counter visible" id="coinCounter">
-        <span id="coinCount">1000</span>
+        <span id="coinCount">0</span>
         <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
     </div>
     <div class="character-container">
@@ -206,24 +205,20 @@
     <div class="shop-title">Cases</div>
     <div class="cases-container">
         <div class="case-container" data-case="diamond-rain">
-            <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Diamond Rain" class="case-image" draggable="false">
+            <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false">
             <div class="case-name">Diamond Rain</div>
             <div class="case-price">100 Diamonds</div>
         </div>
-        <div class="case-container" data-case="free-spin">
-            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Free Spin" class="case-image" draggable="false">
-            <div class="case-name">Free Spin</div>
-            <div class="case-price">Free</div>
+        <div class="case-container" data-case="character-magic">
+            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false">
+            <div class="case-name">Character Magic</div>
+            <div class="case-price">Free (Test)</div>
         </div>
     </div>
-    <div class="arrow hidden" id="shopArrowLeft">←</div>
-    <div class="arrow hidden" id="shopArrowRight">→</div>
 </div>
 <div class="inventory-container hidden" id="inventoryContainer">
     <div class="inventory-title">Inventory</div>
     <div class="inventory-items-container" id="inventoryItems"></div>
-    <div class="arrow hidden" id="inventoryArrowLeft">←</div>
-    <div class="arrow hidden" id="inventoryArrowRight">→</div>
 </div>
 <div class="market-container hidden" id="marketContainer">
     <div class="market-title">Market</div>
@@ -242,20 +237,6 @@
         </select>
     </div>
     <div class="market-items-container" id="marketItems"></div>
-    <div class="arrow hidden" id="marketArrowLeft">←</div>
-    <div class="arrow hidden" id="marketArrowRight">→</div>
-</div>
-<div class="quests-container hidden" id="questsContainer">
-    <div class="quests-title">Quests</div>
-    <div class="quests-items-container" id="questsItems"></div>
-    <div class="arrow hidden" id="questsArrowLeft">←</div>
-    <div class="arrow hidden" id="questsArrowRight">→</div>
-</div>
-<div class="friends-container hidden" id="friendsContainer">
-    <div class="friends-title">Friends</div>
-    <div class="friends-items-container" id="friendsItems"></div>
-    <div class="arrow hidden" id="friendsArrowLeft">←</div>
-    <div class="arrow hidden" id="friendsArrowRight">→</div>
 </div>
 <div class="leaderboard-container hidden" id="leaderboardContainer">
     <div class="leaderboard-title">Leaderboard</div>
@@ -272,24 +253,21 @@
         </table>
     </div>
 </div>
+<div class="arrow hidden" id="shopArrowRight">→</div>
+<div class="arrow hidden" id="inventoryArrowLeft">←</div>
+<div class="arrow hidden" id="inventoryArrowRight">→</div>
+<div class="arrow hidden" id="marketArrowLeft">←</div>
+<div class="arrow hidden" id="marketArrowRight">→</div>
 <footer class="game-hidden" id="footer">
     <div class="footer-menu-container">
         <div class="footer-menu">
             <div class="menu-item highlighted" data-menu="home">
-                <img src="https://em-content.zobj.net/source/telegram/386/joystick_1f579-fe0f.webp" alt="Home" draggable="false">
+                <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false">
                 <span>Home</span>
             </div>
             <div class="menu-item" data-menu="shop">
                 <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Shop" draggable="false">
                 <span>Shop</span>
-            </div>
-            <div class="menu-item" data-menu="quests">
-                <img src="https://em-content.zobj.net/source/telegram/386/scroll_1f4dc.webp" alt="Quests" draggable="false">
-                <span>Quests</span>
-            </div>
-            <div class="menu-item" data-menu="friends">
-                <img src="https://em-content.zobj.net/source/telegram/386/busts-in-silhouette_1f465.webp" alt="Friends" draggable="false">
-                <span>Friends</span>
             </div>
         </div>
     </div>
