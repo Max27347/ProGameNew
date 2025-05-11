@@ -1230,6 +1230,7 @@ class Game {
             filteredSkins.sort((a, b) => a.price - b.price);
         } else {
             filteredSkins.sort((a, b) => b.timestamp - a.timestamp);
+            }
     filteredSkins.forEach(skin => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'market-item-container';
@@ -1300,7 +1301,6 @@ class Game {
         });
     }
     showCaseAnimation(caseType) {
-        // Increment case open count and check for 'Case Opener' quest
         const caseOpenCount = this.state.incrementCaseOpenCount();
         if (caseOpenCount >= 3) {
             this.state.completeQuest('quest6');
