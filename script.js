@@ -161,7 +161,7 @@ class ParticleSystem {
         this.time = 0;
         this.isAnimating = false;
         for (let i = 0; i < count; i++) this.particles[i] = this.createParticle();
-        this.resize(); // Инициализация размеров canvas
+        this.resize();
     }
     createParticle() {
         return {
@@ -209,8 +209,8 @@ class ParticleSystem {
     start() {
         if (this.isAnimating) return;
         this.isAnimating = true;
-        console.log('ParticleSystem started'); // Лог для отладки
-        this.canvas.classList.remove('game-hidden'); // Убедимся, что canvas видим
+        console.log('ParticleSystem started');
+        this.canvas.classList.remove('game-hidden');
         this.canvas.classList.add('visible');
         this.animate();
     }
@@ -233,7 +233,7 @@ class ParticleSystem {
             p.x = Math.random() * this.canvas.width;
             p.y = Math.random() * this.canvas.height;
         }
-        console.log('ParticleSystem resized:', this.canvas.width, this.canvas.height); // Лог для отладки
+        console.log('ParticleSystem resized:', this.canvas.width, this.canvas.height);
     }
 }
 
@@ -399,7 +399,7 @@ class UIManager {
                 if (key === 'totalCoins') this.elements.totalCoins.textContent = Math.floor(value);
                 if (key === 'characterSrc') this.elements.character.src = value;
                 if (key === 'gradient') {
-                    console.log('Applying gradient:', value); // Лог для отладки
+                    console.log('Applying gradient:', value);
                     document.documentElement.style.setProperty('--bg-gradient', value);
                 }
                 if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
@@ -645,8 +645,8 @@ class Game {
         await Promise.all(imageUrls.map(loadImage));
         this.ui.showGameUI();
         this.characterController.initialize();
-        this.particleSystem.start(); // Гарантированный запуск частиц
-        console.log('Initializing ParticleSystem and UI'); // Лог для отладки
+        this.particleSystem.start();
+        console.log('Initializing ParticleSystem and UI');
         this.initializeWallet();
     }
     updateInventoryDisplay() {
@@ -656,7 +656,8 @@ class Game {
         inventory.forEach(item => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'inventory-item-container';
-            itemDiv.style.background = item.background || 'none';
+            // Используем SKINS[0].gradient для Controller, если фон не задан
+            itemDiv.style.background = item.name === 'Controller' ? SKINS[0].gradient : (item.background || BACKGROUND_GRADIENTS[0]);
             itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
             const img = document.createElement('img');
             img.src = item.src;
@@ -1032,11 +1033,29 @@ class Game {
             };
         }
     }
+    toggleHomeElements(show) {
+        const elements = [
+            this.ui.elements.mainContent,
+            this.ui.elements.coinCounter,
+            this.ui.elements.character,
+            this.ui.elements.incomeCounter,
+            this.ui.elements.incomeTimer
+        ];
+        elements.forEach(el => {
+            if (show) {
+                el.classList.remove('game-hidden');
+                el.classList.add('visible');
+            } else {
+                el.classList.remove('visible');
+                el.classList.add('game-hidden');
+            }
+        });
+    }
     initialize() {
         this.state.addToInventory({
             src: CHARACTERS[0].src,
             name: CHARACTERS[0].name,
-            background: BACKGROUND_GRADIENTS[0],
+            background: SKINS[0].gradient, // Используем правильный фон для Controller
             isMutated: false
         });
         this.preloadAssets();
@@ -1060,6 +1079,7 @@ class Game {
             const listener = () => {
                 menuItems.forEach(i => i.classList.remove('highlighted'));
                 item.classList.add('highlighted');
+                // Скрываем все контейнеры
                 this.ui.elements.shopContainer.classList.remove('visible');
                 this.ui.elements.shopContainer.classList.add('hidden');
                 this.ui.elements.inventoryContainer.classList.remove('visible');
@@ -1077,32 +1097,37 @@ class Game {
                 this.state.setShopViewActive(false);
                 this.state.setMarketViewActive(false);
                 this.state.setLeaderboardViewActive(false);
+                // Управляем видимостью элементов Home
                 if (menuType === 'home') {
+                    this.toggleHomeElements(true);
                     this.isInventoryView = false;
-                } else if (menuType === 'shop') {
-                    this.ui.elements.shopContainer.classList.remove('hidden');
-                    this.ui.elements.shopContainer.classList.add('visible');
-                    this.ui.elements.shopArrowLeft.classList.remove('hidden');
-                    this.ui.elements.shopArrowLeft.classList.add('visible');
-                    this.ui.elements.shopArrowRight.classList.remove('hidden');
-                    this.ui.elements.shopArrowRight.classList.add('visible');
-                    this.state.setShopViewActive(true);
-                    this.isInventoryView = false;
-                } else if (menuType === 'market') {
-                    this.ui.elements.marketContainer.classList.remove('hidden');
-                    this.ui.elements.marketContainer.classList.add('visible');
-                    this.state.setMarketViewActive(true);
-                    this.updateMarketDisplay();
-                    if (!this.state.isWalletConnected()) {
-                        this.ui.toggleConnectButton(true);
-                    } else {
-                        this.ui.toggleDisconnectButton(true);
+                } else {
+                    this.toggleHomeElements(false);
+                    if (menuType === 'shop') {
+                        this.ui.elements.shopContainer.classList.remove('hidden');
+                        this.ui.elements.shopContainer.classList.add('visible');
+                        this.ui.elements.shopArrowLeft.classList.remove('hidden');
+                        this.ui.elements.shopArrowLeft.classList.add('visible');
+                        this.ui.elements.shopArrowRight.classList.remove('hidden');
+                        this.ui.elements.shopArrowRight.classList.add('visible');
+                        this.state.setShopViewActive(true);
+                        this.isInventoryView = false;
+                    } else if (menuType === 'market') {
+                        this.ui.elements.marketContainer.classList.remove('hidden');
+                        this.ui.elements.marketContainer.classList.add('visible');
+                        this.state.setMarketViewActive(true);
+                        this.updateMarketDisplay();
+                        if (!this.state.isWalletConnected()) {
+                            this.ui.toggleConnectButton(true);
+                        } else {
+                            this.ui.toggleDisconnectButton(true);
+                        }
+                    } else if (menuType === 'leaderboard') {
+                        this.ui.elements.leaderboardContainer.classList.remove('hidden');
+                        this.ui.elements.leaderboardContainer.classList.add('visible');
+                        this.state.setLeaderboardViewActive(true);
+                        this.updateLeaderboardDisplay();
                     }
-                } else if (menuType === 'leaderboard') {
-                    this.ui.elements.leaderboardContainer.classList.remove('hidden');
-                    this.ui.elements.leaderboardContainer.classList.add('visible');
-                    this.state.setLeaderboardViewActive(true);
-                    this.updateLeaderboardDisplay();
                 }
             };
             item.addEventListener('pointerdown', listener);
