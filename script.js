@@ -542,7 +542,7 @@ class Game {
         this.characterController = new CharacterController(this.state, this.ui, this.effectPool, this.confettiSystem);
         this.resizeTimeout = null;
         this.listeners = [];
-        this.currentSection = 'shop'; // Текущее состояние: shop, inventory, market
+        this.currentSection = 'home'; // Изменил начальное состояние на 'home'
         this.availableMarketSkins = [...MARKET_SKINS];
         this.tonConnectUI = null;
     }
@@ -705,7 +705,7 @@ class Game {
             itemDiv.addEventListener('pointerdown', (e) => {
                 if (e.target !== upgradeButton && !e.target.closest('.upgrade-button')) {
                     this.state.setSelectedCharacter(item);
-                    this.switchSection('shop');
+                    this.switchSection('home'); // Изменил с 'shop' на 'home', чтобы возвращаться на главный экран
                     this.characterController.updateAppearance();
                 }
             });
@@ -1058,17 +1058,21 @@ class Game {
         this.ui.elements.leaderboardContainer.classList.add('hidden');
         this.ui.elements.shopArrowRight.classList.remove('visible');
         this.ui.elements.shopArrowRight.classList.add('hidden');
-        if (this.ui.elements.inventoryArrowRight) {
-            this.ui.elements.inventoryArrowRight.classList.remove('visible');
-            this.ui.elements.inventoryArrowRight.classList.add('hidden');
-        }
-        if (this.ui.elements.marketArrowLeft) {
-            this.ui.elements.marketArrowLeft.classList.remove('visible');
-            this.ui.elements.marketArrowLeft.classList.add('hidden');
-        }
+        this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+        this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+        this.ui.elements.inventoryArrowRight.classList.remove('visible');
+        this.ui.elements.inventoryArrowRight.classList.add('hidden');
+        this.ui.elements.marketArrowLeft.classList.remove('visible');
+        this.ui.elements.marketArrowLeft.classList.add('hidden');
+        this.ui.elements.marketArrowRight.classList.remove('visible');
+        this.ui.elements.marketArrowRight.classList.add('hidden');
+        this.toggleHomeElements(false);
 
         // Показываем нужный контейнер и стрелки
-        if (section === 'shop') {
+        if (section === 'home') {
+            this.toggleHomeElements(true);
+            console.log('Showing Home');
+        } else if (section === 'shop') {
             this.ui.elements.shopContainer.classList.remove('hidden');
             this.ui.elements.shopContainer.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
@@ -1077,19 +1081,19 @@ class Game {
         } else if (section === 'inventory') {
             this.ui.elements.inventoryContainer.classList.remove('hidden');
             this.ui.elements.inventoryContainer.classList.add('visible');
-            if (this.ui.elements.inventoryArrowRight) {
-                this.ui.elements.inventoryArrowRight.classList.remove('hidden');
-                this.ui.elements.inventoryArrowRight.classList.add('visible');
-            }
+            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.add('visible');
+            this.ui.elements.inventoryArrowRight.classList.remove('hidden');
+            this.ui.elements.inventoryArrowRight.classList.add('visible');
             this.updateInventoryDisplay();
             console.log('Showing Inventory');
         } else if (section === 'market') {
             this.ui.elements.marketContainer.classList.remove('hidden');
             this.ui.elements.marketContainer.classList.add('visible');
-            if (this.ui.elements.marketArrowLeft) {
-                this.ui.elements.marketArrowLeft.classList.remove('hidden');
-                this.ui.elements.marketArrowLeft.classList.add('visible');
-            }
+            this.ui.elements.marketArrowLeft.classList.remove('hidden');
+            this.ui.elements.marketArrowLeft.classList.add('visible');
+            this.ui.elements.marketArrowRight.classList.remove('hidden');
+            this.ui.elements.marketArrowRight.classList.add('visible');
             this.updateMarketDisplay();
             if (!this.state.isWalletConnected()) {
                 this.ui.toggleConnectButton(true);
@@ -1102,37 +1106,39 @@ class Game {
     toggleLeaderboard() {
         console.log('Toggling Leaderboard');
         const isVisible = this.ui.elements.leaderboardContainer.classList.contains('visible');
-        // Скрываем все контейнеры и стрелки
-        this.ui.elements.shopContainer.classList.remove('visible');
-        this.ui.elements.shopContainer.classList.add('hidden');
-        this.ui.elements.inventoryContainer.classList.remove('visible');
-        this.ui.elements.inventoryContainer.classList.add('hidden');
-        this.ui.elements.marketContainer.classList.remove('visible');
-        this.ui.elements.marketContainer.classList.add('hidden');
-        this.ui.elements.shopArrowRight.classList.remove('visible');
-        this.ui.elements.shopArrowRight.classList.add('hidden');
-        if (this.ui.elements.inventoryArrowRight) {
-            this.ui.elements.inventoryArrowRight.classList.remove('visible');
-            this.ui.elements.inventoryArrowRight.classList.add('hidden');
-        }
-        if (this.ui.elements.marketArrowLeft) {
-            this.ui.elements.marketArrowLeft.classList.remove('visible');
-            this.ui.elements.marketArrowLeft.classList.add('hidden');
-        }
-        this.toggleHomeElements(false);
         if (isVisible) {
-            // Скрываем таблицу лидеров
+            // Скрываем таблицу лидеров и восстанавливаем текущий раздел
             this.ui.elements.leaderboardContainer.classList.remove('visible');
             this.ui.elements.leaderboardContainer.classList.add('hidden');
             this.state.setLeaderboardViewActive(false);
             console.log('Hiding Leaderboard');
+            // Восстанавливаем текущий раздел
+            this.switchSection(this.currentSection);
         } else {
-            // Показываем таблицу лидеров
+            // Показываем таблицу лидеров и скрываем все остальное
             this.ui.elements.leaderboardContainer.classList.remove('hidden');
             this.ui.elements.leaderboardContainer.classList.add('visible');
             this.state.setLeaderboardViewActive(true);
             this.updateLeaderboardDisplay();
             console.log('Showing Leaderboard');
+            // Скрываем все контейнеры и стрелки
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.marketContainer.classList.remove('visible');
+            this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
+            this.ui.elements.marketArrowLeft.classList.remove('visible');
+            this.ui.elements.marketArrowLeft.classList.add('hidden');
+            this.ui.elements.marketArrowRight.classList.remove('visible');
+            this.ui.elements.marketArrowRight.classList.add('hidden');
+            this.toggleHomeElements(false);
         }
     }
     initialize() {
@@ -1163,41 +1169,7 @@ class Game {
             const listener = () => {
                 menuItems.forEach(i => i.classList.remove('highlighted'));
                 item.classList.add('highlighted');
-                this.ui.elements.shopContainer.classList.remove('visible');
-                this.ui.elements.shopContainer.classList.add('hidden');
-                this.ui.elements.inventoryContainer.classList.remove('visible');
-                this.ui.elements.inventoryContainer.classList.add('hidden');
-                this.ui.elements.marketContainer.classList.remove('visible');
-                this.ui.elements.marketContainer.classList.add('hidden');
-                this.ui.elements.leaderboardContainer.classList.remove('visible');
-                this.ui.elements.leaderboardContainer.classList.add('hidden');
-                this.ui.elements.shopArrowRight.classList.remove('visible');
-                this.ui.elements.shopArrowRight.classList.add('hidden');
-                if (this.ui.elements.inventoryArrowRight) {
-                    this.ui.elements.inventoryArrowRight.classList.remove('visible');
-                    this.ui.elements.inventoryArrowRight.classList.add('hidden');
-                }
-                if (this.ui.elements.marketArrowLeft) {
-                    this.ui.elements.marketArrowLeft.classList.remove('visible');
-                    this.ui.elements.marketArrowLeft.classList.add('hidden');
-                }
-                this.state.setShopViewActive(false);
-                this.state.setMarketViewActive(false);
-                this.state.setLeaderboardViewActive(false);
-                if (menuType === 'home') {
-                    this.toggleHomeElements(true);
-                } else {
-                    this.toggleHomeElements(false);
-                    if (menuType === 'shop') {
-                        this.switchSection('shop');
-                        this.state.setShopViewActive(true);
-                    } else if (menuType === 'leaderboard') {
-                        this.ui.elements.leaderboardContainer.classList.remove('hidden');
-                        this.ui.elements.leaderboardContainer.classList.add('visible');
-                        this.state.setLeaderboardViewActive(true);
-                        this.updateLeaderboardDisplay();
-                    }
-                }
+                this.switchSection(menuType);
             };
             item.addEventListener('pointerdown', listener);
             this.listeners.push({ element: item, type: 'pointerdown', listener });
@@ -1218,26 +1190,30 @@ class Game {
         };
         this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
         this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
-        if (this.ui.elements.inventoryArrowRight) {
-            const inventoryArrowRightListener = () => {
-                console.log('Inventory arrow right clicked');
-                this.switchSection('market');
-            };
-            this.ui.elements.inventoryArrowRight.addEventListener('pointerdown', inventoryArrowRightListener);
-            this.listeners.push({ element: this.ui.elements.inventoryArrowRight, type: 'pointerdown', listener: inventoryArrowRightListener });
-        } else {
-            console.warn('inventoryArrowRight element not found in DOM');
-        }
-        if (this.ui.elements.marketArrowLeft) {
-            const marketArrowLeftListener = () => {
-                console.log('Market arrow left clicked');
-                this.switchSection('shop');
-            };
-            this.ui.elements.marketArrowLeft.addEventListener('pointerdown', marketArrowLeftListener);
-            this.listeners.push({ element: this.ui.elements.marketArrowLeft, type: 'pointerdown', listener: marketArrowLeftListener });
-        } else {
-            console.warn('marketArrowLeft element not found in DOM');
-        }
+        const inventoryArrowLeftListener = () => {
+            console.log('Inventory arrow left clicked');
+            this.switchSection('shop');
+        };
+        this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', inventoryArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: inventoryArrowLeftListener });
+        const inventoryArrowRightListener = () => {
+            console.log('Inventory arrow right clicked');
+            this.switchSection('market');
+        };
+        this.ui.elements.inventoryArrowRight.addEventListener('pointerdown', inventoryArrowRightListener);
+        this.listeners.push({ element: this.ui.elements.inventoryArrowRight, type: 'pointerdown', listener: inventoryArrowRightListener });
+        const marketArrowLeftListener = () => {
+            console.log('Market arrow left clicked');
+            this.switchSection('inventory');
+        };
+        this.ui.elements.marketArrowLeft.addEventListener('pointerdown', marketArrowLeftListener);
+        this.listeners.push({ element: this.ui.elements.marketArrowLeft, type: 'pointerdown', listener: marketArrowLeftListener });
+        const marketArrowRightListener = () => {
+            console.log('Market arrow right clicked');
+            this.switchSection('shop');
+        };
+        this.ui.elements.marketArrowRight.addEventListener('pointerdown', marketArrowRightListener);
+        this.listeners.push({ element: this.ui.elements.marketArrowRight, type: 'pointerdown', listener: marketArrowRightListener });
         const topMenuListener = () => {
             this.toggleLeaderboard();
         };
@@ -1285,8 +1261,10 @@ document.addEventListener('DOMContentLoaded', () => {
         marketContainer: document.getElementById('marketContainer'),
         leaderboardContainer: document.getElementById('leaderboardContainer'),
         shopArrowRight: document.getElementById('shopArrowRight'),
+        inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
         inventoryArrowRight: document.getElementById('inventoryArrowRight'),
         marketArrowLeft: document.getElementById('marketArrowLeft'),
+        marketArrowRight: document.getElementById('marketArrowRight'),
         tonConnect: document.getElementById('ton-connect'),
         disconnectWallet: document.getElementById('disconnect-wallet'),
         characterFilter: document.getElementById('characterFilter'),
