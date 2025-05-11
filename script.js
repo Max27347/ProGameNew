@@ -161,6 +161,7 @@ class ParticleSystem {
         this.time = 0;
         this.isAnimating = false;
         for (let i = 0; i < count; i++) this.particles[i] = this.createParticle();
+        this.resize(); // Инициализация размеров canvas
     }
     createParticle() {
         return {
@@ -208,10 +209,15 @@ class ParticleSystem {
     start() {
         if (this.isAnimating) return;
         this.isAnimating = true;
+        console.log('ParticleSystem started'); // Лог для отладки
+        this.canvas.classList.remove('game-hidden'); // Убедимся, что canvas видим
+        this.canvas.classList.add('visible');
         this.animate();
     }
     stop() {
         this.isAnimating = false;
+        this.canvas.classList.remove('visible');
+        this.canvas.classList.add('game-hidden');
     }
     animate() {
         if (!this.isAnimating) return;
@@ -227,6 +233,7 @@ class ParticleSystem {
             p.x = Math.random() * this.canvas.width;
             p.y = Math.random() * this.canvas.height;
         }
+        console.log('ParticleSystem resized:', this.canvas.width, this.canvas.height); // Лог для отладки
     }
 }
 
@@ -241,6 +248,7 @@ class ConfettiSystem {
         this.maxCount = count;
         this.spawnRate = 0.05;
         this.removeProbability = 0.02;
+        this.resize();
     }
     createParticle() {
         return {
@@ -390,7 +398,10 @@ class UIManager {
                 if (key === 'coins') this.elements.coinCount.textContent = Math.floor(value);
                 if (key === 'totalCoins') this.elements.totalCoins.textContent = Math.floor(value);
                 if (key === 'characterSrc') this.elements.character.src = value;
-                if (key === 'gradient') document.documentElement.style.setProperty('--bg-gradient', value);
+                if (key === 'gradient') {
+                    console.log('Applying gradient:', value); // Лог для отладки
+                    document.documentElement.style.setProperty('--bg-gradient', value);
+                }
                 if (key === 'highlightColor') document.documentElement.style.setProperty('--highlight-color', value);
                 if (key === 'worldName') this.elements.playerStats.textContent = value;
                 if (key === 'incomeRate') this.elements.incomeRate.textContent = value;
@@ -634,7 +645,8 @@ class Game {
         await Promise.all(imageUrls.map(loadImage));
         this.ui.showGameUI();
         this.characterController.initialize();
-        this.particleSystem.start();
+        this.particleSystem.start(); // Гарантированный запуск частиц
+        console.log('Initializing ParticleSystem and UI'); // Лог для отладки
         this.initializeWallet();
     }
     updateInventoryDisplay() {
