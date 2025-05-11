@@ -1113,7 +1113,7 @@ Yz            const option = document.createElement('option');
         overlay.appendChild(animationContainer);
         overlay.appendChild(spinButton);
         overlay.appendChild(cancelButton);
-        document.body.appendChild(asis);
+        document.body.appendChild(overlay); // Исправлено: asis -> overlay
         const items = [...CHARACTERS.slice(1)];
         const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
         if (isDiamondCase) {
@@ -1346,7 +1346,8 @@ Yz            const option = document.createElement('option');
             this.ui.elements.inventoryContainer.classList.add('hidden');
             this.ui.elements.marketContainer.classList.remove('visible');
             this.ui.elements.marketContainer.classList.add('hidden');
-                        this.ui.elements.leaderboardContainer.classList.add('hidden');
+            this.ui.elements.leaderboardContainer.classList.remove('visible');
+            this.ui.elements.leaderboardContainer.classList.add('hidden');
             this.ui.elements.shopArrowLeft.classList.remove('hidden');
             this.ui.elements.shopArrowLeft.classList.add('visible');
             this.ui.elements.shopArrowRight.classList.remove('hidden');
