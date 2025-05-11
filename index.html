@@ -968,6 +968,10 @@ class Game {
                     this.ui.elements.shopContainer.classList.add('visible');
                     this.ui.elements.inventoryArrowLeft.classList.remove('visible');
                     this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+                    this.ui.elements.shopArrowLeft.classList.remove('hidden');
+                    this.ui.elements.shopArrowLeft.classList.add('visible');
+                    this.ui.elements.shopArrowRight.classList.remove('hidden');
+                    this.ui.elements.shopArrowRight.classList.add('visible');
                     this.isInventoryView = false;
                     this.characterController.updateAppearance();
                 }
@@ -1384,7 +1388,7 @@ class Game {
     }
     handleArrowClick(e) {
         const arrow = e.target;
-        if (arrow.id === 'shopArrowLeft') {
+        if (arrow.id === 'shopArrowLeft' || arrow.id === 'shopArrowRight') {
             this.ui.elements.shopContainer.classList.remove('visible');
             this.ui.elements.shopContainer.classList.add('hidden');
             this.ui.elements.inventoryContainer.classList.remove('hidden');
@@ -1414,6 +1418,39 @@ class Game {
     handleFilterChange() {
         this.updateMarketDisplay();
     }
+    handleTopMenuClick() {
+        if (this.state.isLeaderboardViewActive()) {
+            this.state.setLeaderboardViewActive(false);
+            this.ui.elements.leaderboardContainer.classList.remove('visible');
+            this.ui.elements.leaderboardContainer.classList.add('hidden');
+        } else {
+            this.state.setShopViewActive(false);
+            this.state.setMarketViewActive(false);
+            this.state.setLeaderboardViewActive(true);
+            this.ui.elements.mainContent.classList.remove('visible');
+            this.ui.elements.mainContent.classList.add('hidden-opacity');
+            this.ui.elements.character.classList.remove('visible');
+            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.marketContainer.classList.remove('visible');
+            this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.leaderboardContainer.classList.remove('hidden');
+            this.ui.elements.leaderboardContainer.classList.add('visible');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.isInventoryView = false;
+            this.ui.toggleConnectButton(false);
+            this.state.canInteract = false;
+            this.updateLeaderboardDisplay();
+        }
+    }
     attachEventListeners() {
         const menuClickListener = this.handleMenuClick.bind(this);
         this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
@@ -1435,6 +1472,9 @@ class Game {
         this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterChangeListener });
         this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterChangeListener });
         this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterChangeListener });
+        const topMenuClickListener = this.handleTopMenuClick.bind(this);
+        this.ui.elements.topMenu.addEventListener('pointerdown', topMenuClickListener);
+        this.listeners.push({ element: this.ui.elements.topMenu, type: 'pointerdown', listener: topMenuClickListener });
         const resizeListener = () => {
             if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
             this.resizeTimeout = setTimeout(() => {
@@ -1513,6 +1553,6 @@ document.addEventListener('DOMContentLoaded', () => {
     game.initialize();
     window.addEventListener('beforeunload', () => game.destroy());
 });
-</script>
+    </script>
 </body>
 </html>
