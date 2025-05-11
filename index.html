@@ -1418,39 +1418,79 @@ class Game {
     handleFilterChange() {
         this.updateMarketDisplay();
     }
-    handleTopMenuClick() {
-        if (this.state.isLeaderboardViewActive()) {
-            this.state.setLeaderboardViewActive(false);
-            this.ui.elements.leaderboardContainer.classList.remove('visible');
-            this.ui.elements.leaderboardContainer.classList.add('hidden');
-        } else {
-            this.state.setShopViewActive(false);
-            this.state.setMarketViewActive(false);
-            this.state.setLeaderboardViewActive(true);
-            this.ui.elements.mainContent.classList.remove('visible');
-            this.ui.elements.mainContent.classList.add('hidden-opacity');
-            this.ui.elements.character.classList.remove('visible');
-            this.ui.elements.character.classList.add('hidden-opacity');
-            this.ui.elements.shopContainer.classList.remove('visible');
-            this.ui.elements.shopContainer.classList.add('hidden');
-            this.ui.elements.inventoryContainer.classList.remove('visible');
-            this.ui.elements.inventoryContainer.classList.add('hidden');
-            this.ui.elements.marketContainer.classList.remove('visible');
-            this.ui.elements.marketContainer.classList.add('hidden');
-            this.ui.elements.leaderboardContainer.classList.remove('hidden');
-            this.ui.elements.leaderboardContainer.classList.add('visible');
-            this.ui.elements.shopArrowLeft.classList.remove('visible');
-            this.ui.elements.shopArrowLeft.classList.add('hidden');
-            this.ui.elements.shopArrowRight.classList.remove('visible');
-            this.ui.elements.shopArrowRight.classList.add('hidden');
-            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
-            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
-            this.isInventoryView = false;
-            this.ui.toggleConnectButton(false);
-            this.state.canInteract = false;
-            this.updateLeaderboardDisplay();
+handleTopMenuClick() {
+    if (this.state.isLeaderboardViewActive()) {
+        // Отключаем таблицу лидеров и возвращаемся на домашний экран
+        this.state.setLeaderboardViewActive(false);
+        this.state.setShopViewActive(false);
+        this.state.setMarketViewActive(false);
+
+        // Восстанавливаем содержимое главной страницы
+        this.ui.elements.mainContent.classList.remove('hidden-opacity');
+        this.ui.elements.mainContent.classList.add('visible');
+        this.ui.elements.coinCounter.classList.remove('hidden');
+        this.ui.elements.coinCounter.classList.add('visible');
+        this.ui.elements.character.classList.remove('hidden-opacity');
+        this.ui.elements.character.classList.add('visible');
+
+        // Скрываем все остальные контейнеры
+        this.ui.elements.leaderboardContainer.classList.remove('visible');
+        this.ui.elements.leaderboardContainer.classList.add('hidden');
+        this.ui.elements.shopContainer.classList.remove('visible');
+        this.ui.elements.shopContainer.classList.add('hidden');
+        this.ui.elements.inventoryContainer.classList.remove('visible');
+        this.ui.elements.inventoryContainer.classList.add('hidden');
+        this.ui.elements.marketContainer.classList.remove('visible');
+        this.ui.elements.marketContainer.classList.add('hidden');
+
+        // Скрываем стрелки навигации
+        this.ui.elements.shopArrowLeft.classList.remove('visible');
+        this.ui.elements.shopArrowLeft.classList.add('hidden');
+        this.ui.elements.shopArrowRight.classList.remove('visible');
+        this.ui.elements.shopArrowRight.classList.add('hidden');
+        this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+        this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+
+        // Сбрасываем состояние инвентаря и включаем взаимодействие
+        this.isInventoryView = false;
+        this.ui.toggleConnectButton(false);
+        this.state.canInteract = true;
+
+        // Выделяем пункт "Home" в нижнем меню
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
+        const homeMenuItem = document.querySelector('.menu-item[data-menu="home"]');
+        if (homeMenuItem) {
+            homeMenuItem.classList.add('highlighted');
         }
+    } else {
+        // Показываем таблицу лидеров (оставляем без изменений)
+        this.state.setShopViewActive(false);
+        this.state.setMarketViewActive(false);
+        this.state.setLeaderboardViewActive(true);
+        this.ui.elements.mainContent.classList.remove('visible');
+        this.ui.elements.mainContent.classList.add('hidden-opacity');
+        this.ui.elements.character.classList.remove('visible');
+        this.ui.elements.character.classList.add('hidden-opacity');
+        this.ui.elements.shopContainer.classList.remove('visible');
+        this.ui.elements.shopContainer.classList.add('hidden');
+        this.ui.elements.inventoryContainer.classList.remove('visible');
+        this.ui.elements.inventoryContainer.classList.add('hidden');
+        this.ui.elements.marketContainer.classList.remove('visible');
+        this.ui.elements.marketContainer.classList.add('hidden');
+        this.ui.elements.leaderboardContainer.classList.remove('hidden');
+        this.ui.elements.leaderboardContainer.classList.add('visible');
+        this.ui.elements.shopArrowLeft.classList.remove('visible');
+        this.ui.elements.shopArrowLeft.classList.add('hidden');
+        this.ui.elements.shopArrowRight.classList.remove('visible');
+        this.ui.elements.shopArrowRight.classList.add('hidden');
+        this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+        this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+        this.isInventoryView = false;
+        this.ui.toggleConnectButton(false);
+        this.state.canInteract = false;
+        this.updateLeaderboardDisplay();
     }
+}
     attachEventListeners() {
         const menuClickListener = this.handleMenuClick.bind(this);
         this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
