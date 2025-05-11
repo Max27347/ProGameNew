@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,13 +85,13 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .case-animation-message.visible{opacity:1;transform:scale(1)}
 .case-animation-message.hidden{opacity:0;transform:scale(0.9)}
 .case-animation-container{width:480px;height:200px;background:#2E2E2E;border-radius:16px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}
-.roulette-strip{width:5440px;height:100%;display:flex;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 40s linear infinite}
-.roulette-item{width:120px;height:120px;margin:0 8px;display:flex;justify-content:center;align-items:center;background:#1E1E1E;border-radius:8px;position:relative;transition:transform 0.5s ease,box-shadow 0.5s ease,border 0.5s ease}
+.roulette-strip{width:5440px;height:100%;display:flex;flex-direction:row;align-items:center;transform:translateX(0);position:absolute;left:0;animation:roulette-slow-spin 40s linear infinite}
+.roulette-item{width:120px;height:120px;margin:0 8px;display:flex;justify-content:center;align-items:center;background:#1E1E1E;border-radius:8px;position:relative;transition:transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease}
 .roulette-item img{width:100px;height:100px;object-fit:contain}
 .roulette-item.winner{transform:scale(1.5);border:2px solid #FFF;animation:glow-winner 1s ease-in-out infinite;z-index:10}
-.animation-character{width:100px;height:100px;object-fit:contain}
+.animation-character{width:100px;height:100px;object-fit:contain;z-index:3}
 .animation-character.mutated{filter:brightness(1.5) hue-rotate(200deg)}
-.animation-background{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;opacity:0.8}
+.animation-background{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;opacity:0.8;z-index:1}
 .animation-bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:4px;height:90%;background:#FFF;border-radius:2px}
 .case-animation-button{font-size:1.2rem;font-weight:600;color:#000;background:var(--highlight-color);padding:0.75rem 1.5rem;border-radius:16px;cursor:pointer;margin-top:1rem}
 .case-animation-cancel{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;cursor:pointer;margin-top:0.5rem}
@@ -172,9 +171,9 @@ footer{bottom:0;padding:0}
         <div class="player-info">
             <span class="player-nickname">Player123</span>
             <span class="player-max-coins">
-                <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
-                <span id="totalCoins">0</span>
-            </span>
+<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
+<span id="totalCoins">0</span>
+</span>
         </div>
     </div>
     <div class="top-menu-right">
@@ -190,29 +189,34 @@ footer{bottom:0;padding:0}
 <main class="game-hidden" id="mainContent">
     <div class="income-counter" id="incomeCounter">
         <span id="incomeRate">0</span> Diamonds/h
-        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" draggable="false">
+        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon"
+             draggable="false">
     </div>
     <div class="income-timer" id="incomeTimer">
         <span id="timerDisplay">00:00</span>
     </div>
     <div class="coin-counter visible" id="coinCounter">
         <span id="coinCount">0</span>
-        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
+        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone"
+             class="coin-icon" draggable="false">
     </div>
     <div class="character-container">
-        <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller" class="character" id="character" draggable="false">
+        <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller"
+             class="character" id="character" draggable="false">
     </div>
 </main>
 <div class="shop-container hidden" id="shopContainer">
     <div class="shop-title">Cases</div>
     <div class="cases-container">
         <div class="case-container" data-case="diamond-rain">
-            <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false">
+            <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain"
+                 class="case-image" draggable="false">
             <div class="case-name">Diamond Rain</div>
             <div class="case-price">100 Diamonds</div>
         </div>
         <div class="case-container" data-case="character-magic">
-            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false">
+            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic"
+                 class="case-image" draggable="false">
             <div class="case-name">Character Magic</div>
             <div class="case-price">Free (Test)</div>
         </div>
@@ -245,11 +249,11 @@ footer{bottom:0;padding:0}
     <div class="leaderboard-table-container">
         <table class="leaderboard-table" id="leaderboardTable">
             <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                    <th>Diamonds</th>
-                </tr>
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Diamonds</th>
+            </tr>
             </thead>
             <tbody></tbody>
         </table>
@@ -262,74 +266,63 @@ footer{bottom:0;padding:0}
     <div class="footer-menu-container">
         <div class="footer-menu">
             <div class="menu-item highlighted" data-menu="home">
-                <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false">
+                <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home"
+                     draggable="false">
                 <span>Home</span>
             </div>
             <div class="menu-item" data-menu="shop">
-                <img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop" draggable="false">
+                <img src="https://em-content.zobj.net/source/telegram/386/crown_1f451.webp" alt="Shop"
+                     draggable="false">
                 <span>Shop</span>
             </div>
             <div class="menu-item" data-menu="market">
-                <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market" draggable="false">
+                <img src="https://em-content.zobj.net/source/telegram/386/shopping-bags_1f6cd-fe0f.webp" alt="Market"
+                     draggable="false">
                 <span>Market</span>
             </div>
         </div>
     </div>
 </footer>
 <script>
-const CONFIG = {
-    PARTICLE_COUNT: 50,
-    CONFETTI_COUNT: 30,
-    CLICK_EFFECT_DURATION: 1000,
-    RESIZE_DEBOUNCE: 200,
-    MAX_SCALE: 1.4,
-    MIN_SCALE: 1,
-    SCALE_INCREMENT: 0.1,
-    INCOME_INTERVAL: 3600000
-};
-const SKINS = [{
-    src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
-    gradient: 'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',
-    color: '#FFFFFF',
-    worldName: 'World of Consoles'
-}];
-const CHARACTERS = [
-    { src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp', name: 'Controller' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/monkey-face_1f435.webp', name: 'Monkey' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/gorilla_1f98d.webp', name: 'Gorilla' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/dog-face_1f436.webp', name: 'Dog' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/cat-face_1f431.webp', name: 'Cat' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/lion_1f981.webp', name: 'Lion' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/tiger-face_1f42f.webp', name: 'Tiger' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/hamster_1f439.webp', name: 'Hamster' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/panda_1f43c.webp', name: 'Panda' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/chicken_1f414.webp', name: 'Chicken' },
-    { src: 'https://em-content.zobj.net/source/telegram/386/baby-chick_1f424.webp', name: 'Baby Chick' }
-];
-const BACKGROUND_GRADIENTS = [
-    'radial-gradient(circle at 30% 30%, #FF6B6B, #4ECDC4 70%)',
-    'linear-gradient(45deg, #FF9A8B, #FF6A88, #4A4E69)',
-    'radial-gradient(circle at 50% 50%, #A8E6CF, #DCFFFB 70%)',
-    'linear-gradient(135deg, #FFD3A5, #FD6585, #8B008B)',
-    'radial-gradient(circle at 70% 20%, #C4E0E5, #4CA1AF 70%)',
-    'linear-gradient(90deg, #FEE140, #FA709A)',
-    'radial-gradient(circle at 40% 60%, #FFDEE9, #B5FFFC 70%)',
-    'linear-gradient(180deg, #8EC5FC, #E0C3FC, #6366F1)',
-    'radial-gradient(circle at 20% 80%, #F4C4F3, #FC67FA 70%)',
-    'linear-gradient(270deg, #A1C4FD, #C2E9FB, #4B6CB7)'
-];
-const MUTATION_GRADIENT = 'radial-gradient(circle at 50% 50%, #FFD700, #FF4500 70%)';
-const MARKET_SKINS = [
-    { id: 'skin1', character: CHARACTERS[1], background: BACKGROUND_GRADIENTS[0], price: 500, timestamp: Date.now() - 10000 },
-    { id: 'skin2', character: CHARACTERS[2], background: BACKGROUND_GRADIENTS[1], price: 750, timestamp: Date.now() - 9000 },
-    { id: 'skin3', character: CHARACTERS[3], background: BACKGROUND_GRADIENTS[2], price: 300, timestamp: Date.now() - 8000 },
-    { id: 'skin4', character: CHARACTERS[4], background: BACKGROUND_GRADIENTS[3], price: 1000, timestamp: Date.now() - 7000 },
-    { id: 'skin5', character: CHARACTERS[5], background: BACKGROUND_GRADIENTS[4], price: 600, timestamp: Date.now() - 6000 },
-    { id: 'skin6', character: CHARACTERS[6], background: BACKGROUND_GRADIENTS[5], price: 450, timestamp: Date.now() - 5000 },
-    { id: 'skin7', character: CHARACTERS[7], background: BACKGROUND_GRADIENTS[6], price: 800, timestamp: Date.now() - 4000 },
-    { id: 'skin8', character: CHARACTERS[8], background: BACKGROUND_GRADIENTS[7], price: 550, timestamp: Date.now() - 3000 },
-    { id: 'skin9', character: CHARACTERS[9], background: BACKGROUND_GRADIENTS[8], price: 700, timestamp: Date.now() - 2000 },
-    { id: 'skin10', character: CHARACTERS[10], background: BACKGROUND_GRADIENTS[9], price: 400, timestamp: Date.now() - 1000 }
+const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
+const SKINS=[{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'}]
+const CHARACTERS=[
+{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',name:'Controller'},
+{src:'https://em-content.zobj.net/source/telegram/386/monkey-face_1f435.webp',name:'Monkey'},
+{src:'https://em-content.zobj.net/source/telegram/386/gorilla_1f98d.webp',name:'Gorilla'},
+{src:'https://em-content.zobj.net/source/telegram/386/dog-face_1f436.webp',name:'Dog'},
+{src:'https://em-content.zobj.net/source/telegram/386/cat-face_1f431.webp',name:'Cat'},
+{src:'https://em-content.zobj.net/source/telegram/386/lion_1f981.webp',name:'Lion'},
+{src:'https://em-content.zobj.net/source/telegram/386/tiger-face_1f42f.webp',name:'Tiger'},
+{src:'https://em-content.zobj.net/source/telegram/386/hamster_1f439.webp',name:'Hamster'},
+{src:'https://em-content.zobj.net/source/telegram/386/panda_1f43c.webp',name:'Panda'},
+{src:'https://em-content.zobj.net/source/telegram/386/chicken_1f414.webp',name:'Chicken'},
+{src:'https://em-content.zobj.net/source/telegram/386/baby-chick_1f424.webp',name:'Baby Chick'}
+]
+const BACKGROUND_GRADIENTS=[
+'radial-gradient(circle at 30% 30%, #FF6B6B, #4ECDC4 70%)',
+'linear-gradient(45deg, #FF9A8B, #FF6A88, #4A4E69)',
+'radial-gradient(circle at 50% 50%, #A8E6CF, #DCFFFB 70%)',
+'linear-gradient(135deg, #FFD3A5, #FD6585, #8B008B)',
+'radial-gradient(circle at 70% 20%, #C4E0E5, #4CA1AF 70%)',
+'linear-gradient(90deg, #FEE140, #FA709A)',
+'radial-gradient(circle at 40% 60%, #FFDEE9, #B5FFFC 70%)',
+'linear-gradient(180deg, #8EC5FC, #E0C3FC, #6366F1)',
+'radial-gradient(circle at 20% 80%, #F4C4F3, #FC67FA 70%)',
+'linear-gradient(270deg, #A1C4FD, #C2E9FB, #4B6CB7)'
+]
+const MUTATION_GRADIENT='radial-gradient(circle at 50% 50%, #FFD700, #FF4500 70%)';
+const MARKET_SKINS=[
+    {id: 'skin1', character: CHARACTERS[1], background: BACKGROUND_GRADIENTS[0], price: 500, timestamp: Date.now() - 10000},
+    {id: 'skin2', character: CHARACTERS[2], background: BACKGROUND_GRADIENTS[1], price: 750, timestamp: Date.now() - 9000},
+    {id: 'skin3', character: CHARACTERS[3], background: BACKGROUND_GRADIENTS[2], price: 300, timestamp: Date.now() - 8000},
+    {id: 'skin4', character: CHARACTERS[4], background: BACKGROUND_GRADIENTS[3], price: 1000, timestamp: Date.now() - 7000},
+    {id: 'skin5', character: CHARACTERS[5], background: BACKGROUND_GRADIENTS[4], price: 600, timestamp: Date.now() - 6000},
+    {id: 'skin6', character: CHARACTERS[6], background: BACKGROUND_GRADIENTS[5], price: 450, timestamp: Date.now() - 5000},
+    {id: 'skin7', character: CHARACTERS[7], background: BACKGROUND_GRADIENTS[6], price: 800, timestamp: Date.now() - 4000},
+    {id: 'skin8', character: CHARACTERS[8], background: BACKGROUND_GRADIENTS[7], price: 550, timestamp: Date.now() - 3000},
+    {id: 'skin9', character: CHARACTERS[9], background: BACKGROUND_GRADIENTS[8], price: 700, timestamp: Date.now() - 2000},
+    {id: 'skin10', character: CHARACTERS[10], background: BACKGROUND_GRADIENTS[9], price: 400, timestamp: Date.now() - 1000}
 ];
 class GameState {
     constructor() {
@@ -505,16 +498,18 @@ class ParticleSystem {
     }
 }
 class ConfettiSystem {
-    constructor(canvas, count) {
+    constructor(canvas, count, nextColor) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.particles = [];
         this.isAnimating = false;
+        this.nextColor = nextColor || '#FFFFFF';
+        this.colors = ['#FFFFFF', this.nextColor];
         this.maxCount = count;
         this.spawnRate = 0.05;
         this.removeProbability = 0.02;
     }
-    createParticle(color) {
+    createParticle() {
         return {
             x: Math.random() * this.canvas.width,
             y: -Math.random() * 50,
@@ -522,7 +517,7 @@ class ConfettiSystem {
             height: Math.random() * 3 + 3,
             speedY: Math.random() * 2 + 2,
             opacity: 1,
-            color: color || '#FFFFFF',
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
             rotation: Math.random() * Math.PI * 2
         };
     }
@@ -533,9 +528,7 @@ class ConfettiSystem {
             if (p.y > this.canvas.height * 0.9) return Math.random() > this.removeProbability;
             return true;
         });
-        if (this.particles.length < this.maxCount && Math.random() < this.spawnRate) {
-            this.particles.push(this.createParticle(this.particles[0]?.color || '#FFFFFF'));
-        }
+        if (this.particles.length < this.maxCount && Math.random() < this.spawnRate) this.particles.push(this.createParticle());
     }
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -550,11 +543,15 @@ class ConfettiSystem {
             this.ctx.restore();
         }
     }
-    start(color = '#FFFFFF') {
+    start(nextColor) {
         if (this.isAnimating) return;
+        if (nextColor) {
+            this.nextColor = nextColor;
+            this.colors = ['#FFFFFF', this.nextColor];
+        }
         this.particles = [];
         for (let i = 0; i < this.maxCount; i++) {
-            const p = this.createParticle(color);
+            const p = this.createParticle();
             p.y = Math.random() * this.canvas.height;
             this.particles.push(p);
         }
@@ -582,7 +579,7 @@ class ConfettiSystem {
         this.particles = [];
         if (this.isAnimating) {
             for (let i = 0; i < this.maxCount; i++) {
-                const p = this.createParticle(this.particles[0]?.color || '#FFFFFF');
+                const p = this.createParticle();
                 p.y = Math.random() * this.canvas.height;
                 this.particles.push(p);
             }
@@ -798,7 +795,7 @@ class Game {
         this.state = new GameState();
         this.ui = new UIManager(elements);
         this.particleSystem = new ParticleSystem(elements.particleCanvas, CONFIG.PARTICLE_COUNT);
-        this.confettiSystem = new ConfettiSystem(elements.confettiCanvas, CONFIG.CONFETTI_COUNT);
+        this.confettiSystem = new ConfettiSystem(elements.confettiCanvas, CONFIG.CONFETTI_COUNT, '#FFFFFF');
         this.effectPool = new ClickEffectPool();
         this.characterController = new CharacterController(this.state, this.ui, this.effectPool, this.confettiSystem);
         this.resizeTimeout = null;
@@ -855,7 +852,6 @@ class Game {
             }
         } catch (error) {
             console.error('Error initializing TON Connect UI:', error);
-            this.ui.toggleConnectButton(true);
             this.ui.applyUpdates();
         }
     }
@@ -870,7 +866,8 @@ class Game {
             'https://em-content.zobj.net/source/telegram/386/collision_1f4a5.webp',
             'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp',
             'https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp',
-            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp'
+            'https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp',
+            'https://em-content.zobj.net/source/telegram/386/joystick_1f579-fe0f.webp'
         ];
         let loadedCount = 0;
         const totalImages = imageUrls.length;
@@ -1082,12 +1079,14 @@ class Game {
     }
     showCaseAnimation(caseType) {
         const isDiamondCase = caseType === 'diamond-rain';
+        const currency = isDiamondCase ? '100 Diamonds' : 'Free (Test)';
         const overlay = document.createElement('div');
         overlay.className = 'case-animation-overlay hidden';
         const message = document.createElement('div');
         message.className = 'case-animation-message hidden';
-        message.textContent = isDiamondCase ? 'Spin for 100 Diamonds!' : 'Spin for Free (Test)!';
+        message.textContent = `Spin for ${currency}!`;
         const animationContainer = document.createElement('div');
+        animationContainer.id = 'caseAnimationContainer';
         animationContainer.className = 'case-animation-container';
         const rouletteStrip = document.createElement('div');
         rouletteStrip.className = 'roulette-strip';
@@ -1108,98 +1107,186 @@ class Game {
         document.body.appendChild(overlay);
         const items = [...CHARACTERS.slice(1)];
         const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
-        if (isDiamondCase) items.push(diamondItem);
-        const reward = this.generateCaseReward(caseType);
+        if (isDiamondCase) {
+            items.push(diamondItem);
+        }
         const rouletteItems = [];
+        const reward = this.generateCaseReward(caseType);
         for (let i = 0; i < 40; i++) {
-            let randomItem;
             if (i === 19) {
-                randomItem = reward;
-            } else if (isDiamondCase && Math.random() < 0.6) {
+                rouletteItems.push(reward);
+                continue;
+            }
+            let randomItem;
+            if (isDiamondCase && Math.random() < 0.6) {
                 randomItem = diamondItem;
             } else {
-                randomItem = items[Math.floor(Math.random() * items.length)];
+                randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
             }
-            rouletteItems.push(randomItem);
+            rouletteItems.push({
+                ...randomItem,
+                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
+                background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
+                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
+            });
         }
-        rouletteItems.forEach(item => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'roulette-item';
-            const img = document.createElement('img');
-            img.src = item.src;
-            img.alt = item.name;
-            itemDiv.appendChild(img);
-            if (item === reward) {
-                itemDiv.classList.add('winner');
-            }
-            rouletteStrip.appendChild(itemDiv);
-        });
-        setTimeout(() => {
+        const renderRoulette = () => {
+            rouletteStrip.innerHTML = '';
+            rouletteItems.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'roulette-item';
+                itemDiv.dataset.itemName = item.name;
+                itemDiv.style.background = item.background;
+                itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                const bgDiv = document.createElement('div');
+                bgDiv.className = 'animation-background';
+                bgDiv.style.background = item.background;
+                itemDiv.appendChild(bgDiv);
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = item.name;
+                img.className = 'animation-character';
+                if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
+                itemDiv.appendChild(img);
+                if (index === 19) {
+                    itemDiv.dataset.winner = 'true';
+                }
+                rouletteStrip.appendChild(itemDiv);
+            });
+        };
+        renderRoulette();
+        requestAnimationFrame(() => {
             overlay.classList.remove('hidden');
             overlay.classList.add('visible');
             message.classList.remove('hidden');
             message.classList.add('visible');
-        }, 10);
-        const startSpin = () => {
+            setTimeout(() => {
+                spinButton.className += ' visible';
+                cancelButton.className += ' visible';
+            }, 300);
+        });
+        const onCancel = () => {
+            overlay.classList.remove('visible');
+            overlay.classList.add('hidden');
+            message.classList.remove('visible');
+            message.classList.add('hidden');
+            spinButton.classList.remove('visible');
+            cancelButton.classList.remove('visible');
+            setTimeout(() => {
+                overlay.remove();
+                this.state.isOverlayActive = false;
+            }, 500);
+            cancelButton.removeEventListener('pointerdown', onCancel);
+        };
+        cancelButton.addEventListener('pointerdown', onCancel);
+        const startRoulette = () => {
             if (isDiamondCase && this.state.getCoins() < 100) {
                 alert('Not enough diamonds!');
+                onCancel();
                 return;
             }
-            spinButton.style.pointerEvents = 'none';
-            spinButton.style.opacity = '0.5';
-            message.textContent = 'Spinning...';
             if (isDiamondCase) {
                 this.state.addCoins(-100);
                 this.ui.queueUpdate('coins', this.state.getCoins());
                 this.ui.queueUpdate('totalCoins', this.state.getCoins());
                 this.ui.applyUpdates();
             }
-            rouletteStrip.style.animation = 'roulette-spin 5s ease-out forwards';
-            setTimeout(() => {
-                message.textContent = `You won ${reward.name}!`;
-                this.confettiSystem.start(reward.isMutated ? '#FFD700' : '#FFFFFF');
-                if (reward.name === 'Diamonds') {
-                    this.state.addCoins(500);
-                } else {
-                    this.state.addToInventory({
-                        src: reward.src,
-                        name: reward.name,
-                        background: isDiamondCase && Math.random() < 0.5 ? BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)] : null,
-                        isMutated: isDiamondCase && Math.random() < 0.2
-                    });
-                    this.updateInventoryDisplay();
+            spinButton.style.pointerEvents = 'none';
+            spinButton.style.opacity = '0.5';
+            rouletteStrip.style.opacity = '1';
+            rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
+            const onAnimationEnd = () => {
+                const isMobile = window.innerWidth <= 600;
+                rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
+                const winnerIndex = 19;
+                const winnerItem = rouletteStrip.children[winnerIndex];
+                if (winnerItem) {
+                    const img = winnerItem.querySelector('img');
+                    if (img) {
+                        img.src = reward.src;
+                        img.alt = reward.name;
+                        img.className = 'animation-character';
+                        if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
+                    }
+                    const bgDiv = winnerItem.querySelector('.animation-background');
+                    if (bgDiv) {
+                        bgDiv.style.background = reward.background;
+                    }
+                    winnerItem.dataset.itemName = reward.name;
+                    winnerItem.style.background = reward.background;
+                    winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                    winnerItem.dataset.winner = 'true';
+                    winnerItem.classList.add('winner');
+                    message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
+                    if (reward.name === 'Diamonds') {
+                        this.state.addCoins(reward.value);
+                        this.ui.queueUpdate('coins', this.state.getCoins());
+                        this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                    } else {
+                        this.state.addToInventory(reward);
+                        this.updateInventoryDisplay();
+                    }
+                    this.ui.applyUpdates();
+                    setTimeout(() => {
+                        overlay.classList.remove('visible');
+                        overlay.classList.add('hidden');
+                        message.classList.remove('visible');
+                        message.classList.add('hidden');
+                        spinButton.classList.remove('visible');
+                        cancelButton.classList.remove('visible');
+                        setTimeout(() => {
+                            overlay.remove();
+                            this.state.isOverlayActive = false;
+                            rouletteStrip.style.opacity = '1';
+                        }, 500);
+                    }, 2000);
                 }
-                this.ui.queueUpdate('coins', this.state.getCoins());
-                this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                this.ui.applyUpdates();
-                spinButton.textContent = 'Spin Again';
-                spinButton.style.pointerEvents = 'auto';
-                spinButton.style.opacity = '1';
-                setTimeout(() => this.confettiSystem.stop(), 3000);
-            }, 5000);
-            rouletteStrip.addEventListener('animationend', () => {
-                rouletteStrip.style.animation = 'roulette-slow-spin 40s linear infinite';
-            }, { once: true });
+                rouletteStrip.removeEventListener('animationend', onAnimationEnd);
+            };
+            rouletteStrip.addEventListener('animationend', onAnimationEnd);
         };
-        spinButton.addEventListener('pointerdown', startSpin);
-        cancelButton.addEventListener('pointerdown', () => {
-            overlay.classList.remove('visible');
-            overlay.classList.add('hidden');
-            message.classList.remove('visible');
-            message.classList.add('hidden');
-            setTimeout(() => overlay.remove(), 500);
-            this.state.canInteract = true;
-            this.state.isOverlayActive = false;
-        });
-        this.state.canInteract = false;
-        this.state.isOverlayActive = true;
+        spinButton.addEventListener('pointerdown', startRoulette);
     }
     generateCaseReward(caseType) {
-        if (caseType === 'diamond-rain') {
-            const items = [...CHARACTERS.slice(1), { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' }];
-            return items[Math.floor(Math.random() * items.length)];
+        const isDiamondCase = caseType === 'diamond-rain';
+        const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
+        if (isDiamondCase) {
+            const roll = Math.random();
+            if (roll < 0.95) {
+                const diamonds = Math.floor(Math.random() * 250) + 1;
+                return {
+                    type: 'diamonds',
+                    name: 'Diamonds',
+                    value: diamonds,
+                    isMutated: false,
+                    background,
+                    src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
+                };
+            } else {
+                const characterIndex = Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1;
+                const character = CHARACTERS[characterIndex];
+                const isMutated = Math.random() < 0.1;
+                return {
+                    type: 'character',
+                    character,
+                    isMutated,
+                    background,
+                    name: character.name,
+                    src: character.src
+                };
+            }
         } else {
-            return CHARACTERS[Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1];
+            const characterIndex = Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1;
+            const character = CHARACTERS[characterIndex];
+            const isMutated = Math.random() < 0.1;
+            return {
+                type: 'character',
+                character,
+                isMutated,
+                background,
+                name: character.name,
+                src: character.src
+            };
         }
     }
     handleMenuClick(e) {
@@ -1208,37 +1295,32 @@ class Game {
         const menuType = menuItem.dataset.menu;
         document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
         menuItem.classList.add('highlighted');
-        this.ui.elements.shopContainer.classList.remove('visible');
-        this.ui.elements.shopContainer.classList.add('hidden');
-        this.ui.elements.inventoryContainer.classList.remove('visible');
-        this.ui.elements.inventoryContainer.classList.add('hidden');
-        this.ui.elements.marketContainer.classList.remove('visible');
-        this.ui.elements.marketContainer.classList.add('hidden');
-        this.ui.elements.leaderboardContainer.classList.remove('visible');
-        this.ui.elements.leaderboardContainer.classList.add('hidden');
-        this.ui.elements.mainContent.classList.remove('visible');
-        this.ui.elements.mainContent.classList.add('hidden-opacity');
-        this.ui.elements.character.classList.remove('visible');
-        this.ui.elements.character.classList.add('hidden-opacity');
-        this.ui.elements.shopArrowLeft.classList.remove('visible');
-        this.ui.elements.shopArrowLeft.classList.add('hidden');
-        this.ui.elements.shopArrowRight.classList.remove('visible');
-        this.ui.elements.shopArrowRight.classList.add('hidden');
-        this.ui.elements.inventoryArrowLeft.classList.remove('visible');
-        this.ui.elements.inventoryArrowLeft.classList.add('hidden');
-        this.state.setShopViewActive(false);
-        this.state.setMarketViewActive(false);
-        this.state.setLeaderboardViewActive(false);
-        this.isInventoryView = false;
-        this.ui.toggleConnectButton(false);
-        this.state.canInteract = false;
         if (menuType === 'home') {
+            this.state.setShopViewActive(false);
+            this.state.setMarketViewActive(false);
+            this.state.setLeaderboardViewActive(false);
             this.ui.elements.mainContent.classList.remove('hidden-opacity');
             this.ui.elements.mainContent.classList.add('visible');
             this.ui.elements.coinCounter.classList.remove('hidden');
             this.ui.elements.coinCounter.classList.add('visible');
             this.ui.elements.character.classList.remove('hidden-opacity');
             this.ui.elements.character.classList.add('visible');
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.marketContainer.classList.remove('visible');
+            this.ui.elements.marketContainer.classList.add('hidden');
+            this.ui.elements.leaderboardContainer.classList.remove('visible');
+            this.ui.elements.leaderboardContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.isInventoryView = false;
+            this.ui.toggleConnectButton(false);
             this.state.canInteract = true;
         } else if (menuType === 'shop') {
             this.state.setShopViewActive(true);
@@ -1267,285 +1349,250 @@ class Game {
             this.isInventoryView = false;
             this.ui.toggleConnectButton(false);
             this.state.canInteract = false;
-    } else if (menuType === 'market') {
-            this.ui.elements.marketContainer.classList.remove('hidden');
-            this.ui.elements.marketContainer.classList.add('visible');
+        } else if (menuType === 'market') {
+            this.state.setShopViewActive(false);
+            this.state.setMarketViewActive(true);
+            this.state.setLeaderboardViewActive(false);
+            this.ui.elements.mainContent.classList.remove('visible');
+            this.ui.elements.mainContent.classList.add('hidden-opacity');
             this.ui.elements.coinCounter.classList.remove('hidden');
             this.ui.elements.coinCounter.classList.add('visible');
-            this.state.setMarketViewActive(true);
+            this.ui.elements.character.classList.remove('visible');
+            this.ui.elements.character.classList.add('hidden-opacity');
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.marketContainer.classList.remove('hidden');
+            this.ui.elements.marketContainer.classList.add('visible');
+            this.ui.elements.leaderboardContainer.classList.remove('visible');
+            this.ui.elements.leaderboardContainer.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.isInventoryView = false;
             this.ui.toggleConnectButton(!this.state.isWalletConnected());
-            this.state.canInteract = true;
+            this.state.canInteract = false;
+            this.updateMarketDisplay();
         }
-    }, true);
-    this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
-    this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuClickListener });
+    }
+    handleCaseClick(e) {
+        const caseElement = e.target.closest('.case-container');
+        if (!caseElement) return;
+        const caseType = caseElement.dataset.case;
+        this.state.isOverlayActive = true;
+        this.showCaseAnimation(caseType);
+    }
+    handleArrowClick(e) {
+        const arrow = e.target;
+        if (arrow.id === 'shopArrowLeft' || arrow.id === 'shopArrowRight') {
+            this.ui.elements.shopContainer.classList.remove('visible');
+            this.ui.elements.shopContainer.classList.add('hidden');
+            this.ui.elements.inventoryContainer.classList.remove('hidden');
+            this.ui.elements.inventoryContainer.classList.add('visible');
+            this.ui.elements.shopArrowLeft.classList.remove('visible');
+            this.ui.elements.shopArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowRight.classList.remove('visible');
+            this.ui.elements.shopArrowRight.classList.add('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
+            this.ui.elements.inventoryArrowLeft.classList.add('visible');
+            this.isInventoryView = true;
+            this.updateInventoryDisplay();
+        } else if (arrow.id === 'inventoryArrowLeft') {
+            this.ui.elements.inventoryContainer.classList.remove('visible');
+            this.ui.elements.inventoryContainer.classList.add('hidden');
+            this.ui.elements.shopContainer.classList.remove('hidden');
+            this.ui.elements.shopContainer.classList.add('visible');
+            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.shopArrowLeft.classList.remove('hidden');
+            this.ui.elements.shopArrowLeft.classList.add('visible');
+            this.ui.elements.shopArrowRight.classList.remove('hidden');
+            this.ui.elements.shopArrowRight.classList.add('visible');
+            this.isInventoryView = false;
+        }
+    }
+    handleFilterChange() {
+        this.updateMarketDisplay();
+    }
+handleTopMenuClick() {
+    if (this.state.isLeaderboardViewActive()) {
+        // Отключаем таблицу лидеров и возвращаемся на домашний экран
+        this.state.setLeaderboardViewActive(false);
+        this.state.setShopViewActive(false);
+        this.state.setMarketViewActive(false);
 
-    const shopArrowLeftListener = () => {
+        // Восстанавливаем содержимое главной страницы
+        this.ui.elements.mainContent.classList.remove('hidden-opacity');
+        this.ui.elements.mainContent.classList.add('visible');
+        this.ui.elements.coinCounter.classList.remove('hidden');
+        this.ui.elements.coinCounter.classList.add('visible');
+        this.ui.elements.character.classList.remove('hidden-opacity');
+        this.ui.elements.character.classList.add('visible');
+
+        // Скрываем все остальные контейнеры
+        this.ui.elements.leaderboardContainer.classList.remove('visible');
+        this.ui.elements.leaderboardContainer.classList.add('hidden');
         this.ui.elements.shopContainer.classList.remove('visible');
         this.ui.elements.shopContainer.classList.add('hidden');
+        this.ui.elements.inventoryContainer.classList.remove('visible');
+        this.ui.elements.inventoryContainer.classList.add('hidden');
+        this.ui.elements.marketContainer.classList.remove('visible');
+        this.ui.elements.marketContainer.classList.add('hidden');
+
+        // Скрываем стрелки навигации
+        this.ui.elements.shopArrowLeft.classList.remove('visible');
+        this.ui.elements.shopArrowLeft.classList.add('hidden');
+        this.ui.elements.shopArrowRight.classList.remove('visible');
+        this.ui.elements.shopArrowRight.classList.add('hidden');
+        this.ui.elements.inventoryArrowLeft.classList.remove('visible');
+        this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+
+        // Сбрасываем состояние инвентаря и включаем взаимодействие
+        this.isInventoryView = false;
+        this.ui.toggleConnectButton(false);
+        this.state.canInteract = true;
+
+        // Выделяем пункт "Home" в нижнем меню
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
+        const homeMenuItem = document.querySelector('.menu-item[data-menu="home"]');
+        if (homeMenuItem) {
+            homeMenuItem.classList.add('highlighted');
+        }
+    } else {
+        // Показываем таблицу лидеров (оставляем без изменений)
+        this.state.setShopViewActive(false);
+        this.state.setMarketViewActive(false);
+        this.state.setLeaderboardViewActive(true);
+        this.ui.elements.mainContent.classList.remove('visible');
+        this.ui.elements.mainContent.classList.add('hidden-opacity');
+        this.ui.elements.character.classList.remove('visible');
+        this.ui.elements.character.classList.add('hidden-opacity');
+        this.ui.elements.shopContainer.classList.remove('visible');
+        this.ui.elements.shopContainer.classList.add('hidden');
+        this.ui.elements.inventoryContainer.classList.remove('visible');
+        this.ui.elements.inventoryContainer.classList.add('hidden');
+        this.ui.elements.marketContainer.classList.remove('visible');
+        this.ui.elements.marketContainer.classList.add('hidden');
         this.ui.elements.leaderboardContainer.classList.remove('hidden');
         this.ui.elements.leaderboardContainer.classList.add('visible');
         this.ui.elements.shopArrowLeft.classList.remove('visible');
         this.ui.elements.shopArrowLeft.classList.add('hidden');
         this.ui.elements.shopArrowRight.classList.remove('visible');
         this.ui.elements.shopArrowRight.classList.add('hidden');
-        this.state.setShopViewActive(false);
-        this.state.setLeaderboardViewActive(true);
-        this.state.canInteract = true;
-        this.updateLeaderboardDisplay();
-    };
-    this.ui.elements.shopArrowLeft.addEventListener('pointerdown', shopArrowLeftListener);
-    this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: shopArrowLeftListener });
-
-    const shopArrowRightListener = () => {
-        this.ui.elements.shopContainer.classList.remove('visible');
-        this.ui.elements.shopContainer.classList.add('hidden');
-        this.ui.elements.inventoryContainer.classList.remove('hidden');
-        this.ui.elements.inventoryContainer.classList.add('visible');
-        this.ui.elements.shopArrowLeft.classList.remove('visible');
-        this.ui.elements.shopArrowLeft.classList.add('hidden');
-        this.ui.elements.shopArrowRight.classList.remove('visible');
-        this.ui.elements.shopArrowRight.classList.add('hidden');
-        this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
-        this.ui.elements.inventoryArrowLeft.classList.add('visible');
-        this.state.setShopViewActive(false);
-        this.isInventoryView = true;
-        this.state.canInteract = true;
-        this.updateInventoryDisplay();
-    };
-    this.ui.elements.shopArrowRight.addEventListener('pointerdown', shopArrowRightListener);
-    this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: shopArrowRightListener });
-
-    const inventoryArrowLeftListener = () => {
-        this.ui.elements.inventoryContainer.classList.remove('visible');
-        this.ui.elements.inventoryContainer.classList.add('hidden');
-        this.ui.elements.shopContainer.classList.remove('hidden');
-        this.ui.elements.shopContainer.classList.add('visible');
         this.ui.elements.inventoryArrowLeft.classList.remove('visible');
         this.ui.elements.inventoryArrowLeft.classList.add('hidden');
-        this.ui.elements.shopArrowLeft.classList.remove('hidden');
-        this.ui.elements.shopArrowLeft.classList.add('visible');
-        this.ui.elements.shopArrowRight.classList.remove('hidden');
-        this.ui.elements.shopArrowRight.classList.add('visible');
-        this.state.setShopViewActive(true);
         this.isInventoryView = false;
-        this.state.canInteract = true;
-    };
-    this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', inventoryArrowLeftListener);
-    this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: inventoryArrowLeftListener });
-
-    const caseClickListener = (e) => {
-        const caseElement = e.target.closest('.case-container');
-        if (!caseElement) return;
-        const caseType = caseElement.dataset.case;
-        this.showCaseAnimation(caseType);
-    };
-    this.ui.elements.shopContainer.addEventListener('pointerdown', caseClickListener);
-    this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseClickListener });
-
-    const filterChangeListener = () => this.updateMarketDisplay();
-    this.ui.elements.characterFilter.addEventListener('change', filterChangeListener);
-    this.ui.elements.backgroundFilter.addEventListener('change', filterChangeListener);
-    this.ui.elements.priceSort.addEventListener('change', filterChangeListener);
-    this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterChangeListener });
-    this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterChangeListener });
-    this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterChangeListener });
-
-    const resizeListener = () => {
-        clearTimeout(this.resizeTimeout);
-        this.resizeTimeout = setTimeout(() => {
-            this.particleSystem.resize();
-            this.confettiSystem.resize();
-            this.ui.updateCoinCounterPosition();
-        }, CONFIG.RESIZE_DEBOUNCE);
-    };
-    window.addEventListener('resize', resizeListener);
-    this.listeners.push({ element: window, type: 'resize', listener: resizeListener });
-
-    this.ui.updateCoinCounterPosition();
-    this.particleSystem.resize();
-    this.confettiSystem.resize();
-    this.state.addToInventory({ src: CHARACTERS[0].src, name: CHARACTERS[0].name });
-    this.updateInventoryDisplay();
-    this.updateMarketDisplay();
-    this.updateLeaderboardDisplay();
-    this.initializeMarketFilters();
-    this.preloadAssets();
-}
-
-showCaseAnimation(caseType) {
-    const isDiamondCase = caseType === 'diamond-rain';
-    const overlay = document.createElement('div');
-    overlay.className = 'case-animation-overlay hidden';
-    const message = document.createElement('div');
-    message.className = 'case-animation-message hidden';
-    message.textContent = isDiamondCase ? 'Spin for 100 Diamonds!' : 'Spin for Free (Test)!';
-    const animationContainer = document.createElement('div');
-    animationContainer.className = 'case-animation-container';
-    const rouletteStrip = document.createElement('div');
-    rouletteStrip.className = 'roulette-strip';
-    animationContainer.appendChild(rouletteStrip);
-    const animationBar = document.createElement('div');
-    animationBar.className = 'animation-bar';
-    animationContainer.appendChild(animationBar);
-    const spinButton = document.createElement('div');
-    spinButton.className = 'case-animation-button';
-    spinButton.textContent = 'Spin';
-    const cancelButton = document.createElement('div');
-    cancelButton.className = 'case-animation-cancel';
-    cancelButton.textContent = "I'll stop tempting fate";
-    overlay.appendChild(message);
-    overlay.appendChild(animationContainer);
-    overlay.appendChild(spinButton);
-    overlay.appendChild(cancelButton);
-    document.body.appendChild(overlay);
-    const items = [...CHARACTERS.slice(1)];
-    const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
-    if (isDiamondCase) items.push(diamondItem);
-    const reward = this.generateCaseReward(caseType);
-    const rouletteItems = [];
-    for (let i = 0; i < 40; i++) {
-        let randomItem;
-        if (i === 19) {
-            randomItem = reward;
-        } else if (isDiamondCase && Math.random() < 0.6) {
-            randomItem = diamondItem;
-        } else {
-            randomItem = items[Math.floor(Math.random() * items.length)];
-        }
-        rouletteItems.push(randomItem);
-    }
-    rouletteItems.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'roulette-item';
-        const img = document.createElement('img');
-        img.src = item.src;
-        img.alt = item.name;
-        itemDiv.appendChild(img);
-        if (item === reward) {
-            itemDiv.classList.add('winner');
-        }
-        rouletteStrip.appendChild(itemDiv);
-    });
-    setTimeout(() => {
-        overlay.classList.remove('hidden');
-        overlay.classList.add('visible');
-        message.classList.remove('hidden');
-        message.classList.add('visible');
-    }, 10);
-    const startSpin = () => {
-        if (isDiamondCase && this.state.getCoins() < 100) {
-            alert('Not enough diamonds!');
-            return;
-        }
-        spinButton.style.pointerEvents = 'none';
-        spinButton.style.opacity = '0.5';
-        message.textContent = 'Spinning...';
-        if (isDiamondCase) {
-            this.state.addCoins(-100);
-            this.ui.queueUpdate('coins', this.state.getCoins());
-            this.ui.queueUpdate('totalCoins', this.state.getCoins());
-            this.ui.applyUpdates();
-        }
-        rouletteStrip.style.animation = 'roulette-spin 5s ease-out forwards';
-        setTimeout(() => {
-            message.textContent = `You won ${reward.name}!`;
-            this.confettiSystem.start(reward.isMutated ? '#FFD700' : '#FFFFFF');
-            if (reward.name === 'Diamonds') {
-                this.state.addCoins(500);
-            } else {
-                this.state.addToInventory({
-                    src: reward.src,
-                    name: reward.name,
-                    background: isDiamondCase && Math.random() < 0.5 ? BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)] : null,
-                    isMutated: isDiamondCase && Math.random() < 0.2
-                });
-                this.updateInventoryDisplay();
-            }
-            this.ui.queueUpdate('coins', this.state.getCoins());
-            this.ui.queueUpdate('totalCoins', this.state.getCoins());
-            this.ui.applyUpdates();
-            spinButton.textContent = 'Spin Again';
-            spinButton.style.pointerEvents = 'auto';
-            spinButton.style.opacity = '1';
-            setTimeout(() => this.confettiSystem.stop(), 3000);
-        }, 5000);
-        rouletteStrip.addEventListener('animationend', () => {
-            rouletteStrip.style.animation = 'roulette-slow-spin 40s linear infinite';
-        }, { once: true });
-    };
-    spinButton.addEventListener('pointerdown', startSpin);
-    cancelButton.addEventListener('pointerdown', () => {
-        overlay.classList.remove('visible');
-        overlay.classList.add('hidden');
-        message.classList.remove('visible');
-        message.classList.add('hidden');
-        setTimeout(() => overlay.remove(), 500);
-        this.state.canInteract = true;
-        this.state.isOverlayActive = false;
-    });
-    this.state.canInteract = false;
-    this.state.isOverlayActive = true;
-}
-
-generateCaseReward(caseType) {
-    if (caseType === 'diamond-rain') {
-        const items = [...CHARACTERS.slice(1), { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' }];
-        return items[Math.floor(Math.random() * items.length)];
-    } else {
-        return CHARACTERS[Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1];
+        this.ui.toggleConnectButton(false);
+        this.state.canInteract = false;
+        this.updateLeaderboardDisplay();
     }
 }
-
-destroy() {
-    this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
-    this.listeners = [];
-    this.characterController.destroy();
-    this.particleSystem.stop();
-    this.confettiSystem.stop();
-    clearTimeout(this.resizeTimeout);
-    if (this.tonConnectUI) {
-        this.tonConnectUI = null;
+    attachEventListeners() {
+        const menuClickListener = this.handleMenuClick.bind(this);
+        this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
+        this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuClickListener });
+        const caseClickListener = this.handleCaseClick.bind(this);
+        this.ui.elements.shopContainer.addEventListener('pointerdown', caseClickListener);
+        this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseClickListener });
+        const arrowClickListener = this.handleArrowClick.bind(this);
+        this.ui.elements.shopArrowLeft.addEventListener('pointerdown', arrowClickListener);
+        this.ui.elements.shopArrowRight.addEventListener('pointerdown', arrowClickListener);
+        this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', arrowClickListener);
+        this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: arrowClickListener });
+        this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: arrowClickListener });
+        this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: arrowClickListener });
+        const filterChangeListener = this.handleFilterChange.bind(this);
+        this.ui.elements.characterFilter.addEventListener('change', filterChangeListener);
+        this.ui.elements.backgroundFilter.addEventListener('change', filterChangeListener);
+        this.ui.elements.priceSort.addEventListener('change', filterChangeListener);
+        this.listeners.push({ element: this.ui.elements.characterFilter, type: 'change', listener: filterChangeListener });
+        this.listeners.push({ element: this.ui.elements.backgroundFilter, type: 'change', listener: filterChangeListener });
+        this.listeners.push({ element: this.ui.elements.priceSort, type: 'change', listener: filterChangeListener });
+        const topMenuClickListener = this.handleTopMenuClick.bind(this);
+        this.ui.elements.topMenu.addEventListener('pointerdown', topMenuClickListener);
+        this.listeners.push({ element: this.ui.elements.topMenu, type: 'pointerdown', listener: topMenuClickListener });
+        const resizeListener = () => {
+            if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(() => {
+                this.particleSystem.resize();
+                this.confettiSystem.resize();
+                this.ui.updateCoinCounterPosition();
+            }, CONFIG.RESIZE_DEBOUNCE);
+        };
+        window.addEventListener('resize', resizeListener);
+        this.listeners.push({ element: window, type: 'resize', listener: resizeListener });
+    }
+    initialize() {
+        this.ui.updateCoinCounterPosition();
+        this.particleSystem.resize();
+        this.confettiSystem.resize();
+        this.attachEventListeners();
+        this.initializeMarketFilters();
+        this.updateLeaderboardDisplay();
+        // Initialize inventory with Controller
+        this.state.addToInventory({
+            src: 'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',
+            name: 'Controller',
+            background: SKINS[0].gradient,
+            isMutated: false
+        });
+        this.updateInventoryDisplay();
+        this.preloadAssets();
+    }
+    destroy() {
+        this.listeners.forEach(({ element, type, listener }) => element.removeEventListener(type, listener));
+        this.characterController.destroy();
+        this.particleSystem.stop();
+        this.confettiSystem.stop();
+        if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
     }
 }
-}
-
-const elements = {
-    loadingScreen: document.getElementById('loadingScreen'),
-    loadingPercent: document.getElementById('loadingPercent'),
-    topMenu: document.getElementById('topMenu'),
-    particleCanvas: document.getElementById('particleCanvas'),
-    confettiCanvas: document.getElementById('confettiCanvas'),
-    mainContent: document.getElementById('mainContent'),
-    incomeCounter: document.getElementById('incomeCounter'),
-    incomeRate: document.getElementById('incomeRate'),
-    incomeTimer: document.getElementById('incomeTimer'),
-    timerDisplay: document.getElementById('timerDisplay'),
-    coinCounter: document.getElementById('coinCounter'),
-    coinCount: document.getElementById('coinCount'),
-    character: document.getElementById('character'),
-    shopContainer: document.getElementById('shopContainer'),
-    inventoryContainer: document.getElementById('inventoryContainer'),
-    inventoryItems: document.getElementById('inventoryItems'),
-    marketContainer: document.getElementById('marketContainer'),
-    tonConnect: document.getElementById('ton-connect'),
-    disconnectWallet: document.getElementById('disconnect-wallet'),
-    characterFilter: document.getElementById('characterFilter'),
-    backgroundFilter: document.getElementById('backgroundFilter'),
-    priceSort: document.getElementById('priceSort'),
-    marketItems: document.getElementById('marketItems'),
-    leaderboardContainer: document.getElementById('leaderboardContainer'),
-    leaderboardTable: document.getElementById('leaderboardTable'),
-    shopArrowLeft: document.getElementById('shopArrowLeft'),
-    shopArrowRight: document.getElementById('shopArrowRight'),
-    inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
-    footer: document.getElementById('footer'),
-    totalCoins: document.getElementById('totalCoins'),
-    playerStats: document.querySelector('.player-stats')
-};
-
-const game = new Game(elements);
-game.initialize();
-</script>
+document.addEventListener('DOMContentLoaded', () => {
+    const elements = {
+        loadingScreen: document.getElementById('loadingScreen'),
+        loadingPercent: document.getElementById('loadingPercent'),
+        topMenu: document.getElementById('topMenu'),
+        particleCanvas: document.getElementById('particleCanvas'),
+        confettiCanvas: document.getElementById('confettiCanvas'),
+        mainContent: document.getElementById('mainContent'),
+        incomeCounter: document.getElementById('incomeCounter'),
+        incomeRate: document.getElementById('incomeRate'),
+        incomeTimer: document.getElementById('incomeTimer'),
+        timerDisplay: document.getElementById('timerDisplay'),
+        coinCounter: document.getElementById('coinCounter'),
+        coinCount: document.getElementById('coinCount'),
+        character: document.getElementById('character'),
+        footer: document.getElementById('footer'),
+        shopContainer: document.getElementById('shopContainer'),
+        inventoryContainer: document.getElementById('inventoryContainer'),
+        inventoryItems: document.getElementById('inventoryItems'),
+        marketContainer: document.getElementById('marketContainer'),
+        marketItems: document.getElementById('marketItems'),
+        leaderboardContainer: document.getElementById('leaderboardContainer'),
+        leaderboardTable: document.getElementById('leaderboardTable'),
+        shopArrowLeft: document.getElementById('shopArrowLeft'),
+        shopArrowRight: document.getElementById('shopArrowRight'),
+        inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
+        tonConnect: document.getElementById('ton-connect'),
+        disconnectWallet: document.getElementById('disconnect-wallet'),
+        totalCoins: document.getElementById('totalCoins'),
+        playerStats: document.querySelector('.player-stats'),
+        characterFilter: document.getElementById('characterFilter'),
+        backgroundFilter: document.getElementById('backgroundFilter'),
+        priceSort: document.getElementById('priceSort')
+    };
+    if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.ready();
+        document.body.dataset.telegram = 'true';
+    }
+    const game = new Game(elements);
+    game.initialize();
+    window.addEventListener('beforeunload', () => game.destroy());
+});
+    </script>
 </body>
 </html>
