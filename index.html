@@ -291,6 +291,23 @@ footer{bottom:0;padding:0}
         </div>
     </div>
 </footer>
+<div class="leaderboard-container hidden" id="questsContainer">
+  <div class="leaderboard-title">Quests</div>
+  <div class="leaderboard-table-container">
+    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image"><div class="case-name">Win 3 Cases</div><div class="case-price"><button>Claim</button></div></div>
+    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image"><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button>Claim</button></div></div>
+  </div>
+</div>
+
+<div class="leaderboard-container hidden" id="friendsContainer">
+  <div class="leaderboard-title">Friends</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem">
+    <button onclick="navigator.clipboard.writeText('https://t.me/Heroes_coin_bot?start=ref123')" style="padding:0.5rem 1rem;background:#fff;color:#000;border-radius:12px;font-weight:600">Copy Invite Link</button>
+    <div style="font-size:1.2rem;color:#0ff;font-weight:bold;">+200 <img src='https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp' style='width:20px;height:20px;vertical-align:middle'></div>
+    <div>No friends yet</div>
+  </div>
+</div>
+
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
 const SKINS=[{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'}]
@@ -1451,19 +1468,6 @@ handleTopMenuClick() {
         this.ui.elements.marketContainer.classList.remove('visible');
         this.ui.elements.marketContainer.classList.add('hidden');
 
-        // Скрываем Quests и Friends
-        const quests = document.getElementById('questsContainer');
-        if (quests) {
-            quests.classList.remove('visible');
-            quests.classList.add('hidden');
-        }
-
-        const friends = document.getElementById('friendsContainer');
-        if (friends) {
-            friends.classList.remove('visible');
-            friends.classList.add('hidden');
-        }
-
         // Скрываем стрелки навигации
         this.ui.elements.shopArrowLeft.classList.remove('visible');
         this.ui.elements.shopArrowLeft.classList.add('hidden');
@@ -1498,20 +1502,6 @@ handleTopMenuClick() {
         this.ui.elements.inventoryContainer.classList.add('hidden');
         this.ui.elements.marketContainer.classList.remove('visible');
         this.ui.elements.marketContainer.classList.add('hidden');
-
-        // Скрываем Quests и Friends
-        const quests = document.getElementById('questsContainer');
-        if (quests) {
-            quests.classList.remove('visible');
-            quests.classList.add('hidden');
-        }
-
-        const friends = document.getElementById('friendsContainer');
-        if (friends) {
-            friends.classList.remove('visible');
-            friends.classList.add('hidden');
-        }
-
         this.ui.elements.leaderboardContainer.classList.remove('hidden');
         this.ui.elements.leaderboardContainer.classList.add('visible');
         this.ui.elements.shopArrowLeft.classList.remove('visible');
@@ -1526,7 +1516,6 @@ handleTopMenuClick() {
         this.updateLeaderboardDisplay();
     }
 }
-
     attachEventListeners() {
         const menuClickListener = this.handleMenuClick.bind(this);
         this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
