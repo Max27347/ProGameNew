@@ -1668,5 +1668,64 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
+
+<script>
+// Переменные разделов
+const mainContent = document.getElementById('mainContent');
+const incomeCounter = document.getElementById('incomeCounter');
+const incomeTimer = document.getElementById('incomeTimer');
+const coinCounter = document.getElementById('coinCounter');
+const shopContainer = document.getElementById('shopContainer');
+const inventoryContainer = document.getElementById('inventoryContainer');
+const marketContainer = document.getElementById('marketContainer');
+const leaderboardContainer = document.getElementById('leaderboardContainer');
+const questsContainer = document.getElementById('questsContainer');
+const friendsContainer = document.getElementById('friendsContainer');
+
+// Скрыть все разделы
+function hideAllSections() {
+    shopContainer.classList.add('hidden');
+    inventoryContainer.classList.add('hidden');
+    marketContainer.classList.add('hidden');
+    leaderboardContainer.classList.add('hidden');
+    questsContainer.classList.add('hidden');
+    friendsContainer.classList.add('hidden');
+
+    mainContent.style.display = 'none';
+    incomeCounter.style.display = 'none';
+    incomeTimer.style.display = 'none';
+    coinCounter.style.display = 'none';
+}
+
+// Показать домашний экран
+function showHome() {
+    hideAllSections();
+    mainContent.style.display = 'flex';
+    incomeCounter.style.display = 'flex';
+    incomeTimer.style.display = 'flex';
+    coinCounter.style.display = 'flex';
+}
+
+// Навешиваем обработчик на меню
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const menu = item.getAttribute('data-menu');
+        if (menu === 'home') {
+            showHome();
+        } else {
+            hideAllSections();
+            if (menu === 'shop') shopContainer.classList.remove('hidden');
+            if (menu === 'market') marketContainer.classList.remove('hidden');
+            if (menu === 'quests') questsContainer.classList.remove('hidden');
+            if (menu === 'friends') friendsContainer.classList.remove('hidden');
+            if (menu === 'leaderboard') leaderboardContainer.classList.remove('hidden');
+        }
+
+        // Подсвечиваем выбранный пункт меню
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('highlighted'));
+        item.classList.add('highlighted');
+    });
+});
+</script>
 </body>
 </html>
