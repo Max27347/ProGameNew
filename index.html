@@ -273,7 +273,13 @@ footer{bottom:0;padding:0}
 <div class="case-card">
     <img src="https://em-content.zobj.net/source/telegram/386/gift_1f381.webp" alt="Telegram Gift" class="case-image">
     <div class="case-title">Telegram Gift</div>
+    <div class="case-price">Free
+<div class="case-card" onclick="openTelegramGiftCase()">
+    <img src="https://em-content.zobj.net/source/telegram/386/package_1f4e6.webp" alt="Telegram Gift" class="case-image">
+    <div class="case-title">Telegram Gift Case</div>
     <div class="case-price">Free</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -1891,7 +1897,22 @@ document.getElementById('starDonation').addEventListener('click', function() {
 });
 </script>
 
+
+<script>
+function openTelegramGiftCase() {
+    const gifts = [
+        "🎁 Telegram Sticker Pack",
+        "🎨 Custom Chat Theme",
+        "💎 100 Bonus Diamonds",
+        "📱 Telegram Premium Trial",
+        "✨ Special Emoji Pack"
+    ];
+    const gift = gifts[Math.floor(Math.random() * gifts.length)];
+    alert("You opened a Telegram Gift Case and received: " + gift);
+}
+</script>
 </body>
+
 
 </html>
 
