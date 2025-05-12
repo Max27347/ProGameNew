@@ -206,27 +206,6 @@ footer{bottom:0;padding:0}
     padding-top: 0.5rem;
 }
 
-
-.cases-container {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem;
-    justify-content: center;
-}
-.case-card {
-    width: 180px;
-    min-width: 180px;
-    flex-shrink: 0;
-    background: #2c2c2c;
-    padding: 1rem;
-    border-radius: 16px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-}
-
 </style>
 </head>
 <body>
@@ -271,7 +250,7 @@ footer{bottom:0;padding:0}
         <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
 
 
-    <div class="donation-line" id="starDonation" style="cursor:pointer; margin-left: 0.5rem;" style="margin-left: 0.5rem;">
+    <div class="donation-line" id="starDonation" style="cursor:pointer;">
         <span id="starCount">0</span>
         <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Star" style="width:24px;height:24px;vertical-align:middle;">
     </div>
@@ -290,18 +269,19 @@ footer{bottom:0;padding:0}
         <div class="case-container" data-case="diamond-rain">
             <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain"
                  class="case-image" draggable="false">
-            <div class="case-name">Diamond Rain
+            <div class="case-name">Diamond Rain</div>
 
-
-
+<!-- Telegram Gift Case Section -->
+<div class="telegram-case-section" style="margin-top: 2rem; padding: 1rem; background-color: #1f1f1f; border-radius: 16px;">
+    <h2 style="color:white; text-align: center; margin-bottom: 1rem;">🎁 Telegram Gifts</h2>
+    <div class="case-container" onclick="openTelegramGiftCase()" style="margin: 0 auto; width: 150px;">
+        <img src="https://em-content.zobj.net/source/telegram/386/package_1f4e6.webp" alt="Telegram Gift" class="case-image">
+        <div class="case-name">Telegram Gift</div>
+        <div class="case-price">Free</div>
+    </div>
 </div>
-</div>
 
-</div>
-            <div class="case-price">100 Diamonds
-
-
-</div>
+            <div class="case-price">100 Diamonds</div>
         </div>
         <div class="case-container" data-case="character-magic">
             <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic"
@@ -1909,8 +1889,6 @@ document.getElementById('starDonation').addEventListener('click', function() {
 </script>
 
 
-
-
 <script>
 function openTelegramGiftCase() {
     const gifts = [
@@ -1944,7 +1922,6 @@ function openTelegramGiftCase() {
 }
 </script>
 </body>
-
 
 
 </html>
