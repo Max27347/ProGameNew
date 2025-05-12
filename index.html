@@ -207,6 +207,7 @@ footer{bottom:0;padding:0}
 }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"></script>
 </head>
 <body>
 <div class="loading-screen" id="loadingScreen">
@@ -264,7 +265,17 @@ footer{bottom:0;padding:0}
     </div>
 </main>
 <div class="shop-container hidden" id="shopContainer">
-    <div class="shop-title">Cases</div>
+    <div class="shop-title">Cases
+
+<div class="case-container">
+  <div class="case-card" onclick="openTelegramGiftCase()">
+      <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift" class="case-image">
+      <div class="case-title">Telegram Gift</div>
+      <div class="case-price">Free</div>
+  </div>
+</div>
+
+</div>
     <div class="cases-container">
         <div class="case-container" data-case="diamond-rain">
             <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain"
@@ -1852,7 +1863,50 @@ document.getElementById('starDonation').addEventListener('click', function() {
 });
 </script>
 
+
+<!-- Reward Animation Container -->
+<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+ z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
+  <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
+</div>
+
+
+<script>
+function showRewardAnimation(animationPath) {
+  const container = document.getElementById("rewardAnimationContainer");
+  const animEl = document.getElementById("rewardAnimation");
+
+  container.style.display = "block";
+  animEl.innerHTML = "";
+
+  lottie.loadAnimation({
+    container: animEl,
+    renderer: "svg",
+    loop: true,
+    autoplay: true,
+    path: animationPath
+  });
+
+  setTimeout(() => {
+    container.style.display = "none";
+    animEl.innerHTML = "";
+  }, 3000);
+}
+
+function openTelegramGiftCase() {
+  const animations = [
+    "images/cookie.json",
+    "images/bottle.json",
+    "images/clock.json",
+    "images/heart.json",
+    "images/rocket.json"
+  ];
+  const randomPath = animations[Math.floor(Math.random() * animations.length)];
+  showRewardAnimation(randomPath);
+}
+</script>
 </body>
+
 
 </html>
 
