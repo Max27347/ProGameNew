@@ -195,7 +195,12 @@ footer{bottom:0;padding:0}
     <div class="income-timer" id="incomeTimer">
         <span id="timerDisplay">00:00</span>
     </div>
+
     <div class="coin-counter visible" id="coinCounter">
+        <span id="starCount">0</span>
+        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Star" class="star-icon" draggable="false">
+    </div>
+
         <span id="coinCount">0</span>
         <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone"
              class="coin-icon" draggable="false">
@@ -294,7 +299,7 @@ footer{bottom:0;padding:0}
 <div class="leaderboard-container hidden" id="questsContainer">
   <div class="leaderboard-title">Quests</div>
   <div class="leaderboard-table-container">
-    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image"><div class="case-name">Win 3 Cases</div><div class="case-price"><button>Claim</button></div></div>
+    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image"><div class="case-name">Open 3 Cases</div><div class="case-price"><button>Claim</button></div></div>
     <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image"><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button>Claim</button></div></div>
   </div>
 </div>
@@ -302,7 +307,21 @@ footer{bottom:0;padding:0}
 <div class="leaderboard-container hidden" id="friendsContainer">
   <div class="leaderboard-title">Friends</div>
   <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem">
-    <button onclick="navigator.clipboard.writeText('https://t.me/Heroes_coin_bot?start=ref123')" style="padding:0.5rem 1rem;background:#fff;color:#000;border-radius:12px;font-weight:600">Copy Invite Link</button>
+    <button onclick="
+    navigator.clipboard.writeText('https://t.me/Heroes_coin_bot?start=ref123');
+    const copiedMessage = document.createElement('div');
+    copiedMessage.textContent = 'Ссылка скопирована';
+    copiedMessage.style.position = 'fixed';
+    copiedMessage.style.top = '20%';
+    copiedMessage.style.left = '50%';
+    copiedMessage.style.transform = 'translate(-50%, -50%)';
+    copiedMessage.style.backgroundColor = '#000';
+    copiedMessage.style.color = '#fff';
+    copiedMessage.style.padding = '1rem';
+    copiedMessage.style.borderRadius = '12px';
+    document.body.appendChild(copiedMessage);
+    setTimeout(() => copiedMessage.remove(), 1500);
+    " style="padding:0.5rem 1rem;background:#fff;color:#000;border-radius:12px;font-weight:600">Copy Invite Link</button>
     <div style="font-size:1.2rem;color:#0ff;font-weight:bold;">+200 <img src='https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp' style='width:20px;height:20px;vertical-align:middle'></div>
     <div>No friends yet</div>
   </div>
@@ -1278,7 +1297,7 @@ class Game {
         if (isDiamondCase) {
             const roll = Math.random();
             if (roll < 0.95) {
-                const diamonds = Math.floor(Math.random() * 250) + 1;
+                const diamonds = Math.floor(Math.random() * 180) + 1;
                 return {
                     type: 'diamonds',
                     name: 'Diamonds',
@@ -1652,7 +1671,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             // Toggle visibility of home-only elements
-            const isHome = selected === "home";
+
+    const isHome = selected === "home";
+    const topMenu = document.querySelector(".top-menu");
+    if (isHome) {
+        topMenu.style.display = "flex";
+    } else {
+        topMenu.style.display = "none";
+    }
+
             [coinCounter, incomeCounter, incomeTimer].forEach(el => {
                 if (!el) return;
                 if (isHome) {
@@ -1729,3 +1756,17 @@ document.querySelectorAll('.menu-item').forEach(item => {
 </script>
 </body>
 </html>
+
+<script>
+let openCasesCount = 0;
+function incrementCaseCount() {
+    openCasesCount++;
+    if (openCasesCount >= 3) {
+        alert('Награда за открытие 3 кейсов получена!');
+        openCasesCount = 0;
+    }
+}
+document.querySelectorAll('.case-container').forEach(caseElement => {
+    caseElement.addEventListener('click', incrementCaseCount);
+});
+</script>
