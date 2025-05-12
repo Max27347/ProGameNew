@@ -170,7 +170,7 @@ footer{bottom:0;padding:0}
             <span class="player-nickname">Player123</span>
             <span class="player-max-coins">
 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
-<span id="totalCoins">0</span>
+<span id="totalCoins">5000</span>
 </span>
         </div>
     </div>
@@ -196,7 +196,7 @@ footer{bottom:0;padding:0}
 
     <div class="coin-counter visible" id="coinCounter">
     <div class="coin-line">
-        <span id="coinCount">0</span>
+        <span id="coinCount">5000</span>
         <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
 
 
@@ -232,7 +232,7 @@ footer{bottom:0;padding:0}
 </div>
 <div class="inventory-container hidden" id="inventoryContainer">
     <div class="inventory-title">Inventory</div>
-    <div class="inventory-items-container" id="inventoryItems"></div>
+    <div class="inventory-items-container" id="inventoryItems" style="max-height:300px;overflow-y:auto;"></div>
 </div>
 <div class="market-container hidden" id="marketContainer">
     <div class="market-title">Market</div>
@@ -255,6 +255,17 @@ footer{bottom:0;padding:0}
 <div class="leaderboard-container hidden" id="leaderboardContainer">
     <div class="leaderboard-title">Leaderboard</div>
     <div class="leaderboard-table-container">
+<div class="case-container">
+    <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image">
+    <div class="case-name">Subscribe to our <a href="https://t.me/your_channel" target="_blank" style="color:#4fc3f7;">Telegram</a></div>
+    <div class="case-price"><button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
+</div>
+<div class="case-container">
+    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image">
+    <div class="case-name">Click the controller 50 times</div>
+    <div class="case-price"><button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
+</div>
+
         <table class="leaderboard-table" id="leaderboardTable">
             <thead>
             <tr>
@@ -302,8 +313,19 @@ footer{bottom:0;padding:0}
 <div class="leaderboard-container hidden" id="questsContainer">
   <div class="leaderboard-title">Quests</div>
   <div class="leaderboard-table-container">
-    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image"><div class="case-name">Open 3 Cases</div><div class="case-price"><button>Claim</button></div></div>
-    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image"><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button>Claim</button></div></div>
+<div class="case-container">
+    <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image">
+    <div class="case-name">Subscribe to our <a href="https://t.me/your_channel" target="_blank" style="color:#4fc3f7;">Telegram</a></div>
+    <div class="case-price"><button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
+</div>
+<div class="case-container">
+    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image">
+    <div class="case-name">Click the controller 50 times</div>
+    <div class="case-price"><button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
+</div>
+
+    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image"><div class="case-name">Open 3 Cases</div><div class="case-price"><button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width:16px;height:16px;vertical-align:middle;"></button></div></div>
+    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image"><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width:16px;height:16px;vertical-align:middle;"></button></div></div>
   </div>
 </div>
 
@@ -373,7 +395,7 @@ const MARKET_SKINS=[
 ];
 class GameState {
     constructor() {
-        this.coins = 1000;
+        this.coins = 5000;
         this.scale = CONFIG.MIN_SCALE;
         this.canInteract = true;
         this.isOverlayActive = false;
