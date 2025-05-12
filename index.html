@@ -1541,8 +1541,10 @@ handleTopMenuClick() {
 }
     attachEventListeners() {
         const menuClickListener = this.handleMenuClick.bind(this);
-        this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
+        if (this.ui.elements.footer) {
+    this.ui.elements.footer.addEventListener('pointerdown', menuClickListener);
         this.listeners.push({ element: this.ui.elements.footer, type: 'pointerdown', listener: menuClickListener });
+}
         const caseClickListener = this.handleCaseClick.bind(this);
         this.ui.elements.shopContainer.addEventListener('pointerdown', caseClickListener);
         this.listeners.push({ element: this.ui.elements.shopContainer, type: 'pointerdown', listener: caseClickListener });
