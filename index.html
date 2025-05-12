@@ -1619,5 +1619,35 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('beforeunload', () => game.destroy());
 });
     </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const menuItems = document.querySelectorAll(".menu-item");
+    const sections = {
+        home: document.getElementById("mainContent"),
+        shop: document.getElementById("shopContainer"),
+        market: document.getElementById("marketContainer"),
+        quests: document.getElementById("questsContainer"),
+        friends: document.getElementById("friendsContainer")
+    };
+
+    menuItems.forEach(item => {
+        item.addEventListener("click", () => {
+            const selected = item.getAttribute("data-menu");
+            for (let key in sections) {
+                if (sections[key]) {
+                    sections[key].classList.remove("visible");
+                    sections[key].classList.add("hidden");
+                }
+            }
+            if (sections[selected]) {
+                sections[selected].classList.remove("hidden");
+                sections[selected].classList.add("visible");
+            }
+        });
+    });
+});
+</script>
+
 </body>
 </html>
