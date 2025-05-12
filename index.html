@@ -1210,130 +1210,182 @@ class Game {
             marketContainer.appendChild(itemDiv);
         });
     }
-    showCaseAnimation(caseType) {
-        const isDiamondCase = caseType === 'diamond-rain';
-        const currency = isDiamondCase ? '100 Diamonds' : 'Free (Test)';
-        const overlay = document.createElement('div');
-        overlay.className = 'case-animation-overlay hidden';
-        const message = document.createElement('div');
-        message.className = 'case-animation-message hidden';
-        message.textContent = `Spin for ${currency}!`;
-        const animationContainer = document.createElement('div');
-        animationContainer.id = 'caseAnimationContainer';
-        animationContainer.className = 'case-animation-container';
-        const rouletteStrip = document.createElement('div');
-        rouletteStrip.className = 'roulette-strip';
-        animationContainer.appendChild(rouletteStrip);
-        const animationBar = document.createElement('div');
-        animationBar.className = 'animation-bar';
-        animationContainer.appendChild(animationBar);
-        const spinButton = document.createElement('div');
-        spinButton.className = 'case-animation-button';
-        spinButton.textContent = 'Spin';
-        const cancelButton = document.createElement('div');
-        cancelButton.className = 'case-animation-cancel';
-        cancelButton.textContent = "I'll stop tempting fate";
-        overlay.appendChild(message);
-        overlay.appendChild(animationContainer);
-        overlay.appendChild(spinButton);
-        overlay.appendChild(cancelButton);
-        document.body.appendChild(overlay);
-        const items = [...CHARACTERS.slice(1)];
-        const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
-        if (isDiamondCase) {
-            items.push(diamondItem);
+showCaseAnimation(caseType) {
+    const isDiamondCase = caseType === 'diamond-rain';
+    const isTelegramGift = caseType === 'telegram-gift';
+    const currency = isDiamondCase ? '100 Diamonds' : isTelegramGift ? 'Free' : 'Free (Test)';
+    const overlay = document.createElement('div');
+    overlay.className = 'case-animation-overlay hidden';
+    const message = document.createElement('div');
+    message.className = 'case-animation-message hidden';
+    message.textContent = `Spin for ${currency}!`;
+    const animationContainer = document.createElement('div');
+    animationContainer.id = 'caseAnimationContainer';
+    animationContainer.className = 'case-animation-container';
+    const rouletteStrip = document.createElement('div');
+    rouletteStrip.className = 'roulette-strip';
+    animationContainer.appendChild(rouletteStrip);
+    const animationBar = document.createElement('div');
+    animationBar.className = 'animation-bar';
+    animationContainer.appendChild(animationBar);
+    const spinButton = document.createElement('div');
+    spinButton.className = 'case-animation-button';
+    spinButton.textContent = 'Spin';
+    const cancelButton = document.createElement('div');
+    cancelButton.className = 'case-animation-cancel';
+    cancelButton.textContent = "I'll stop tempting fate";
+    overlay.appendChild(message);
+    overlay.appendChild(animationContainer);
+    overlay.appendChild(spinButton);
+    overlay.appendChild(cancelButton);
+    document.body.appendChild(overlay);
+
+    const telegramGiftItems = [
+        { src: 'images/bottle.json', name: 'Bottle' },
+        { src: 'images/clock.json', name: 'Clock' },
+        { src: 'images/cookie.json', name: 'Cookie' },
+        { src: 'images/heart.json', name: 'Heart' },
+        { src: 'images/rocket.json', name: 'Rocket' }
+    ];
+    const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
+    const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
+    if (isDiamondCase) {
+        items.push(diamondItem);
+    }
+    const rouletteItems = [];
+    const reward = this.generateCaseReward(caseType);
+    for (let i = 0; i < 40; i++) {
+        if (i === 19) {
+            rouletteItems.push(reward);
+            continue;
         }
-        const rouletteItems = [];
-        const reward = this.generateCaseReward(caseType);
-        for (let i = 0; i < 40; i++) {
-            if (i === 19) {
-                rouletteItems.push(reward);
-                continue;
-            }
-            let randomItem;
-            if (isDiamondCase && Math.random() < 0.6) {
-                randomItem = diamondItem;
+        let randomItem;
+        if (isDiamondCase && Math.random() < 0.6) {
+            randomItem = diamondItem;
+        } else if (isTelegramGift) {
+            randomItem = telegramGiftItems[Math.floor(Math.random() * telegramGiftItems.length)];
+        } else {
+            randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
+        }
+        rouletteItems.push({
+            ...randomItem,
+            isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
+            background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
+            value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
+        });
+    }
+
+    const renderRoulette = () => {
+        rouletteStrip.innerHTML = '';
+        rouletteItems.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'roulette-item';
+            itemDiv.dataset.itemName = item.name;
+            itemDiv.style.background = item.background;
+            itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+            const bgDiv = document.createElement('div');
+            bgDiv.className = 'animation-background';
+            bgDiv.style.background = item.background;
+            itemDiv.appendChild(bgDiv);
+
+            if (isTelegramGift && item.name !== 'Diamonds') {
+                const animContainer = document.createElement('div');
+                animContainer.className = 'animation-character';
+                animContainer.style.width = '100px';
+                animContainer.style.height = '100px';
+                lottie.loadAnimation({
+                    container: animContainer,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: item.src
+                });
+                if (item.isMutated) {
+                    animContainer.style.filter = 'brightness(1.5) hue-rotate(200deg)';
+                }
+                itemDiv.appendChild(animContainer);
             } else {
-                randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
-            }
-            rouletteItems.push({
-                ...randomItem,
-                isMutated: randomItem.name !== 'Diamonds' && Math.random() < 0.1,
-                background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
-                value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
-            });
-        }
-        const renderRoulette = () => {
-            rouletteStrip.innerHTML = '';
-            rouletteItems.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'roulette-item';
-                itemDiv.dataset.itemName = item.name;
-                itemDiv.style.background = item.background;
-                itemDiv.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
-                const bgDiv = document.createElement('div');
-                bgDiv.className = 'animation-background';
-                bgDiv.style.background = item.background;
-                itemDiv.appendChild(bgDiv);
                 const img = document.createElement('img');
                 img.src = item.src;
                 img.alt = item.name;
                 img.className = 'animation-character';
                 if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
                 itemDiv.appendChild(img);
-                if (index === 19) {
-                    itemDiv.dataset.winner = 'true';
-                }
-                rouletteStrip.appendChild(itemDiv);
-            });
-        };
-        renderRoulette();
-        requestAnimationFrame(() => {
-            overlay.classList.remove('hidden');
-            overlay.classList.add('visible');
-            message.classList.remove('hidden');
-            message.classList.add('visible');
-            setTimeout(() => {
-                spinButton.className += ' visible';
-                cancelButton.className += ' visible';
-            }, 300);
+            }
+
+            if (index === 19) {
+                itemDiv.dataset.winner = 'true';
+            }
+            rouletteStrip.appendChild(itemDiv);
         });
-        const onCancel = () => {
-            overlay.classList.remove('visible');
-            overlay.classList.add('hidden');
-            message.classList.remove('visible');
-            message.classList.add('hidden');
-            spinButton.classList.remove('visible');
-            cancelButton.classList.remove('visible');
-            setTimeout(() => {
-                overlay.remove();
-                this.state.isOverlayActive = false;
-            }, 500);
-            cancelButton.removeEventListener('pointerdown', onCancel);
-        };
-        cancelButton.addEventListener('pointerdown', onCancel);
-        const startRoulette = () => {
-            if (isDiamondCase && this.state.getCoins() < 100) {
-                alert('Not enough diamonds!');
-                onCancel();
-                return;
-            }
-            if (isDiamondCase) {
-                this.state.addCoins(-100);
-                this.ui.queueUpdate('coins', this.state.getCoins());
-                this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                this.ui.applyUpdates();
-            }
-            spinButton.style.pointerEvents = 'none';
-            spinButton.style.opacity = '0.5';
-            rouletteStrip.style.opacity = '1';
-            rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
-            const onAnimationEnd = () => {
-                const isMobile = window.innerWidth <= 600;
-                rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
-                const winnerIndex = 19;
-                const winnerItem = rouletteStrip.children[winnerIndex];
-                if (winnerItem) {
+    };
+
+    renderRoulette();
+    requestAnimationFrame(() => {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('visible');
+        message.classList.remove('hidden');
+        message.classList.add('visible');
+        setTimeout(() => {
+            spinButton.className += ' visible';
+            cancelButton.className += ' visible';
+        }, 300);
+    });
+
+    const onCancel = () => {
+        overlay.classList.remove('visible');
+        overlay.classList.add('hidden');
+        message.classList.remove('visible');
+        message.classList.add('hidden');
+        spinButton.classList.remove('visible');
+        cancelButton.classList.remove('visible');
+        setTimeout(() => {
+            overlay.remove();
+            this.state.isOverlayActive = false;
+        }, 500);
+        cancelButton.removeEventListener('pointerdown', onCancel);
+    };
+    cancelButton.addEventListener('pointerdown', onCancel);
+
+    const startRoulette = () => {
+        if (isDiamondCase && this.state.getCoins() < 100) {
+            alert('Not enough diamonds!');
+            onCancel();
+            return;
+        }
+        if (isDiamondCase) {
+            this.state.addCoins(-100);
+            this.ui.queueUpdate('coins', this.state.getCoins());
+            this.ui.queueUpdate('totalCoins', this.state.getCoins());
+            this.ui.applyUpdates();
+        }
+        spinButton.style.pointerEvents = 'none';
+        spinButton.style.opacity = '0.5';
+        rouletteStrip.style.opacity = '1';
+        rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
+
+        const onAnimationEnd = () => {
+            const isMobile = window.innerWidth <= 600;
+            rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
+            const winnerIndex = 19;
+            const winnerItem = rouletteStrip.children[winnerIndex];
+            if (winnerItem) {
+                if (isTelegramGift && reward.name !== 'Diamonds') {
+                    const animContainer = winnerItem.querySelector('.animation-character');
+                    if (animContainer) {
+                        animContainer.innerHTML = '';
+                        lottie.loadAnimation({
+                            container: animContainer,
+                            renderer: 'svg',
+                            loop: true,
+                            autoplay: true,
+                            path: reward.src
+                        });
+                        if (reward.isMutated) {
+                            animContainer.style.filter = 'brightness(1.5) hue-rotate(200deg)';
+                        }
+                    }
+                } else {
                     const img = winnerItem.querySelector('img');
                     if (img) {
                         img.src = reward.src;
@@ -1341,73 +1393,63 @@ class Game {
                         img.className = 'animation-character';
                         if (reward.isMutated && reward.name !== 'Diamonds') img.className += ' mutated';
                     }
-                    const bgDiv = winnerItem.querySelector('.animation-background');
-                    if (bgDiv) {
-                        bgDiv.style.background = reward.background;
-                    }
-                    winnerItem.dataset.itemName = reward.name;
-                    winnerItem.style.background = reward.background;
-                    winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
-                    winnerItem.dataset.winner = 'true';
-                    winnerItem.classList.add('winner');
-                    message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
-                    if (reward.name === 'Diamonds') {
-                        this.state.addCoins(reward.value);
-                        this.ui.queueUpdate('coins', this.state.getCoins());
-                        this.ui.queueUpdate('totalCoins', this.state.getCoins());
-                    } else {
-                        this.state.addToInventory(reward);
-                        this.updateInventoryDisplay();
-                    }
-                    this.ui.applyUpdates();
-                    setTimeout(() => {
-                        overlay.classList.remove('visible');
-                        overlay.classList.add('hidden');
-                        message.classList.remove('visible');
-                        message.classList.add('hidden');
-                        spinButton.classList.remove('visible');
-                        cancelButton.classList.remove('visible');
-                        setTimeout(() => {
-                            overlay.remove();
-                            this.state.isOverlayActive = false;
-                            rouletteStrip.style.opacity = '1';
-                        }, 500);
-                    }, 2000);
                 }
-                rouletteStrip.removeEventListener('animationend', onAnimationEnd);
-            };
-            rouletteStrip.addEventListener('animationend', onAnimationEnd);
-        };
-        spinButton.addEventListener('pointerdown', startRoulette);
-    }
-    generateCaseReward(caseType) {
-        const isDiamondCase = caseType === 'diamond-rain';
-        const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
-        if (isDiamondCase) {
-            const roll = Math.random();
-            if (roll < 0.95) {
-                const diamonds = Math.floor(Math.random() * 180) + 1;
-                return {
-                    type: 'diamonds',
-                    name: 'Diamonds',
-                    value: diamonds,
-                    isMutated: false,
-                    background,
-                    src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
-                };
-            } else {
-                const characterIndex = Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1;
-                const character = CHARACTERS[characterIndex];
-                const isMutated = Math.random() < 0.1;
-                return {
-                    type: 'character',
-                    character,
-                    isMutated,
-                    background,
-                    name: character.name,
-                    src: character.src
-                };
+                const bgDiv = winnerItem.querySelector('.animation-background');
+                if (bgDiv) {
+                    bgDiv.style.background = reward.background;
+                }
+                winnerItem.dataset.itemName = reward.name;
+                winnerItem.style.background = reward.background;
+                winnerItem.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                winnerItem.dataset.winner = 'true';
+                winnerItem.classList.add('winner');
+                message.textContent = `You won ${reward.name === 'Diamonds' ? `${reward.value} Diamonds` : reward.name}${reward.isMutated && reward.name !== 'Diamonds' ? ' (Mutated)' : ''}!`;
+                if (reward.name === 'Diamonds') {
+                    this.state.addCoins(reward.value);
+                    this.ui.queueUpdate('coins', this.state.getCoins());
+                    this.ui.queueUpdate('totalCoins', this.state.getCoins());
+                } else {
+                    this.state.addToInventory(reward);
+                    this.updateInventoryDisplay();
+                }
+                this.ui.applyUpdates();
+                setTimeout(() => {
+                    overlay.classList.remove('visible');
+                    overlay.classList.add('hidden');
+                    message.classList.remove('visible');
+                    message.classList.add('hidden');
+                    spinButton.classList.remove('visible');
+                    cancelButton.classList.remove('visible');
+                    setTimeout(() => {
+                        overlay.remove();
+                        this.state.isOverlayActive = false;
+                        rouletteStrip.style.opacity = '1';
+                    }, 500);
+                }, 2000);
             }
+            rouletteStrip.removeEventListener('animationend', onAnimationEnd);
+        };
+        rouletteStrip.addEventListener('animationend', onAnimationEnd);
+    };
+    spinButton.addEventListener('pointerdown', startRoulette);
+}
+
+generateCaseReward(caseType) {
+    const isDiamondCase = caseType === 'diamond-rain';
+    const isTelegramGift = caseType === 'telegram-gift';
+    const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
+    if (isDiamondCase) {
+        const roll = Math.random();
+        if (roll < 0.95) {
+            const diamonds = Math.floor(Math.random() * 180) + 1;
+            return {
+                type: 'diamonds',
+                name: 'Diamonds',
+                value: diamonds,
+                isMutated: false,
+                background,
+                src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
+            };
         } else {
             const characterIndex = Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1;
             const character = CHARACTERS[characterIndex];
@@ -1421,7 +1463,37 @@ class Game {
                 src: character.src
             };
         }
+    } else if (isTelegramGift) {
+        const telegramGiftItems = [
+            { src: 'images/bottle.json', name: 'Bottle' },
+            { src: 'images/clock.json', name: 'Clock' },
+            { src: 'images/cookie.json', name: 'Cookie' },
+            { src: 'images/heart.json', name: 'Heart' },
+            { src: 'images/rocket.json', name: 'Rocket' }
+        ];
+        const selectedItem = telegramGiftItems[Math.floor(Math.random() * telegramGiftItems.length)];
+        const isMutated = Math.random() < 0.1;
+        return {
+            type: 'animation',
+            name: selectedItem.name,
+            src: selectedItem.src,
+            isMutated,
+            background
+        };
+    } else {
+        const characterIndex = Math.floor(Math.random() * (CHARACTERS.length - 1)) + 1;
+        const character = CHARACTERS[characterIndex];
+        const isMutated = Math.random() < 0.1;
+        return {
+            type: 'character',
+            character,
+            isMutated,
+            background,
+            name: character.name,
+            src: character.src
+        };
     }
+}
     handleMenuClick(e) {
         const menuItem = e.target.closest('.menu-item');
         if (!menuItem) return;
