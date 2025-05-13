@@ -1878,62 +1878,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const menuItems = document.querySelectorAll(".menu-item");
-    const sections = {
-        home: document.getElementById("mainContent"),
-        shop: document.getElementById("shopContainer"),
-        market: document.getElementById("marketContainer"),
-        quests: document.getElementById("questsContainer"),
-        friends: document.getElementById("friendsContainer")
-    };
-    const coinCounter = document.getElementById("coinCounter");
-    const incomeCounter = document.getElementById("incomeCounter");
-    const incomeTimer = document.getElementById("incomeTimer");
-
-    menuItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const selected = item.getAttribute("data-menu");
-
-            for (let key in sections) {
-                if (sections[key]) {
-                    sections[key].classList.remove("visible");
-                    sections[key].classList.add("hidden");
-                }
-            }
-
-            // Show selected section
-            if (sections[selected]) {
-                sections[selected].classList.remove("hidden");
-                sections[selected].classList.add("visible");
-            }
-
-            // Toggle visibility of home-only elements
-
-    const isHome = selected === "home";
-    const topMenu = document.querySelector(".top-menu");
-    if (isHome) {
-        topMenu.style.display = "flex";
-    } else {
-        topMenu.style.display = "none";
-    }
-
-            [coinCounter, incomeCounter, incomeTimer].forEach(el => {
-                if (!el) return;
-                if (isHome) {
-                    el.classList.add("visible");
-                    el.classList.remove("hidden");
-                } else {
-                    el.classList.remove("visible");
-                    el.classList.add("hidden");
-                }
-            });
-        });
-    });
-});
-</script>
-
-<script>
 const mainContent = document.getElementById('mainContent');
 const incomeCounter = document.getElementById('incomeCounter');
 const incomeTimer = document.getElementById('incomeTimer');
