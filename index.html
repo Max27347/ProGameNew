@@ -207,7 +207,6 @@ footer{bottom:0;padding:0}
 }
 
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"></script>
 </head>
 <body>
 <div class="loading-screen" id="loadingScreen">
@@ -1295,14 +1294,7 @@ showCaseAnimation(caseType) {
                 animContainer.className = 'animation-character';
                 animContainer.style.width = '100px';
                 animContainer.style.height = '100px';
-                lottie.loadAnimation({
-                    container: animContainer,
-                    renderer: 'svg',
-                    loop: true,
-                    autoplay: true,
-                    path: item.src
-                });
-                if (item.isMutated) {
+                                if (item.isMutated) {
                     animContainer.style.filter = 'brightness(1.5) hue-rotate(200deg)';
                 }
                 itemDiv.appendChild(animContainer);
@@ -1376,14 +1368,7 @@ showCaseAnimation(caseType) {
                     const animContainer = winnerItem.querySelector('.animation-character');
                     if (animContainer) {
                         animContainer.innerHTML = '';
-                        lottie.loadAnimation({
-                            container: animContainer,
-                            renderer: 'svg',
-                            loop: true,
-                            autoplay: true,
-                            path: reward.src
-                        });
-                        if (reward.isMutated) {
+                                                if (reward.isMutated) {
                             animContainer.style.filter = 'brightness(1.5) hue-rotate(200deg)';
                         }
                     }
@@ -1953,13 +1938,6 @@ function showRewardAnimation(animationPath) {
   container.style.display = "block";
   animEl.innerHTML = "";
 
-  lottie.loadAnimation({
-    container: animEl,
-    renderer: "svg",
-    loop: true,
-    autoplay: true,
-    path: animationPath
-  });
 
   setTimeout(() => {
     container.style.display = "none";
