@@ -258,7 +258,6 @@ footer{bottom:0;padding:0}
 
 </div>
     </div>
-
     <div class="character-container">
         <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller"
              class="character" id="character" draggable="false">
@@ -1980,7 +1979,33 @@ function openTelegramGiftCase() {
   showRewardAnimation(randomPath);
 }
 </script>
+
+<script>
+let walletConnected = false;
+
+function toggleWallet() {
+  const btn = document.getElementById("connectWalletBtn");
+  if (!walletConnected) {
+    connectWallet(); // ваша функция подключения
+    btn.textContent = "Disconnect Wallet";
+    walletConnected = true;
+  } else {
+    disconnectWallet(); // функция отключения
+    btn.textContent = "Connect Wallet";
+    walletConnected = false;
+  }
+}
+
+// Заглушка: замените на настоящую реализацию
+function connectWallet() {
+  console.log("Wallet connected");
+}
+function disconnectWallet() {
+  console.log("Wallet disconnected");
+}
+</script>
 </body>
+
 
 
 </html>
