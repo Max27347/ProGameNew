@@ -330,6 +330,8 @@ footer{bottom:0;padding:0}
 <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
 <div class="shop-arrow right hidden" id="shopArrowRight">></div>
 <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
+<div class="inventory-arrow right hidden" id="inventoryArrowRight"><</div>
+
 <footer class="game-hidden" id="footer">
     <div class="footer-menu-container">
         <div class="footer-menu">
@@ -1100,6 +1102,8 @@ class Game {
                     this.ui.elements.shopContainer.classList.add('visible');
                     this.ui.elements.inventoryArrowLeft.classList.remove('visible');
                     this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+                    this.ui.elements.inventoryArrowRight.classList.remove('visible');
+                    this.ui.elements.inventoryArrowRight.classList.add('hidden');
                     this.ui.elements.shopArrowLeft.classList.remove('hidden');
                     this.ui.elements.shopArrowLeft.classList.add('visible');
                     this.ui.elements.shopArrowRight.classList.remove('hidden');
@@ -1511,6 +1515,8 @@ generateCaseReward(caseType) {
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.ui.elements.inventoryArrowLeft.classList.remove('visible');
             this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.isInventoryView = false;
             this.ui.toggleConnectButton(false);
             this.state.canInteract = true;
@@ -1538,6 +1544,8 @@ generateCaseReward(caseType) {
             this.ui.elements.shopArrowRight.classList.add('visible');
             this.ui.elements.inventoryArrowLeft.classList.remove('visible');
             this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.isInventoryView = false;
             this.ui.toggleConnectButton(false);
             this.state.canInteract = false;
@@ -1565,6 +1573,8 @@ generateCaseReward(caseType) {
             this.ui.elements.shopArrowRight.classList.add('hidden');
             this.ui.elements.inventoryArrowLeft.classList.remove('visible');
             this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+            this.ui.elements.inventoryArrowRight.classList.remove('visible');
+            this.ui.elements.inventoryArrowRight.classList.add('hidden');
             this.isInventoryView = false;
             this.ui.toggleConnectButton(!this.state.isWalletConnected());
             this.state.canInteract = false;
@@ -1579,34 +1589,38 @@ generateCaseReward(caseType) {
         this.showCaseAnimation(caseType);
     }
     handleArrowClick(e) {
-        const arrow = e.target;
-        if (arrow.id === 'shopArrowLeft' || arrow.id === 'shopArrowRight') {
-            this.ui.elements.shopContainer.classList.remove('visible');
-            this.ui.elements.shopContainer.classList.add('hidden');
-            this.ui.elements.inventoryContainer.classList.remove('hidden');
-            this.ui.elements.inventoryContainer.classList.add('visible');
-            this.ui.elements.shopArrowLeft.classList.remove('visible');
-            this.ui.elements.shopArrowLeft.classList.add('hidden');
-            this.ui.elements.shopArrowRight.classList.remove('visible');
-            this.ui.elements.shopArrowRight.classList.add('hidden');
-            this.ui.elements.inventoryArrowLeft.classList.remove('hidden');
-            this.ui.elements.inventoryArrowLeft.classList.add('visible');
-            this.isInventoryView = true;
-            this.updateInventoryDisplay();
-        } else if (arrow.id === 'inventoryArrowLeft') {
-            this.ui.elements.inventoryContainer.classList.remove('visible');
-            this.ui.elements.inventoryContainer.classList.add('hidden');
-            this.ui.elements.shopContainer.classList.remove('hidden');
-            this.ui.elements.shopContainer.classList.add('visible');
-            this.ui.elements.inventoryArrowLeft.classList.remove('visible');
-            this.ui.elements.inventoryArrowLeft.classList.add('hidden');
-            this.ui.elements.shopArrowLeft.classList.remove('hidden');
-            this.ui.elements.shopArrowLeft.classList.add('visible');
-            this.ui.elements.shopArrowRight.classList.remove('hidden');
-            this.ui.elements.shopArrowRight.classList.add('visible');
-            this.isInventoryView = false;
+            const arrow = e.target;
+            if (arrow.id === "shopArrowLeft" || arrow.id === "shopArrowRight") {
+                this.ui.elements.shopContainer.classList.remove("visible");
+                this.ui.elements.shopContainer.classList.add("hidden");
+                this.ui.elements.inventoryContainer.classList.remove("hidden");
+                this.ui.elements.inventoryContainer.classList.add("visible");
+                this.ui.elements.shopArrowLeft.classList.remove("visible");
+                this.ui.elements.shopArrowLeft.classList.add("hidden");
+                this.ui.elements.shopArrowRight.classList.remove("visible");
+                this.ui.elements.shopArrowRight.classList.add("hidden");
+                this.ui.elements.inventoryArrowLeft.classList.remove("hidden");
+                this.ui.elements.inventoryArrowLeft.classList.add("visible");
+                this.ui.elements.inventoryArrowRight.classList.remove("hidden");
+                this.ui.elements.inventoryArrowRight.classList.add("visible");
+                this.isInventoryView = true;
+                this.updateInventoryDisplay();
+            } else if (arrow.id === "inventoryArrowLeft" || arrow.id === "inventoryArrowRight") {
+                this.ui.elements.inventoryContainer.classList.remove("visible");
+                this.ui.elements.inventoryContainer.classList.add("hidden");
+                this.ui.elements.shopContainer.classList.remove("hidden");
+                this.ui.elements.shopContainer.classList.add("visible");
+                this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                this.ui.elements.inventoryArrowRight.classList.add("hidden");
+                this.ui.elements.shopArrowLeft.classList.remove("hidden");
+                this.ui.elements.shopArrowLeft.classList.add("visible");
+                this.ui.elements.shopArrowRight.classList.remove("hidden");
+                this.ui.elements.shopArrowRight.classList.add("visible");
+                this.isInventoryView = false;
+            }
         }
-    }
     handleFilterChange() {
         this.updateMarketDisplay();
     }
@@ -1642,6 +1656,8 @@ handleTopMenuClick() {
         this.ui.elements.shopArrowRight.classList.add('hidden');
         this.ui.elements.inventoryArrowLeft.classList.remove('visible');
         this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+        this.ui.elements.inventoryArrowRight.classList.remove('visible');
+        this.ui.elements.inventoryArrowRight.classList.add('hidden');
 
         // Сбрасываем состояние инвентаря и включаем взаимодействие
         this.isInventoryView = false;
@@ -1677,6 +1693,8 @@ handleTopMenuClick() {
         this.ui.elements.shopArrowRight.classList.add('hidden');
         this.ui.elements.inventoryArrowLeft.classList.remove('visible');
         this.ui.elements.inventoryArrowLeft.classList.add('hidden');
+        this.ui.elements.inventoryArrowRight.classList.remove('visible');
+        this.ui.elements.inventoryArrowRight.classList.add('hidden');
         this.isInventoryView = false;
         this.ui.toggleConnectButton(false);
         this.state.canInteract = false;
@@ -1694,9 +1712,11 @@ handleTopMenuClick() {
         this.ui.elements.shopArrowLeft.addEventListener('pointerdown', arrowClickListener);
         this.ui.elements.shopArrowRight.addEventListener('pointerdown', arrowClickListener);
         this.ui.elements.inventoryArrowLeft.addEventListener('pointerdown', arrowClickListener);
+        this.ui.elements.inventoryArrowRight.addEventListener('pointerdown', arrowClickListener);
         this.listeners.push({ element: this.ui.elements.shopArrowLeft, type: 'pointerdown', listener: arrowClickListener });
         this.listeners.push({ element: this.ui.elements.shopArrowRight, type: 'pointerdown', listener: arrowClickListener });
         this.listeners.push({ element: this.ui.elements.inventoryArrowLeft, type: 'pointerdown', listener: arrowClickListener });
+        this.listeners.push({ element: this.ui.elements.inventoryArrowRight, type: 'pointerdown', listener: arrowClickListener });
         const filterChangeListener = this.handleFilterChange.bind(this);
         this.ui.elements.characterFilter.addEventListener('change', filterChangeListener);
         this.ui.elements.backgroundFilter.addEventListener('change', filterChangeListener);
@@ -1769,6 +1789,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shopArrowLeft: document.getElementById('shopArrowLeft'),
         shopArrowRight: document.getElementById('shopArrowRight'),
         inventoryArrowLeft: document.getElementById('inventoryArrowLeft'),
+        inventoryArrowRight: document.getElementById('inventoryArrowRight'),
         tonConnect: document.getElementById('ton-connect'),
         disconnectWallet: document.getElementById('disconnect-wallet'),
         totalCoins: document.getElementById('totalCoins'),
