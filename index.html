@@ -1241,13 +1241,15 @@ showCaseAnimation(caseType) {
     overlay.appendChild(cancelButton);
     document.body.appendChild(overlay);
 
+
     const telegramGiftItems = [
-        { src: 'images/bottle.json', name: 'Bottle' },
-        { src: 'images/clock.json', name: 'Clock' },
-        { src: 'images/cookie.json', name: 'Cookie' },
-        { src: 'images/heart.json', name: 'Heart' },
-        { src: 'images/rocket.json', name: 'Rocket' }
+        { src: 'images/bottle.', name: 'Bottle' },
+        { src: 'images/clock.', name: 'Clock' },
+        { src: 'images/cookie.', name: 'Cookie' },
+        { src: 'images/heart.', name: 'Heart' },
+        { src: 'images/rocket.', name: 'Rocket' }
     ];
+
     const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
     const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
     if (isDiamondCase) {
