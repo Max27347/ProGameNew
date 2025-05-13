@@ -1877,6 +1877,111 @@ document.addEventListener('DOMContentLoaded', () => {
 });
     </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const menuItems = document.querySelectorAll(".menu-item");
+    const sections = {
+        home: document.getElementById("mainContent"),
+        shop: document.getElementById("shopContainer"),
+        market: document.getElementById("marketContainer"),
+        quests: document.getElementById("questsContainer"),
+        friends: document.getElementById("friendsContainer")
+    };
+    const coinCounter = document.getElementById("coinCounter");
+    const incomeCounter = document.getElementById("incomeCounter");
+    const incomeTimer = document.getElementById("incomeTimer");
+
+    menuItems.forEach(item => {
+        item.addEventListener("click", () => {
+            const selected = item.getAttribute("data-menu");
+
+            for (let key in sections) {
+                if (sections[key]) {
+                    sections[key].classList.remove("visible");
+                    sections[key].classList.add("hidden");
+                }
+            }
+
+            // Show selected section
+            if (sections[selected]) {
+                sections[selected].classList.remove("hidden");
+                sections[selected].classList.add("visible");
+            }
+
+            // Toggle visibility of home-only elements
+
+    const isHome = selected === "home";
+    const topMenu = document.querySelector(".top-menu");
+    if (isHome) {
+        topMenu.style.display = "flex";
+    } else {
+        topMenu.style.display = "none";
+    }
+
+            [coinCounter, incomeCounter, incomeTimer].forEach(el => {
+                if (!el) return;
+                if (isHome) {
+                    el.classList.add("visible");
+                    el.classList.remove("hidden");
+                } else {
+                    el.classList.remove("visible");
+                    el.classList.add("hidden");
+                }
+            });
+        });
+    });
+});
+</script>
+
+<script>
+const mainContent = document.getElementById('mainContent');
+const incomeCounter = document.getElementById('incomeCounter');
+const incomeTimer = document.getElementById('incomeTimer');
+const coinCounter = document.getElementById('coinCounter');
+const shopContainer = document.getElementById('shopContainer');
+const inventoryContainer = document.getElementById('inventoryContainer');
+const marketContainer = document.getElementById('marketContainer');
+const leaderboardContainer = document.getElementById('leaderboardContainer');
+const questsContainer = document.getElementById('questsContainer');
+const friendsContainer = document.getElementById('friendsContainer');
+
+function hideAllSections() {
+    shopContainer.classList.add('hidden');
+    inventoryContainer.classList.add('hidden');
+    marketContainer.classList.add('hidden');
+    leaderboardContainer.classList.add('hidden');
+    questsContainer.classList.add('hidden');
+    friendsContainer.classList.add('hidden');
+    mainContent.style.display = 'none';
+    incomeCounter.style.display = 'none';
+    incomeTimer.style.display = 'none';
+    coinCounter.style.display = 'none';
+}
+function showHome() {
+    hideAllSections();
+    mainContent.style.display = 'flex';
+    incomeCounter.style.display = 'flex';
+    incomeTimer.style.display = 'flex';
+    coinCounter.style.display = 'flex';
+}
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const menu = item.getAttribute('data-menu');
+        if (menu === 'home') {
+            showHome();
+        } else {
+            hideAllSections();
+            if (menu === 'shop') shopContainer.classList.remove('hidden');
+            if (menu === 'market') marketContainer.classList.remove('hidden');
+            if (menu === 'quests') questsContainer.classList.remove('hidden');
+            if (menu === 'friends') friendsContainer.classList.remove('hidden');
+            if (menu === 'leaderboard') leaderboardContainer.classList.remove('hidden');
+        }
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('highlighted'));
+        item.classList.add('highlighted');
+    });
+});
+</script>
 
 
 <div id="donationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
@@ -1998,12 +2103,6 @@ function activateX4() {
 }
 </script>
 </body>
-
-
-
-
-
-
 </html>
 
 <script>
