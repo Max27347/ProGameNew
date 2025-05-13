@@ -241,7 +241,7 @@ footer{bottom:0;padding:0}
              draggable="false">
     </div>
     <div class="income-timer" id="incomeTimer">
-        <span id="timerDisplay">00:00</span>
+        <span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span>
     </div>
 
     <div class="coin-counter visible" id="coinCounter">
@@ -291,8 +291,12 @@ footer{bottom:0;padding:0}
     </div>
 </div>
 <div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-arrow right" onclick="openShop()">➤</div>
-    <div class="arrow-right" onclick="openShop()" style="position:absolute; top:50%; right:10px; font-size:32px; cursor:pointer;">➤</div>
+    <div class="shop-arrow right visible" onclick="openShop()" style="right: 10px;">&#9654;</div>
+
+
+
+
+
 
     <div class="inventory-title">Inventory</div>
     <div class="inventory-items-container" id="inventoryItems" style="max-height:300px;overflow-y:auto;"></div>
@@ -2006,7 +2010,27 @@ function showSection(section) {
   }
 }
 </script>
+
+<script>
+function showSection(section) {
+  document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+  document.getElementById(section + 'Container')?.classList.remove('hidden');
+
+  // Скрытие стрелок
+  document.querySelectorAll('.inventory-arrow').forEach(el => el.style.display = 'none');
+
+  // Показывать стрелки только в инвентаре
+  if (section === 'inventory') {
+    document.querySelectorAll('.inventory-arrow').forEach(el => el.style.display = 'block');
+  }
+}
+
+function activateX4() {
+  alert("x4 boost feature coming soon!");
+}
+</script>
 </body>
+
 
 
 
