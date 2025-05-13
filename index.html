@@ -1877,55 +1877,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
     </script>
 
-<script>
-const mainContent = document.getElementById('mainContent');
-const incomeCounter = document.getElementById('incomeCounter');
-const incomeTimer = document.getElementById('incomeTimer');
-const coinCounter = document.getElementById('coinCounter');
-const shopContainer = document.getElementById('shopContainer');
-const inventoryContainer = document.getElementById('inventoryContainer');
-const marketContainer = document.getElementById('marketContainer');
-const leaderboardContainer = document.getElementById('leaderboardContainer');
-const questsContainer = document.getElementById('questsContainer');
-const friendsContainer = document.getElementById('friendsContainer');
-
-function hideAllSections() {
-    shopContainer.classList.add('hidden');
-    inventoryContainer.classList.add('hidden');
-    marketContainer.classList.add('hidden');
-    leaderboardContainer.classList.add('hidden');
-    questsContainer.classList.add('hidden');
-    friendsContainer.classList.add('hidden');
-    mainContent.style.display = 'none';
-    incomeCounter.style.display = 'none';
-    incomeTimer.style.display = 'none';
-    coinCounter.style.display = 'none';
-}
-function showHome() {
-    hideAllSections();
-    mainContent.style.display = 'flex';
-    incomeCounter.style.display = 'flex';
-    incomeTimer.style.display = 'flex';
-    coinCounter.style.display = 'flex';
-}
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const menu = item.getAttribute('data-menu');
-        if (menu === 'home') {
-            showHome();
-        } else {
-            hideAllSections();
-            if (menu === 'shop') shopContainer.classList.remove('hidden');
-            if (menu === 'market') marketContainer.classList.remove('hidden');
-            if (menu === 'quests') questsContainer.classList.remove('hidden');
-            if (menu === 'friends') friendsContainer.classList.remove('hidden');
-            if (menu === 'leaderboard') leaderboardContainer.classList.remove('hidden');
-        }
-        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('highlighted'));
-        item.classList.add('highlighted');
-    });
-});
-</script>
 
 
 <div id="donationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
