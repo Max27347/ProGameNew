@@ -158,7 +158,7 @@ footer{bottom:0;padding:0}
 }
 
 .claim-button {
-    background-color: #6c757d;
+    background-color: #2E2E2E;
     border: none;
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
@@ -2149,5 +2149,69 @@ function showUpgradeMessage() {
 }
 
 </script>
+
+<script>
+let clicks = 0;
+let telegramVisited = false;
+let stars = 0;
+let leaderboardTop10 = true; // Simplified check
+let diamondGoalReached = false;
+
+document.getElementById("character").addEventListener("click", () => {
+    clicks++;
+    updateQuestButtons();
+});
+
+document.querySelector("a[href*='t.me']").addEventListener("click", () => {
+    telegramVisited = true;
+    updateQuestButtons();
+});
+
+function updateQuestButtons() {
+    const buttons = document.querySelectorAll(".claim-button");
+    if (telegramVisited) buttons[0].disabled = false;
+    if (clicks >= 50) buttons[1].disabled = false;
+    if (stars >= 100) buttons[2].disabled = false;
+    if (leaderboardTop10) buttons[3].disabled = false;
+    const coinCount = parseInt(document.getElementById("coinCount").textContent);
+    if (coinCount >= 3000) {
+        diamondGoalReached = true;
+        buttons[4].disabled = false;
+    }
+}
+
+document.querySelectorAll(".claim-button").forEach((btn, i) => {
+    btn.disabled = true;
+    btn.addEventListener("click", () => {
+        if (btn.disabled) return;
+        let reward = [50, 150, 200, 500, 100][i];
+        let coinsEl = document.getElementById("coinCount");
+        let totalCoinsEl = document.getElementById("totalCoins");
+        let current = parseInt(coinsEl.textContent);
+        current += reward;
+        coinsEl.textContent = totalCoinsEl.textContent = current;
+        btn.disabled = true;
+        btn.textContent = "Claimed";
+        showNotification("Награда получена");
+    });
+});
+
+function showNotification(message) {
+    const msg = document.createElement('div');
+    msg.textContent = message;
+    msg.style.position = 'fixed';
+    msg.style.top = '20%';
+    msg.style.left = '50%';
+    msg.style.transform = 'translate(-50%, -50%)';
+    msg.style.backgroundColor = '#000';
+    msg.style.color = '#fff';
+    msg.style.padding = '1rem';
+    msg.style.borderRadius = '12px';
+    msg.style.zIndex = 9999;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1500);
+}
+</script>
+
 </body>
 </html>
