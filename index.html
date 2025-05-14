@@ -211,6 +211,26 @@ footer{bottom:0;padding:0}
 </style>
 </head>
 <body>
+
+<!-- Music Toggle Button -->
+<div id="musicToggle" style="
+  position: fixed;
+  top: 5.5rem;
+  right: 1rem;
+  z-index: 9999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background: rgba(30, 30, 30, 0.85);
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: white;
+">🎵</div>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="warm-memories.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
 <div class="loading-screen" id="loadingScreen">
     <div class="loading-ring"></div>
     <span class="loading-percent" id="loadingPercent">0%</span>
@@ -2101,51 +2121,32 @@ function showSection(section) {
 function activateX4() {
   alert("x4 boost feature coming soon!");
 }
-</script>
 
-<!-- Music Toggle Button -->
-<div id="musicToggle" style="
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 9999;
-  font-size: 1.5rem;
-  cursor: pointer;
-  background: rgba(30, 30, 30, 0.85);
-  padding: 0.5rem;
-  border-radius: 50%;
-  color: white;
-">🎵</div>
+const musicBtn = document.getElementById('musicToggle');
+const music = document.getElementById('bgMusic');
 
-<audio id="bgMusic" loop>
-  <source src="warm-memories.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-
-</body>
-</html>
-
-<script>
-let openCasesCount = 0;
-function incrementCaseCount() {
-    openCasesCount++;
-    if (openCasesCount >= 3) {
-
-        openCasesCount = 0;
-    }
-}
-document.querySelectorAll('.case-container').forEach(caseElement => {
-    caseElement.addEventListener('click', incrementCaseCount);
-});
-
-document.getElementById('musicToggle').addEventListener('click', () => {
-  const audio = document.getElementById('bgMusic');
-  if (audio.paused) {
-    audio.play();
+musicBtn.addEventListener('click', () => {
+  if (music.paused) {
+    music.play().catch(err => console.error('Cannot autoplay:', err));
   } else {
-    audio.pause();
+    music.pause();
   }
 });
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const musicBtn = document.getElementById('musicToggle');
+  const music = document.getElementById('bgMusic');
+
+  if (musicBtn && music) {
+    musicBtn.addEventListener('click', () => {
+      if (music.paused) {
+        music.play().catch(err => console.error('Cannot autoplay:', err));
+      } else {
+        music.pause();
+      }
+    });
+  }
+});
 
 </script>
