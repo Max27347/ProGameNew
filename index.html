@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<meta content="Notcoin-inspired clicker game" name="description"/>
-<title>Clicker Game</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="description" content="Notcoin-inspired clicker game">
+    <title>Clicker Game</title>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box}
 *:focus,*:active{outline:none;-webkit-tap-highlight-color:transparent}
 :root{--bg-color:#000;--bg-gradient:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%);--highlight-color:#FFF;--text-color:#fff;--footer-bg:rgba(30,30,30,0.85);--counter-bg:rgba(30,30,30,0.85);--top-menu-bg:rgba(30,30,30,0.85);--tg-bg-color:linear-gradient(135deg,#1c2526,#2a1b3d);--tg-text-color:#fff;--tg-footer-bg:rgba(44,47,71,0.85);--tg-counter-bg:rgba(44,47,71,0.85);--tg-top-menu-bg:rgba(44,47,71,0.85)}
@@ -71,6 +72,12 @@ footer{width:100%;position:fixed;bottom:0;z-index:12;display:flex;justify-conten
 .case-image,.inventory-image,.market-image{width:80px;height:80px;object-fit:contain;border-radius:50%}
 .case-name,.inventory-name,.market-name{font-size:1rem;font-weight:600;color:#FFF}
 .case-price,.market-price{font-size:0.9rem;font-weight:500;color:#FFF;opacity:0.8;display:flex;align-items:center;gap:0.3rem}
+.shop-arrow,.inventory-arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#FFF;cursor:pointer;padding:0.5rem;background:rgba(30,30,30,0.85);border-radius:50%;z-index:3;opacity:0;transition:opacity 0.5s ease}
+.shop-arrow.visible,.inventory-arrow.visible{opacity:1;pointer-events:auto}
+.shop-arrow.hidden,.inventory-arrow.hidden{opacity:0;pointer-events:none}
+.shop-arrow.left{left:1rem}
+.shop-arrow.right{right:1rem}
+.inventory-arrow.left{left:1rem}
 .case-animation-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:10;opacity:0;transition:opacity 0.5s ease}
 .case-animation-overlay.visible{opacity:1;pointer-events:auto}
 .case-animation-overlay.hidden{opacity:0;pointer-events:none}
@@ -127,6 +134,9 @@ footer{bottom:0;padding:0}
 .case-image,.inventory-image,.market-image{width:60px;height:60px}
 .case-name,.inventory-name,.market-name{font-size:0.9rem}
 .case-price,.market-price{font-size:0.8rem;gap:0.2rem}
+.shop-arrow,.inventory-arrow{font-size:1.5rem;padding:0.4rem}
+.shop-arrow.left,.inventory-arrow.left{left:0.8rem}
+.shop-arrow.right{right:0.8rem}
 .case-animation-message{font-size:1.5rem}
 .case-animation-container{width:384px;height:160px}
 .roulette-strip{width:4480px;animation:roulette-slow-spin 32s linear infinite}
@@ -146,6 +156,7 @@ footer{bottom:0;padding:0}
 @keyframes roulette-spin{0%{transform:translateX(0)}100%{transform:translateX(-2008px)}}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
 }
+
 .claim-button {
     background-color: #6c757d;
     border: none;
@@ -161,211 +172,250 @@ footer{bottom:0;padding:0}
     cursor: pointer;
     margin-top: 0.5rem;
 }
+.case-price {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 40px;
+}
+
+
+.arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+.right-arrow {
+    right: 1rem;
+}
+.inventory-arrow.right {
+  right: 1rem;
+}
+
 .case-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 1rem;
 }
-.arrow {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
+.case-price {
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+
+.upgrade-button {
+  font-size: 0.9rem;
+  font-weight: 600;
   color: #FFF;
+  background: #2E2E2E;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
   cursor: pointer;
-  padding: 0.5rem;
-  background: rgba(30,30,30,0.85);
-  border-radius: 50%;
-  z-index: 3;
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
-.arrow.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-.arrow.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-.arrow.left {
-  left: 1rem;
-}
-.arrow.right {
-  right: 1rem;
-}
+
 </style>
 </head>
 <body>
 <div class="loading-screen" id="loadingScreen">
-<div class="loading-ring"></div>
-<span class="loading-percent" id="loadingPercent">0%</span>
+    <div class="loading-ring"></div>
+    <span class="loading-percent" id="loadingPercent">0%</span>
 </div>
 <header class="top-menu game-hidden" id="topMenu">
-<div class="top-menu-left">
-<img alt="Player Avatar" class="player-avatar" draggable="false" src="https://placehold.co/40x40"/>
-<div class="player-info">
-<span class="player-nickname">Player123</span>
-<span class="player-max-coins">
-<img alt="Gem Stone" class="gem-icon" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
+    <div class="top-menu-left">
+        <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false">
+        <div class="player-info">
+            <span class="player-nickname">Player123</span>
+            <span class="player-max-coins">
+<img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
 <span id="totalCoins">5000</span>
 </span>
-</div>
-</div>
-<div class="top-menu-right">
-<span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
-<div class="wallet-container">
-<button id="disconnect-wallet">Disconnect Wallet</button>
-</div>
-</div>
+        </div>
+    </div>
+    <div class="top-menu-right">
+        <span class="player-rank">Rank: 1</span>
+        <span class="player-stats">World of Consoles</span>
+        <div class="wallet-container">
+            <button id="disconnect-wallet">Disconnect Wallet</button>
+        </div>
+    </div>
 </header>
-<canvas class="game-hidden" id="particleCanvas"></canvas>
-<canvas class="game-hidden" id="confettiCanvas"></canvas>
+<canvas id="particleCanvas" class="game-hidden"></canvas>
+<canvas id="confettiCanvas" class="game-hidden"></canvas>
 <main class="game-hidden" id="mainContent">
-<div class="income-counter" id="incomeCounter">
-<span id="incomeRate">0</span> Diamonds/h
-        <img alt="Gem Stone" class="gem-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
+    <div class="income-counter" id="incomeCounter">
+        <span id="incomeRate">0</span> Diamonds/h
+        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon"
+             draggable="false">
+    </div>
+    <div class="income-timer" id="incomeTimer">
+        <span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span>
+    </div>
+
+    <div class="coin-counter visible" id="coinCounter">
+    <div class="coin-line">
+        <span id="coinCount">5000</span>
+        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
+
+
+    <div class="donation-line" id="starDonation" style="cursor:pointer;">
+        <span id="starCount">0</span>
+        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Star" style="width:24px;height:24px;vertical-align:middle;">
+    </div>
+
 </div>
-<div class="income-timer" id="incomeTimer">
-<span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span>
-</div>
-<div class="coin-counter visible" id="coinCounter">
-<div class="coin-line">
-<span id="coinCount">5000</span>
-<img alt="Gem Stone" class="coin-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="donation-line" id="starDonation" style="cursor:pointer;">
-<span id="starCount">0</span>
-<img alt="Star" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" style="width:24px;height:24px;vertical-align:middle;"/>
-</div>
-</div>
-</div>
-<div class="character-container">
-<img alt="Controller" class="character" draggable="false" id="character" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-</div>
+    </div>
+    <div class="character-container">
+        <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller"
+             class="character" id="character" draggable="false">
+    </div>
 </main>
 <div class="shop-container hidden" id="shopContainer">
-<div class="shop-title">Cases
+    <div class="shop-title">Cases
+
+
 </div>
-<div class="cases-container">
-<div class="case-container" data-case="diamond-rain">
-<img alt="Diamond Rain" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp"/>
-<div class="case-name">Diamond Rain</div>
-<div class="case-price">100 Diamonds</div>
+    <div class="cases-container">
+        <div class="case-container" data-case="diamond-rain">
+            <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain"
+                 class="case-image" draggable="false">
+            <div class="case-name">Diamond Rain</div>
+            <div class="case-price">100 Diamonds</div>
+        </div>
+        <div class="case-container" data-case="character-magic">
+            <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic"
+                 class="case-image" draggable="false">
+            <div class="case-name">Character Magic</div>
+            <div class="case-price">Free (Test)</div>
+        </div>
+        <div class="cases-container">
+    <div class="case-container" data-case="telegram-gift">
+        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift" class="case-image" draggable="false">
+        <div class="case-name">Telegram Gift</div>
+        <div class="case-price">Free</div>
+    </div>
+    <!-- Остальные кейсы остаются без изменений -->
 </div>
-<div class="case-container" data-case="character-magic">
-<img alt="Character Magic" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp"/>
-<div class="case-name">Character Magic</div>
-<div class="case-price">Free (Test)</div>
-</div>
-<div class="cases-container">
-<div class="case-container" data-case="telegram-gift">
-<img alt="Telegram Gift" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Telegram Gift</div>
-<div class="case-price">Free</div>
-</div>
-<!-- Остальные кейсы остаются без изменений -->
-</div>
-</div>
+    </div>
 </div>
 <div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-title">Inventory</div>
-<div class="inventory-items-container" id="inventoryItems" style="max-height:300px;overflow-y:auto;"></div>
+    <div class="inventory-title">Inventory</div>
+    <div class="inventory-items-container" id="inventoryItems" style="max-height:300px;overflow-y:auto;"></div>
 </div>
 <div class="market-container hidden" id="marketContainer">
-<div class="market-title">Market</div>
-<div id="ton-connect"></div>
-<div class="filters-container">
-<select class="filter-select" id="characterFilter">
-<option value="">All Characters</option>
-</select>
-<select class="filter-select" id="backgroundFilter">
-<option value="">All Backgrounds</option>
-</select>
-<select class="sort-select" id="priceSort">
-<option value="newest">Newest First</option>
-<option value="price-desc">Price: High to Low</option>
-<option value="price-asc">Price: Low to High</option>
-</select>
-</div>
-<div class="market-items-container" id="marketItems"></div>
+    <div class="market-title">Market</div>
+    <div id="ton-connect"></div>
+    <div class="filters-container">
+        <select class="filter-select" id="characterFilter">
+            <option value="">All Characters</option>
+        </select>
+        <select class="filter-select" id="backgroundFilter">
+            <option value="">All Backgrounds</option>
+        </select>
+        <select class="sort-select" id="priceSort">
+            <option value="newest">Newest First</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="price-asc">Price: Low to High</option>
+        </select>
+    </div>
+    <div class="market-items-container" id="marketItems"></div>
 </div>
 <div class="leaderboard-container hidden" id="leaderboardContainer">
-<div class="leaderboard-title">Leaderboard</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+    <div class="leaderboard-title">Leaderboard</div>
+    <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
 <table class="leaderboard-table" id="leaderboardTable">
-<thead>
-<tr>
-<th>Rank</th>
-<th>Player</th>
-<th>Diamonds</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+            <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Diamonds</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
-</div>
-<div class="arrow left hidden" id="shopArrowLeft">&lt;</div>
-<div class="arrow right hidden" id="shopArrowRight">&gt;</div>
-<div class="arrow left hidden" id="inventoryArrowLeft">&lt;</div>
-<div class="arrow right hidden" id="inventoryArrowRight">&gt;</div>
+<div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
+<div class="shop-arrow right hidden" id="shopArrowRight">></div>
+<div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
+<div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+
+
 <footer class="game-hidden" id="footer">
-<div class="footer-menu-container">
-<div class="footer-menu">
-<div class="menu-item highlighted" data-menu="home">
-<img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp"/>
-<span>Home</span>
-</div>
-<div class="menu-item" data-menu="shop">
-<img alt="Shop" draggable="false" src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp"/>
-<span>Shop</span>
-</div>
-<div class="menu-item" data-menu="market">
-<img alt="Market" draggable="false" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<span>Market</span>
-</div>
-<div class="menu-item" data-menu="quests">
-<img alt="Quests" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<span>Quests</span>
+    <div class="footer-menu-container">
+        <div class="footer-menu">
+            <div class="menu-item highlighted" data-menu="home">
+                <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home"
+                     draggable="false">
+                <span>Home</span>
+            </div>
+            <div class="menu-item" data-menu="shop">
+                <img src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" alt="Shop"
+                     draggable="false">
+                <span>Shop</span>
+            </div>
+            <div class="menu-item" data-menu="market">
+                <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Market"
+                     draggable="false">
+                <span>Market</span>
+            </div>
+            <div class="menu-item" data-menu="quests">
+  <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false">
+  <span>Quests</span>
 </div>
 <div class="menu-item" data-menu="friends">
-<img alt="Friends" draggable="false" src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp"/>
-<span>Friends</span>
+  <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Friends" draggable="false">
+  <span>Friends</span>
 </div>
-</div>
-</div>
+        </div>
+    </div>
 </footer>
 <div class="leaderboard-container hidden" id="questsContainer">
-<div class="leaderboard-title">Quests</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+  <div class="leaderboard-title">Quests</div>
+  <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+
 <div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" style="color:#4fc3f7;" target="_blank">Telegram</a></div>
-<div class="case-price"><button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"/></button></div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Click the controller 50 times</div>
-<div class="case-price"><button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"/></button></div>
+    <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image">
+    <div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" target="_blank" style="color:#4fc3f7;">Telegram</a></div>
+    <div class="case-price"><button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
 </div>
 <div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<div class="case-name">Earn 100 Stars</div>
-<div class="case-price"><button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"/></button></div>
+    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image">
+    <div class="case-name">Click the controller 50 times</div>
+    <div class="case-price"><button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
 </div>
 <div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Reach Top 10 in Leaderboard</div>
-<div class="case-price"><button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"/></button></div>
+    <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" class="case-image">
+    <div class="case-name">Earn 100 Stars</div>
+    <div class="case-price"><button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
 </div>
-<div class="case-container"><img class="case-image" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button class="claim-button">Claim 100 <img alt="Gem" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;vertical-align:middle;"/></button></div></div>
+<div class="case-container">
+    <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" class="case-image">
+    <div class="case-name">Reach Top 10 in Leaderboard</div>
+    <div class="case-price"><button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
 </div>
+
+
+
+
+
+    <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image"><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width:16px;height:16px;vertical-align:middle;"></button></div></div>
+  </div>
 </div>
+
 <div class="leaderboard-container hidden" id="friendsContainer">
-<div class="leaderboard-title">Friends</div>
-<div style="display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem">
-<button onclick="
+  <div class="leaderboard-title">Friends</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem">
+    <button onclick="
     navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
     const copiedMessage = document.createElement('div');
     copiedMessage.textContent = 'Ссылка скопирована';
@@ -378,29 +428,14 @@ footer{bottom:0;padding:0}
     copiedMessage.style.padding = '1rem';
     copiedMessage.style.borderRadius = '12px';
     document.body.appendChild(copiedMessage);
-    setTimeout(() =&gt; copiedMessage.remove(), 1500);
+    setTimeout(() => copiedMessage.remove(), 1500);
     " style="padding:0.5rem 1rem;background:#fff;color:#000;border-radius:12px;font-weight:600">Copy Invite Link</button>
-<div style="font-size:1.2rem;color:#0ff;font-weight:bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:20px;height:20px;vertical-align:middle"/></div>
-<div>No friends yet</div>
+    <div style="font-size:1.2rem;color:#0ff;font-weight:bold;">+200 <img src='https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp' style='width:20px;height:20px;vertical-align:middle'></div>
+    <div>No friends yet</div>
+  </div>
 </div>
-</div>
-<div id="donationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
-<div style="background:#1e1e1e; padding:2rem; border-radius:16px; text-align:center; color:white; width:90%; max-width:400px;">
-<h2 style="margin-bottom:1rem;">Support the Game</h2>
-<button style="margin:0.5rem; padding:0.75rem 1.5rem; border:none; border-radius:12px; background:#14b8a6; color:white; font-weight:bold;">Donate with TON</button>
-<button style="margin:0.5rem; padding:0.75rem 1.5rem; border:none; border-radius:12px; background:#7289da; color:white; font-weight:bold;">Donate with Telegram Stars</button>
-<button style="margin:0.5rem; padding:0.75rem 1.5rem; border:none; border-radius:12px; background:#f97316; color:white; font-weight:bold;">Donate with Card (₽)</button>
-<div style="margin-top:1rem;">
-<button onclick="document.getElementById('donationModal').style.display='none';" style="background:none; border:none; color:gray; font-size:0.9rem;">Close</button>
-</div>
-</div>
-</div>
-<!-- Reward Animation Container -->
-<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
- z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
-<div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
-</div>
-<script type="text/javascript">// ----- Script Block Start -----
+
+<script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
 const SKINS=[{src:'https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp',gradient:'radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)',color:'#FFFFFF',worldName:'World of Consoles'}]
 const CHARACTERS=[
@@ -1059,6 +1094,7 @@ class Game {
                         this.ui.queueUpdate('coins', this.state.getCoins());
                         this.ui.queueUpdate('totalCoins', this.state.getCoins());
                         this.ui.applyUpdates();
+                        showUpgradeMessage();
                         this.updateInventoryDisplay();
                         if (this.state.getSelectedCharacter() === item) {
                             this.characterController.updateAppearance();
@@ -1225,6 +1261,8 @@ showCaseAnimation(caseType) {
     overlay.appendChild(spinButton);
     overlay.appendChild(cancelButton);
     document.body.appendChild(overlay);
+
+
     const telegramGiftItems = [
         { src: 'images/bottle.json', name: 'Bottle' },
         { src: 'images/clock.json', name: 'Clock' },
@@ -1232,6 +1270,7 @@ showCaseAnimation(caseType) {
         { src: 'images/heart.json', name: 'Heart' },
         { src: 'images/rocket.json', name: 'Rocket' }
     ];
+
     const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
     const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
     if (isDiamondCase) {
@@ -1259,6 +1298,7 @@ showCaseAnimation(caseType) {
             value: randomItem.name === 'Diamonds' ? Math.floor(Math.random() * 250) + 1 : undefined
         });
     }
+
     const renderRoulette = () => {
         rouletteStrip.innerHTML = '';
         rouletteItems.forEach((item, index) => {
@@ -1271,6 +1311,7 @@ showCaseAnimation(caseType) {
             bgDiv.className = 'animation-background';
             bgDiv.style.background = item.background;
             itemDiv.appendChild(bgDiv);
+
             if (isTelegramGift && item.name !== 'Diamonds') {
                 const animContainer = document.createElement('div');
                 animContainer.className = 'animation-character';
@@ -1288,12 +1329,14 @@ showCaseAnimation(caseType) {
                 if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
                 itemDiv.appendChild(img);
             }
+
             if (index === 19) {
                 itemDiv.dataset.winner = 'true';
             }
             rouletteStrip.appendChild(itemDiv);
         });
     };
+
     renderRoulette();
     requestAnimationFrame(() => {
         overlay.classList.remove('hidden');
@@ -1305,6 +1348,7 @@ showCaseAnimation(caseType) {
             cancelButton.className += ' visible';
         }, 300);
     });
+
     const onCancel = () => {
         overlay.classList.remove('visible');
         overlay.classList.add('hidden');
@@ -1319,6 +1363,7 @@ showCaseAnimation(caseType) {
         cancelButton.removeEventListener('pointerdown', onCancel);
     };
     cancelButton.addEventListener('pointerdown', onCancel);
+
     const startRoulette = () => {
         if (isDiamondCase && this.state.getCoins() < 100) {
             alert('Not enough diamonds!');
@@ -1335,6 +1380,7 @@ showCaseAnimation(caseType) {
         spinButton.style.opacity = '0.5';
         rouletteStrip.style.opacity = '1';
         rouletteStrip.style.animation = 'roulette-spin 5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards';
+
         const onAnimationEnd = () => {
             const isMobile = window.innerWidth <= 600;
             rouletteStrip.style.transform = isMobile ? 'translateX(-2008px)' : 'translateX(-2434px)';
@@ -1397,6 +1443,7 @@ showCaseAnimation(caseType) {
     };
     spinButton.addEventListener('pointerdown', startRoulette);
 }
+
 generateCaseReward(caseType) {
     const isDiamondCase = caseType === 'diamond-rain';
     const isTelegramGift = caseType === 'telegram-gift';
@@ -1668,6 +1715,7 @@ handleTopMenuClick() {
         this.state.setLeaderboardViewActive(false);
         this.state.setShopViewActive(false);
         this.state.setMarketViewActive(false);
+
         // Восстанавливаем содержимое главной страницы
         this.ui.elements.mainContent.classList.remove('hidden-opacity');
         this.ui.elements.mainContent.classList.add('visible');
@@ -1675,6 +1723,7 @@ handleTopMenuClick() {
         this.ui.elements.coinCounter.classList.add('visible');
         this.ui.elements.character.classList.remove('hidden-opacity');
         this.ui.elements.character.classList.add('visible');
+
         // Скрываем все остальные контейнеры
         this.ui.elements.leaderboardContainer.classList.remove('visible');
         this.ui.elements.leaderboardContainer.classList.add('hidden');
@@ -1684,6 +1733,7 @@ handleTopMenuClick() {
         this.ui.elements.inventoryContainer.classList.add('hidden');
         this.ui.elements.marketContainer.classList.remove('visible');
         this.ui.elements.marketContainer.classList.add('hidden');
+
         // Скрываем стрелки навигации
         this.ui.elements.shopArrowLeft.classList.remove('visible');
         this.ui.elements.shopArrowLeft.classList.add('hidden');
@@ -1693,10 +1743,12 @@ handleTopMenuClick() {
         this.ui.elements.inventoryArrowLeft.classList.add('hidden');
         this.ui.elements.inventoryArrowRight.classList.remove('visible');
         this.ui.elements.inventoryArrowRight.classList.add('hidden');
+
         // Сбрасываем состояние инвентаря и включаем взаимодействие
         this.isInventoryView = false;
         this.ui.toggleConnectButton(false);
         this.state.canInteract = true;
+
         // Выделяем пункт "Home" в нижнем меню
         document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('highlighted'));
         const homeMenuItem = document.querySelector('.menu-item[data-menu="home"]');
@@ -1839,6 +1891,9 @@ document.addEventListener('DOMContentLoaded', () => {
     game.initialize();
     window.addEventListener('beforeunload', () => game.destroy());
 });
+    </script>
+
+<script>
 document.addEventListener("DOMContentLoaded", function() {
     const menuItems = document.querySelectorAll(".menu-item");
     const sections = {
@@ -1851,21 +1906,26 @@ document.addEventListener("DOMContentLoaded", function() {
     const coinCounter = document.getElementById("coinCounter");
     const incomeCounter = document.getElementById("incomeCounter");
     const incomeTimer = document.getElementById("incomeTimer");
+
     menuItems.forEach(item => {
         item.addEventListener("click", () => {
             const selected = item.getAttribute("data-menu");
+
             for (let key in sections) {
                 if (sections[key]) {
                     sections[key].classList.remove("visible");
                     sections[key].classList.add("hidden");
                 }
             }
+
             // Show selected section
             if (sections[selected]) {
                 sections[selected].classList.remove("hidden");
                 sections[selected].classList.add("visible");
             }
+
             // Toggle visibility of home-only elements
+
     const isHome = selected === "home";
     const topMenu = document.querySelector(".top-menu");
     if (isHome) {
@@ -1873,6 +1933,7 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         topMenu.style.display = "none";
     }
+
             [coinCounter, incomeCounter, incomeTimer].forEach(el => {
                 if (!el) return;
                 if (isHome) {
@@ -1886,6 +1947,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+</script>
+
+<script>
 const mainContent = document.getElementById('mainContent');
 const incomeCounter = document.getElementById('incomeCounter');
 const incomeTimer = document.getElementById('incomeTimer');
@@ -1896,6 +1960,7 @@ const marketContainer = document.getElementById('marketContainer');
 const leaderboardContainer = document.getElementById('leaderboardContainer');
 const questsContainer = document.getElementById('questsContainer');
 const friendsContainer = document.getElementById('friendsContainer');
+
 function hideAllSections() {
     shopContainer.classList.add('hidden');
     inventoryContainer.classList.add('hidden');
@@ -1932,19 +1997,50 @@ document.querySelectorAll('.menu-item').forEach(item => {
         item.classList.add('highlighted');
     });
 });
+</script>
+
+
+<div id="donationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
+    <div style="background:#1e1e1e; padding:2rem; border-radius:16px; text-align:center; color:white; width:90%; max-width:400px;">
+        <h2 style="margin-bottom:1rem;">Support the Game</h2>
+        <button style="margin:0.5rem; padding:0.75rem 1.5rem; border:none; border-radius:12px; background:#14b8a6; color:white; font-weight:bold;">Donate with TON</button>
+        <button style="margin:0.5rem; padding:0.75rem 1.5rem; border:none; border-radius:12px; background:#7289da; color:white; font-weight:bold;">Donate with Telegram Stars</button>
+        <button style="margin:0.5rem; padding:0.75rem 1.5rem; border:none; border-radius:12px; background:#f97316; color:white; font-weight:bold;">Donate with Card (₽)</button>
+        <div style="margin-top:1rem;">
+            <button onclick="document.getElementById('donationModal').style.display='none';" style="background:none; border:none; color:gray; font-size:0.9rem;">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
 document.getElementById('starDonation').addEventListener('click', function() {
     document.getElementById('donationModal').style.display = 'flex';
 });
+</script>
+
+
+<!-- Reward Animation Container -->
+<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+ z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
+  <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
+</div>
+
+
+<script>
 function showRewardAnimation(animationPath) {
   const container = document.getElementById("rewardAnimationContainer");
   const animEl = document.getElementById("rewardAnimation");
+
   container.style.display = "block";
   animEl.innerHTML = "";
+
+
   setTimeout(() => {
     container.style.display = "none";
     animEl.innerHTML = "";
   }, 3000);
 }
+
 function openTelegramGiftCase() {
   const animations = [
     "images/cookie.json",
@@ -1956,7 +2052,11 @@ function openTelegramGiftCase() {
   const randomPath = animations[Math.floor(Math.random() * animations.length)];
   showRewardAnimation(randomPath);
 }
+</script>
+
+<script>
 let walletConnected = false;
+
 function toggleWallet() {
   const btn = document.getElementById("connectWalletBtn");
   if (!walletConnected) {
@@ -1969,6 +2069,7 @@ function toggleWallet() {
     walletConnected = false;
   }
 }
+
 // Заглушка: замените на настоящую реализацию
 function connectWallet() {
   console.log("Wallet connected");
@@ -1976,30 +2077,77 @@ function connectWallet() {
 function disconnectWallet() {
   console.log("Wallet disconnected");
 }
+</script>
+
+<script>
 function activateX4() {
   alert("x4 boost upgrade coming soon!");
 }
+</script>
+
+<script>
 function showSection(section) {
   document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
   document.getElementById(section + 'Container')?.classList.remove('hidden');
+
   // Скрытие стрелок по умолчанию
+  document.querySelectorAll('.inventory-arrow').forEach(el => el.style.display = 'none');
+
+  // Отображение стрелок только в inventory
+  if (section === 'inventory') {
+    document.querySelectorAll('.inventory-arrow').forEach(el => el.style.display = 'block');
+  }
+}
+</script>
+
+<script>
+function showSection(section) {
   document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
   document.getElementById(section + 'Container')?.classList.remove('hidden');
+
   // Скрытие стрелок
+  document.querySelectorAll('.inventory-arrow').forEach(el => el.style.display = 'none');
+
+  // Показывать стрелки только в инвентаре
+  if (section === 'inventory') {
+    document.querySelectorAll('.inventory-arrow').forEach(el => el.style.display = 'block');
+  }
+}
+
 function activateX4() {
   alert("x4 boost feature coming soon!");
 }
+</script>
+</body>
+</html>
+
+<script>
 let openCasesCount = 0;
 function incrementCaseCount() {
     openCasesCount++;
     if (openCasesCount >= 3) {
+
         openCasesCount = 0;
     }
 }
 document.querySelectorAll('.case-container').forEach(caseElement => {
     caseElement.addEventListener('click', incrementCaseCount);
 });
+
+function showUpgradeMessage() {
+  const msg = document.createElement('div');
+  msg.textContent = 'Улучшение куплено';
+  msg.style.position = 'fixed';
+  msg.style.top = '20%';
+  msg.style.left = '50%';
+  msg.style.transform = 'translate(-50%, -50%)';
+  msg.style.backgroundColor = '#000';
+  msg.style.color = '#fff';
+  msg.style.padding = '1rem';
+  msg.style.borderRadius = '12px';
+  msg.style.zIndex = 9999;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 1500);
 }
+
 </script>
-</body>
-</html>
