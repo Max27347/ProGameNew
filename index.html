@@ -157,8 +157,9 @@ footer{bottom:0;padding:0}
 @keyframes glow-winner{0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.8)}50%{box-shadow:0 0 15px rgba(255,255,255,1)}}
 }
 
+
 .claim-button {
-    background-color: #2E2E2E;
+    background: var(--counter-bg);
     border: none;
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
@@ -171,7 +172,16 @@ footer{bottom:0;padding:0}
     gap: 0.3rem;
     cursor: pointer;
     margin-top: 0.5rem;
+    transition: transform 0.3s ease;
 }
+.claim-button.pulse {
+    animation: pulseBtn 1s infinite ease-in-out;
+}
+@keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
 .case-price {
     display: flex;
     justify-content: flex-end;
@@ -2211,6 +2221,75 @@ function showNotification(message) {
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 1500);
 }
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let clicks = 0;
+    let telegramVisited = false;
+    let stars = 0;
+    let leaderboardTop10 = true;
+    let diamondGoalReached = false;
+
+    const buttons = document.querySelectorAll(".claim-button");
+    const gemCountEl = document.getElementById("coinCount");
+
+    document.getElementById("character").addEventListener("click", () => {
+        clicks++;
+        updateQuests();
+    });
+
+    document.querySelector("a[href*='t.me']").addEventListener("click", () => {
+        telegramVisited = true;
+        updateQuests();
+    });
+
+    function updateQuests() {
+        if (telegramVisited) enableClaim(0);
+        if (clicks >= 50) enableClaim(1);
+        if (stars >= 100) enableClaim(2);
+        if (leaderboardTop10) enableClaim(3);
+        const gems = parseInt(gemCountEl.textContent);
+        if (gems >= 3000) enableClaim(4);
+    }
+
+    function enableClaim(index) {
+        const btn = buttons[index];
+        btn.disabled = false;
+        btn.classList.add("pulse");
+    }
+
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        btn.addEventListener("click", () => {
+            if (btn.disabled) return;
+            const rewards = [50, 150, 200, 500, 100];
+            let current = parseInt(gemCountEl.textContent);
+            gemCountEl.textContent = current + rewards[i];
+            btn.disabled = true;
+            btn.textContent = "Claimed";
+            btn.classList.remove("pulse");
+            showNotification("Награда получена");
+        });
+    });
+
+    function showNotification(message) {
+        const msg = document.createElement('div');
+        msg.textContent = message;
+        msg.style.position = 'fixed';
+        msg.style.top = '20%';
+        msg.style.left = '50%';
+        msg.style.transform = 'translate(-50%, -50%)';
+        msg.style.backgroundColor = '#000';
+        msg.style.color = '#fff';
+        msg.style.padding = '1rem';
+        msg.style.borderRadius = '12px';
+        msg.style.zIndex = 9999;
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 1500);
+    }
+});
 </script>
 
 </body>
