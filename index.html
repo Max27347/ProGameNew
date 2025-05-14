@@ -247,7 +247,7 @@ footer{bottom:0;padding:0}
             <span class="player-nickname">Player123</span>
             <span class="player-max-coins">
 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">
-<span id="totalCoins">5000</span>
+<span id="totalCoins">8000</span>
 </span>
         </div>
     </div>
@@ -273,7 +273,7 @@ footer{bottom:0;padding:0}
 
     <div class="coin-counter visible" id="coinCounter">
     <div class="coin-line">
-        <span id="coinCount">5000</span>
+        <span id="coinCount">8000</span>
         <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false">
 
 
@@ -488,7 +488,7 @@ const MARKET_SKINS=[
 ];
 class GameState {
     constructor() {
-        this.coins = 5000;
+        this.coins = 8000;
         this.scale = CONFIG.MIN_SCALE;
         this.canInteract = true;
         this.isOverlayActive = false;
@@ -559,19 +559,27 @@ class GameState {
         });
     }
     getLeaderboard() { return this.leaderboard; }
-    upgradeCharacter(character) {
-        if (character.level < 4) {
-            const upgradeCost = character.level === 1 ? 500 : character.level === 2 ? 1000 : 2000;
-            if (this.coins >= upgradeCost) {
-                this.coins -= upgradeCost;
-                character.level += 1;
-                character.incomeRate = character.level * 100;
-                this.updateLeaderboard();
-                return true;
-            }
+
+upgradeCharacter(character) {
+    if (character.level < 5) {
+        let upgradeCost;
+        switch (character.level) {
+            case 1: upgradeCost = 500; break;
+            case 2: upgradeCost = 1000; break;
+            case 3: upgradeCost = 2000; break;
+            case 4: upgradeCost = 4000; break;
         }
-        return false;
+        if (this.coins >= upgradeCost) {
+            this.coins -= upgradeCost;
+            character.level += 1;
+            character.incomeRate = character.level * 100;
+            this.updateLeaderboard();
+            return true;
+        }
     }
+    return false;
+}
+
     getNextIncomeTime() { return this.nextIncomeTime; }
     setNextIncomeTime(time) { this.nextIncomeTime = time; }
     startTimer() { this.isTimerStarted = true; }
@@ -1093,10 +1101,19 @@ class Game {
             statsDiv.textContent = `Lvl ${item.level}, ${item.incomeRate}/h`;
             const upgradeButton = document.createElement('div');
             upgradeButton.className = 'upgrade-button';
-            upgradeButton.innerHTML = item.level < 4 ?
-                `Up ${item.level === 1 ? 500 : item.level === 2 ? 1000 : 2000} <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">` :
-                'Max Level';
-            if (item.level < 4) {
+
+
+if (item.level < 5) {
+    let cost = item.level === 1 ? 500 : item.level === 2 ? 1000 : item.level === 3 ? 2000 : 4000;
+    upgradeButton.innerHTML = `Up ${cost} <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">`;
+} else {
+    upgradeButton.innerHTML = 'Max Level';
+    upgradeButton.style.opacity = '0.5';
+    upgradeButton.style.pointerEvents = 'none';
+}
+
+
+            if (item.level < 5) {
                 upgradeButton.addEventListener('pointerdown', () => {
                     if (this.state.upgradeCharacter(item)) {
                         itemDiv.classList.add('upgrade-anim');
