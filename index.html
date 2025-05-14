@@ -550,8 +550,8 @@ class GameState {
     }
     getLeaderboard() { return this.leaderboard; }
     upgradeCharacter(character) {
-        if (character.level < 3) {
-            const upgradeCost = character.level === 1 ? 1000 : 3000;
+        if (character.level < 4) {
+            const upgradeCost = character.level === 1 ? 500 : character.level === 2 ? 1000 : 2000;
             if (this.coins >= upgradeCost) {
                 this.coins -= upgradeCost;
                 character.level += 1;
@@ -1083,10 +1083,10 @@ class Game {
             statsDiv.textContent = `Lvl ${item.level}, ${item.incomeRate}/h`;
             const upgradeButton = document.createElement('div');
             upgradeButton.className = 'upgrade-button';
-            upgradeButton.innerHTML = item.level < 3 ?
-                `Up ${item.level === 1 ? 1000 : 3000} <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">` :
+            upgradeButton.innerHTML = item.level < 4 ?
+                `Up ${item.level === 1 ? 500 : item.level === 2 ? 1000 : 2000} <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon">` :
                 'Max Level';
-            if (item.level < 3) {
+            if (item.level < 4) {
                 upgradeButton.addEventListener('pointerdown', () => {
                     if (this.state.upgradeCharacter(item)) {
                         itemDiv.classList.add('upgrade-anim');
