@@ -2122,31 +2122,20 @@ function activateX4() {
   alert("x4 boost feature coming soon!");
 }
 
+<script>
 const musicBtn = document.getElementById('musicToggle');
 const music = document.getElementById('bgMusic');
 
-musicBtn.addEventListener('click', () => {
-  if (music.paused) {
-    music.play().catch(err => console.error('Cannot autoplay:', err));
-  } else {
-    music.pause();
-  }
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const musicBtn = document.getElementById('musicToggle');
-  const music = document.getElementById('bgMusic');
-
-  if (musicBtn && music) {
+if (musicBtn && music) {
     musicBtn.addEventListener('click', () => {
-      if (music.paused) {
-        music.play().catch(err => console.error('Cannot autoplay:', err));
-      } else {
-        music.pause();
-      }
+        if (music.paused) {
+            music.play().catch(err => console.error('Cannot play audio:', err));
+            musicBtn.innerHTML = '🔇'; // Иконка для "выключить звук"
+        } else {
+            music.pause();
+            musicBtn.innerHTML = '🎵'; // Иконка для "включить звук"
+        }
     });
-  }
-});
+}
 
 </script>
