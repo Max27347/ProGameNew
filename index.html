@@ -2326,5 +2326,21 @@ musicButton.addEventListener("click", () => {
     isPlaying = !isPlaying;
 });
 </script>
+<script>
+const navSound = new Audio("music/Navigation.mp3");
+
+function playNavSound() {
+    navSound.currentTime = 0; // сброс на начало
+    navSound.play().catch(err => console.error("Nav sound error:", err));
+}
+
+// Навешиваем звук на все кнопки меню
+document.querySelectorAll(".menu-item").forEach(btn => {
+    btn.addEventListener("pointerdown", () => {
+        playNavSound();
+    });
+});
+</script>
+
 </body>
 </html>
