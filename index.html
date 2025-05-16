@@ -313,12 +313,6 @@ footer{bottom:0;padding:0}
         <div class="case-name">Telegram Gift</div>
         <div class="case-price">Free</div>
     </div>
-            <div class="case-container" data-case="telegram-gift-2">
-    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Telegram Gift 2" class="case-image" draggable="false">
-    <div class="case-name">Telegram Gift 2</div>
-    <div class="case-price">300 Diamonds</div>
-</div>
-
     <!-- Остальные кейсы остаются без изменений -->
 </div>
     </div>
@@ -450,24 +444,6 @@ footer{bottom:0;padding:0}
     <div>No friends yet</div>
   </div>
 </div>
-<!-- Music Toggle Button -->
-<div id="musicToggle" style="
-  position: fixed;
-  top: 5.5rem;
-  right: 1rem;
-  z-index: 9999;
-  font-size: 1.5rem;
-  cursor: pointer;
-  background: rgba(30, 30, 30, 0.85);
-  padding: 0.5rem;
-  border-radius: 50%;
-  color: white;
-">🎵</div>
-
-<audio id="bgMusic" loop preload="auto">
-  <source src="interstellar.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
 
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
@@ -1284,6 +1260,47 @@ if (item.level < 5) {
         });
     }
 showCaseAnimation(caseType) {
+    if (caseType === 'telegram-gift-2') {
+        const cost = 300;
+        if (this.state.getCoins() < cost) {
+            alert("Not enough diamonds!");
+            return;
+        }
+
+        this.state.addCoins(-cost);
+        this.ui.queueUpdate('coins', this.state.getCoins());
+        this.ui.queueUpdate('totalCoins', this.state.getCoins());
+        this.ui.applyUpdates();
+
+        const roll = Math.random();
+        if (roll <= 0.9) {
+            const diamondsWon = 200 + Math.floor(Math.random() * 101); // 200–300
+            alert(`You won ${diamondsWon} diamonds!`);
+            this.state.addCoins(diamondsWon);
+            this.ui.queueUpdate('coins', this.state.getCoins());
+            this.ui.queueUpdate('totalCoins', this.state.getCoins());
+            this.ui.applyUpdates();
+        } else {
+            const skins = [
+                { name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+                { name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+                { name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+                { name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+                { name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+            ];
+            const selected = skins[Math.floor(Math.random() * skins.length)];
+            alert(`You won a rare item: ${selected.name}`);
+            this.state.addToInventory({
+                src: selected.src,
+                name: selected.name,
+                background: BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)],
+                isMutated: false
+            });
+            this.updateInventoryDisplay();
+        }
+        return;
+    }
+
     const isDiamondCase = caseType === 'diamond-rain';
     const isTelegramGift = caseType === 'telegram-gift';
     const currency = isDiamondCase ? '100 Diamonds' : isTelegramGift ? 'Free' : 'Free (Test)';
@@ -1322,14 +1339,6 @@ showCaseAnimation(caseType) {
         { src: 'images/rocket.json', name: 'Rocket' }
     ];
 
-const telegramGift2Items = [
-    { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
-    { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
-    { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
-    { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
-    { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
-];
-
     const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
     const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
     if (isDiamondCase) {
@@ -1345,37 +1354,7 @@ const telegramGift2Items = [
         let randomItem;
         if (isDiamondCase && Math.random() < 0.6) {
             randomItem = diamondItem;
-        }
-else if (isTelegramGift2) {
-    const roll = Math.random();
-    if (roll <= 0.9) {
-        return {
-            type: 'diamonds',
-            name: 'Diamonds',
-            value: 200 + Math.floor(Math.random() * 101),
-            isMutated: false,
-            background,
-            src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
-        };
-    } else {
-        const skins = [
-            { name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
-            { name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
-            { name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
-            { name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
-            { name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
-        ];
-        const selected = skins[Math.floor(Math.random() * skins.length)];
-        return {
-            type: 'skin',
-            name: selected.name,
-            src: selected.src,
-            isMutated: false,
-            background
-        };
-    }
-}
-else if (isTelegramGift) {
+        } else if (isTelegramGift) {
             randomItem = telegramGiftItems[Math.floor(Math.random() * telegramGiftItems.length)];
         } else {
             randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
@@ -1534,8 +1513,6 @@ else if (isTelegramGift) {
 }
 
 generateCaseReward(caseType) {
-    const isTelegramGift2 = caseType === 'telegram-gift-2';
-
     const isDiamondCase = caseType === 'diamond-rain';
     const isTelegramGift = caseType === 'telegram-gift';
     const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
@@ -1564,37 +1541,7 @@ generateCaseReward(caseType) {
                 src: character.src
             };
         }
-    }
-else if (isTelegramGift2) {
-    const roll = Math.random();
-    if (roll <= 0.9) {
-        return {
-            type: 'diamonds',
-            name: 'Diamonds',
-            value: 200 + Math.floor(Math.random() * 101),
-            isMutated: false,
-            background,
-            src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
-        };
-    } else {
-        const skins = [
-            { name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
-            { name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
-            { name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
-            { name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
-            { name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
-        ];
-        const selected = skins[Math.floor(Math.random() * skins.length)];
-        return {
-            type: 'skin',
-            name: selected.name,
-            src: selected.src,
-            isMutated: false,
-            background
-        };
-    }
-}
-else if (isTelegramGift) {
+    } else if (isTelegramGift) {
         const telegramGiftItems = [
             { src: 'images/bottle.json', name: 'Bottle' },
             { src: 'images/clock.json', name: 'Clock' },
@@ -2402,33 +2349,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
-<script>
-const musicBtn = document.getElementById('musicToggle');
-const music = document.getElementById('bgMusic');
 
-musicBtn.addEventListener('click', () => {
-  if (music.paused) {
-    music.play().catch(err => console.error('Cannot autoplay:', err));
-  } else {
-    music.pause();
-  }
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const musicBtn = document.getElementById('musicToggle');
-  const music = document.getElementById('bgMusic');
-
-  if (musicBtn && music) {
-    musicBtn.addEventListener('click', () => {
-      if (music.paused) {
-        music.play().catch(err => console.error('Cannot autoplay:', err));
-      } else {
-        music.pause();
-      }
-    });
-  }
-});
-</script>
 </body>
 </html>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const musicBtn = document.getElementById("musicToggle");
+    const music = document.getElementById("bgMusic");
+    if (musicBtn && music) {
+        musicBtn.addEventListener("click", () => {
+            if (music.paused) {
+                music.play().catch((e) => console.warn("Autoplay blocked"));
+                musicBtn.textContent = "🔊";
+            } else {
+                music.pause();
+                musicBtn.textContent = "🎵";
+            }
+        });
+    }
+});
+</script>
