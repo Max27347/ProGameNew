@@ -1345,7 +1345,37 @@ const telegramGift2Items = [
         let randomItem;
         if (isDiamondCase && Math.random() < 0.6) {
             randomItem = diamondItem;
-        } else if (isTelegramGift) {
+        }
+else if (isTelegramGift2) {
+    const roll = Math.random();
+    if (roll <= 0.9) {
+        return {
+            type: 'diamonds',
+            name: 'Diamonds',
+            value: 200 + Math.floor(Math.random() * 101),
+            isMutated: false,
+            background,
+            src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
+        };
+    } else {
+        const skins = [
+            { name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+            { name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+            { name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+            { name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+            { name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+        ];
+        const selected = skins[Math.floor(Math.random() * skins.length)];
+        return {
+            type: 'skin',
+            name: selected.name,
+            src: selected.src,
+            isMutated: false,
+            background
+        };
+    }
+}
+else if (isTelegramGift) {
             randomItem = telegramGiftItems[Math.floor(Math.random() * telegramGiftItems.length)];
         } else {
             randomItem = items[Math.floor(Math.random() * (isDiamondCase ? items.length : CHARACTERS.length - 1))];
@@ -1504,6 +1534,8 @@ const telegramGift2Items = [
 }
 
 generateCaseReward(caseType) {
+    const isTelegramGift2 = caseType === 'telegram-gift-2';
+
     const isDiamondCase = caseType === 'diamond-rain';
     const isTelegramGift = caseType === 'telegram-gift';
     const background = BACKGROUND_GRADIENTS[Math.floor(Math.random() * BACKGROUND_GRADIENTS.length)];
@@ -1532,7 +1564,37 @@ generateCaseReward(caseType) {
                 src: character.src
             };
         }
-    } else if (isTelegramGift) {
+    }
+else if (isTelegramGift2) {
+    const roll = Math.random();
+    if (roll <= 0.9) {
+        return {
+            type: 'diamonds',
+            name: 'Diamonds',
+            value: 200 + Math.floor(Math.random() * 101),
+            isMutated: false,
+            background,
+            src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp'
+        };
+    } else {
+        const skins = [
+            { name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+            { name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+            { name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+            { name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+            { name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+        ];
+        const selected = skins[Math.floor(Math.random() * skins.length)];
+        return {
+            type: 'skin',
+            name: selected.name,
+            src: selected.src,
+            isMutated: false,
+            background
+        };
+    }
+}
+else if (isTelegramGift) {
         const telegramGiftItems = [
             { src: 'images/bottle.json', name: 'Bottle' },
             { src: 'images/clock.json', name: 'Clock' },
