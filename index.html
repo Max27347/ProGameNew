@@ -1297,11 +1297,11 @@ showCaseAnimation(caseType) {
 
 
     const telegramGiftItems = [
-    { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
-    { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
-    { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
-    { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
-    { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+  { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+  { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+  { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+  { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+  { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
 ];
 
     const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
@@ -1366,23 +1366,14 @@ showCaseAnimation(caseType) {
             bgDiv.style.background = item.background;
             itemDiv.appendChild(bgDiv);
 
-            if (isTelegramGift && item.name !== 'Diamonds') {
-                const animContainer = document.createElement('div');
-                animContainer.className = 'animation-character';
-                animContainer.style.width = '100px';
-                animContainer.style.height = '100px';
-                                if (item.isMutated) {
-                    animContainer.style.filter = 'brightness(1.5) hue-rotate(200deg)';
-                }
-                itemDiv.appendChild(animContainer);
-            } else {
-                const img = document.createElement('img');
-                img.src = item.src;
-                img.alt = item.name;
-                img.className = 'animation-character';
-                if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
-                itemDiv.appendChild(img);
-            }
+
+const img = document.createElement('img');
+img.src = item.src;
+img.alt = item.name;
+img.className = 'animation-character';
+if (item.isMutated && item.name !== 'Diamonds') img.className += ' mutated';
+itemDiv.appendChild(img);
+
 
             if (index === 19) {
                 itemDiv.dataset.winner = 'true';
@@ -1529,11 +1520,11 @@ generateCaseReward(caseType) {
         }
     } else if (isTelegramGift) {
         const telegramGiftItems = [
-    { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
-    { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
-    { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
-    { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
-    { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+  { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+  { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+  { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+  { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+  { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
 ];
         const selectedItem = telegramGiftItems[Math.floor(Math.random() * telegramGiftItems.length)];
         const isMutated = Math.random() < 0.1;
