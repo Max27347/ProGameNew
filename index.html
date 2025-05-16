@@ -314,9 +314,9 @@ footer{bottom:0;padding:0}
         <div class="case-price">Free</div>
     </div>
             <div class="case-container" data-case="telegram-gift-2">
-    <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift 2" class="case-image" draggable="false">
+    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Telegram Gift 2" class="case-image" draggable="false">
     <div class="case-name">Telegram Gift 2</div>
-    <div class="case-price">Free</div>
+    <div class="case-price">300 Diamonds</div>
 </div>
 
     <!-- Остальные кейсы остаются без изменений -->
@@ -450,6 +450,24 @@ footer{bottom:0;padding:0}
     <div>No friends yet</div>
   </div>
 </div>
+<!-- Music Toggle Button -->
+<div id="musicToggle" style="
+  position: fixed;
+  top: 5.5rem;
+  right: 1rem;
+  z-index: 9999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background: rgba(30, 30, 30, 0.85);
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: white;
+">🎵</div>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="interstellar.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
@@ -1303,6 +1321,14 @@ showCaseAnimation(caseType) {
         { src: 'images/heart.json', name: 'Heart' },
         { src: 'images/rocket.json', name: 'Rocket' }
     ];
+
+const telegramGift2Items = [
+    { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+    { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+    { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+    { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+    { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+];
 
     const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
     const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
@@ -2314,6 +2340,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+<script>
+const musicBtn = document.getElementById('musicToggle');
+const music = document.getElementById('bgMusic');
 
+musicBtn.addEventListener('click', () => {
+  if (music.paused) {
+    music.play().catch(err => console.error('Cannot autoplay:', err));
+  } else {
+    music.pause();
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const musicBtn = document.getElementById('musicToggle');
+  const music = document.getElementById('bgMusic');
+
+  if (musicBtn && music) {
+    musicBtn.addEventListener('click', () => {
+      if (music.paused) {
+        music.play().catch(err => console.error('Cannot autoplay:', err));
+      } else {
+        music.pause();
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
