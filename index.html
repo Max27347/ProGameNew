@@ -1297,12 +1297,12 @@ showCaseAnimation(caseType) {
 
 
     const telegramGiftItems = [
-        { src: 'images/bottle.json', name: 'Bottle' },
-        { src: 'images/clock.json', name: 'Clock' },
-        { src: 'images/cookie.json', name: 'Cookie' },
-        { src: 'images/heart.json', name: 'Heart' },
-        { src: 'images/rocket.json', name: 'Rocket' }
-    ];
+    { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+    { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+    { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+    { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+    { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+];
 
     const items = isTelegramGift ? telegramGiftItems : [...CHARACTERS.slice(1)];
     const diamondItem = { src: 'https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp', name: 'Diamonds' };
@@ -1529,12 +1529,12 @@ generateCaseReward(caseType) {
         }
     } else if (isTelegramGift) {
         const telegramGiftItems = [
-            { src: 'images/bottle.json', name: 'Bottle' },
-            { src: 'images/clock.json', name: 'Clock' },
-            { src: 'images/cookie.json', name: 'Cookie' },
-            { src: 'images/heart.json', name: 'Heart' },
-            { src: 'images/rocket.json', name: 'Rocket' }
-        ];
+    { type: 'skin', name: 'Car', src: 'https://em-content.zobj.net/source/telegram/386/automobile_1f697.webp' },
+    { type: 'skin', name: 'Boat', src: 'https://em-content.zobj.net/source/telegram/386/motor-boat_1f6e5-fe0f.webp' },
+    { type: 'skin', name: 'Plane', src: 'https://em-content.zobj.net/source/telegram/386/airplane_2708-fe0f.webp' },
+    { type: 'skin', name: 'Rocket', src: 'https://em-content.zobj.net/source/telegram/386/rocket_1f680.webp' },
+    { type: 'skin', name: 'Phone', src: 'https://em-content.zobj.net/source/telegram/386/mobile-phone_1f4f1.webp' }
+];
         const selectedItem = telegramGiftItems[Math.floor(Math.random() * telegramGiftItems.length)];
         const isMutated = Math.random() < 0.1;
         return {
