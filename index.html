@@ -313,6 +313,12 @@ footer{bottom:0;padding:0}
         <div class="case-name">Telegram Gift</div>
         <div class="case-price">Free</div>
     </div>
+            <div class="case-container" data-case="telegram-gift-2">
+    <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift 2" class="case-image" draggable="false">
+    <div class="case-name">Telegram Gift 2</div>
+    <div class="case-price">Free</div>
+</div>
+
     <!-- Остальные кейсы остаются без изменений -->
 </div>
     </div>
@@ -414,6 +420,10 @@ footer{bottom:0;padding:0}
     <div class="case-price"><button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width:16px;height:16px;"></button></div>
 </div>
 
+
+
+
+
     <div class="case-container"><img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image"><div class="case-name">Earn 3000 Diamonds</div><div class="case-price"><button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width:16px;height:16px;vertical-align:middle;"></button></div></div>
   </div>
 </div>
@@ -440,9 +450,6 @@ footer{bottom:0;padding:0}
     <div>No friends yet</div>
   </div>
 </div>
-<button id="musicToggle" style="position:fixed;top:1rem;right:1rem;z-index:9999;padding:0.5rem 1rem;border:none;border-radius:8px;background:#444;color:white;font-weight:bold;cursor:pointer;">
-    🔊 Музыка
-</button>
 
 <script>
 const CONFIG={PARTICLE_COUNT:50,CLICK_EFFECT_DURATION:1000,RESIZE_DEBOUNCE:200,CONFETTI_COUNT:30,MAX_SCALE:1.4,MIN_SCALE:1,SCALE_INCREMENT:0.1,INCOME_INTERVAL:3600000}
@@ -2305,40 +2312,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(msg);
         setTimeout(() => msg.remove(), 1500);
     }
-});
-</script>
-<script>
-// Путь к локальному файлу (в браузере будет работать только на сервере)
-const music = new Audio("music/interstellar.mp3");
-music.loop = true;
-
-const musicButton = document.getElementById("musicToggle");
-let isPlaying = false;
-
-musicButton.addEventListener("click", () => {
-    if (isPlaying) {
-        music.pause();
-        musicButton.textContent = "🔇 Музыка";
-    } else {
-        music.play().catch(err => console.error("Music play error:", err));
-        musicButton.textContent = "🔊 Музыка";
-    }
-    isPlaying = !isPlaying;
-});
-</script>
-<script>
-const navSound = new Audio("music/Navigation.mp3");
-
-function playNavSound() {
-    navSound.currentTime = 0; // сброс на начало
-    navSound.play().catch(err => console.error("Nav sound error:", err));
-}
-
-// Навешиваем звук на все кнопки меню
-document.querySelectorAll(".menu-item").forEach(btn => {
-    btn.addEventListener("pointerdown", () => {
-        playNavSound();
-    });
 });
 </script>
 
