@@ -1912,7 +1912,6 @@ updateAppearance() {
                     }
                     this.state.scale = Math.min(this.state.scale + CONFIG.SCALE_INCREMENT, CONFIG.MAX_SCALE);
                     this.ui.updateCharacterScale(this.state.scale);
-                    this.effectPool.showEffect(e.clientX, e.clientY);
                     if (this.resetTimeout) clearTimeout(this.resetTimeout);
                     this.resetTimeout = setTimeout(() => {
                         if (this.state.scale !== CONFIG.MIN_SCALE) {
