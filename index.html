@@ -1082,23 +1082,7 @@
                 gap: 0.3rem;
             }
 
-@keyframes rainbowCycleBurst {
-  0%   { background: #000; }
-  10%  { background: red; }
-  20%  { background: orange; }
-  30%  { background: yellow; }
-  40%  { background: green; }
-  50%  { background: cyan; }
-  60%  { background: blue; }
-  70%  { background: violet; }
-  80%  { background: #000; }
-  100% { background: #000; }
-}
 
-.rainbow-flash {
-  animation: rainbowCycleBurst 1.6s ease-in-out;
-  transition: background 0.5s ease-in-out;
-}
 
 
 
@@ -1338,40 +1322,34 @@
                 { src: "https://em-content.zobj.net/source/telegram/386/baby-chick_1f424.webp", name: "Baby Chick" },
             ];
 const BACKGROUND_GRADIENTS = [
-  'linear-gradient(135deg, #ffafbd, #ffc3a0)',     // розово-персиковый
-  'linear-gradient(135deg, #89f7fe, #66a6ff)',     // небесно-голубой
-  'linear-gradient(135deg, #f6d365, #fda085)',     // оранжевый закат
-  '#4b4b4b',                                       // тёмно-серый
-  'linear-gradient(135deg, #84fab0, #8fd3f4)',     // мятно-голубой
-  '#ffcc70',                                       // персиковый
-  'linear-gradient(135deg, #d299c2, #fef9d7)',     // сиренево-кремовый
-  '#ffffff',                                       // белый
-  'linear-gradient(135deg, #cfd9df, #e2ebf0)',     // серо-голубой
-  '#000000',                                       // чёрный
-
-  'linear-gradient(135deg, #667eea, #764ba2)',     // фиолетово-синий
-  'linear-gradient(135deg, #ffecd2, #fcb69f)',     // песочный
-  '#d3f8e2',                                       // мятный
-  '#f6e7d7',                                       // кремовый
-  'linear-gradient(135deg, #fdfbfb, #ebedee)',     // почти белый
-  '#b2fefa',                                       // светло-голубой
-  'linear-gradient(135deg, #e0c3fc, #8ec5fc)',     // фиолетово-голубой
-  '#e6e6e6',                                       // светло-серый
-  '#d1c4e9',                                       // лавандовый
-  '#f48fb1',                                       // розовый
-
-  '#ffe082',                                       // жёлто-кремовый
-  '#bcaaa4',                                       // кофе с молоком
-  '#ffab91',                                       // коралловый
-  '#ce93d8',                                       // сиреневый
-  '#90caf9',                                       // небесный
-  '#a5d6a7',                                       // зелёный чай
-  '#b0bec5',                                       // серо-голубой
-  '#b39ddb',                                       // приглушённый фиолет
-  '#ef9a9a',                                       // лососевый
-  '#a1887f',                                       // шоколадный серый
-  '#212121'                                        // почти чёрный
+  'linear-gradient(135deg, #ffafbd, #ffc3a0)',
+  'linear-gradient(135deg, #89f7fe, #66a6ff)',
+  'linear-gradient(135deg, #f6d365, #fda085)',
+  'linear-gradient(135deg, #84fab0, #8fd3f4)',
+  '#ffcc70',
+  'linear-gradient(135deg, #d299c2, #fef9d7)',
+  '#000000',
+  'linear-gradient(135deg, #667eea, #764ba2)',
+  'linear-gradient(135deg, #ffecd2, #fcb69f)',
+  '#d3f8e2',
+  '#f6e7d7',
+  '#b2fefa',
+  'linear-gradient(135deg, #e0c3fc, #8ec5fc)',
+  '#d1c4e9',
+  '#f48fb1',
+  '#ffe082',
+  '#bcaaa4',
+  '#ffab91',
+  '#ce93d8',
+  '#90caf9',
+  '#a5d6a7',
+  '#b0bec5',
+  '#b39ddb',
+  '#ef9a9a',
+  '#a1887f'
 ];
+
+
 
 
             const MUTATION_GRADIENT = "radial-gradient(circle at 50% 50%, #FFD700, #FF4500 70%)";
@@ -1856,13 +1834,7 @@ updateAppearance() {
                 document.body.style.background = '#000';
 
                 if (this.rainbowInterval) clearInterval(this.rainbowInterval);
-                this.rainbowInterval = setInterval(() => {
-                    document.body.classList.add('rainbow-flash');
-                    setTimeout(() => {
-                        document.body.classList.remove('rainbow-flash');
-                        document.body.style.background = '#000';
-                    }, 1600);
-                }, 4600);
+                // [удалено] радужный setInterval эффект при черном фоне
             } else {
                 if (this.rainbowInterval) {
                     clearInterval(this.rainbowInterval);
@@ -1912,6 +1884,7 @@ updateAppearance() {
                     }
                     this.state.scale = Math.min(this.state.scale + CONFIG.SCALE_INCREMENT, CONFIG.MAX_SCALE);
                     this.ui.updateCharacterScale(this.state.scale);
+                    // [удалено] эффект клика
                     if (this.resetTimeout) clearTimeout(this.resetTimeout);
                     this.resetTimeout = setTimeout(() => {
                         if (this.state.scale !== CONFIG.MIN_SCALE) {
