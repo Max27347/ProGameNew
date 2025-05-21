@@ -1248,7 +1248,7 @@
                         <span>Quests</span>
                     </div>
                     <div class="menu-item" data-menu="games">
-                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Games" draggable="false" />
+                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Friends" draggable="false" />
                         <span>Games</span>
                     </div>
                 </div>
@@ -3353,43 +3353,6 @@ updateAppearance() {
   document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
   document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
 </script>
-
-
-<script>
-  document.querySelectorAll(".menu-item").forEach(item => {
-    item.addEventListener("click", () => {
-      const menu = item.getAttribute("data-menu");
-      document.querySelectorAll(".leaderboard-container").forEach(container => {
-        container.classList.add("hidden");
-        container.classList.remove("visible");
-      });
-      const active = document.getElementById(menu + "Container");
-      if (active) {
-        active.classList.remove("hidden");
-        active.classList.add("visible");
-      }
-    });
-  });
-</script>
-
-
-<div class="leaderboard-container hidden" id="gamesContainer">
-  <div class="leaderboard-title">Minigames</div>
-  <div class="games-gallery" style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding: 2rem;">
-    <div class="game-card" style="text-align: center;">
-      <img src="https://via.placeholder.com/150x150?text=Копи+Монеты" alt="Копи Монеты" style="border-radius: 12px; width: 150px; height: 150px;">
-      <div style="color: white; margin-top: 0.5rem;">Копи монеты</div>
-    </div>
-    <div class="game-card" style="text-align: center;">
-      <img src="https://via.placeholder.com/150x150?text=Торт" alt="Торт" style="border-radius: 12px; width: 150px; height: 150px;">
-      <div style="color: white; margin-top: 0.5rem;">Торт</div>
-    </div>
-    <div class="game-card" style="text-align: center;">
-      <img src="https://via.placeholder.com/150x150?text=Монетка" alt="Монетка" style="border-radius: 12px; width: 150px; height: 150px;">
-      <div style="color: white; margin-top: 0.5rem;">Монетка</div>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
