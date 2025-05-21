@@ -1228,7 +1228,35 @@
         <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
         <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
 
-        <footer class="game-hidden" id="footer">
+
+<div class="leaderboard-container hidden" id="gamesContainer">
+  <div class="leaderboard-title">Minigames</div>
+  <div class="cases-container">
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
+      <div class="case-name">Click Challenge</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Click Challenge starting!')">Play</button>
+      </div>
+    </div>
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
+      <div class="case-name">Memory Match</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Memory Match starting!')">Play</button>
+      </div>
+    </div>
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Score Rush" class="case-image" draggable="false" />
+      <div class="case-name">Score Rush</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Score Rush starting!')">Play</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="game-hidden" id="footer">
             <div class="footer-menu-container">
                 <div class="footer-menu">
                     <div class="menu-item highlighted" data-menu="home">
@@ -3373,20 +3401,11 @@ updateAppearance() {
 </script>
 
 
-<div class="leaderboard-container hidden" id="gamesContainer">
-  <div class="leaderboard-title">Minigames</div>
-  <div class="games-gallery" style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding: 2rem;">
-    <div class="game-card" style="text-align: center;">
-      <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Копи Монеты" style="border-radius: 12px; width: 150px; height: 150px;">
-      <div style="color: white; margin-top: 0.5rem;">Копи монеты</div>
+
+  </div>
     </div>
     <div class="game-card" style="text-align: center;">
-      <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Торт" style="border-radius: 12px; width: 150px; height: 150px;">
-      <div style="color: white; margin-top: 0.5rem;">Торт</div>
-    </div>
-    <div class="game-card" style="text-align: center;">
-      <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Монетка" style="border-radius: 12px; width: 150px; height: 150px;">
-      <div style="color: white; margin-top: 0.5rem;">Монетка</div>
+      <div style="color: white; margin-top: 0.5rem;"></div>
     </div>
   </div>
 </div>
