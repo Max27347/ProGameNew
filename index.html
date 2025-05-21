@@ -1083,7 +1083,32 @@
             }
 
         </style>
-    </head>
+
+<style>
+  .quests-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.5rem;
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+    display: none;
+  }
+
+  .quests-arrow.left {
+    left: 1rem;
+  }
+
+  .quests-arrow.right {
+    right: 1rem;
+  }
+</style>
+
+</head>
     <body>
         <div class="loading-screen" id="loadingScreen">
             <div class="loading-ring"></div>
@@ -1222,9 +1247,9 @@
                         <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false" />
                         <span>Quests</span>
                     </div>
-                    <div class="menu-item" data-menu="friends">
+                    <div class="menu-item" data-menu="games">
                         <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Friends" draggable="false" />
-                        <span>Friends</span>
+                        <span>Games</span>
                     </div>
                 </div>
             </div>
@@ -3276,5 +3301,58 @@ updateAppearance() {
                 }
             });
         </script>
-    </body>
+
+<div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
+<div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
+
+
+<script>
+  const newQuestsArrowLeft = document.getElementById('newQuestsArrowLeft');
+  const newQuestsArrowRight = document.getElementById('newQuestsArrowRight');
+
+  document.querySelectorAll(".menu-item").forEach(item => {
+    item.addEventListener("click", () => {
+      const menu = item.getAttribute("data-menu");
+      const isQuests = menu === "quests";
+
+      if (newQuestsArrowLeft && newQuestsArrowRight) {
+        newQuestsArrowLeft.style.display = isQuests ? "block" : "none";
+        newQuestsArrowRight.style.display = isQuests ? "block" : "none";
+      }
+    });
+  });
+</script>
+
+
+<script>
+  let showingFriends = false;
+
+  function toggleQuestsAndFriends() {
+    const quests = document.getElementById("questsContainer");
+    const friends = document.getElementById("friendsContainer");
+
+    if (!quests || !friends) return;
+
+    if (showingFriends) {
+      // показать квесты
+      quests.classList.remove("hidden");
+      quests.classList.add("visible");
+      friends.classList.add("hidden");
+      friends.classList.remove("visible");
+    } else {
+      // показать друзей
+      friends.classList.remove("hidden");
+      friends.classList.add("visible");
+      quests.classList.add("hidden");
+      quests.classList.remove("visible");
+    }
+
+    showingFriends = !showingFriends;
+  }
+
+  document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
+  document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
+</script>
+
+</body>
 </html>
