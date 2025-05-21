@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<meta content="Notcoin-inspired clicker game" name="description"/>
-<title>Clicker Game</title>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-<style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta name="description" content="Notcoin-inspired clicker game" />
+        <title>Clicker Game</title>
+        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+        <style>
             * {
                 margin: 0;
                 padding: 0;
@@ -1084,215 +1083,199 @@
             }
 
         </style>
-<style>
-  .quests-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    color: white;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 0.5rem;
-    border-radius: 50%;
-    z-index: 10;
-    cursor: pointer;
-    display: none;
-  }
+    </head>
+    <body>
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-ring"></div>
+            <span class="loading-percent" id="loadingPercent">0%</span>
+        </div>
+        <header class="top-menu game-hidden" id="topMenu">
+            <div class="top-menu-left">
+                <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false" />
+                <div class="player-info">
+                    <span class="player-nickname">Player123</span>
+                    <span class="player-max-coins">
+                        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" />
+                        <span id="totalCoins">8000</span>
+                    </span>
+                </div>
+            </div>
+            <div class="top-menu-right">
+                <span class="player-rank">Rank: 1</span>
+                <span class="player-stats">World of Consoles</span>
+                <div class="wallet-container">
+                    <button id="disconnect-wallet">Disconnect Wallet</button>
+                </div>
+            </div>
+        </header>
+        <canvas id="particleCanvas" class="game-hidden"></canvas>
+        <canvas id="confettiCanvas" class="game-hidden"></canvas>
+        <main class="game-hidden" id="mainContent">
+            <div class="income-counter" id="incomeCounter">
+                <span id="incomeRate">0</span> Diamonds/h
+                <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" draggable="false" />
+            </div>
+            <div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
 
-  .quests-arrow.left {
-    left: 1rem;
-  }
+            <div class="coin-counter visible" id="coinCounter">
+                <div class="coin-line">
+                    <span id="coinCount">8000</span>
+                    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false" />
 
-  .quests-arrow.right {
-    right: 1rem;
-  }
-</style>
-</head>
-<body>
-<div class="loading-screen" id="loadingScreen">
-<div class="loading-ring"></div>
-<span class="loading-percent" id="loadingPercent">0%</span>
-</div>
-<header class="top-menu game-hidden" id="topMenu">
-<div class="top-menu-left">
-<img alt="Player Avatar" class="player-avatar" draggable="false" src="https://placehold.co/40x40"/>
-<div class="player-info">
-<span class="player-nickname">Player123</span>
-<span class="player-max-coins">
-<img alt="Gem Stone" class="gem-icon" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<span id="totalCoins">8000</span>
-</span>
-</div>
-</div>
-<div class="top-menu-right">
-<span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
-<div class="wallet-container">
-<button id="disconnect-wallet">Disconnect Wallet</button>
-</div>
-</div>
-</header>
-<canvas class="game-hidden" id="particleCanvas"></canvas>
-<canvas class="game-hidden" id="confettiCanvas"></canvas>
-<main class="game-hidden" id="mainContent">
-<div class="income-counter" id="incomeCounter">
-<span id="incomeRate">0</span> Diamonds/h
-                <img alt="Gem Stone" class="gem-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-</div>
-<div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
-<div class="coin-counter visible" id="coinCounter">
-<div class="coin-line">
-<span id="coinCount">8000</span>
-<img alt="Gem Stone" class="coin-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="donation-line" id="starDonation" style="cursor: pointer;">
-<span id="starCount">0</span>
-<img alt="Star" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" style="width: 24px; height: 24px; vertical-align: middle;"/>
-</div>
-</div>
-</div>
-<div class="character-container">
-<img alt="Controller" class="character" draggable="false" id="character" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-</div>
-</main>
-<div class="shop-container hidden" id="shopContainer">
-<div class="shop-title">Cases</div>
-<div class="cases-container">
-<div class="case-container" data-case="diamond-rain">
-<img alt="Diamond Rain" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp"/>
-<div class="case-name">Diamond Rain</div>
-<div class="case-price">100 Diamonds</div>
-</div>
-<div class="case-container" data-case="character-magic">
-<img alt="Character Magic" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp"/>
-<div class="case-name">Character Magic</div>
-<div class="case-price">Free (Test)</div>
-</div>
-<div class="cases-container">
-<div class="case-container" data-case="telegram-gift">
-<img alt="Telegram Gift" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Exclusive</div>
-<div class="case-price">Free</div>
-</div>
-<div class="case-container" data-case="telegram-gift-2">
-<img alt="Telegram Gift 2" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Telegram Gift</div>
-<div class="case-price">Free</div>
-</div>
-<!-- Остальные кейсы остаются без изменений -->
-</div>
-</div>
-</div>
-<div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-title">Inventory</div>
-<div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
-</div>
-<div class="market-container hidden" id="marketContainer">
-<div class="market-title">Market</div>
-<div id="ton-connect"></div>
-<div class="filters-container">
-<select class="filter-select" id="characterFilter">
-<option value="">All Characters</option>
-</select>
-<select class="filter-select" id="backgroundFilter">
-<option value="">All Backgrounds</option>
-</select>
-<select class="sort-select" id="priceSort">
-<option value="newest">Newest First</option>
-<option value="price-desc">Price: High to Low</option>
-<option value="price-asc">Price: Low to High</option>
-</select>
-</div>
-<div class="market-items-container" id="marketItems"></div>
-</div>
-<div class="leaderboard-container hidden" id="leaderboardContainer">
-<div class="leaderboard-title">Leaderboard</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<table class="leaderboard-table" id="leaderboardTable">
-<thead>
-<tr>
-<th>Rank</th>
-<th>Player</th>
-<th>Diamonds</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-<div class="shop-arrow left hidden" id="shopArrowLeft">&lt;</div>
-<div class="shop-arrow right hidden" id="shopArrowRight">&gt;</div>
-<div class="inventory-arrow left hidden" id="inventoryArrowLeft">&lt;</div>
-<div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
-<footer class="game-hidden" id="footer">
-<div class="footer-menu-container">
-<div class="footer-menu">
-<div class="menu-item highlighted" data-menu="home">
-<img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp"/>
-<span>Home</span>
-</div>
-<div class="menu-item" data-menu="shop">
-<img alt="Shop" draggable="false" src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp"/>
-<span>Shop</span>
-</div>
-<div class="menu-item" data-menu="market">
-<img alt="Market" draggable="false" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<span>Market</span>
-</div>
-<div class="menu-item" data-menu="quests">
-<img alt="Quests" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<span>Quests</span>
-</div>
-<div class="menu-item" data-menu="games">
-<img alt="Games" draggable="false" src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp"/>
-<span>Games</span>
-</div>
-</div>
-</div>
-</footer>
-<div class="leaderboard-container hidden" id="questsContainer">
-<div class="leaderboard-title">Quests</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" style="color: #4fc3f7;" target="_blank">Telegram</a></div>
-<div class="case-price">
-<button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Click the controller 50 times</div>
-<div class="case-price">
-<button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<div class="case-name">Earn 100 Stars</div>
-<div class="case-price">
-<button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Reach Top 10 in Leaderboard</div>
-<div class="case-price">
-<button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="case-name">Earn 3000 Diamonds</div>
-<div class="case-price">
-<button class="claim-button">Claim 100 <img alt="Gem" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px; vertical-align: middle;"/></button>
-</div>
-</div>
-</div>
-</div>
-<div class="leaderboard-container hidden" id="friendsContainer">
-<div class="leaderboard-title">Friends</div>
-<div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
-<button onclick="
+                    <div class="donation-line" id="starDonation" style="cursor: pointer;">
+                        <span id="starCount">0</span>
+                        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Star" style="width: 24px; height: 24px; vertical-align: middle;" />
+                    </div>
+                </div>
+            </div>
+            <div class="character-container">
+                <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller" class="character" id="character" draggable="false" />
+            </div>
+        </main>
+        <div class="shop-container hidden" id="shopContainer">
+            <div class="shop-title">Cases</div>
+            <div class="cases-container">
+                <div class="case-container" data-case="diamond-rain">
+                    <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false" />
+                    <div class="case-name">Diamond Rain</div>
+                    <div class="case-price">100 Diamonds</div>
+                </div>
+                <div class="case-container" data-case="character-magic">
+                    <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false" />
+                    <div class="case-name">Character Magic</div>
+                    <div class="case-price">Free (Test)</div>
+                </div>
+                <div class="cases-container">
+                    <div class="case-container" data-case="telegram-gift">
+                        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift" class="case-image" draggable="false" />
+                        <div class="case-name">Exclusive</div>
+                        <div class="case-price">Free</div>
+                    </div>
+                    <div class="case-container" data-case="telegram-gift-2">
+                        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift 2" class="case-image" draggable="false" />
+                        <div class="case-name">Telegram Gift</div>
+                        <div class="case-price">Free</div>
+                    </div>
+
+                    <!-- Остальные кейсы остаются без изменений -->
+                </div>
+            </div>
+        </div>
+        <div class="inventory-container hidden" id="inventoryContainer">
+            <div class="inventory-title">Inventory</div>
+            <div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
+        </div>
+        <div class="market-container hidden" id="marketContainer">
+            <div class="market-title">Market</div>
+            <div id="ton-connect"></div>
+            <div class="filters-container">
+                <select class="filter-select" id="characterFilter">
+                    <option value="">All Characters</option>
+                </select>
+                <select class="filter-select" id="backgroundFilter">
+                    <option value="">All Backgrounds</option>
+                </select>
+                <select class="sort-select" id="priceSort">
+                    <option value="newest">Newest First</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="price-asc">Price: Low to High</option>
+                </select>
+            </div>
+            <div class="market-items-container" id="marketItems"></div>
+        </div>
+        <div class="leaderboard-container hidden" id="leaderboardContainer">
+            <div class="leaderboard-title">Leaderboard</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <table class="leaderboard-table" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Diamonds</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
+        <div class="shop-arrow right hidden" id="shopArrowRight">></div>
+        <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
+        <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+
+        <footer class="game-hidden" id="footer">
+            <div class="footer-menu-container">
+                <div class="footer-menu">
+                    <div class="menu-item highlighted" data-menu="home">
+                        <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false" />
+                        <span>Home</span>
+                    </div>
+                    <div class="menu-item" data-menu="shop">
+                        <img src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" alt="Shop" draggable="false" />
+                        <span>Shop</span>
+                    </div>
+                    <div class="menu-item" data-menu="market">
+                        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Market" draggable="false" />
+                        <span>Market</span>
+                    </div>
+                    <div class="menu-item" data-menu="quests">
+                        <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false" />
+                        <span>Quests</span>
+                    </div>
+                    <div class="menu-item" data-menu="friends">
+                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Friends" draggable="false" />
+                        <span>Friends</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="leaderboard-container hidden" id="questsContainer">
+            <div class="leaderboard-title">Quests</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image" />
+                    <div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" target="_blank" style="color: #4fc3f7;">Telegram</a></div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image" />
+                    <div class="case-name">Click the controller 50 times</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" class="case-image" />
+                    <div class="case-name">Earn 100 Stars</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" class="case-image" />
+                    <div class="case-name">Reach Top 10 in Leaderboard</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image" />
+                    <div class="case-name">Earn 3000 Diamonds</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle;" /></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard-container hidden" id="friendsContainer">
+            <div class="leaderboard-title">Friends</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
+                <button
+                    onclick="
     navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
     const copiedMessage = document.createElement('div');
     copiedMessage.textContent = 'Ссылка скопирована';
@@ -1305,35 +1288,18 @@
     copiedMessage.style.padding = '1rem';
     copiedMessage.style.borderRadius = '12px';
     document.body.appendChild(copiedMessage);
-    setTimeout(() =&gt; copiedMessage.remove(), 1500);
-    " style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;">
+    setTimeout(() => copiedMessage.remove(), 1500);
+    "
+                    style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;"
+                >
                     Copy Invite Link
                 </button>
-<div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;"/></div>
-<div>No friends yet</div>
-</div>
-</div>
-<div class="leaderboard-container hidden" id="gamesContainer">
-<div class="leaderboard-title">Minigames</div>
-<div class="leaderboard-table-container" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/game-die_1f3b2.webp"/>
-<div class="case-name">Dice Roll</div>
-<div class="case-price">Coming Soon</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/slot-machine_1f3b0.webp"/>
-<div class="case-name">Slot Machine</div>
-<div class="case-price">Coming Soon</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/puzzle-piece_1f9e9.webp"/>
-<div class="case-name">Puzzle Match</div>
-<div class="case-price">Coming Soon</div>
-</div>
-</div>
-</div>
-<script>
+                <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;" /></div>
+                <div>No friends yet</div>
+            </div>
+        </div>
+
+        <script>
             const CONFIG = { PARTICLE_COUNT: 50, CLICK_EFFECT_DURATION: 1000, RESIZE_DEBOUNCE: 200, CONFETTI_COUNT: 30, MAX_SCALE: 1.4, MIN_SCALE: 1, SCALE_INCREMENT: 0.1, INCOME_INTERVAL: 3600000 };
             const SKINS = [
                 { src: "https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp", gradient: "radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)", color: "#FFFFFF", worldName: "World of Consoles" },
@@ -2150,18 +2116,18 @@ updateAppearance() {
                         itemDiv.addEventListener("pointerdown", (e) => {
                             if (e.target !== upgradeButton && !e.target.closest(".upgrade-button")) {
                                 this.state.setSelectedCharacter(item);
-                                if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                                if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                                if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("hidden"); } } }
-                                if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("visible"); } } }
-                                if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                                if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                                if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                                if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
-                                if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("hidden"); } } }
-                                if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("visible"); } } }
-                                if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("hidden"); } } }
-                                if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("visible"); } } }
+                                this.ui.elements.inventoryContainer.classList.remove("visible");
+                                this.ui.elements.inventoryContainer.classList.add("hidden");
+                                this.ui.elements.shopContainer.classList.remove("hidden");
+                                this.ui.elements.shopContainer.classList.add("visible");
+                                this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                                this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                                this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                                this.ui.elements.inventoryArrowRight.classList.add("hidden");
+                                this.ui.elements.shopArrowLeft.classList.remove("hidden");
+                                this.ui.elements.shopArrowLeft.classList.add("visible");
+                                this.ui.elements.shopArrowRight.classList.remove("hidden");
+                                this.ui.elements.shopArrowRight.classList.add("visible");
                                 this.isInventoryView = false;
                                 this.characterController.updateAppearance();
                             }
@@ -2557,28 +2523,28 @@ updateAppearance() {
                         this.state.setShopViewActive(false);
                         this.state.setMarketViewActive(false);
                         this.state.setLeaderboardViewActive(false);
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("hidden-opacity"); } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("visible"); } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.remove("hidden"); } } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.add("visible"); } } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("hidden-opacity"); } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("visible"); } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.mainContent.classList.remove("hidden-opacity");
+                        this.ui.elements.mainContent.classList.add("visible");
+                        this.ui.elements.coinCounter.classList.remove("hidden");
+                        this.ui.elements.coinCounter.classList.add("visible");
+                        this.ui.elements.character.classList.remove("hidden-opacity");
+                        this.ui.elements.character.classList.add("visible");
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("visible");
+                        this.ui.elements.marketContainer.classList.add("hidden");
+                        this.ui.elements.leaderboardContainer.classList.remove("visible");
+                        this.ui.elements.leaderboardContainer.classList.add("hidden");
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
                         this.isInventoryView = false;
                         this.ui.toggleConnectButton(false);
                         this.state.canInteract = true;
@@ -2586,28 +2552,28 @@ updateAppearance() {
                         this.state.setShopViewActive(true);
                         this.state.setMarketViewActive(false);
                         this.state.setLeaderboardViewActive(false);
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.remove("hidden"); } } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.add("visible"); } } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("hidden"); } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("visible"); } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("hidden"); } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("visible"); } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("hidden"); } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("visible"); } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.mainContent.classList.remove("visible");
+                        this.ui.elements.mainContent.classList.add("hidden-opacity");
+                        this.ui.elements.coinCounter.classList.remove("hidden");
+                        this.ui.elements.coinCounter.classList.add("visible");
+                        this.ui.elements.character.classList.remove("visible");
+                        this.ui.elements.character.classList.add("hidden-opacity");
+                        this.ui.elements.shopContainer.classList.remove("hidden");
+                        this.ui.elements.shopContainer.classList.add("visible");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("visible");
+                        this.ui.elements.marketContainer.classList.add("hidden");
+                        this.ui.elements.leaderboardContainer.classList.remove("visible");
+                        this.ui.elements.leaderboardContainer.classList.add("hidden");
+                        this.ui.elements.shopArrowLeft.classList.remove("hidden");
+                        this.ui.elements.shopArrowLeft.classList.add("visible");
+                        this.ui.elements.shopArrowRight.classList.remove("hidden");
+                        this.ui.elements.shopArrowRight.classList.add("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
                         this.isInventoryView = false;
                         this.ui.toggleConnectButton(false);
                         this.state.canInteract = false;
@@ -2615,28 +2581,28 @@ updateAppearance() {
                         this.state.setShopViewActive(false);
                         this.state.setMarketViewActive(true);
                         this.state.setLeaderboardViewActive(false);
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.remove("hidden"); } } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.add("visible"); } } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("hidden"); }
-                        if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("visible"); }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.mainContent.classList.remove("visible");
+                        this.ui.elements.mainContent.classList.add("hidden-opacity");
+                        this.ui.elements.coinCounter.classList.remove("hidden");
+                        this.ui.elements.coinCounter.classList.add("visible");
+                        this.ui.elements.character.classList.remove("visible");
+                        this.ui.elements.character.classList.add("hidden-opacity");
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("hidden");
+                        this.ui.elements.marketContainer.classList.add("visible");
+                        this.ui.elements.leaderboardContainer.classList.remove("visible");
+                        this.ui.elements.leaderboardContainer.classList.add("hidden");
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
                         this.isInventoryView = false;
                         this.ui.toggleConnectButton(!this.state.isWalletConnected());
                         this.state.canInteract = false;
@@ -2645,32 +2611,32 @@ updateAppearance() {
                         this.state.setShopViewActive(false);
                         this.state.setMarketViewActive(false);
                         this.state.setLeaderboardViewActive(false);
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.remove("hidden"); } } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.add("visible"); } } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.questsContainer) { this.ui.elements.questsContainer.classList.remove("hidden"); }
-                        if (this.ui.elements.questsContainer) { this.ui.elements.questsContainer.classList.add("visible"); }
-                        if (this.ui.elements.friendsContainer) { this.ui.elements.friendsContainer.classList.remove("visible"); }
-                        if (this.ui.elements.friendsContainer) { this.ui.elements.friendsContainer.classList.add("hidden"); }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.mainContent.classList.remove("visible");
+                        this.ui.elements.mainContent.classList.add("hidden-opacity");
+                        this.ui.elements.coinCounter.classList.remove("hidden");
+                        this.ui.elements.coinCounter.classList.add("visible");
+                        this.ui.elements.character.classList.remove("visible");
+                        this.ui.elements.character.classList.add("hidden-opacity");
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("visible");
+                        this.ui.elements.marketContainer.classList.add("hidden");
+                        this.ui.elements.leaderboardContainer.classList.remove("visible");
+                        this.ui.elements.leaderboardContainer.classList.add("hidden");
+                        this.ui.elements.questsContainer.classList.remove("hidden");
+                        this.ui.elements.questsContainer.classList.add("visible");
+                        this.ui.elements.friendsContainer.classList.remove("visible");
+                        this.ui.elements.friendsContainer.classList.add("hidden");
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
                         this.isInventoryView = false;
                         this.ui.toggleConnectButton(false);
                         this.state.canInteract = false;
@@ -2678,32 +2644,32 @@ updateAppearance() {
                         this.state.setShopViewActive(false);
                         this.state.setMarketViewActive(false);
                         this.state.setLeaderboardViewActive(false);
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.remove("hidden"); } } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.add("visible"); } } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.questsContainer) { this.ui.elements.questsContainer.classList.remove("visible"); }
-                        if (this.ui.elements.questsContainer) { this.ui.elements.questsContainer.classList.add("hidden"); }
-                        if (this.ui.elements.friendsContainer) { this.ui.elements.friendsContainer.classList.remove("hidden"); }
-                        if (this.ui.elements.friendsContainer) { this.ui.elements.friendsContainer.classList.add("visible"); }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.mainContent.classList.remove("visible");
+                        this.ui.elements.mainContent.classList.add("hidden-opacity");
+                        this.ui.elements.coinCounter.classList.remove("hidden");
+                        this.ui.elements.coinCounter.classList.add("visible");
+                        this.ui.elements.character.classList.remove("visible");
+                        this.ui.elements.character.classList.add("hidden-opacity");
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("visible");
+                        this.ui.elements.marketContainer.classList.add("hidden");
+                        this.ui.elements.leaderboardContainer.classList.remove("visible");
+                        this.ui.elements.leaderboardContainer.classList.add("hidden");
+                        this.ui.elements.questsContainer.classList.remove("visible");
+                        this.ui.elements.questsContainer.classList.add("hidden");
+                        this.ui.elements.friendsContainer.classList.remove("hidden");
+                        this.ui.elements.friendsContainer.classList.add("visible");
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
                         this.isInventoryView = false;
                         this.ui.toggleConnectButton(false);
                         this.state.canInteract = false;
@@ -2719,33 +2685,33 @@ updateAppearance() {
                 handleArrowClick(e) {
                     const arrow = e.target;
                     if (arrow.id === "shopArrowLeft" || arrow.id === "shopArrowRight") {
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("hidden"); }
-                        if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("visible"); }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("hidden"); }
-                        if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("visible"); }
-                        if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("hidden"); }
-                        if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("visible"); }
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("hidden");
+                        this.ui.elements.inventoryContainer.classList.add("visible");
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.add("visible");
+                        this.ui.elements.inventoryArrowRight.classList.remove("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.add("visible");
                         this.isInventoryView = true;
                         this.updateInventoryDisplay();
                     } else if (arrow.id === "inventoryArrowLeft" || arrow.id === "inventoryArrowRight") {
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("hidden"); } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("visible"); } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("hidden"); } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("visible"); } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("hidden"); } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("visible"); } } }
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.shopContainer.classList.remove("hidden");
+                        this.ui.elements.shopContainer.classList.add("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
+                        this.ui.elements.shopArrowLeft.classList.remove("hidden");
+                        this.ui.elements.shopArrowLeft.classList.add("visible");
+                        this.ui.elements.shopArrowRight.classList.remove("hidden");
+                        this.ui.elements.shopArrowRight.classList.add("visible");
                         this.isInventoryView = false;
                     }
                 }
@@ -2760,32 +2726,32 @@ updateAppearance() {
                         this.state.setMarketViewActive(false);
 
                         // Восстанавливаем содержимое главной страницы
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("hidden-opacity"); } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("visible"); } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.remove("hidden"); } } } } } }
-                        if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { if (this.ui.elements.coinCounter) { this.ui.elements.coinCounter.classList.add("visible"); } } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("hidden-opacity"); } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("visible"); } }
+                        this.ui.elements.mainContent.classList.remove("hidden-opacity");
+                        this.ui.elements.mainContent.classList.add("visible");
+                        this.ui.elements.coinCounter.classList.remove("hidden");
+                        this.ui.elements.coinCounter.classList.add("visible");
+                        this.ui.elements.character.classList.remove("hidden-opacity");
+                        this.ui.elements.character.classList.add("visible");
 
                         // Скрываем все остальные контейнеры
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("hidden"); } } } } } }
+                        this.ui.elements.leaderboardContainer.classList.remove("visible");
+                        this.ui.elements.leaderboardContainer.classList.add("hidden");
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("visible");
+                        this.ui.elements.marketContainer.classList.add("hidden");
 
                         // Скрываем стрелки навигации
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
 
                         // Сбрасываем состояние инвентаря и включаем взаимодействие
                         this.isInventoryView = false;
@@ -2803,26 +2769,26 @@ updateAppearance() {
                         this.state.setShopViewActive(false);
                         this.state.setMarketViewActive(false);
                         this.state.setLeaderboardViewActive(true);
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { if (this.ui.elements.mainContent) { this.ui.elements.mainContent.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.remove("visible"); } } } } }
-                        if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { if (this.ui.elements.character) { this.ui.elements.character.classList.add("hidden-opacity"); } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { if (this.ui.elements.shopContainer) { this.ui.elements.shopContainer.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { if (this.ui.elements.inventoryContainer) { this.ui.elements.inventoryContainer.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.remove("visible"); } } } } } }
-                        if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { if (this.ui.elements.marketContainer) { this.ui.elements.marketContainer.classList.add("hidden"); } } } } } }
-                        if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.remove("hidden"); }
-                        if (this.ui.elements.leaderboardContainer) { this.ui.elements.leaderboardContainer.classList.add("visible"); }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { if (this.ui.elements.shopArrowLeft) { this.ui.elements.shopArrowLeft.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.remove("visible"); } } } } } } }
-                        if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { if (this.ui.elements.shopArrowRight) { this.ui.elements.shopArrowRight.classList.add("hidden"); } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { if (this.ui.elements.inventoryArrowLeft) { this.ui.elements.inventoryArrowLeft.classList.add("hidden"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.remove("visible"); } } } } } } } } }
-                        if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { if (this.ui.elements.inventoryArrowRight) { this.ui.elements.inventoryArrowRight.classList.add("hidden"); } } } } } } } } }
+                        this.ui.elements.mainContent.classList.remove("visible");
+                        this.ui.elements.mainContent.classList.add("hidden-opacity");
+                        this.ui.elements.character.classList.remove("visible");
+                        this.ui.elements.character.classList.add("hidden-opacity");
+                        this.ui.elements.shopContainer.classList.remove("visible");
+                        this.ui.elements.shopContainer.classList.add("hidden");
+                        this.ui.elements.inventoryContainer.classList.remove("visible");
+                        this.ui.elements.inventoryContainer.classList.add("hidden");
+                        this.ui.elements.marketContainer.classList.remove("visible");
+                        this.ui.elements.marketContainer.classList.add("hidden");
+                        this.ui.elements.leaderboardContainer.classList.remove("hidden");
+                        this.ui.elements.leaderboardContainer.classList.add("visible");
+                        this.ui.elements.shopArrowLeft.classList.remove("visible");
+                        this.ui.elements.shopArrowLeft.classList.add("hidden");
+                        this.ui.elements.shopArrowRight.classList.remove("visible");
+                        this.ui.elements.shopArrowRight.classList.add("hidden");
+                        this.ui.elements.inventoryArrowLeft.classList.remove("visible");
+                        this.ui.elements.inventoryArrowLeft.classList.add("hidden");
+                        this.ui.elements.inventoryArrowRight.classList.remove("visible");
+                        this.ui.elements.inventoryArrowRight.classList.add("hidden");
                         this.isInventoryView = false;
                         this.ui.toggleConnectButton(false);
                         this.state.canInteract = false;
@@ -2935,7 +2901,8 @@ updateAppearance() {
                 window.addEventListener("beforeunload", () => game.destroy());
             });
         </script>
-<script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
                 const sections = {
@@ -2990,7 +2957,8 @@ updateAppearance() {
                 });
             });
         </script>
-<script>
+
+        <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
             const incomeTimer = document.getElementById("incomeTimer");
@@ -3039,27 +3007,31 @@ updateAppearance() {
                 });
             });
         </script>
-<div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
-<div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
-<h2 style="margin-bottom: 1rem;">Support the Game</h2>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
-<div style="margin-top: 1rem;">
-<button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
-</div>
-</div>
-</div>
-<script>
+
+        <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
+                <h2 style="margin-bottom: 1rem;">Support the Game</h2>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
+                <div style="margin-top: 1rem;">
+                    <button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
         </script>
-<!-- Reward Animation Container -->
-<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
-<div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
-</div>
-<script>
+
+        <!-- Reward Animation Container -->
+        <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
+            <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
+        </div>
+
+        <script>
             function showRewardAnimation(animationPath) {
                 const container = document.getElementById("rewardAnimationContainer");
                 const animEl = document.getElementById("rewardAnimation");
@@ -3079,7 +3051,8 @@ updateAppearance() {
                 showRewardAnimation(randomPath);
             }
         </script>
-<script>
+
+        <script>
             let walletConnected = false;
 
             function toggleWallet() {
@@ -3103,12 +3076,14 @@ updateAppearance() {
                 console.log("Wallet disconnected");
             }
         </script>
-<script>
+
+        <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
         </script>
-<script>
+
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3122,7 +3097,8 @@ updateAppearance() {
                 }
             }
         </script>
-<script>
+
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3140,7 +3116,8 @@ updateAppearance() {
                 alert("x4 boost feature coming soon!");
             }
         </script>
-<script>
+
+        <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
                 openCasesCount++;
@@ -3169,7 +3146,7 @@ updateAppearance() {
             }
         </script>
 
-<script>
+        <script>
             let clicks = 0;
             let telegramVisited = false;
             let stars = 0;
@@ -3231,7 +3208,8 @@ updateAppearance() {
                 setTimeout(() => msg.remove(), 1500);
             }
         </script>
-<script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
                 let telegramVisited = false;
@@ -3298,100 +3276,5 @@ updateAppearance() {
                 }
             });
         </script>
-<div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
-<div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
-<script>
-  const newQuestsArrowLeft = document.getElementById('newQuestsArrowLeft');
-  const newQuestsArrowRight = document.getElementById('newQuestsArrowRight');
-
-  document.querySelectorAll(".menu-item").forEach(item => {
-    item.addEventListener("click", () => {
-      const menu = item.getAttribute("data-menu");
-      const isQuests = menu === "quests";
-
-      if (newQuestsArrowLeft && newQuestsArrowRight) {
-        newQuestsArrowLeft.style.display = isQuests ? "block" : "none";
-        newQuestsArrowRight.style.display = isQuests ? "block" : "none";
-      }
-    });
-  });
-</script>
-<script>
-  let showingFriends = false;
-
-  function toggleQuestsAndFriends() {
-    const quests = document.getElementById("questsContainer");
-    const friends = document.getElementById("friendsContainer");
-
-    if (!quests || !friends) return;
-
-    if (showingFriends) {
-      // показать квесты
-      quests.classList.remove("hidden");
-      quests.classList.add("visible");
-      friends.classList.add("hidden");
-      friends.classList.remove("visible");
-    } else {
-      // показать друзей
-      friends.classList.remove("hidden");
-      friends.classList.add("visible");
-      quests.classList.add("hidden");
-      quests.classList.remove("visible");
-    }
-
-    showingFriends = !showingFriends;
-  }
-
-  document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
-  document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
-</script>
-
-
-<script>
-function toggleView(visibleContainer) {
-    const containers = [
-        'shopContainer',
-        'marketContainer',
-        'questsContainer',
-        'leaderboardContainer',
-        'friendsContainer',
-        'gamesContainer',
-        'inventoryContainer'
-    ];
-    containers.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-    });
-
-    if (visibleContainer) visibleContainer.classList.remove('hidden');
-}
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const menuType = item.dataset.menu;
-        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('highlighted'));
-        item.classList.add('highlighted');
-
-        if (menuType === 'home') {
-            toggleView(null);
-            document.getElementById('mainContent')?.classList.remove('game-hidden');
-        } else {
-            document.getElementById('mainContent')?.classList.add('game-hidden');
-            const targetId = {
-                shop: 'shopContainer',
-                market: 'marketContainer',
-                quests: 'questsContainer',
-                leaderboard: 'leaderboardContainer',
-                friends: 'friendsContainer',
-                games: 'gamesContainer',
-                inventory: 'inventoryContainer'
-            }[menuType];
-            if (targetId) {
-                toggleView(document.getElementById(targetId));
-            }
-        }
-    });
-});
-</script>
-</body>
+    </body>
 </html>
