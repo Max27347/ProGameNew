@@ -1247,10 +1247,9 @@
                         <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false" />
                         <span>Quests</span>
                     </div>
-
-<div class="menu-item" data-menu="minigames">
-                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Minigames" draggable="false" />
-                        <span>Minigames</span>
+                    <div class="menu-item" data-menu="games">
+                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Games" draggable="false" />
+                        <span>Games</span>
                     </div>
                 </div>
             </div>
@@ -1297,37 +1296,32 @@
             </div>
         </div>
 
-
-<div class="leaderboard-container hidden" id="friendsContainer">
-    <div class="leaderboard-title">Friends</div>
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
-        <button
-            onclick="
-navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
-const copiedMessage = document.createElement('div');
-copiedMessage.textContent = 'Ссылка скопирована';
-copiedMessage.style.position = 'fixed';
-copiedMessage.style.top = '20%';
-copiedMessage.style.left = '50%';
-copiedMessage.style.transform = 'translate(-50%, -50%)';
-copiedMessage.style.backgroundColor = '#000';
-copiedMessage.style.color = '#fff';
-copiedMessage.style.padding = '1rem';
-copiedMessage.style.borderRadius = '12px';
-document.body.appendChild(copiedMessage);
-setTimeout(() => copiedMessage.remove(), 1500);
-"
-            style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;"
-        >
-            Copy Invite Link
-        </button>
-        <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;" /></div>
-        <div>No friends yet</div>
-
-
-</div>
-</div>
-
+        <div class="leaderboard-container hidden" id="friendsContainer">
+            <div class="leaderboard-title">Friends</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
+                <button
+                    onclick="
+    navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
+    const copiedMessage = document.createElement('div');
+    copiedMessage.textContent = 'Ссылка скопирована';
+    copiedMessage.style.position = 'fixed';
+    copiedMessage.style.top = '20%';
+    copiedMessage.style.left = '50%';
+    copiedMessage.style.transform = 'translate(-50%, -50%)';
+    copiedMessage.style.backgroundColor = '#000';
+    copiedMessage.style.color = '#fff';
+    copiedMessage.style.padding = '1rem';
+    copiedMessage.style.borderRadius = '12px';
+    document.body.appendChild(copiedMessage);
+    setTimeout(() => copiedMessage.remove(), 1500);
+    "
+                    style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;"
+                >
+                    Copy Invite Link
+                </button>
+                <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;" /></div>
+                <div>No friends yet</div>
+            </div>
         </div>
 
         <script>
@@ -3047,14 +3041,7 @@ updateAppearance() {
                 <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
                 <div style="margin-top: 1rem;">
                     <button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
-
-<div class="leaderboard-container hidden" id="minigamesContainer">
-    <div class="leaderboard-title">Minigames</div>
-    <div style="display: flex; justify-content: center; align-items: center; height: 200px; font-size: 1.2rem; color: #fff;">
-        Coming soon...
-    </div>
-</div>
-</div>
+                </div>
             </div>
         </div>
 
