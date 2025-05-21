@@ -3427,5 +3427,13 @@ updateAppearance() {
   }
 </script>
 
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button.claim-button[onclick*="openEarnCoins"]');
+    buttons.forEach(btn => btn.removeAttribute('disabled'));
+  });
+</script>
+
 </body>
 </html>
