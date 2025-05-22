@@ -3457,11 +3457,7 @@ updateAppearance() {
 </div>
 <script>
 function openEarnCoins() {
-  setInterval(() => {
-    if (coins.length === 0) {
-      spawnCoins(1);
-    }
-  }, 2000);
+
   const container = document.getElementById("earnCoinsGameContainer");
   const canvas = document.getElementById("earnCoinsGameCanvas");
   const ctx = canvas.getContext("2d");
@@ -3603,11 +3599,7 @@ document.addEventListener("touchmove", (e) => {
 });
 
 function openEarnCoins() {
-  setInterval(() => {
-    if (coins.length === 0) {
-      spawnCoins(1);
-    }
-  }, 2000);
+
   const container = document.getElementById("earnCoinsGameContainer");
   const canvas = document.getElementById("earnCoinsGameCanvas");
   const ctx = canvas.getContext("2d");
@@ -3706,9 +3698,7 @@ function openEarnCoins() {
       gameStarted = true;
       text.style.display = "none";
       scoreDisplay.style.display = "block";
-      setInterval(() => {
-        if (!gameOver) spawnCoins(1);
-      }, 500);
+      setInterval(() => { if (!gameOver) spawnCoins(1); }, 1000);
       spawnCoins(1);
       animate();
     }
