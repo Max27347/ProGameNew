@@ -3561,6 +3561,7 @@ function openEarnCoins() {
     }
     update() {
       this.y += this.speedY;
+    this.speedY += 0.01;
       this.rotation += this.rotationSpeed;
     }
     draw() {
@@ -3693,12 +3694,13 @@ function openEarnCoins() {
       this.x = x;
       this.y = y;
       this.size = 32;
-      this.speedY = Math.random() * 2 + 1.5;
+      this.speedY = Math.random() * 1 + 0.8;
       this.rotation = Math.random() * Math.PI * 2;
       this.rotationSpeed = (Math.random() - 0.5) * 0.1;
     }
     update() {
       this.y += this.speedY;
+    this.speedY += 0.01;
       this.rotation += this.rotationSpeed;
     }
     draw() {
