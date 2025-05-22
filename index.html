@@ -3644,16 +3644,18 @@ function openEarnCoins() {
       return this.y > canvas.height + this.size;
     }
 isCaught(catcherX) {
-  const catcherTop = canvas.height - 80; // верхняя граница ракеты
-  const catcherBottom = catcherTop + 40; // нижняя граница ракеты (высота = 40)
+  const catcherTop = canvas.height - 80;  // верхняя граница ракеты
+  const coinBottom = this.y + this.size / 2;
   const coinTop = this.y - this.size / 2;
+
   return (
-    coinTop >= catcherTop &&
-    coinTop <= catcherBottom &&
-    this.x >= catcherX - 40 &&
+    coinBottom >= catcherTop &&      // нижняя часть монеты достигла ракеты
+    coinTop <= catcherTop &&         // верхняя часть монеты ещё над ней
+    this.x >= catcherX - 40 &&       // по горизонтали в пределах ракеты
     this.x <= catcherX + 40
   );
 }
+
 
   }
 
