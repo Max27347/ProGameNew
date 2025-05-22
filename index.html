@@ -3587,6 +3587,7 @@ function openEarnCoins() {
     if (!gameStarted) {
       gameStarted = true;
       text.style.display = "none";
+      scoreDisplay.style.display = "block";
       setInterval(() => spawnCoins(5), 500);
       spawnCoins(1);
       animate();
@@ -3598,7 +3599,10 @@ function openEarnCoins() {
 
   closeBtn.onclick = () => {
   score = 0;
-  if (scoreDisplay) scoreDisplay.textContent = "Score: 0";
+  if (scoreDisplay) {
+    scoreDisplay.textContent = "Score: 0";
+    scoreDisplay.style.display = "none";
+  }
     container.style.display = "none";
     coins = [];
     gameStarted = false;
@@ -3623,7 +3627,7 @@ function openEarnCoins() {
 }
 </style>
 
-<div id="score" style="position: absolute; top: 1rem; left: 1rem; color: white; font-size: 1.5rem; z-index: 10001;">Score: 0</div>
+<div id="score" style="display: none; position: absolute; top: 1rem; left: 1rem; color: white; font-size: 1.5rem; z-index: 10001;">Score: 0</div>
 <div id="gameOverText">Game Over</div>
 <img id="catcher" src="https://clipart-library.com/images/Bcgje7dc8.png" style="display: none; width: 80px; height: auto; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;">
 
@@ -3727,6 +3731,7 @@ function openEarnCoins() {
 } else if (coins[i].isOutOfScreen()) {
         gameOver = true;
         gameOverText.style.display = "block";
+    scoreDisplay.style.display = "none";
         return;
       }
     }
@@ -3738,6 +3743,7 @@ function openEarnCoins() {
     if (!gameStarted) {
       gameStarted = true;
       text.style.display = "none";
+      scoreDisplay.style.display = "block";
       setInterval(() => {
         if (!gameOver) spawnCoins(1);
       }, 500);
@@ -3751,7 +3757,10 @@ function openEarnCoins() {
 
   closeBtn.onclick = () => {
   score = 0;
-  if (scoreDisplay) scoreDisplay.textContent = "Score: 0";
+  if (scoreDisplay) {
+    scoreDisplay.textContent = "Score: 0";
+    scoreDisplay.style.display = "none";
+  }
     container.style.display = "none";
     catcher.style.display = "none";
     gameOverText.style.display = "none";
