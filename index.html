@@ -3577,7 +3577,8 @@ function openEarnCoins() {
 
   function spawnCoins(count) {
     for (let i = 0; i < count; i++) {
-      const x = Math.random() * canvas.width;
+      const padding = 32;
+    const x = Math.random() * (canvas.width - padding * 2) + padding;
       const y = -50;
       coins.push(new Coin(x, y));
     }
@@ -3723,7 +3724,8 @@ function openEarnCoins() {
 
   function spawnCoins(count) {
     for (let i = 0; i < count; i++) {
-      const x = Math.random() * canvas.width;
+      const padding = 32;
+    const x = Math.random() * (canvas.width - padding * 2) + padding;
       const y = -50;
       coins.push(new Coin(x, y));
     }
