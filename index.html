@@ -3403,53 +3403,6 @@ updateAppearance() {
   });
 </script>
 
-
-
-
-
-
-<style>
-#earnCoinsGameContainer {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
-  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 70%);
-  z-index: 9999;
-  overflow: hidden;
-}
-#earnCoinsGameCanvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-#earnCoinsGameText {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 2rem;
-  font-family: sans-serif;
-  text-align: center;
-  z-index: 10000;
-  pointer-events: none;
-}
-#closeEarnGame {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10001;
-  background: #ff4444;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-</style>
 <div id="earnCoinsGameContainer">
 <canvas id="earnCoinsGameCanvas"></canvas>
 <div id="earnCoinsGameText">Tap or Click to Collect Coins</div>
