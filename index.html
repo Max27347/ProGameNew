@@ -7,7 +7,38 @@
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
 <meta content="Notcoin-inspired clicker game" name="description"/>
 <title>Clicker Game</title>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js">
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <style>
             * {
                 margin: 0;
@@ -1136,7 +1167,19 @@
   display: block;
 }
 </style>
-</meta></head>
+</meta>
+<style>
+#catcher {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    bottom: 40px;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+</style>
+
+</head>
 <body>
 <div class="loading-screen" id="loadingScreen">
 <div class="loading-ring"></div>
@@ -1266,7 +1309,7 @@
 <img alt="Memory Match" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
 <div class="case-name">Tort</div>
 <div class="case-price">
-<button class="play-game-button" onclick="alert('Memory Match starting!')">Play</button>
+<button class="play-game-button" onclick="openTortGame()">Play</button>
 </div>
 </div>
 <div class="case-container">
@@ -2976,7 +3019,38 @@ updateAppearance() {
                 game.initialize();
                 window.addEventListener("beforeunload", () => game.destroy());
             });
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
@@ -3031,7 +3105,38 @@ updateAppearance() {
                     });
                 });
             });
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
@@ -3080,7 +3185,38 @@ updateAppearance() {
                     item.classList.add("highlighted");
                 });
             });
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
 <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
 <h2 style="margin-bottom: 1rem;">Support the Game</h2>
@@ -3096,7 +3232,38 @@ updateAppearance() {
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <!-- Reward Animation Container -->
 <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
 <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
@@ -3120,7 +3287,38 @@ updateAppearance() {
                 const randomPath = animations[Math.floor(Math.random() * animations.length)];
                 showRewardAnimation(randomPath);
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             let walletConnected = false;
 
@@ -3144,12 +3342,74 @@ updateAppearance() {
             function disconnectWallet() {
                 console.log("Wallet disconnected");
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
@@ -3163,7 +3423,38 @@ updateAppearance() {
                     document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
                 }
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
@@ -3181,7 +3472,38 @@ updateAppearance() {
             function activateX4() {
                 alert("x4 boost feature coming soon!");
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
@@ -3209,7 +3531,38 @@ updateAppearance() {
                 document.body.appendChild(msg);
                 setTimeout(() => msg.remove(), 1500);
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             let clicks = 0;
             let telegramVisited = false;
@@ -3271,7 +3624,38 @@ updateAppearance() {
                 document.body.appendChild(msg);
                 setTimeout(() => msg.remove(), 1500);
             }
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
@@ -3338,7 +3722,38 @@ updateAppearance() {
                     setTimeout(() => msg.remove(), 1500);
                 }
             });
-        </script>
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script>
 <div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
 <div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
 <script>
@@ -3356,6 +3771,37 @@ updateAppearance() {
       }
     });
   });
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
 </script>
 <script>
   let showingFriends = false;
@@ -3385,6 +3831,37 @@ updateAppearance() {
 
   document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
   document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
 </script>
 <script>
   document.querySelectorAll(".menu-item").forEach(item => {
@@ -3401,6 +3878,37 @@ updateAppearance() {
       }
     });
   });
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
 </script>
 
 <style>
@@ -3561,6 +4069,37 @@ canvas.addEventListener("touchmove", (e) => {
     text.style.display = "block";
   };
 }
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
 </script>
 <style>
 
@@ -3584,7 +4123,7 @@ let gameOverText = document.getElementById("gameOverText");
 let mouseX = window.innerWidth / 2;
 
 document.addEventListener("mousemove", (e) => {
-  mouseX = Math.max(40, Math.min(window.innerWidth - 40, e.clientX));
+  mouseX = Math.max(60, Math.min(window.innerWidth - 60, e.clientX));
 });
 
 
@@ -3748,6 +4287,37 @@ canvas.addEventListener("touchmove", (e) => {
     text.style.display = "block";
   };
 }
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
 </script>
 </body>
 </html>
