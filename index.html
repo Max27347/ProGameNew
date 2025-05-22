@@ -3654,14 +3654,17 @@ function openEarnCoins() {
     }
   }
 
-  function spawnCoins(count) {
+function spawnCoins(count) {
   if (coins.length >= 8) return;
-    for (let i = 0; i < count; i++) {
-      const x = Math.random() * canvas.width;
-      const y = -50;
-      coins.push(new Coin(x, y));
-    }
+  const coinSize = 32;
+  const padding = coinSize / 2;
+  for (let i = 0; i < count; i++) {
+    const x = Math.random() * (canvas.width - 2 * padding) + padding;
+    const y = -50;
+    coins.push(new Coin(x, y));
   }
+}
+
 
   function animate() {
     if (gameOver) return;
