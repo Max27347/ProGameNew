@@ -1108,6 +1108,28 @@
   }
 </style>
 
+
+<style>
+.play-game-button {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.play-game-button:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: scale(1.05);
+}
+.play-game-button:active {
+    background: linear-gradient(135deg, #1e7e34, #1c7430);
+    transform: scale(0.95);
+}
+</style>
 </head>
     <body>
         <div class="loading-screen" id="loadingScreen">
@@ -1229,6 +1251,7 @@
         <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
 
 
+
 <div class="leaderboard-container hidden" id="gamesContainer">
   <div class="leaderboard-title">Minigames</div>
   <div class="cases-container">
@@ -1236,22 +1259,30 @@
       <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
       <div class="case-name">Earn Coins</div>
       <div class="case-price">
-        <button class="claim-button" onclick="openEarnCoins()">Play</button>
+        <button class="play-game-button" onclick="openEarnCoins()">Play</button>
       </div>
     </div>
     <div class="case-container">
       <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
       <div class="case-name">Tort</div>
       <div class="case-price">
-        <button class="claim-button" onclick="alert('Memory Match starting!')">Play</button>
+        <button class="play-game-button" onclick="alert('Memory Match starting!')">Play</button>
       </div>
     </div>
     <div class="case-container">
       <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Score Rush" class="case-image" draggable="false" />
       <div class="case-name">Select Coins</div>
       <div class="case-price">
-        <button class="claim-button" onclick="alert('Score Rush starting!')">Play</button>
+        <button class="play-game-button" onclick="alert('Score Rush starting!')">Play</button>
       </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    </div>
+
     </div>
   </div>
 </div>
