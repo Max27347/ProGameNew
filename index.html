@@ -3643,15 +3643,18 @@ function openEarnCoins() {
     isOutOfScreen() {
       return this.y > canvas.height + this.size;
     }
-    isCaught(catcherX) {
-      const catcherTop = canvas.height - 40;
-      return (
-        this.y + this.size / 2 >= catcherTop &&
-        this.y + this.size / 2 <= catcherTop + 20 &&
-        this.x >= catcherX - 40 &&
-        this.x <= catcherX + 40
-      );
-    }
+isCaught(catcherX) {
+  const catcherTop = canvas.height - 80; // верхняя граница ракеты
+  const catcherBottom = catcherTop + 40; // нижняя граница ракеты (высота = 40)
+  const coinTop = this.y - this.size / 2;
+  return (
+    coinTop >= catcherTop &&
+    coinTop <= catcherBottom &&
+    this.x >= catcherX - 40 &&
+    this.x <= catcherX + 40
+  );
+}
+
   }
 
 function spawnCoins(count) {
