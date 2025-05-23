@@ -1109,28 +1109,27 @@
 </style>
 
 
-
-
 <style>
-  .game-play-button {
-    background: #444;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: bold;
+.play-game-button {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
     font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background 0.3s ease;
-    width: 100%;
-  }
-  .game-play-button:hover {
-    background: #333;
-  }
+    transition: all 0.3s ease;
+}
+.play-game-button:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: scale(1.05);
+}
+.play-game-button:active {
+    background: linear-gradient(135deg, #1e7e34, #1c7430);
+    transform: scale(0.95);
+}
 </style>
-
-
-
 </head>
     <body>
         <div class="loading-screen" id="loadingScreen">
@@ -1252,6 +1251,7 @@
         <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
 
 
+
 <div class="leaderboard-container hidden" id="gamesContainer">
   <div class="leaderboard-title">Minigames</div>
   <div class="cases-container">
@@ -1259,22 +1259,30 @@
       <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
       <div class="case-name">Earn Coins</div>
       <div class="case-price">
-        <button class="game-play-button" onclick="openEarnCoins()">Play</button>
+        <button class="play-game-button" onclick="openEarnCoins()">Play</button>
       </div>
     </div>
     <div class="case-container">
       <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
       <div class="case-name">Tort</div>
       <div class="case-price">
-        <button class="claim-button" onclick="alert('Memory Match starting!')">Play</button>
+        <button class="play-game-button" onclick="alert('Memory Match starting!')">Play</button>
       </div>
     </div>
     <div class="case-container">
       <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Score Rush" class="case-image" draggable="false" />
       <div class="case-name">Select Coins</div>
       <div class="case-price">
-        <button class="claim-button" onclick="alert('Score Rush starting!')">Play</button>
+        <button class="play-game-button" onclick="alert('Score Rush starting!')">Play</button>
       </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    </div>
+
     </div>
   </div>
 </div>
@@ -1312,28 +1320,28 @@
                     <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image" />
                     <div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" target="_blank" style="color: #4fc3f7;">Telegram</a></div>
                     <div class="case-price">
-                        <button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 350px; height: 840px;" /></button>
+                        <button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
                     </div>
                 </div>
                 <div class="case-container">
                     <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image" />
                     <div class="case-name">Click the controller 50 times</div>
                     <div class="case-price">
-                        <button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 350px; height: 840px;" /></button>
+                        <button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
                     </div>
                 </div>
                 <div class="case-container">
                     <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" class="case-image" />
                     <div class="case-name">Earn 100 Stars</div>
                     <div class="case-price">
-                        <button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 350px; height: 840px;" /></button>
+                        <button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
                     </div>
                 </div>
                 <div class="case-container">
                     <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" class="case-image" />
                     <div class="case-name">Reach Top 10 in Leaderboard</div>
                     <div class="case-price">
-                        <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 350px; height: 840px;" /></button>
+                        <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
                     </div>
                 </div>
 
@@ -1662,7 +1670,8 @@ for (let i = 0; i < this.particles.length; i++) {
                 start() {
                     if (this.isAnimating) return;
                     this.isAnimating = true;
-                    this.animate();
+                    this.spawnCoins(1);
+      animate();
                 }
                 stop() {
                     this.isAnimating = false;
@@ -1744,7 +1753,8 @@ for (let i = 0; i < this.particles.length; i++) {
                     this.isAnimating = true;
                     this.canvas.classList.remove("game-hidden");
                     this.canvas.classList.add("visible");
-                    this.animate();
+                    this.spawnCoins(1);
+      animate();
                 }
                 stop() {
                     this.isAnimating = false;
@@ -3438,25 +3448,17 @@ updateAppearance() {
 <div id="earnCoinsModal" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9);">
   <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; flex-direction:column; position:relative;">
     <button onclick="closeEarnCoins()" style="position:absolute; top:20px; right:20px; z-index:1010; padding:10px 20px; font-size:16px;">Закрыть</button>
-    <iframe srcdoc="&lt;!DOCTYPE html&gt;&#10;&lt;html lang=&quot;ru&quot;&gt;&#10;&lt;head&gt;&#10;    &lt;meta charset=&quot;UTF-8&quot;&gt;&#10;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;&#10;    &lt;title&gt;Лови Монеты!&lt;/title&gt;&#10;    &lt;style&gt;&#10;        body {&#10;            display: flex;&#10;            justify-content: center;&#10;            align-items: center;&#10;            height: 100vh;&#10;            margin: 0;&#10;            background-color: #f0f0f0;&#10;            font-family: Arial, sans-serif;&#10;            overflow: hidden;&#10;        }&#10;        #gameCanvas {&#10;            border: 2px solid #333;&#10;            background-color: #87ceeb;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;        }&#10;        #score {&#10;            position: absolute;&#10;            top: 20px;&#10;            left: 20px;&#10;            font-size: 24px;&#10;            font-weight: bold;&#10;            color: #333;&#10;            z-index: 10;&#10;        }&#10;        #gameOver {&#10;            position: absolute;&#10;            display: none;&#10;            flex-direction: column;&#10;            justify-content: center;&#10;            align-items: center;&#10;            background-color: rgba(0, 0, 0, 0.7);&#10;            color: white;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;            z-index: 20;&#10;        }&#10;        #gameOver h2 {&#10;            font-size: 32px;&#10;            margin: 10px;&#10;        }&#10;        #gameOver p {&#10;            font-size: 24px;&#10;            margin: 10px;&#10;        }&#10;        #restartButton {&#10;            padding: 10px 20px;&#10;            font-size: 18px;&#10;            background-color: #ffd700;&#10;            border: none;&#10;            border-radius: 5px;&#10;            cursor: pointer;&#10;        }&#10;        @media (max-width: 600px) {&#10;            #score {&#10;                font-size: 18px;&#10;            }&#10;            #gameOver h2 {&#10;                font-size: 24px;&#10;            }&#10;            #gameOver p {&#10;                font-size: 18px;&#10;            }&#10;            #restartButton {&#10;                font-size: 16px;&#10;                padding: 8px 16px;&#10;            }&#10;        }&#10;    &lt;/style&gt;&#10;&lt;/head&gt;&#10;&lt;body&gt;&#10;    &lt;div id=&quot;score&quot;&gt;Счет: 0&lt;/div&gt;&#10;    &lt;div id=&quot;gameOver&quot;&gt;&#10;        &lt;h2&gt;Игра окончена!&lt;/h2&gt;&#10;        &lt;p id=&quot;finalScore&quot;&gt;Счет: 0&lt;/p&gt;&#10;        &lt;button id=&quot;restartButton&quot;&gt;Играть снова&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;canvas id=&quot;gameCanvas&quot; width=&quot;800&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;&#10;    &lt;div style=&quot;position: absolute; top: 20px; right: 20px; z-index: 30;&quot;&gt;&#10;        &#10;    &lt;/div&gt;&#10;    &lt;div id=&quot;earnCoinsModal&quot; style=&quot;display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9);&quot;&gt;&#10;        &lt;div style=&quot;width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; position: relative;&quot;&gt;&#10;            &lt;button onclick=&quot;closeEarnCoins()&quot; style=&quot;position: absolute; top: 20px; right: 20px; z-index: 1010; padding: 10px 20px; font-size: 16px;&quot;&gt;Закрыть&lt;/button&gt;&#10;            &lt;iframe id=&quot;earnCoinsIframe&quot; srcdoc=&quot;&quot; width=&quot;800&quot; height=&quot;600&quot; style=&quot;max-width: 95vw; max-height: 90vh; border: none; background: white;&quot;&gt;&lt;/iframe&gt;&#10;        &lt;/div&gt;&#10;    &lt;/div&gt;&#10;    &lt;script&gt;&#10;        function openEarnCoins() {&#10;            const html = document.documentElement.outerHTML;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = html;&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;block&quot;;&#10;        }&#10;&#10;        function closeEarnCoins() {&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;none&quot;;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = &quot;&quot;;&#10;        }&#10;    &lt;/script&gt;&#10;    &lt;script&gt;&#10;        // Игра &quot;Earn Coins&quot;&#10;        const canvas = document.getElementById(&#x27;gameCanvas&#x27;);&#10;        const ctx = canvas.getContext(&#x27;2d&#x27;);&#10;        const scoreDisplay = document.getElementById(&#x27;score&#x27;);&#10;        const gameOverScreen = document.getElementById(&#x27;gameOver&#x27;);&#10;        const finalScoreDisplay = document.getElementById(&#x27;finalScore&#x27;);&#10;        const restartButton = document.getElementById(&#x27;restartButton&#x27;);&#10;&#10;        function resizeCanvas() {&#10;            const aspectRatio = 500 / 1200;&#10;            let width = window.innerWidth;&#10;            let height = window.innerHeight;&#10;            if (width / height &gt; aspectRatio) {&#10;                width = height * aspectRatio;&#10;            } else {&#10;                height = width / aspectRatio;&#10;            }&#10;            canvas.style.width = `${width}px`;&#10;            canvas.style.height = `${height}px`;&#10;            canvas.width = 500;&#10;            canvas.height = 1200;&#10;        }&#10;        window.addEventListener(&#x27;resize&#x27;, resizeCanvas);&#10;        resizeCanvas();&#10;&#10;        const player = {&#10;            x: canvas.width / 2 - 50,&#10;            y: canvas.height - 50,&#10;            width: 100,&#10;            height: 50,&#10;            speed: 10&#10;        };&#10;&#10;        let coins = [];&#10;        let score = 0;&#10;        let coinSpeed = 2;&#10;        let gameActive = true;&#10;        let keys = { ArrowLeft: false, ArrowRight: false };&#10;        let isDragging = false;&#10;        let touchX = 0;&#10;&#10;        document.addEventListener(&#x27;keydown&#x27;, (e) =&gt; {&#10;            if (gameActive &amp;&amp; e.key in keys) keys[e.key] = true;&#10;        });&#10;        document.addEventListener(&#x27;keyup&#x27;, (e) =&gt; {&#10;            if (e.key in keys) keys[e.key] = false;&#10;        });&#10;&#10;        canvas.addEventListener(&#x27;touchstart&#x27;, (e) =&gt; {&#10;            if (!gameActive) return;&#10;            e.preventDefault();&#10;            isDragging = true;&#10;            touchX = e.touches[0].clientX;&#10;        });&#10;        canvas.addEventListener(&#x27;touchmove&#x27;, (e) =&gt; {&#10;            if (!gameActive || !isDragging) return;&#10;            e.preventDefault();&#10;            const deltaX = (e.touches[0].clientX - touchX) * (canvas.width / canvas.clientWidth);&#10;            touchX = e.touches[0].clientX;&#10;            player.x += deltaX;&#10;            if (player.x &lt; 0) player.x = 0;&#10;            if (player.x &gt; canvas.width - player.width) player.x = canvas.width - player.width;&#10;        });&#10;        canvas.addEventListener(&#x27;touchend&#x27;, () =&gt; {&#10;            isDragging = false;&#10;        });&#10;&#10;        function spawnCoin() {&#10;            if (!gameActive) return;&#10;            const coin = {&#10;                x: Math.random() * (canvas.width - 30),&#10;                y: 0,&#10;                width: 30,&#10;                height: 30,&#10;                speed: coinSpeed&#10;            };&#10;            coins.push(coin);&#10;        }&#10;&#10;        function spawnCoins() {&#10;            if (!gameActive) return;&#10;            spawnCoin();&#10;            setTimeout(spawnCoins, 1000 - Math.min(score * 50, 700));&#10;        }&#10;&#10;        function endGame() {&#10;            gameActive = false;&#10;            finalScoreDisplay.textContent = `Счет: ${score}`;&#10;            gameOverScreen.style.display = &#x27;flex&#x27;;&#10;        }&#10;&#10;        function restartGame() {&#10;            gameActive = true;&#10;            score = 0;&#10;            coinSpeed = 2;&#10;            coins = [];&#10;            player.x = canvas.width / 2 - 50;&#10;            keys = { ArrowLeft: false, ArrowRight: false };&#10;            isDragging = false;&#10;            scoreDisplay.textContent = `Счет: 0`;&#10;            gameOverScreen.style.display = &#x27;none&#x27;;&#10;            spawnCoins();&#10;            if (!window.gameLoopRunning) {&#10;                window.gameLoopRunning = true;&#10;                requestAnimationFrame(update);&#10;            }&#10;        }&#10;&#10;        restartButton.addEventListener(&#x27;click&#x27;, restartGame);&#10;&#10;        function update() {&#10;            if (!gameActive) {&#10;                window.gameLoopRunning = false;&#10;                return;&#10;            }&#10;&#10;            if (keys.ArrowLeft &amp;&amp; player.x &gt; 0) player.x -= player.speed;&#10;            if (keys.ArrowRight &amp;&amp; player.x &lt; canvas.width - player.width) player.x += player.speed;&#10;&#10;            coins.forEach((coin, index) =&gt; {&#10;                coin.y += coin.speed;&#10;                coin.speed = coinSpeed;&#10;&#10;                const playerActiveHeight = player.height * 0.2;&#10;                const playerActiveBottom = player.y + playerActiveHeight;&#10;                const playerActiveWidth = 80;&#10;                const playerActiveLeft = player.x + (player.width - playerActiveWidth) / 2;&#10;                const playerActiveRight = playerActiveLeft + playerActiveWidth;&#10;&#10;                if (&#10;                    coin.y + coin.height &gt;= player.y &amp;&amp;&#10;                    coin.y &lt;= playerActiveBottom &amp;&amp;&#10;                    coin.x + coin.width &gt;= playerActiveLeft &amp;&amp;&#10;                    coin.x &lt;= playerActiveRight&#10;                ) {&#10;                    score += 10;&#10;                    coins.splice(index, 1);&#10;                    scoreDisplay.textContent = `Счет: ${score}`;&#10;                    coinSpeed += 0.05;&#10;                }&#10;&#10;                if (coin.y &gt; canvas.height) {&#10;                    coins.splice(index, 1);&#10;                    endGame();&#10;                }&#10;            });&#10;&#10;            ctx.clearRect(0, 0, canvas.width, canvas.height);&#10;            ctx.fillStyle = &#x27;#8b4513&#x27;;&#10;            ctx.fillRect(player.x, player.y, player.width, player.height);&#10;            ctx.fillStyle = &#x27;#ffd700&#x27;;&#10;            coins.forEach(coin =&gt; {&#10;                ctx.beginPath();&#10;                ctx.arc(coin.x + coin.width / 2, coin.y + coin.height / 2, coin.width / 2, 0, Math.PI * 2);&#10;                ctx.fill();&#10;            });&#10;&#10;            requestAnimationFrame(update);&#10;        }&#10;&#10;        window.gameLoopRunning = true;&#10;        spawnCoins();&#10;        requestAnimationFrame(update);&#10;    &lt;/script&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;&#10;" width="500" height="1200" style="width:100vw; height:100vh; border:none; background:white;"></iframe>
+    <iframe srcdoc="&lt;!DOCTYPE html&gt;&#10;&lt;html lang=&quot;ru&quot;&gt;&#10;&lt;head&gt;&#10;    &lt;meta charset=&quot;UTF-8&quot;&gt;&#10;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;&#10;    &lt;title&gt;Лови Монеты!&lt;/title&gt;&#10;    &lt;style&gt;&#10;        body {&#10;            display: flex;&#10;            justify-content: center;&#10;            align-items: center;&#10;            height: 100vh;&#10;            margin: 0;&#10;            background-color: #f0f0f0;&#10;            font-family: Arial, sans-serif;&#10;            overflow: hidden;&#10;        }&#10;        #gameCanvas {&#10;            border: 2px solid #333;&#10;            background-color: #87ceeb;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;        }&#10;        #score {&#10;            position: absolute;&#10;            top: 20px;&#10;            left: 20px;&#10;            font-size: 24px;&#10;            font-weight: bold;&#10;            color: #333;&#10;            z-index: 10;&#10;        }&#10;        #gameOver {&#10;            position: absolute;&#10;            display: none;&#10;            flex-direction: column;&#10;            justify-content: center;&#10;            align-items: center;&#10;            background-color: rgba(0, 0, 0, 0.7);&#10;            color: white;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;            z-index: 20;&#10;        }&#10;        #gameOver h2 {&#10;            font-size: 32px;&#10;            margin: 10px;&#10;        }&#10;        #gameOver p {&#10;            font-size: 24px;&#10;            margin: 10px;&#10;        }&#10;        #restartButton {&#10;            padding: 10px 20px;&#10;            font-size: 18px;&#10;            background-color: #ffd700;&#10;            border: none;&#10;            border-radius: 5px;&#10;            cursor: pointer;&#10;        }&#10;        @media (max-width: 600px) {&#10;            #score {&#10;                font-size: 18px;&#10;            }&#10;            #gameOver h2 {&#10;                font-size: 24px;&#10;            }&#10;            #gameOver p {&#10;                font-size: 18px;&#10;            }&#10;            #restartButton {&#10;                font-size: 16px;&#10;                padding: 8px 16px;&#10;            }&#10;        }&#10;    &lt;/style&gt;&#10;&lt;/head&gt;&#10;&lt;body&gt;&#10;    &lt;div id=&quot;score&quot;&gt;Счет: 0&lt;/div&gt;&#10;    &lt;div id=&quot;gameOver&quot;&gt;&#10;        &lt;h2&gt;Игра окончена!&lt;/h2&gt;&#10;        &lt;p id=&quot;finalScore&quot;&gt;Счет: 0&lt;/p&gt;&#10;        &lt;button id=&quot;restartButton&quot;&gt;Играть снова&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;canvas id=&quot;gameCanvas&quot; width=&quot;800&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;&#10;    &lt;div style=&quot;position: absolute; top: 20px; right: 20px; z-index: 30;&quot;&gt;&#10;        &lt;button onclick=&quot;openEarnCoins()&quot; style=&quot;padding: 10px 20px; font-size: 16px;&quot;&gt;Play Mini Game&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;div id=&quot;earnCoinsModal&quot; style=&quot;display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9);&quot;&gt;&#10;        &lt;div style=&quot;width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; position: relative;&quot;&gt;&#10;            &lt;button onclick=&quot;closeEarnCoins()&quot; style=&quot;position: absolute; top: 20px; right: 20px; z-index: 1010; padding: 10px 20px; font-size: 16px;&quot;&gt;Закрыть&lt;/button&gt;&#10;            &lt;iframe id=&quot;earnCoinsIframe&quot; srcdoc=&quot;&quot; width=&quot;800&quot; height=&quot;600&quot; style=&quot;max-width: 95vw; max-height: 90vh; border: none; background: white;&quot;&gt;&lt;/iframe&gt;&#10;        &lt;/div&gt;&#10;    &lt;/div&gt;&#10;    &lt;script&gt;&#10;        function openEarnCoins() {&#10;            const html = document.documentElement.outerHTML;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = html;&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;block&quot;;&#10;        }&#10;&#10;        function closeEarnCoins() {&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;none&quot;;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = &quot;&quot;;&#10;        }&#10;    &lt;/script&gt;&#10;    &lt;script&gt;&#10;        // Игра &quot;Earn Coins&quot;&#10;        const canvas = document.getElementById(&#x27;gameCanvas&#x27;);&#10;        const ctx = canvas.getContext(&#x27;2d&#x27;);&#10;        const scoreDisplay = document.getElementById(&#x27;score&#x27;);&#10;        const gameOverScreen = document.getElementById(&#x27;gameOver&#x27;);&#10;        const finalScoreDisplay = document.getElementById(&#x27;finalScore&#x27;);&#10;        const restartButton = document.getElementById(&#x27;restartButton&#x27;);&#10;&#10;        function resizeCanvas() {&#10;            const aspectRatio = 800 / 600;&#10;            let width = window.innerWidth;&#10;            let height = window.innerHeight;&#10;            if (width / height &gt; aspectRatio) {&#10;                width = height * aspectRatio;&#10;            } else {&#10;                height = width / aspectRatio;&#10;            }&#10;            canvas.style.width = `${width}px`;&#10;            canvas.style.height = `${height}px`;&#10;            canvas.width = 800;&#10;            canvas.height = 600;&#10;        }&#10;        window.addEventListener(&#x27;resize&#x27;, resizeCanvas);&#10;        resizeCanvas();&#10;&#10;        const player = {&#10;            x: canvas.width / 2 - 50,&#10;            y: canvas.height - 50,&#10;            width: 100,&#10;            height: 50,&#10;            speed: 10&#10;        };&#10;&#10;        let coins = [];&#10;        let score = 0;&#10;        let coinSpeed = 2;&#10;        let gameActive = true;&#10;        let keys = { ArrowLeft: false, ArrowRight: false };&#10;        let isDragging = false;&#10;        let touchX = 0;&#10;&#10;        document.addEventListener(&#x27;keydown&#x27;, (e) =&gt; {&#10;            if (gameActive &amp;&amp; e.key in keys) keys[e.key] = true;&#10;        });&#10;        document.addEventListener(&#x27;keyup&#x27;, (e) =&gt; {&#10;            if (e.key in keys) keys[e.key] = false;&#10;        });&#10;&#10;        canvas.addEventListener(&#x27;touchstart&#x27;, (e) =&gt; {&#10;            if (!gameActive) return;&#10;            e.preventDefault();&#10;            isDragging = true;&#10;            touchX = e.touches[0].clientX;&#10;        });&#10;        canvas.addEventListener(&#x27;touchmove&#x27;, (e) =&gt; {&#10;            if (!gameActive || !isDragging) return;&#10;            e.preventDefault();&#10;            const deltaX = (e.touches[0].clientX - touchX) * (canvas.width / canvas.clientWidth);&#10;            touchX = e.touches[0].clientX;&#10;            player.x += deltaX;&#10;            if (player.x &lt; 0) player.x = 0;&#10;            if (player.x &gt; canvas.width - player.width) player.x = canvas.width - player.width;&#10;        });&#10;        canvas.addEventListener(&#x27;touchend&#x27;, () =&gt; {&#10;            isDragging = false;&#10;        });&#10;&#10;        function spawnCoin() {&#10;            if (!gameActive) return;&#10;            const coin = {&#10;                x: Math.random() * (canvas.width - 30),&#10;                y: 0,&#10;                width: 30,&#10;                height: 30,&#10;                speed: coinSpeed&#10;            };&#10;            coins.push(coin);&#10;        }&#10;&#10;        function spawnCoins() {&#10;            if (!gameActive) return;&#10;            spawnCoin();&#10;            setTimeout(spawnCoins, 1000 - Math.min(score * 50, 700));&#10;        }&#10;&#10;        function endGame() {&#10;            gameActive = false;&#10;            finalScoreDisplay.textContent = `Счет: ${score}`;&#10;            gameOverScreen.style.display = &#x27;flex&#x27;;&#10;        }&#10;&#10;        function restartGame() {&#10;            gameActive = true;&#10;            score = 0;&#10;            coinSpeed = 2;&#10;            coins = [];&#10;            player.x = canvas.width / 2 - 50;&#10;            keys = { ArrowLeft: false, ArrowRight: false };&#10;            isDragging = false;&#10;            scoreDisplay.textContent = `Счет: 0`;&#10;            gameOverScreen.style.display = &#x27;none&#x27;;&#10;            spawnCoins();&#10;            if (!window.gameLoopRunning) {&#10;                window.gameLoopRunning = true;&#10;                requestAnimationFrame(update);&#10;            }&#10;        }&#10;&#10;        restartButton.addEventListener(&#x27;click&#x27;, restartGame);&#10;&#10;        function update() {&#10;            if (!gameActive) {&#10;                window.gameLoopRunning = false;&#10;                return;&#10;            }&#10;&#10;            if (keys.ArrowLeft &amp;&amp; player.x &gt; 0) player.x -= player.speed;&#10;            if (keys.ArrowRight &amp;&amp; player.x &lt; canvas.width - player.width) player.x += player.speed;&#10;&#10;            coins.forEach((coin, index) =&gt; {&#10;                coin.y += coin.speed;&#10;                coin.speed = coinSpeed;&#10;&#10;                const playerActiveHeight = player.height * 0.2;&#10;                const playerActiveBottom = player.y + playerActiveHeight;&#10;                const playerActiveWidth = 80;&#10;                const playerActiveLeft = player.x + (player.width - playerActiveWidth) / 2;&#10;                const playerActiveRight = playerActiveLeft + playerActiveWidth;&#10;&#10;                if (&#10;                    coin.y + coin.height &gt;= player.y &amp;&amp;&#10;                    coin.y &lt;= playerActiveBottom &amp;&amp;&#10;                    coin.x + coin.width &gt;= playerActiveLeft &amp;&amp;&#10;                    coin.x &lt;= playerActiveRight&#10;                ) {&#10;                    score += 10;&#10;                    coins.splice(index, 1);&#10;                    scoreDisplay.textContent = `Счет: ${score}`;&#10;                    coinSpeed += 0.05;&#10;                }&#10;&#10;                if (coin.y &gt; canvas.height) {&#10;                    coins.splice(index, 1);&#10;                    endGame();&#10;                }&#10;            });&#10;&#10;            ctx.clearRect(0, 0, canvas.width, canvas.height);&#10;            ctx.fillStyle = &#x27;#8b4513&#x27;;&#10;            ctx.fillRect(player.x, player.y, player.width, player.height);&#10;            ctx.fillStyle = &#x27;#ffd700&#x27;;&#10;            coins.forEach(coin =&gt; {&#10;                ctx.beginPath();&#10;                ctx.arc(coin.x + coin.width / 2, coin.y + coin.height / 2, coin.width / 2, 0, Math.PI * 2);&#10;                ctx.fill();&#10;            });&#10;&#10;            requestAnimationFrame(update);&#10;        }&#10;&#10;        window.gameLoopRunning = true;&#10;        spawnCoins();&#10;        requestAnimationFrame(update);&#10;    &lt;/script&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;&#10;" width="800" height="600" style="max-width:95vw; max-height:90vh; border:none; background:white;"></iframe>
   </div>
 </div>
-
 <script>
   function openEarnCoins() {
     document.getElementById("earnCoinsModal").style.display = "block";
-    document.body.style.overflow = "hidden";
-    const playButton = document.querySelector(".game-play-button");
-    if (playButton) playButton.style.display = "none";
   }
   function closeEarnCoins() {
     document.getElementById("earnCoinsModal").style.display = "none";
-    document.body.style.overflow = "";
-    const playButton = document.querySelector(".game-play-button");
-    if (playButton) playButton.style.display = "block";
   }
 </script>
-
 
 
 <script>
@@ -3467,29 +3469,299 @@ updateAppearance() {
 </script>
 
 
-<!-- Earn Coins Modal -->
-<div id="earnCoinsModal" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.95);">
-  <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; flex-direction:column; position:relative;">
-    <button onclick="closeEarnCoins()" style="position:absolute; top:20px; right:20px; z-index:1010; padding:12px 18px; font-size:16px; border-radius:8px; background:#fff; color:#000;">✕</button>
-    <iframe srcdoc="&lt;!DOCTYPE html&gt;&#10;&lt;html lang=&quot;ru&quot;&gt;&#10;&lt;head&gt;&#10;    &lt;meta charset=&quot;UTF-8&quot;&gt;&#10;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;&#10;    &lt;title&gt;Лови Монеты!&lt;/title&gt;&#10;    &lt;style&gt;&#10;        body {&#10;            display: flex;&#10;            justify-content: center;&#10;            align-items: center;&#10;            height: 100vh;&#10;            margin: 0;&#10;            background-color: #f0f0f0;&#10;            font-family: Arial, sans-serif;&#10;            overflow: hidden;&#10;        }&#10;        #gameCanvas {&#10;            border: 2px solid #333;&#10;            background-color: #87ceeb;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;        }&#10;        #score {&#10;            position: absolute;&#10;            top: 20px;&#10;            left: 20px;&#10;            font-size: 24px;&#10;            font-weight: bold;&#10;            color: #333;&#10;            z-index: 10;&#10;        }&#10;        #gameOver {&#10;            position: absolute;&#10;            display: none;&#10;            flex-direction: column;&#10;            justify-content: center;&#10;            align-items: center;&#10;            background-color: rgba(0, 0, 0, 0.7);&#10;            color: white;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;            z-index: 20;&#10;        }&#10;        #gameOver h2 {&#10;            font-size: 32px;&#10;            margin: 10px;&#10;        }&#10;        #gameOver p {&#10;            font-size: 24px;&#10;            margin: 10px;&#10;        }&#10;        #restartButton {&#10;            padding: 10px 20px;&#10;            font-size: 18px;&#10;            background-color: #ffd700;&#10;            border: none;&#10;            border-radius: 5px;&#10;            cursor: pointer;&#10;        }&#10;        @media (max-width: 600px) {&#10;            #score {&#10;                font-size: 18px;&#10;            }&#10;            #gameOver h2 {&#10;                font-size: 24px;&#10;            }&#10;            #gameOver p {&#10;                font-size: 18px;&#10;            }&#10;            #restartButton {&#10;                font-size: 16px;&#10;                padding: 8px 16px;&#10;            }&#10;        }&#10;    &lt;/style&gt;&#10;&lt;/head&gt;&#10;&lt;body&gt;&#10;    &lt;div id=&quot;score&quot;&gt;Счет: 0&lt;/div&gt;&#10;    &lt;div id=&quot;gameOver&quot;&gt;&#10;        &lt;h2&gt;Игра окончена!&lt;/h2&gt;&#10;        &lt;p id=&quot;finalScore&quot;&gt;Счет: 0&lt;/p&gt;&#10;        &lt;button id=&quot;restartButton&quot;&gt;Играть снова&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;canvas id=&quot;gameCanvas&quot; width=&quot;800&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;&#10;    &lt;div style=&quot;position: absolute; top: 20px; right: 20px; z-index: 30;&quot;&gt;&#10;        &#10;    &lt;/div&gt;&#10;    &lt;div id=&quot;earnCoinsModal&quot; style=&quot;display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9);&quot;&gt;&#10;        &lt;div style=&quot;width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; position: relative;&quot;&gt;&#10;            &lt;button onclick=&quot;closeEarnCoins()&quot; style=&quot;position: absolute; top: 20px; right: 20px; z-index: 1010; padding: 10px 20px; font-size: 16px;&quot;&gt;Закрыть&lt;/button&gt;&#10;            &lt;iframe id=&quot;earnCoinsIframe&quot; srcdoc=&quot;&quot; width=&quot;800&quot; height=&quot;600&quot; style=&quot;max-width: 95vw; max-height: 90vh; border: none; background: white;&quot;&gt;&lt;/iframe&gt;&#10;        &lt;/div&gt;&#10;    &lt;/div&gt;&#10;    &lt;script&gt;&#10;        function openEarnCoins() {&#10;            const html = document.documentElement.outerHTML;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = html;&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;block&quot;;&#10;        }&#10;&#10;        function closeEarnCoins() {&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;none&quot;;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = &quot;&quot;;&#10;        }&#10;    &lt;/script&gt;&#10;    &lt;script&gt;&#10;        // Игра &quot;Earn Coins&quot;&#10;        const canvas = document.getElementById(&#x27;gameCanvas&#x27;);&#10;        const ctx = canvas.getContext(&#x27;2d&#x27;);&#10;        const scoreDisplay = document.getElementById(&#x27;score&#x27;);&#10;        const gameOverScreen = document.getElementById(&#x27;gameOver&#x27;);&#10;        const finalScoreDisplay = document.getElementById(&#x27;finalScore&#x27;);&#10;        const restartButton = document.getElementById(&#x27;restartButton&#x27;);&#10;&#10;        function resizeCanvas() {&#10;            const aspectRatio = 500 / 1200;&#10;            let width = window.innerWidth;&#10;            let height = window.innerHeight;&#10;            if (width / height &gt; aspectRatio) {&#10;                width = height * aspectRatio;&#10;            } else {&#10;                height = width / aspectRatio;&#10;            }&#10;            canvas.style.width = `${width}px`;&#10;            canvas.style.height = `${height}px`;&#10;            canvas.width = 500;&#10;            canvas.height = 1200;&#10;        }&#10;        window.addEventListener(&#x27;resize&#x27;, resizeCanvas);&#10;        resizeCanvas();&#10;&#10;        const player = {&#10;            x: canvas.width / 2 - 50,&#10;            y: canvas.height - 50,&#10;            width: 100,&#10;            height: 50,&#10;            speed: 10&#10;        };&#10;&#10;        let coins = [];&#10;        let score = 0;&#10;        let coinSpeed = 2;&#10;        let gameActive = true;&#10;        let keys = { ArrowLeft: false, ArrowRight: false };&#10;        let isDragging = false;&#10;        let touchX = 0;&#10;&#10;        document.addEventListener(&#x27;keydown&#x27;, (e) =&gt; {&#10;            if (gameActive &amp;&amp; e.key in keys) keys[e.key] = true;&#10;        });&#10;        document.addEventListener(&#x27;keyup&#x27;, (e) =&gt; {&#10;            if (e.key in keys) keys[e.key] = false;&#10;        });&#10;&#10;        canvas.addEventListener(&#x27;touchstart&#x27;, (e) =&gt; {&#10;            if (!gameActive) return;&#10;            e.preventDefault();&#10;            isDragging = true;&#10;            touchX = e.touches[0].clientX;&#10;        });&#10;        canvas.addEventListener(&#x27;touchmove&#x27;, (e) =&gt; {&#10;            if (!gameActive || !isDragging) return;&#10;            e.preventDefault();&#10;            const deltaX = (e.touches[0].clientX - touchX) * (canvas.width / canvas.clientWidth);&#10;            touchX = e.touches[0].clientX;&#10;            player.x += deltaX;&#10;            if (player.x &lt; 0) player.x = 0;&#10;            if (player.x &gt; canvas.width - player.width) player.x = canvas.width - player.width;&#10;        });&#10;        canvas.addEventListener(&#x27;touchend&#x27;, () =&gt; {&#10;            isDragging = false;&#10;        });&#10;&#10;        function spawnCoin() {&#10;            if (!gameActive) return;&#10;            const coin = {&#10;                x: Math.random() * (canvas.width - 30),&#10;                y: 0,&#10;                width: 30,&#10;                height: 30,&#10;                speed: coinSpeed&#10;            };&#10;            coins.push(coin);&#10;        }&#10;&#10;        function spawnCoins() {&#10;            if (!gameActive) return;&#10;            spawnCoin();&#10;            setTimeout(spawnCoins, 1000 - Math.min(score * 50, 700));&#10;        }&#10;&#10;        function endGame() {&#10;            gameActive = false;&#10;            finalScoreDisplay.textContent = `Счет: ${score}`;&#10;            gameOverScreen.style.display = &#x27;flex&#x27;;&#10;        }&#10;&#10;        function restartGame() {&#10;            gameActive = true;&#10;            score = 0;&#10;            coinSpeed = 2;&#10;            coins = [];&#10;            player.x = canvas.width / 2 - 50;&#10;            keys = { ArrowLeft: false, ArrowRight: false };&#10;            isDragging = false;&#10;            scoreDisplay.textContent = `Счет: 0`;&#10;            gameOverScreen.style.display = &#x27;none&#x27;;&#10;            spawnCoins();&#10;            if (!window.gameLoopRunning) {&#10;                window.gameLoopRunning = true;&#10;                requestAnimationFrame(update);&#10;            }&#10;        }&#10;&#10;        restartButton.addEventListener(&#x27;click&#x27;, restartGame);&#10;&#10;        function update() {&#10;            if (!gameActive) {&#10;                window.gameLoopRunning = false;&#10;                return;&#10;            }&#10;&#10;            if (keys.ArrowLeft &amp;&amp; player.x &gt; 0) player.x -= player.speed;&#10;            if (keys.ArrowRight &amp;&amp; player.x &lt; canvas.width - player.width) player.x += player.speed;&#10;&#10;            coins.forEach((coin, index) =&gt; {&#10;                coin.y += coin.speed;&#10;                coin.speed = coinSpeed;&#10;&#10;                const playerActiveHeight = player.height * 0.2;&#10;                const playerActiveBottom = player.y + playerActiveHeight;&#10;                const playerActiveWidth = 80;&#10;                const playerActiveLeft = player.x + (player.width - playerActiveWidth) / 2;&#10;                const playerActiveRight = playerActiveLeft + playerActiveWidth;&#10;&#10;                if (&#10;                    coin.y + coin.height &gt;= player.y &amp;&amp;&#10;                    coin.y &lt;= playerActiveBottom &amp;&amp;&#10;                    coin.x + coin.width &gt;= playerActiveLeft &amp;&amp;&#10;                    coin.x &lt;= playerActiveRight&#10;                ) {&#10;                    score += 10;&#10;                    coins.splice(index, 1);&#10;                    scoreDisplay.textContent = `Счет: ${score}`;&#10;                    coinSpeed += 0.05;&#10;                }&#10;&#10;                if (coin.y &gt; canvas.height) {&#10;                    coins.splice(index, 1);&#10;                    endGame();&#10;                }&#10;            });&#10;&#10;            ctx.clearRect(0, 0, canvas.width, canvas.height);&#10;            ctx.fillStyle = &#x27;#8b4513&#x27;;&#10;            ctx.fillRect(player.x, player.y, player.width, player.height);&#10;            ctx.fillStyle = &#x27;#ffd700&#x27;;&#10;            coins.forEach(coin =&gt; {&#10;                ctx.beginPath();&#10;                ctx.arc(coin.x + coin.width / 2, coin.y + coin.height / 2, coin.width / 2, 0, Math.PI * 2);&#10;                ctx.fill();&#10;            });&#10;&#10;            requestAnimationFrame(update);&#10;        }&#10;&#10;        window.gameLoopRunning = true;&#10;        spawnCoins();&#10;        requestAnimationFrame(update);&#10;    &lt;/script&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;&#10;" style="width:100vw; height:100vh; border:none; background:white;"></iframe>
-  </div>
+
+
+
+<style>
+#earnCoinsGameContainer {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 70%);
+  z-index: 9999;
+  overflow: hidden;
+}
+#earnCoinsGameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#earnCoinsGameText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  font-family: sans-serif;
+  text-align: center;
+  z-index: 10000;
+  pointer-events: none;
+}
+#closeEarnGame {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10001;
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
+
+<div id="earnCoinsGameContainer">
+  <canvas id="earnCoinsGameCanvas"></canvas>
+  <div id="earnCoinsGameText">Tap or Click to Collect Coins</div>
+  <button id="closeEarnGame">✖</button>
 </div>
 
 <script>
-  function openEarnCoins() {
-    document.getElementById("earnCoinsModal").style.display = "block";
-    document.body.style.overflow = "hidden";
-    const playButton = document.querySelector(".game-play-button");
-    if (playButton) playButton.style.display = "none";
+function openEarnCoins() {
+  const container = document.getElementById("earnCoinsGameContainer");
+  const canvas = document.getElementById("earnCoinsGameCanvas");
+  const ctx = canvas.getContext("2d");
+  const text = document.getElementById("earnCoinsGameText");
+  const closeBtn = document.getElementById("closeEarnGame");
+
+  container.style.display = "block";
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let coins = [];
+  let gameStarted = false;
+  let score = 0;
+  const scoreDisplay = document.getElementById("score");
+  const coinImage = new Image();
+  coinImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c82942d6-8b71-4db5-8777-bb80cebbe6a0/db6p4fk-246feb15-727a-4d68-94cd-2e916da1e098.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwMCIsInBhdGgiOiJcL2ZcL2M4Mjk0MmQ2LThiNzEtNGRiNS04Nzc3LWJiODBjZWJiZTZhMFwvZGI2cDRmay0yNDZmZWIxNS03MjdhLTRkNjgtOTRjZC0yZTkxNmRhMWUwOTgucG5nIiwid2lkdGgiOiI8PTQwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.4jDRsRuCN9N20OJwFEysDz4Jf9_kl3AgCVvEDQn8pds";
+
+  class Coin {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 32;
+      this.speedY = Math.random() * 2 + 1;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+    }
+    update() {
+      this.y += this.speedY;
+      this.rotation += this.rotationSpeed;
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.drawImage(coinImage, -this.size / 2, -this.size / 2, this.size, this.size);
+      ctx.restore();
+    }
+    isOutOfScreen() {
+      return this.y > canvas.height + this.size;
+    }
   }
-  function closeEarnCoins() {
-    document.getElementById("earnCoinsModal").style.display = "none";
-    document.body.style.overflow = "";
-    const playButton = document.querySelector(".game-play-button");
-    if (playButton) playButton.style.display = "block";
+
+  function spawnCoins(count) {
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * canvas.width;
+      const y = -50;
+      coins.push(new Coin(x, y));
+    }
   }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    coins.forEach((coin) => {
+      coin.update();
+      coin.draw();
+    });
+    coins = coins.filter((coin) => !coin.isOutOfScreen());
+    requestAnimationFrame(animate);
+  }
+
+  function startGame() {
+    if (!gameStarted) {
+      gameStarted = true;
+      text.style.display = "none";
+      setInterval(() => spawnCoins(5), 500);
+      spawnCoins(1);
+      animate();
+    }
+  }
+
+  canvas.addEventListener("click", startGame, { once: true });
+  canvas.addEventListener("touchstart", startGame, { once: true });
+
+  closeBtn.onclick = () => {
+  score = 0;
+  if (scoreDisplay) scoreDisplay.textContent = "Score: 0";
+    container.style.display = "none";
+    coins = [];
+    gameStarted = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    text.style.display = "block";
+  };
+}
 </script>
 
 
+<style>
+
+#gameOverText {
+  display: none;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: white;
+  z-index: 10001;
+}
+</style>
+
+<div id="score" style="position: absolute; top: 1rem; left: 1rem; color: white; font-size: 1.5rem; z-index: 10001;">Score: 0</div>
+<div id="gameOverText">Game Over</div>
+<img id="catcher" src="https://clipart-library.com/images/Bcgje7dc8.png" style="display: none; width: 80px; height: auto; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;">
+
+<script>
+let catcher = document.getElementById("catcher");
+let gameOverText = document.getElementById("gameOverText");
+let mouseX = window.innerWidth / 2;
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+});
+
+document.addEventListener("touchmove", (e) => {
+  if (e.touches.length > 0) {
+    mouseX = e.touches[0].clientX;
+  }
+});
+
+function openEarnCoins() {
+  const container = document.getElementById("earnCoinsGameContainer");
+  const canvas = document.getElementById("earnCoinsGameCanvas");
+  const ctx = canvas.getContext("2d");
+  const text = document.getElementById("earnCoinsGameText");
+  const closeBtn = document.getElementById("closeEarnGame");
+  catcher = document.getElementById("catcher");
+  gameOverText = document.getElementById("gameOverText");
+
+  container.style.display = "block";
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  if (catcher) catcher.style.display = "block";
+  gameOverText.style.display = "none";
+
+  let coins = [];
+  let gameStarted = false;
+  let score = 0;
+  const scoreDisplay = document.getElementById("score");
+  let gameOver = false;
+  const coinImage = new Image();
+  coinImage.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c82942d6-8b71-4db5-8777-bb80cebbe6a0/db6p4fk-246feb15-727a-4d68-94cd-2e916da1e098.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDAwMCIsInBhdGgiOiJcL2ZcL2M4Mjk0MmQ2LThiNzEtNGRiNS04Nzc3LWJiODBjZWJiZTZhMFwvZGI2cDRmay0yNDZmZWIxNS03MjdhLTRkNjgtOTRjZC0yZTkxNmRhMWUwOTgucG5nIiwid2lkdGgiOiI8PTQwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.4jDRsRuCN9N20OJwFEysDz4Jf9_kl3AgCVvEDQn8pds";
+
+  class Coin {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 32;
+      this.speedY = Math.random() * 2 + 1.5;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+    }
+    update() {
+      this.y += this.speedY;
+      this.rotation += this.rotationSpeed;
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.drawImage(coinImage, -this.size / 2, -this.size / 2, this.size, this.size);
+      ctx.restore();
+    }
+    isOutOfScreen() {
+      return this.y > canvas.height + this.size;
+    }
+    isCaught(catcherX) {
+      const catcherTop = canvas.height - 40;
+      return (
+        this.y + this.size / 2 >= catcherTop &&
+        this.y + this.size / 2 <= catcherTop + 20 &&
+        this.x >= catcherX - 40 &&
+        this.x <= catcherX + 40
+      );
+    }
+  }
+
+  function spawnCoins(count) {
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * canvas.width;
+      const y = -50;
+      coins.push(new Coin(x, y));
+    }
+  }
+
+  function animate() {
+    if (gameOver) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    catcher.style.left = mouseX + "px";
+
+    coins.forEach((coin) => {
+      coin.update();
+      coin.draw();
+    });
+
+    for (let i = 0; i < coins.length; i++) {
+      if (coins[i].isCaught(mouseX)) {
+  coins.splice(i, 1);
+  i--;
+  score++;
+  if (scoreDisplay) scoreDisplay.textContent = "Score: " + score;
+} else if (coins[i].isOutOfScreen()) {
+        gameOver = true;
+        gameOverText.style.display = "block";
+        return;
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  function startGame() {
+    if (!gameStarted) {
+      gameStarted = true;
+      text.style.display = "none";
+      setInterval(() => {
+        if (!gameOver) spawnCoins(1);
+      }, 500);
+      spawnCoins(1);
+      animate();
+    }
+  }
+
+  canvas.addEventListener("click", startGame, { once: true });
+  canvas.addEventListener("touchstart", startGame, { once: true });
+
+  closeBtn.onclick = () => {
+  score = 0;
+  if (scoreDisplay) scoreDisplay.textContent = "Score: 0";
+    container.style.display = "none";
+    catcher.style.display = "none";
+    gameOverText.style.display = "none";
+    coins = [];
+    gameStarted = false;
+    gameOver = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    text.style.display = "block";
+  };
+}
+</script>
 </body>
 </html>
