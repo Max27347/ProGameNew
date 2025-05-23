@@ -1204,8 +1204,8 @@ function openTortGame() {
 </div>
 </div>
 </header>
-
-
+<canvas class="game-hidden" id="particleCanvas"></canvas>
+<canvas class="game-hidden" id="confettiCanvas"></canvas>
 <main class="game-hidden" id="mainContent">
 <div class="income-counter" id="incomeCounter">
 <span id="incomeRate">0</span> Diamonds/h
@@ -4213,7 +4213,12 @@ function spawnCoins(count) {
   function animate() {
     if (gameOver) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    catcher.style.left = mouseX + "px";
+
+const catcherWidth = catcher.offsetWidth;
+const maxX = window.innerWidth - catcherWidth / 2;
+const minX = catcherWidth / 2;
+const clampedX = Math.max(minX, Math.min(mouseX, maxX));
+catcher.style.left =  clampedX + "px";
 
     coins.forEach((coin) => {
       coin.update();
@@ -4320,8 +4325,8 @@ function openTortGame() {
 
 </script>
 
-<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-color); background-image: var(--bg-gradient); z-index:1001;">
-  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin: 0 auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 12px;"></canvas></canvas>
+<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; z-index:1001;">
+  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin:80px auto 0 auto; background:#000000;"></canvas></canvas>
 </div>
 
 <script>
@@ -4410,8 +4415,8 @@ function startTortGame() {
 </script>
 
 
-<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background: var(--bg-color); background-image: var(--bg-gradient); z-index:1001;">
-  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin: 0 auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 12px;"></canvas>
+<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; z-index:1001;">
+  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin:80px auto 0 auto; background:#000000;"></canvas>
 </div>
 
 <script>
@@ -4499,8 +4504,5 @@ function startTortGame() {
 }
 </script>
 
-<canvas id="particleCanvas" style="display:none;"></canvas>
-<canvas id="particleCanvas" style="display:none;"></canvas>
-<canvas id="confettiCanvas" style="display:none;"></canvas>
 </body>
 </html>
