@@ -1,45 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<head>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta charset="utf-8">
-<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<meta content="Notcoin-inspired clicker game" name="description"/>
-<title>Clicker Game</title>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js">
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta name="description" content="Notcoin-inspired clicker game" />
+        <title>Clicker Game</title>
+        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+        <style>
             * {
                 margin: 0;
                 padding: 0;
@@ -1116,6 +1083,7 @@ function openTortGame() {
             }
 
         </style>
+
 <style>
   .quests-arrow {
     position: absolute;
@@ -1139,263 +1107,228 @@ function openTortGame() {
     right: 1rem;
   }
 </style>
-<style>
-.play-game-button {
-    background: linear-gradient(135deg, #28a745, #218838);
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.play-game-button:hover {
-    background: linear-gradient(135deg, #218838, #1e7e34);
-    transform: scale(1.05);
-}
-.play-game-button:active {
-    background: linear-gradient(135deg, #1e7e34, #1c7430);
-    transform: scale(0.95);
-}
-</style>
-<style>
-#earnCoinsGameCanvas {
-  width: 100vw;
-  height: 100vh;
-  display: block;
-}
-</style>
-</meta>
-<style>
-#catcher {
-    width: 80px;
-    height: 80px;
-    position: absolute;
-    bottom: 40px;
-    transform: translateX(-50%);
-    z-index: 5;
-}
-</style>
 
 </head>
-<body>
-<div class="loading-screen" id="loadingScreen">
-<div class="loading-ring"></div>
-<span class="loading-percent" id="loadingPercent">0%</span>
-</div>
-<header class="top-menu game-hidden" id="topMenu">
-<div class="top-menu-left">
-<img alt="Player Avatar" class="player-avatar" draggable="false" src="https://placehold.co/40x40"/>
-<div class="player-info">
-<span class="player-nickname">Player123</span>
-<span class="player-max-coins">
-<img alt="Gem Stone" class="gem-icon" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<span id="totalCoins">8000</span>
-</span>
-</div>
-</div>
-<div class="top-menu-right">
-<span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
-<div class="wallet-container">
-<button id="disconnect-wallet">Disconnect Wallet</button>
-</div>
-</div>
-</header>
-<canvas class="game-hidden" id="particleCanvas"></canvas>
-<canvas class="game-hidden" id="confettiCanvas"></canvas>
-<main class="game-hidden" id="mainContent">
-<div class="income-counter" id="incomeCounter">
-<span id="incomeRate">0</span> Diamonds/h
-                <img alt="Gem Stone" class="gem-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-</div>
-<div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
-<div class="coin-counter visible" id="coinCounter">
-<div class="coin-line">
-<span id="coinCount">8000</span>
-<img alt="Gem Stone" class="coin-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="donation-line" id="starDonation" style="cursor: pointer;">
-<span id="starCount">0</span>
-<img alt="Star" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" style="width: 24px; height: 24px; vertical-align: middle;"/>
-</div>
-</div>
-</div>
-<div class="character-container">
-<img alt="Controller" class="character" draggable="false" id="character" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-</div>
-</main>
-<div class="shop-container hidden" id="shopContainer">
-<div class="shop-title">Cases</div>
-<div class="cases-container">
-<div class="case-container" data-case="diamond-rain">
-<img alt="Diamond Rain" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp"/>
-<div class="case-name">Diamond Rain</div>
-<div class="case-price">100 Diamonds</div>
-</div>
-<div class="case-container" data-case="character-magic">
-<img alt="Character Magic" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp"/>
-<div class="case-name">Character Magic</div>
-<div class="case-price">Free (Test)</div>
-</div>
-<div class="cases-container">
-<div class="case-container" data-case="telegram-gift">
-<img alt="Telegram Gift" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Exclusive</div>
-<div class="case-price">Free</div>
-</div>
-<div class="case-container" data-case="telegram-gift-2">
-<img alt="Telegram Gift 2" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Telegram Gift</div>
-<div class="case-price">Free</div>
-</div>
-<!-- Остальные кейсы остаются без изменений -->
-</div>
-</div>
-</div>
-<div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-title">Inventory</div>
-<div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
-</div>
-<div class="market-container hidden" id="marketContainer">
-<div class="market-title">Market</div>
-<div id="ton-connect"></div>
-<div class="filters-container">
-<select class="filter-select" id="characterFilter">
-<option value="">All Characters</option>
-</select>
-<select class="filter-select" id="backgroundFilter">
-<option value="">All Backgrounds</option>
-</select>
-<select class="sort-select" id="priceSort">
-<option value="newest">Newest First</option>
-<option value="price-desc">Price: High to Low</option>
-<option value="price-asc">Price: Low to High</option>
-</select>
-</div>
-<div class="market-items-container" id="marketItems"></div>
-</div>
-<div class="leaderboard-container hidden" id="leaderboardContainer">
-<div class="leaderboard-title">Leaderboard</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<table class="leaderboard-table" id="leaderboardTable">
-<thead>
-<tr>
-<th>Rank</th>
-<th>Player</th>
-<th>Diamonds</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-<div class="shop-arrow left hidden" id="shopArrowLeft">&lt;</div>
-<div class="shop-arrow right hidden" id="shopArrowRight">&gt;</div>
-<div class="inventory-arrow left hidden" id="inventoryArrowLeft">&lt;</div>
-<div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+    <body>
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-ring"></div>
+            <span class="loading-percent" id="loadingPercent">0%</span>
+        </div>
+        <header class="top-menu game-hidden" id="topMenu">
+            <div class="top-menu-left">
+                <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false" />
+                <div class="player-info">
+                    <span class="player-nickname">Player123</span>
+                    <span class="player-max-coins">
+                        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" />
+                        <span id="totalCoins">8000</span>
+                    </span>
+                </div>
+            </div>
+            <div class="top-menu-right">
+                <span class="player-rank">Rank: 1</span>
+                <span class="player-stats">World of Consoles</span>
+                <div class="wallet-container">
+                    <button id="disconnect-wallet">Disconnect Wallet</button>
+                </div>
+            </div>
+        </header>
+        <canvas id="particleCanvas" class="game-hidden"></canvas>
+        <canvas id="confettiCanvas" class="game-hidden"></canvas>
+        <main class="game-hidden" id="mainContent">
+            <div class="income-counter" id="incomeCounter">
+                <span id="incomeRate">0</span> Diamonds/h
+                <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" draggable="false" />
+            </div>
+            <div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
+
+            <div class="coin-counter visible" id="coinCounter">
+                <div class="coin-line">
+                    <span id="coinCount">8000</span>
+                    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false" />
+
+                    <div class="donation-line" id="starDonation" style="cursor: pointer;">
+                        <span id="starCount">0</span>
+                        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Star" style="width: 24px; height: 24px; vertical-align: middle;" />
+                    </div>
+                </div>
+            </div>
+            <div class="character-container">
+                <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller" class="character" id="character" draggable="false" />
+            </div>
+        </main>
+        <div class="shop-container hidden" id="shopContainer">
+            <div class="shop-title">Cases</div>
+            <div class="cases-container">
+                <div class="case-container" data-case="diamond-rain">
+                    <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false" />
+                    <div class="case-name">Diamond Rain</div>
+                    <div class="case-price">100 Diamonds</div>
+                </div>
+                <div class="case-container" data-case="character-magic">
+                    <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false" />
+                    <div class="case-name">Character Magic</div>
+                    <div class="case-price">Free (Test)</div>
+                </div>
+                <div class="cases-container">
+                    <div class="case-container" data-case="telegram-gift">
+                        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift" class="case-image" draggable="false" />
+                        <div class="case-name">Exclusive</div>
+                        <div class="case-price">Free</div>
+                    </div>
+                    <div class="case-container" data-case="telegram-gift-2">
+                        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift 2" class="case-image" draggable="false" />
+                        <div class="case-name">Telegram Gift</div>
+                        <div class="case-price">Free</div>
+                    </div>
+
+                    <!-- Остальные кейсы остаются без изменений -->
+                </div>
+            </div>
+        </div>
+        <div class="inventory-container hidden" id="inventoryContainer">
+            <div class="inventory-title">Inventory</div>
+            <div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
+        </div>
+        <div class="market-container hidden" id="marketContainer">
+            <div class="market-title">Market</div>
+            <div id="ton-connect"></div>
+            <div class="filters-container">
+                <select class="filter-select" id="characterFilter">
+                    <option value="">All Characters</option>
+                </select>
+                <select class="filter-select" id="backgroundFilter">
+                    <option value="">All Backgrounds</option>
+                </select>
+                <select class="sort-select" id="priceSort">
+                    <option value="newest">Newest First</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="price-asc">Price: Low to High</option>
+                </select>
+            </div>
+            <div class="market-items-container" id="marketItems"></div>
+        </div>
+        <div class="leaderboard-container hidden" id="leaderboardContainer">
+            <div class="leaderboard-title">Leaderboard</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <table class="leaderboard-table" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Diamonds</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
+        <div class="shop-arrow right hidden" id="shopArrowRight">></div>
+        <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
+        <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+
+
 <div class="leaderboard-container hidden" id="gamesContainer">
-<div class="leaderboard-title">Minigames</div>
-<div class="cases-container">
-<div class="case-container">
-<img alt="Click Challenge" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Earn Coins</div>
-<div class="case-price">
-<button class="play-game-button" onclick="openEarnCoins()">Play</button>
+  <div class="leaderboard-title">Minigames</div>
+  <div class="cases-container">
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
+      <div class="case-name">Earn Coins</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="openEarnCoins()">Play</button>
+      </div>
+    </div>
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
+      <div class="case-name">Tort</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Memory Match starting!')">Play</button>
+      </div>
+    </div>
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Score Rush" class="case-image" draggable="false" />
+      <div class="case-name">Select Coins</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Score Rush starting!')">Play</button>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-<div class="case-container">
-<img alt="Memory Match" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Tort</div>
-<div class="case-price">
-<button class="play-game-button" onclick="openTortGame()">Play</button>
-</div>
-</div>
-<div class="case-container">
-<img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Select Coins</div>
-<div class="case-price">
-<button class="play-game-button" onclick="alert('Score Rush starting!')">Play</button>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
 
 <footer class="game-hidden" id="footer">
-<div class="footer-menu-container">
-<div class="footer-menu">
-<div class="menu-item highlighted" data-menu="home">
-<img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp"/>
-<span>Home</span>
-</div>
-<div class="menu-item" data-menu="shop">
-<img alt="Shop" draggable="false" src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp"/>
-<span>Shop</span>
-</div>
-<div class="menu-item" data-menu="market">
-<img alt="Market" draggable="false" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<span>Market</span>
-</div>
-<div class="menu-item" data-menu="quests">
-<img alt="Quests" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<span>Quests</span>
-</div>
-<div class="menu-item" data-menu="games">
-<img alt="Games" draggable="false" src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp"/>
-<span>Games</span>
-</div>
-</div>
-</div>
-</footer>
-<div class="leaderboard-container hidden" id="questsContainer">
-<div class="leaderboard-title">Quests</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" style="color: #4fc3f7;" target="_blank">Telegram</a></div>
-<div class="case-price">
-<button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Click the controller 50 times</div>
-<div class="case-price">
-<button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<div class="case-name">Earn 100 Stars</div>
-<div class="case-price">
-<button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Reach Top 10 in Leaderboard</div>
-<div class="case-price">
-<button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="case-name">Earn 3000 Diamonds</div>
-<div class="case-price">
-<button class="claim-button">Claim 100 <img alt="Gem" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px; vertical-align: middle;"/></button>
-</div>
-</div>
-</div>
-</div>
-<div class="leaderboard-container hidden" id="friendsContainer">
-<div class="leaderboard-title">Friends</div>
-<div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
-<button onclick="
+            <div class="footer-menu-container">
+                <div class="footer-menu">
+                    <div class="menu-item highlighted" data-menu="home">
+                        <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false" />
+                        <span>Home</span>
+                    </div>
+                    <div class="menu-item" data-menu="shop">
+                        <img src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" alt="Shop" draggable="false" />
+                        <span>Shop</span>
+                    </div>
+                    <div class="menu-item" data-menu="market">
+                        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Market" draggable="false" />
+                        <span>Market</span>
+                    </div>
+                    <div class="menu-item" data-menu="quests">
+                        <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false" />
+                        <span>Quests</span>
+                    </div>
+                    <div class="menu-item" data-menu="games">
+                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Games" draggable="false" />
+                        <span>Games</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="leaderboard-container hidden" id="questsContainer">
+            <div class="leaderboard-title">Quests</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image" />
+                    <div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" target="_blank" style="color: #4fc3f7;">Telegram</a></div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image" />
+                    <div class="case-name">Click the controller 50 times</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" class="case-image" />
+                    <div class="case-name">Earn 100 Stars</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" class="case-image" />
+                    <div class="case-name">Reach Top 10 in Leaderboard</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image" />
+                    <div class="case-name">Earn 3000 Diamonds</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle;" /></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard-container hidden" id="friendsContainer">
+            <div class="leaderboard-title">Friends</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
+                <button
+                    onclick="
     navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
     const copiedMessage = document.createElement('div');
     copiedMessage.textContent = 'Ссылка скопирована';
@@ -1408,15 +1341,18 @@ function openTortGame() {
     copiedMessage.style.padding = '1rem';
     copiedMessage.style.borderRadius = '12px';
     document.body.appendChild(copiedMessage);
-    setTimeout(() =&gt; copiedMessage.remove(), 1500);
-    " style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;">
+    setTimeout(() => copiedMessage.remove(), 1500);
+    "
+                    style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;"
+                >
                     Copy Invite Link
                 </button>
-<div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;"/></div>
-<div>No friends yet</div>
-</div>
-</div>
-<script>
+                <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;" /></div>
+                <div>No friends yet</div>
+            </div>
+        </div>
+
+        <script>
             const CONFIG = { PARTICLE_COUNT: 50, CLICK_EFFECT_DURATION: 1000, RESIZE_DEBOUNCE: 200, CONFETTI_COUNT: 30, MAX_SCALE: 1.4, MIN_SCALE: 1, SCALE_INCREMENT: 0.1, INCOME_INTERVAL: 3600000 };
             const SKINS = [
                 { src: "https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp", gradient: "radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)", color: "#FFFFFF", worldName: "World of Consoles" },
@@ -1703,8 +1639,7 @@ for (let i = 0; i < this.particles.length; i++) {
                 start() {
                     if (this.isAnimating) return;
                     this.isAnimating = true;
-                    this.spawnCoins(1);
-      animate();
+                    this.animate();
                 }
                 stop() {
                     this.isAnimating = false;
@@ -1786,8 +1721,7 @@ for (let i = 0; i < this.particles.length; i++) {
                     this.isAnimating = true;
                     this.canvas.classList.remove("game-hidden");
                     this.canvas.classList.add("visible");
-                    this.spawnCoins(1);
-      animate();
+                    this.animate();
                 }
                 stop() {
                     this.isAnimating = false;
@@ -3019,39 +2953,9 @@ updateAppearance() {
                 game.initialize();
                 window.addEventListener("beforeunload", () => game.destroy());
             });
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
                 const sections = {
@@ -3105,39 +3009,9 @@ function openTortGame() {
                     });
                 });
             });
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
             const incomeTimer = document.getElementById("incomeTimer");
@@ -3185,90 +3059,32 @@ function openTortGame() {
                     item.classList.add("highlighted");
                 });
             });
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
+        <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
+                <h2 style="margin-bottom: 1rem;">Support the Game</h2>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
+                <div style="margin-top: 1rem;">
+                    <button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
+                </div>
+            </div>
+        </div>
 
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
-<div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
-<h2 style="margin-bottom: 1rem;">Support the Game</h2>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
-<div style="margin-top: 1rem;">
-<button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
-</div>
-</div>
-</div>
-<script>
+        <script>
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
+        <!-- Reward Animation Container -->
+        <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
+            <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
+        </div>
 
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<!-- Reward Animation Container -->
-<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
-<div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
-</div>
-<script>
+        <script>
             function showRewardAnimation(animationPath) {
                 const container = document.getElementById("rewardAnimationContainer");
                 const animEl = document.getElementById("rewardAnimation");
@@ -3287,39 +3103,9 @@ function openTortGame() {
                 const randomPath = animations[Math.floor(Math.random() * animations.length)];
                 showRewardAnimation(randomPath);
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             let walletConnected = false;
 
             function toggleWallet() {
@@ -3342,75 +3128,15 @@ function openTortGame() {
             function disconnectWallet() {
                 console.log("Wallet disconnected");
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3423,39 +3149,9 @@ function openTortGame() {
                     document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
                 }
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3472,39 +3168,9 @@ function openTortGame() {
             function activateX4() {
                 alert("x4 boost feature coming soon!");
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
                 openCasesCount++;
@@ -3531,39 +3197,9 @@ function openTortGame() {
                 document.body.appendChild(msg);
                 setTimeout(() => msg.remove(), 1500);
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             let clicks = 0;
             let telegramVisited = false;
             let stars = 0;
@@ -3624,39 +3260,9 @@ function openTortGame() {
                 document.body.appendChild(msg);
                 setTimeout(() => msg.remove(), 1500);
             }
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<script>
+        <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
                 let telegramVisited = false;
@@ -3722,40 +3328,12 @@ function openTortGame() {
                     setTimeout(() => msg.remove(), 1500);
                 }
             });
+        </script>
 
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
 <div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
 <div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
+
+
 <script>
   const newQuestsArrowLeft = document.getElementById('newQuestsArrowLeft');
   const newQuestsArrowRight = document.getElementById('newQuestsArrowRight');
@@ -3771,38 +3349,9 @@ function openTortGame() {
       }
     });
   });
-
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
 </script>
+
+
 <script>
   let showingFriends = false;
 
@@ -3831,38 +3380,9 @@ function openTortGame() {
 
   document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
   document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
-
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
 </script>
+
+
 <script>
   document.querySelectorAll(".menu-item").forEach(item => {
     item.addEventListener("click", () => {
@@ -3878,683 +3398,41 @@ function openTortGame() {
       }
     });
   });
-
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
 </script>
 
-<style>
-#earnCoinsGameContainer {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
-  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 70%);
-  z-index: 9999;
-  overflow: hidden;
-}
-#earnCoinsGameCanvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-#earnCoinsGameText {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 2rem;
-  font-family: sans-serif;
-  text-align: center;
-  z-index: 10000;
-  pointer-events: none;
-}
-#closeEarnGame {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10001;
-  background: #ff4444;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-</style>
-<div id="earnCoinsGameContainer">
-<canvas id="earnCoinsGameCanvas"></canvas>
-<div id="earnCoinsGameText">Tap or Click to Collect Coins</div>
-<button id="closeEarnGame">✖</button>
-</div>
-<script>
-function openEarnCoins() {
-
-  const container = document.getElementById("earnCoinsGameContainer");
-  const canvas = document.getElementById("earnCoinsGameCanvas");
-  const ctx = canvas.getContext("2d");
-  const text = document.getElementById("earnCoinsGameText");
-  const closeBtn = document.getElementById("closeEarnGame");
-
-  container.style.display = "block";
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  let coins = [];
-  let gameStarted = false;
-  let score = 0;
-  const scoreDisplay = document.getElementById("score");
-  const coinImage = new Image();
-  coinImage.src = "https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png";
-
-  class Coin {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.size = 32;
-      this.speedY = Math.random() * 0.5 + 0.7;
-      this.rotation = Math.random() * Math.PI * 2;
-      this.rotationSpeed = (Math.random() - 0.5) * 0.1;
-    }
-    update() {
-      this.y += this.speedY;
-    this.speedY += 0.0015;this.rotation += this.rotationSpeed;
-    }
-    draw() {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
-      ctx.drawImage(coinImage, -this.size / 2, -this.size / 2, this.size, this.size);
-      ctx.restore();
-    }
-    isOutOfScreen() {
-      return this.y > canvas.height + this.size;
-    }
-  }
-
-  function spawnCoins(count) {
-  if (coins.length >= 8) return;
-    for (let i = 0; i < count; i++) {
-      const x = Math.random() * canvas.width;
-      const y = -50;
-      coins.push(new Coin(x, y));
-    }
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    coins.forEach((coin) => {
-      coin.update();
-      coin.draw();
-    });
-    coins = coins.filter((coin) => !coin.isOutOfScreen());
-    requestAnimationFrame(animate);
-  }
-
-  function startGame() {
-    if (!gameStarted) {
-      gameStarted = true;
-      text.style.display = "none";
-      scoreDisplay.style.display = "block";
-
-      spawnCoins(1);
-      animate();
-    }
-  }
-
-  canvas.addEventListener("click", startGame, { once: true });
-  canvas.addEventListener("touchstart", startGame, { once: true });
-canvas.addEventListener("touchstart", (e) => {
-  if (e.touches.length > 0) {
-    mouseX = e.touches[0].clientX;
-  }
-}, { passive: false });
-
-canvas.addEventListener("touchmove", (e) => {
-  if (e.touches.length > 0) {
-    e.preventDefault();
-    mouseX = e.touches[0].clientX;
-  }
-}, { passive: false });
-
-  canvas.addEventListener("touchmove", (e) => {
-    if (e.touches.length > 0) {
-      e.preventDefault();
-      mouseX = e.touches[0].clientX;
-    }
-  }, { passive: false });
 
 
-  closeBtn.onclick = () => {
-  score = 0;
-  if (scoreDisplay) {
-    scoreDisplay.textContent = "Score: 0";
-    scoreDisplay.style.display = "none";
-  }
-    container.style.display = "none";
-    coins = [];
-    gameStarted = false;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    text.style.display = "block";
-  };
-}
-
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-<style>
-
-#gameOverText {
-  display: none;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 2rem;
-  color: white;
-  z-index: 10001;
-}
-</style>
-<div id="score" style="display: none; position: absolute; top: 1rem; left: 1rem; color: white; font-size: 1.5rem; z-index: 10001;">Score: 0</div>
-<div id="gameOverText">Game Over</div>
-<img id="catcher" src="https://clipart-library.com/images/Bcgje7dc8.png" style="display: none; width: 80px; height: auto; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;"/>
-<script>
-let catcher = document.getElementById("catcher");
-let gameOverText = document.getElementById("gameOverText");
-let mouseX = window.innerWidth / 2;
-
-document.addEventListener("mousemove", (e) => {
-  mouseX = Math.max(60, Math.min(window.innerWidth - 60, e.clientX));
-});
-
-
-document.addEventListener("touchmove", (e) => {
-  if (e.touches.length > 0) {
-    mouseX = e.touches[0].clientX;
-  }
-});
-
-
-function openEarnCoins() {
-
-  const container = document.getElementById("earnCoinsGameContainer");
-  const canvas = document.getElementById("earnCoinsGameCanvas");
-  const ctx = canvas.getContext("2d");
-  const text = document.getElementById("earnCoinsGameText");
-  const closeBtn = document.getElementById("closeEarnGame");
-  catcher = document.getElementById("catcher");
-  gameOverText = document.getElementById("gameOverText");
-
-  container.style.display = "block";
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  if (catcher) catcher.style.display = "block";
-  gameOverText.style.display = "none";
-
-  let coins = [];
-  let gameStarted = false;
-  let score = 0;
-  const scoreDisplay = document.getElementById("score");
-  let gameOver = false;
-  const coinImage = new Image();
-  coinImage.src = "https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png";
-
-  class Coin {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.size = 32;
-      this.speedY = Math.random() * 0.5 + 0.7;
-      this.rotation = Math.random() * Math.PI * 2;
-      this.rotationSpeed = (Math.random() - 0.5) * 0.1;
-    }
-    update() {
-      this.y += this.speedY;
-    this.speedY += 0.0015;this.rotation += this.rotationSpeed;
-    }
-    draw() {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
-      ctx.drawImage(coinImage, -this.size / 2, -this.size / 2, this.size, this.size);
-      ctx.restore();
-    }
-    isOutOfScreen() {
-      return this.y > canvas.height + this.size;
-    }
-isCaught(catcherX) {
-  const catcherTop = canvas.height - 80;  // верхняя граница ракеты
-  const coinBottom = this.y + this.size / 2;
-  const coinTop = this.y - this.size / 2;
-
-  return (
-    coinBottom >= catcherTop &&      // нижняя часть монеты достигла ракеты
-    coinTop <= catcherTop &&         // верхняя часть монеты ещё над ней
-    this.x >= catcherX - 40 &&       // по горизонтали в пределах ракеты
-    this.x <= catcherX + 40
-  );
-}
-
-
-  }
-
-function spawnCoins(count) {
-  if (coins.length >= 8) return;
-  const coinSize = 32;
-  const padding = coinSize / 2;
-  for (let i = 0; i < count; i++) {
-    const x = Math.random() * (canvas.width - 2 * padding) + padding;
-    const y = -50;
-    coins.push(new Coin(x, y));
-  }
-}
-
-
-  function animate() {
-    if (gameOver) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-const catcherWidth = catcher.offsetWidth;
-const maxX = window.innerWidth - catcherWidth / 2;
-const minX = catcherWidth / 2;
-const clampedX = Math.max(minX, Math.min(mouseX, maxX));
-catcher.style.left =  clampedX + "px";
-
-    coins.forEach((coin) => {
-      coin.update();
-      coin.draw();
-    });
-
-    for (let i = 0; i < coins.length; i++) {
-      if (coins[i].isCaught(mouseX)) {
-  coins.splice(i, 1);
-  i--;
-  score++;
-  if (scoreDisplay) scoreDisplay.textContent = "Score: " + score;
-} else if (coins[i].isOutOfScreen()) {
-        gameOver = true;
-        gameOverText.style.display = "block";
-    scoreDisplay.style.display = "none";
-        return;
-      }
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  function startGame() {
-    if (!gameStarted) {
-      gameStarted = true;
-      text.style.display = "none";
-      scoreDisplay.style.display = "block";
-      setInterval(() => { if (!gameOver) spawnCoins(1); }, 1000);
-      spawnCoins(1);
-      animate();
-    }
-  }
-
-  canvas.addEventListener("click", startGame, { once: true });
-  canvas.addEventListener("touchstart", startGame, { once: true });
-canvas.addEventListener("touchstart", (e) => {
-  if (e.touches.length > 0) {
-    mouseX = e.touches[0].clientX;
-  }
-}, { passive: false });
-
-canvas.addEventListener("touchmove", (e) => {
-  if (e.touches.length > 0) {
-    e.preventDefault();
-    mouseX = e.touches[0].clientX;
-  }
-}, { passive: false });
-
-  canvas.addEventListener("touchmove", (e) => {
-    if (e.touches.length > 0) {
-      e.preventDefault();
-      mouseX = e.touches[0].clientX;
-    }
-  }, { passive: false });
-
-
-  closeBtn.onclick = () => {
-  score = 0;
-  if (scoreDisplay) {
-    scoreDisplay.textContent = "Score: 0";
-    scoreDisplay.style.display = "none";
-  }
-    container.style.display = "none";
-    catcher.style.display = "none";
-    gameOverText.style.display = "none";
-    coins = [];
-    gameStarted = false;
-    gameOver = false;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    text.style.display = "block";
-  };
-}
-
-function openTortGame() {
-  // Hide other UI elements
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-
-  // Show or create the game overlay
-  let gameOverlay = document.getElementById("tortGameOverlay");
-  if (!gameOverlay) {
-    gameOverlay = document.createElement("div");
-    gameOverlay.id = "tortGameOverlay";
-    gameOverlay.style.position = "fixed";
-    gameOverlay.style.top = "0";
-    gameOverlay.style.left = "0";
-    gameOverlay.style.width = "100vw";
-    gameOverlay.style.height = "100vh";
-    gameOverlay.style.background = "black";
-    gameOverlay.style.color = "white";
-    gameOverlay.style.display = "flex";
-    gameOverlay.style.alignItems = "center";
-    gameOverlay.style.justifyContent = "center";
-    gameOverlay.style.fontSize = "2rem";
-    gameOverlay.style.zIndex = "1000";
-    gameOverlay.innerText = "Tort game coming soon!";
-    document.body.appendChild(gameOverlay);
-  } else {
-    gameOverlay.style.display = "flex";
-  }
-}
-
-</script>
-
-<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; z-index:1001;">
-  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin:80px auto 0 auto; background:#000000;"></canvas></canvas>
+  </div>
+    </div>
+    <div class="game-card" style="text-align: center;">
+      <div style="color: white; margin-top: 0.5rem;"></div>
+    </div>
+  </div>
 </div>
 
-<script>
-function openTortGame() {
-  document.getElementById("topMenu").classList.add("game-hidden");
-  document.getElementById("mainContent").classList.add("game-hidden");
-  document.getElementById("footer").classList.add("game-hidden");
-  document.getElementById("tortGameCanvasWrapper").style.display = "block";
-  startTortGame();
-}
 
-function startTortGame() {
-  const canvas = document.getElementById("tortGameCanvas");
-  const ctx = canvas.getContext("2d");
-  const width = canvas.width;
-  const height = canvas.height;
-
-  let stack = [];
-  let currentPiece = null;
-  let gameRunning = false;
-
-  function createPiece(size, y, fromLeft) {
-    return {
-      x: fromLeft ? -size : width,
-      y: y,
-      width: size,
-      height: 20,
-      speed: 1.5 + Math.random() * 1.2,
-      fromLeft: fromLeft,
-    };
-  }
-
-  function resetGame() {
-    stack = [{ x: width / 2 - 100, y: height - 20, width: 200, height: 20 }];
-    currentPiece = createPiece(160, height - 80, true);
-    gameRunning = true;
-    animate();
-  }
-
-  function drawPiece(piece, color = "#ff8ca0") {
-    ctx.fillStyle = color;
-    ctx.fillRect(piece.x, piece.y, piece.width, piece.height);
-  }
-
-  function animate() {
-    if (!gameRunning) return;
-    ctx.clearRect(0, 0, width, height);
-    stack.forEach(p => drawPiece(p, "#ffb3c1"));
-
-    if (currentPiece.fromLeft) {
-      currentPiece.x += currentPiece.speed;
-      if (currentPiece.x + currentPiece.width >= width) currentPiece.fromLeft = false;
-    } else {
-      currentPiece.x -= currentPiece.speed;
-      if (currentPiece.x <= 0) currentPiece.fromLeft = true;
-    }
-
-    drawPiece(currentPiece);
-    requestAnimationFrame(animate);
-  }
-
-  canvas.onclick = () => {
-    if (!gameRunning) return;
-    const top = stack[stack.length - 1];
-    const overhang = currentPiece.x - top.x;
-
-    if (Math.abs(overhang) > top.width) {
-      gameRunning = false;
-      alert("Game Over! Stack height: " + stack.length);
-      document.getElementById("tortGameCanvasWrapper").style.display = "none";
-      document.getElementById("topMenu").classList.remove("game-hidden");
-      document.getElementById("mainContent").classList.remove("game-hidden");
-      document.getElementById("footer").classList.remove("game-hidden");
-      return;
-    }
-
-    const newWidth = currentPiece.width - Math.abs(overhang);
-    const newX = overhang > 0 ? currentPiece.x : top.x;
-
-    stack.push({ x: newX, y: top.y - 20, width: newWidth, height: 20 });
-    currentPiece = createPiece(newWidth - 10, top.y - 60, stack.length % 2 === 0);
-  };
-
-  resetGame();
-}
-</script>
-
-
-<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; z-index:1001;">
-  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin:80px auto 0 auto; background:#000000;"></canvas>
+<!-- Earn Coins Modal -->
+<div id="earnCoinsModal" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9);">
+  <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; flex-direction:column; position:relative;">
+    <button onclick="closeEarnCoins()" style="position:absolute; top:20px; right:20px; z-index:1010; padding:10px 20px; font-size:16px;">Закрыть</button>
+    <iframe srcdoc="&lt;!DOCTYPE html&gt;&#10;&lt;html lang=&quot;ru&quot;&gt;&#10;&lt;head&gt;&#10;    &lt;meta charset=&quot;UTF-8&quot;&gt;&#10;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;&#10;    &lt;title&gt;Лови Монеты!&lt;/title&gt;&#10;    &lt;style&gt;&#10;        body {&#10;            display: flex;&#10;            justify-content: center;&#10;            align-items: center;&#10;            height: 100vh;&#10;            margin: 0;&#10;            background-color: #f0f0f0;&#10;            font-family: Arial, sans-serif;&#10;            overflow: hidden;&#10;        }&#10;        #gameCanvas {&#10;            border: 2px solid #333;&#10;            background-color: #87ceeb;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;        }&#10;        #score {&#10;            position: absolute;&#10;            top: 20px;&#10;            left: 20px;&#10;            font-size: 24px;&#10;            font-weight: bold;&#10;            color: #333;&#10;            z-index: 10;&#10;        }&#10;        #gameOver {&#10;            position: absolute;&#10;            display: none;&#10;            flex-direction: column;&#10;            justify-content: center;&#10;            align-items: center;&#10;            background-color: rgba(0, 0, 0, 0.7);&#10;            color: white;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;            z-index: 20;&#10;        }&#10;        #gameOver h2 {&#10;            font-size: 32px;&#10;            margin: 10px;&#10;        }&#10;        #gameOver p {&#10;            font-size: 24px;&#10;            margin: 10px;&#10;        }&#10;        #restartButton {&#10;            padding: 10px 20px;&#10;            font-size: 18px;&#10;            background-color: #ffd700;&#10;            border: none;&#10;            border-radius: 5px;&#10;            cursor: pointer;&#10;        }&#10;        @media (max-width: 600px) {&#10;            #score {&#10;                font-size: 18px;&#10;            }&#10;            #gameOver h2 {&#10;                font-size: 24px;&#10;            }&#10;            #gameOver p {&#10;                font-size: 18px;&#10;            }&#10;            #restartButton {&#10;                font-size: 16px;&#10;                padding: 8px 16px;&#10;            }&#10;        }&#10;    &lt;/style&gt;&#10;&lt;/head&gt;&#10;&lt;body&gt;&#10;    &lt;div id=&quot;score&quot;&gt;Счет: 0&lt;/div&gt;&#10;    &lt;div id=&quot;gameOver&quot;&gt;&#10;        &lt;h2&gt;Игра окончена!&lt;/h2&gt;&#10;        &lt;p id=&quot;finalScore&quot;&gt;Счет: 0&lt;/p&gt;&#10;        &lt;button id=&quot;restartButton&quot;&gt;Играть снова&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;canvas id=&quot;gameCanvas&quot; width=&quot;800&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;&#10;    &lt;div style=&quot;position: absolute; top: 20px; right: 20px; z-index: 30;&quot;&gt;&#10;        &lt;button onclick=&quot;openEarnCoins()&quot; style=&quot;padding: 10px 20px; font-size: 16px;&quot;&gt;Play Mini Game&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;div id=&quot;earnCoinsModal&quot; style=&quot;display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9);&quot;&gt;&#10;        &lt;div style=&quot;width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; position: relative;&quot;&gt;&#10;            &lt;button onclick=&quot;closeEarnCoins()&quot; style=&quot;position: absolute; top: 20px; right: 20px; z-index: 1010; padding: 10px 20px; font-size: 16px;&quot;&gt;Закрыть&lt;/button&gt;&#10;            &lt;iframe id=&quot;earnCoinsIframe&quot; srcdoc=&quot;&quot; width=&quot;800&quot; height=&quot;600&quot; style=&quot;max-width: 95vw; max-height: 90vh; border: none; background: white;&quot;&gt;&lt;/iframe&gt;&#10;        &lt;/div&gt;&#10;    &lt;/div&gt;&#10;    &lt;script&gt;&#10;        function openEarnCoins() {&#10;            const html = document.documentElement.outerHTML;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = html;&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;block&quot;;&#10;        }&#10;&#10;        function closeEarnCoins() {&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;none&quot;;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = &quot;&quot;;&#10;        }&#10;    &lt;/script&gt;&#10;    &lt;script&gt;&#10;        // Игра &quot;Earn Coins&quot;&#10;        const canvas = document.getElementById(&#x27;gameCanvas&#x27;);&#10;        const ctx = canvas.getContext(&#x27;2d&#x27;);&#10;        const scoreDisplay = document.getElementById(&#x27;score&#x27;);&#10;        const gameOverScreen = document.getElementById(&#x27;gameOver&#x27;);&#10;        const finalScoreDisplay = document.getElementById(&#x27;finalScore&#x27;);&#10;        const restartButton = document.getElementById(&#x27;restartButton&#x27;);&#10;&#10;        function resizeCanvas() {&#10;            const aspectRatio = 800 / 600;&#10;            let width = window.innerWidth;&#10;            let height = window.innerHeight;&#10;            if (width / height &gt; aspectRatio) {&#10;                width = height * aspectRatio;&#10;            } else {&#10;                height = width / aspectRatio;&#10;            }&#10;            canvas.style.width = `${width}px`;&#10;            canvas.style.height = `${height}px`;&#10;            canvas.width = 800;&#10;            canvas.height = 600;&#10;        }&#10;        window.addEventListener(&#x27;resize&#x27;, resizeCanvas);&#10;        resizeCanvas();&#10;&#10;        const player = {&#10;            x: canvas.width / 2 - 50,&#10;            y: canvas.height - 50,&#10;            width: 100,&#10;            height: 50,&#10;            speed: 10&#10;        };&#10;&#10;        let coins = [];&#10;        let score = 0;&#10;        let coinSpeed = 2;&#10;        let gameActive = true;&#10;        let keys = { ArrowLeft: false, ArrowRight: false };&#10;        let isDragging = false;&#10;        let touchX = 0;&#10;&#10;        document.addEventListener(&#x27;keydown&#x27;, (e) =&gt; {&#10;            if (gameActive &amp;&amp; e.key in keys) keys[e.key] = true;&#10;        });&#10;        document.addEventListener(&#x27;keyup&#x27;, (e) =&gt; {&#10;            if (e.key in keys) keys[e.key] = false;&#10;        });&#10;&#10;        canvas.addEventListener(&#x27;touchstart&#x27;, (e) =&gt; {&#10;            if (!gameActive) return;&#10;            e.preventDefault();&#10;            isDragging = true;&#10;            touchX = e.touches[0].clientX;&#10;        });&#10;        canvas.addEventListener(&#x27;touchmove&#x27;, (e) =&gt; {&#10;            if (!gameActive || !isDragging) return;&#10;            e.preventDefault();&#10;            const deltaX = (e.touches[0].clientX - touchX) * (canvas.width / canvas.clientWidth);&#10;            touchX = e.touches[0].clientX;&#10;            player.x += deltaX;&#10;            if (player.x &lt; 0) player.x = 0;&#10;            if (player.x &gt; canvas.width - player.width) player.x = canvas.width - player.width;&#10;        });&#10;        canvas.addEventListener(&#x27;touchend&#x27;, () =&gt; {&#10;            isDragging = false;&#10;        });&#10;&#10;        function spawnCoin() {&#10;            if (!gameActive) return;&#10;            const coin = {&#10;                x: Math.random() * (canvas.width - 30),&#10;                y: 0,&#10;                width: 30,&#10;                height: 30,&#10;                speed: coinSpeed&#10;            };&#10;            coins.push(coin);&#10;        }&#10;&#10;        function spawnCoins() {&#10;            if (!gameActive) return;&#10;            spawnCoin();&#10;            setTimeout(spawnCoins, 1000 - Math.min(score * 50, 700));&#10;        }&#10;&#10;        function endGame() {&#10;            gameActive = false;&#10;            finalScoreDisplay.textContent = `Счет: ${score}`;&#10;            gameOverScreen.style.display = &#x27;flex&#x27;;&#10;        }&#10;&#10;        function restartGame() {&#10;            gameActive = true;&#10;            score = 0;&#10;            coinSpeed = 2;&#10;            coins = [];&#10;            player.x = canvas.width / 2 - 50;&#10;            keys = { ArrowLeft: false, ArrowRight: false };&#10;            isDragging = false;&#10;            scoreDisplay.textContent = `Счет: 0`;&#10;            gameOverScreen.style.display = &#x27;none&#x27;;&#10;            spawnCoins();&#10;            if (!window.gameLoopRunning) {&#10;                window.gameLoopRunning = true;&#10;                requestAnimationFrame(update);&#10;            }&#10;        }&#10;&#10;        restartButton.addEventListener(&#x27;click&#x27;, restartGame);&#10;&#10;        function update() {&#10;            if (!gameActive) {&#10;                window.gameLoopRunning = false;&#10;                return;&#10;            }&#10;&#10;            if (keys.ArrowLeft &amp;&amp; player.x &gt; 0) player.x -= player.speed;&#10;            if (keys.ArrowRight &amp;&amp; player.x &lt; canvas.width - player.width) player.x += player.speed;&#10;&#10;            coins.forEach((coin, index) =&gt; {&#10;                coin.y += coin.speed;&#10;                coin.speed = coinSpeed;&#10;&#10;                const playerActiveHeight = player.height * 0.2;&#10;                const playerActiveBottom = player.y + playerActiveHeight;&#10;                const playerActiveWidth = 80;&#10;                const playerActiveLeft = player.x + (player.width - playerActiveWidth) / 2;&#10;                const playerActiveRight = playerActiveLeft + playerActiveWidth;&#10;&#10;                if (&#10;                    coin.y + coin.height &gt;= player.y &amp;&amp;&#10;                    coin.y &lt;= playerActiveBottom &amp;&amp;&#10;                    coin.x + coin.width &gt;= playerActiveLeft &amp;&amp;&#10;                    coin.x &lt;= playerActiveRight&#10;                ) {&#10;                    score += 10;&#10;                    coins.splice(index, 1);&#10;                    scoreDisplay.textContent = `Счет: ${score}`;&#10;                    coinSpeed += 0.05;&#10;                }&#10;&#10;                if (coin.y &gt; canvas.height) {&#10;                    coins.splice(index, 1);&#10;                    endGame();&#10;                }&#10;            });&#10;&#10;            ctx.clearRect(0, 0, canvas.width, canvas.height);&#10;            ctx.fillStyle = &#x27;#8b4513&#x27;;&#10;            ctx.fillRect(player.x, player.y, player.width, player.height);&#10;            ctx.fillStyle = &#x27;#ffd700&#x27;;&#10;            coins.forEach(coin =&gt; {&#10;                ctx.beginPath();&#10;                ctx.arc(coin.x + coin.width / 2, coin.y + coin.height / 2, coin.width / 2, 0, Math.PI * 2);&#10;                ctx.fill();&#10;            });&#10;&#10;            requestAnimationFrame(update);&#10;        }&#10;&#10;        window.gameLoopRunning = true;&#10;        spawnCoins();&#10;        requestAnimationFrame(update);&#10;    &lt;/script&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;&#10;" width="800" height="600" style="max-width:95vw; max-height:90vh; border:none; background:white;"></iframe>
+  </div>
 </div>
-
 <script>
-function openTortGame() {
-  document.getElementById("topMenu")?.classList.add("game-hidden");
-  document.getElementById("mainContent")?.classList.add("game-hidden");
-  document.getElementById("footer")?.classList.add("game-hidden");
-  document.getElementById("tortGameCanvasWrapper").style.display = "block";
-  startTortGame();
-}
-
-function startTortGame() {
-  const canvas = document.getElementById("tortGameCanvas");
-  const ctx = canvas.getContext("2d");
-  const width = canvas.width;
-  const height = canvas.height;
-
-  let stack = [];
-  let currentPiece = null;
-  let gameRunning = false;
-
-  function createPiece(size, y, fromLeft) {
-    return {
-      x: fromLeft ? -size : width,
-      y: y,
-      width: size,
-      height: 20,
-      speed: 1.5 + Math.random() * 1.2,
-      fromLeft: fromLeft,
-    };
+  function openEarnCoins() {
+    document.getElementById("earnCoinsModal").style.display = "block";
   }
-
-  function resetGame() {
-    stack = [{ x: width / 2 - 100, y: height - 20, width: 200, height: 20 }];
-    currentPiece = createPiece(190, height - 60, true);
-    gameRunning = true;
-    animate();
+  function closeEarnCoins() {
+    document.getElementById("earnCoinsModal").style.display = "none";
   }
-
-  function drawPiece(piece, color = "#ff8ca0") {
-    ctx.fillStyle = color;
-    ctx.fillRect(piece.x, piece.y, piece.width, piece.height);
-  }
-
-  function animate() {
-    if (!gameRunning) return;
-    ctx.clearRect(0, 0, width, height);
-    stack.forEach(p => drawPiece(p, "#ffb3c1"));
-
-    if (currentPiece.fromLeft) {
-      currentPiece.x += currentPiece.speed;
-      if (currentPiece.x + currentPiece.width >= width) currentPiece.fromLeft = false;
-    } else {
-      currentPiece.x -= currentPiece.speed;
-      if (currentPiece.x <= 0) currentPiece.fromLeft = true;
-    }
-
-    drawPiece(currentPiece);
-    requestAnimationFrame(animate);
-  }
-
-  canvas.onclick = () => {
-    if (!gameRunning) return;
-    const top = stack[stack.length - 1];
-    const overhang = currentPiece.x - top.x;
-
-    if (Math.abs(overhang) > top.width) {
-      gameRunning = false;
-      alert("Game Over! Stack height: " + stack.length);
-      document.getElementById("tortGameCanvasWrapper").style.display = "none";
-      document.getElementById("topMenu")?.classList.remove("game-hidden");
-      document.getElementById("mainContent")?.classList.remove("game-hidden");
-      document.getElementById("footer")?.classList.remove("game-hidden");
-      return;
-    }
-
-    const newWidth = currentPiece.width - Math.abs(overhang);
-    const newX = overhang > 0 ? currentPiece.x : top.x;
-
-    stack.push({ x: newX, y: top.y - 20, width: newWidth, height: 20 });
-    currentPiece = createPiece(newWidth * 0.95, top.y - 60, stack.length % 2 === 0);
-  };
-
-  resetGame();
-}
-
 </script>
+
+
 <script>
-window.addEventListener("DOMContentLoaded", () => {
-  const particleCanvas = document.getElementById("particleCanvas");
-  const confettiCanvas = document.getElementById("confettiCanvas");
-
-  if (particleCanvas && typeof ParticleSystem !== "undefined") {
-    const particleSystem = new ParticleSystem(particleCanvas, 90);
-    particleSystem.start();
-    window.addEventListener("resize", () => particleSystem.resize());
-  }
-
-  if (confettiCanvas && typeof ConfettiSystem !== "undefined") {
-    const confettiSystem = new ConfettiSystem(confettiCanvas, 100);
-    confettiSystem.start();
-    window.addEventListener("resize", () => confettiSystem.resize());
-  }
-
-  if (typeof ClickEffectPool !== "undefined") {
-    const effectPool = new ClickEffectPool();
-    document.addEventListener("click", (e) => {
-      effectPool.showEffect(e.clientX, e.clientY);
-    });
-  }
-});
-</script>
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-  const particleCanvas = document.getElementById("particleCanvas");
-  const confettiCanvas = document.getElementById("confettiCanvas");
-
-  if (particleCanvas && typeof ParticleSystem !== "undefined") {
-    const particleSystem = new ParticleSystem(particleCanvas, 90);
-    particleSystem.resize();
-    particleSystem.animate(); // <- ЭТО ВАЖНО: запускает отрисовку
-    window.addEventListener("resize", () => particleSystem.resize());
-  }
-
-  if (confettiCanvas && typeof ConfettiSystem !== "undefined") {
-    const confettiSystem = new ConfettiSystem(confettiCanvas, 100);
-    confettiSystem.resize();
-    confettiSystem.animate(); // <- запускает анимацию конфетти (если включено)
-    window.addEventListener("resize", () => confettiSystem.resize());
-  }
-
-  if (typeof ClickEffectPool !== "undefined") {
-    const effectPool = new ClickEffectPool();
-    document.addEventListener("click", (e) => {
-      effectPool.showEffect(e.clientX, e.clientY);
-    });
-  }
-});
+  window.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('button.claim-button[onclick*="openEarnCoins"]');
+    buttons.forEach(btn => btn.removeAttribute('disabled'));
+  });
 </script>
 
 </body>
