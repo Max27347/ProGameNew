@@ -1108,6 +1108,62 @@
   }
 </style>
 
+<style>
+.play-game-button {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+</style>
+
+<style>
+#earnCoinsGameContainer {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 70%);
+  z-index: 9999;
+  overflow: hidden;
+}
+#earnCoinsGameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#earnCoinsGameText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  font-family: sans-serif;
+  text-align: center;
+  z-index: 10000;
+  pointer-events: none;
+}
+#closeEarnGame {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10001;
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
 </head>
     <body>
         <div class="loading-screen" id="loadingScreen">
@@ -1230,15 +1286,15 @@
 
 
 <div class="leaderboard-container hidden" id="gamesContainer">
-  <div class="leaderboard-title">Minigames</div>
-  <div class="cases-container">
-    <div class="case-container">
-      <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
-      <div class="case-name">Earn Coins</div>
-      <div class="case-price">
-        <button class="claim-button" onclick="openEarnCoins()">Play</button>
-      </div>
-    </div>
+<div class="leaderboard-title">Minigames</div>
+<div class="cases-container">
+<div class="case-container">
+<img alt="Click Challenge" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
+<div class="case-name">Earn Coins</div>
+<div class="case-price">
+<button class="play-game-button" onclick="openEarnCoins()">Play</button>
+</div>
+</div>
     <div class="case-container">
       <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
       <div class="case-name">Tort</div>
@@ -1258,11 +1314,11 @@
 
 <footer class="game-hidden" id="footer">
             <div class="footer-menu-container">
-                <div class="footer-menu">
-                    <div class="menu-item highlighted" data-menu="home">
-                        <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false" />
-                        <span>Home</span>
-                    </div>
+<div class="footer-menu">
+<div class="menu-item highlighted" data-menu="home">
+<img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp"/>
+<span>Home</span>
+</div>
                     <div class="menu-item" data-menu="shop">
                         <img src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" alt="Shop" draggable="false" />
                         <span>Shop</span>
@@ -3435,5 +3491,278 @@ updateAppearance() {
   });
 </script>
 
+
+<div id="earnCoinsGameContainer">
+  <canvas id="earnCoinsGameCanvas"></canvas>
+
+  <button id="closeEarnGame">✖</button>
+</div>
+<div id="score" style="display: none; position: absolute; top: 1rem; left: 1rem; color: white; font-size: 1.5rem; z-index: 10001;">Score: 0</div>
+<div id="gameOverText">Game Over</div>
+<img id="catcher" src="https://clipart-library.com/images/Bcgje7dc8.png" style="display: none; width: 80px; height: auto; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;">
+
+
+<script>
+function openEarnCoins() {
+  const container = document.getElementById("earnCoinsGameContainer");
+  const canvas = document.getElementById("earnCoinsGameCanvas");
+  const ctx = canvas.getContext("2d");
+  const text = document.getElementById("earnCoinsGameText");
+  const closeBtn = document.getElementById("closeEarnGame");
+  const catcher = document.getElementById("catcher");
+  const gameOverText = document.getElementById("gameOverText");
+
+  container.style.display = "block";
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  if (catcher) catcher.style.display = "block";
+  gameOverText.style.display = "none";
+
+  let coins = [];
+  let score = 0;
+  let gameOver = false;
+  const scoreDisplay = document.getElementById("score");
+  const coinImage = new Image();
+  coinImage.src = "https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png";
+
+  class Coin {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 32;
+      this.speedY = Math.random() * 0.5 + 0.7;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+    }
+    update() {
+      this.y += this.speedY;
+      this.speedY += 0.0015;
+      this.rotation += this.rotationSpeed;
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.drawImage(coinImage, -this.size / 2, -this.size / 2, this.size, this.size);
+      ctx.restore();
+    }
+    isOutOfScreen() {
+      return this.y > canvas.height + this.size;
+    }
+    isCaught(catcherX) {
+      const catcherTop = canvas.height - 80;
+      const coinBottom = this.y + this.size / 2;
+      const coinTop = this.y - this.size / 2;
+      return (
+        coinBottom >= catcherTop &&
+        coinTop <= catcherTop &&
+        this.x >= catcherX - 40 &&
+        this.x <= catcherX + 40
+      );
+    }
+  }
+
+  function spawnCoins(count) {
+    if (coins.length >= 8) return;
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * canvas.width;
+      const y = -50;
+      coins.push(new Coin(x, y));
+    }
+  }
+
+  function animate() {
+    if (gameOver) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    coins.forEach((coin) => {
+      coin.update();
+      coin.draw();
+    });
+
+    coins = coins.filter((coin) => {
+      if (coin.isCaught(mouseX)) {
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+        return false;
+      }
+      if (coin.isOutOfScreen()) {
+        gameOver = true;
+        catcher.style.display = "none";
+        gameOverText.style.display = "block";
+        return false;
+      }
+      return true;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  let mouseX = window.innerWidth / 2;
+  document.addEventListener("mousemove", (e) => {
+    mouseX = Math.max(60, Math.min(window.innerWidth - 60, e.clientX));
+  });
+  document.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      mouseX = e.touches[0].clientX;
+    }
+  });
+
+  scoreDisplay.style.display = "block";
+  spawnCoins(1);
+  animate();
+
+  closeBtn.onclick = () => {
+    container.style.display = "none";
+    catcher.style.display = "none";
+    scoreDisplay.style.display = "none";
+    gameOverText.style.display = "none";
+    gameOver = true;
+  };
+}
+</script>
+
+<script>function openEarnCoins() {
+
+  const container = document.getElementById("earnCoinsGameContainer");
+  const canvas = document.getElementById("earnCoinsGameCanvas");
+  const ctx = canvas.getContext("2d");
+  const text = document.getElementById("earnCoinsGameText");
+  const closeBtn = document.getElementById("closeEarnGame");
+
+  container.style.display = "block";
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let coins = [];
+  let gameStarted = false;
+  let score = 0;
+  const scoreDisplay = document.getElementById("score");
+  const coinImage = new Image();
+  coinImage.src = "https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png";
+
+  class Coin {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 32;
+      this.speedY = Math.random() * 0.5 + 0.7;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+    }
+    update() {
+      this.y += this.speedY;
+    this.speedY += 0.0015;this.rotation += this.rotationSpeed;
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.drawImage(coinImage, -this.size / 2, -this.size / 2, this.size, this.size);
+      ctx.restore();
+    }
+    isOutOfScreen() {
+      return this.y > canvas.height + this.size;
+    }
+  }
+
+  function spawnCoins(count) {
+  if (coins.length >= 8) return;
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * canvas.width;
+      const y = -50;
+      coins.push(new Coin(x, y));
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    coins.forEach((coin) => {
+      coin.update();
+      coin.draw();
+    });
+    coins = coins.filter((coin) => !coin.isOutOfScreen());
+    requestAnimationFrame(animate);
+  }
+
+  function startGame() {
+    if (!gameStarted) {
+      gameStarted = true;
+      text.style.display = "none";
+      scoreDisplay.style.display = "block";
+
+      spawnCoins(1);
+      animate();
+    }
+  }
+
+  canvas.addEventListener("click", startGame, { once: true });
+  canvas.addEventListener("touchstart", startGame, { once: true });
+canvas.addEventListener("touchstart", (e) => {
+  if (e.touches.length > 0) {
+    mouseX = e.touches[0].clientX;
+  }
+}, { passive: false });
+
+canvas.addEventListener("touchmove", (e) => {
+  if (e.touches.length > 0) {
+    e.preventDefault();
+    mouseX = e.touches[0].clientX;
+  }
+}, { passive: false });
+
+  canvas.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      e.preventDefault();
+      mouseX = e.touches[0].clientX;
+    }
+  }, { passive: false });
+
+
+  closeBtn.onclick = () => {
+  score = 0;
+  if (scoreDisplay) {
+    scoreDisplay.textContent = "Score: 0";
+    scoreDisplay.style.display = "none";
+  }
+    container.style.display = "none";
+    coins = [];
+    gameStarted = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    text.style.display = "block";
+  };
+}
+
+function openTortGame() {
+  // Hide other UI elements
+  document.getElementById("topMenu").classList.add("game-hidden");
+  document.getElementById("mainContent").classList.add("game-hidden");
+  document.getElementById("footer").classList.add("game-hidden");
+
+  // Show or create the game overlay
+  let gameOverlay = document.getElementById("tortGameOverlay");
+  if (!gameOverlay) {
+    gameOverlay = document.createElement("div");
+    gameOverlay.id = "tortGameOverlay";
+    gameOverlay.style.position = "fixed";
+    gameOverlay.style.top = "0";
+    gameOverlay.style.left = "0";
+    gameOverlay.style.width = "100vw";
+    gameOverlay.style.height = "100vh";
+    gameOverlay.style.background = "black";
+    gameOverlay.style.color = "white";
+    gameOverlay.style.display = "flex";
+    gameOverlay.style.alignItems = "center";
+    gameOverlay.style.justifyContent = "center";
+    gameOverlay.style.fontSize = "2rem";
+    gameOverlay.style.zIndex = "1000";
+    gameOverlay.innerText = "Tort game coming soon!";
+    document.body.appendChild(gameOverlay);
+  } else {
+    gameOverlay.style.display = "flex";
+  }
+}
+
+</script></script>
 </body>
 </html>
