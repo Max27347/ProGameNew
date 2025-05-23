@@ -1266,7 +1266,7 @@
       <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
       <div class="case-name">Tort</div>
       <div class="case-price">
-        <button class="play-game-button" onclick="alert('Memory Match starting!')">Play</button>
+        <button class="play-game-button" onclick="openTortGame()">Play</button>
       </div>
     </div>
     <div class="case-container">
@@ -3471,36 +3471,339 @@ function openEarnCoins() {
 
 
 
+<!-- Cake and Hockey Games -->
+<div id="cakeGame" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111;">
+  <canvas id="cakeCanvas" style="display:block; margin:0 auto;" width="400" height="600"></canvas>
+</div>
+<div id="hockeyGame" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111;">
+  <canvas id="hockeyCanvas" style="display:block; margin:0 auto;" width="400" height="600"></canvas>
+</div>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const player = document.getElementById("catchPlayer");
-  const game = document.getElementById("catchGame");
+function startCake() {
+  document.getElementById('gamesContainer').classList.add('hidden');
+  document.getElementById('cakeGame').style.display = 'block';
+  initCakeGame();
+}
+function startHockey() {
+  document.getElementById('gamesContainer').classList.add('hidden');
+  document.getElementById('hockeyGame').style.display = 'block';
+  initHockeyGame();
+}
 
-  let isTouching = false;
+// Cake Game
+function initCakeGame() {
+  const canvas = document.getElementById('cakeCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const baseWidth = 150;
+  let currentWidth = baseWidth;
+  let platforms = [
+    { x: canvas.width / 2 - baseWidth / 2, y: canvas.height - 40, width: baseWidth }
+];
+  let falling = null;
+  let direction = 1;
+  let score = 0;
 
-  game.addEventListener("touchstart", (e) => {
-    isTouching = true;
-    movePlayer(e.touches[0].clientX);
-  });
 
-  game.addEventListener("touchmove", (e) => {
-    if (isTouching) {
-      movePlayer(e.touches[0].clientX);
-    }
-  });
-
-  game.addEventListener("touchend", () => {
-    isTouching = false;
-  });
-
-  function movePlayer(x) {
-    const gameRect = game.getBoundingClientRect();
-    const playerWidth = player.offsetWidth;
-    let newLeft = x - gameRect.left - playerWidth / 2;
-    newLeft = Math.max(0, Math.min(newLeft, game.clientWidth - playerWidth));
-    player.style.left = newLeft + "px";
+function spawnPlatform() {
+  currentWidth -= 5;
+  if (direction > 0) {
+    falling = { x: 0, y: 0, width: currentWidth };
+  } else {
+    falling = { x: canvas.width - currentWidth, y: 0, width: currentWidth };
   }
-});
+  direction *= -1;
+}
+;
+    direction *= -1;
+  }
+
+  function updateCake() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    platforms.forEach(p => {
+      ctx.fillStyle = '#ff9800';
+      ctx.fillRect(p.x, p.y, p.width, 20);
+    });
+    if (falling) {
+      falling.x += 4 * direction;
+      ctx.fillStyle = '#ff5722';
+      ctx.fillRect(falling.x, falling.y, falling.width, 20);
+    }
+  }
+
+  function drop() {
+    if (!falling) return;
+    const top = platforms[platforms.length - 1];
+    const fallCenter = falling.x + falling.width / 2;
+    const topCenter = top.x + top.width / 2;
+    if (Math.abs(fallCenter - topCenter) < top.width / 2) {
+      platforms.push({
+        x: falling.x,
+        y: top.y - 22,
+        width: falling.width
+      });
+      score++;
+      spawnPlatform();
+    } else {
+      alert("Игра окончена! Счёт: " + score);
+      location.reload();
+    }
+    falling = null;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === ' ') drop();
+  });
+
+  spawnPlatform();
+  function loop() {
+    if (falling) falling.y += 4;
+    updateCake();
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+// Hockey Game
+function initHockeyGame() {
+  const canvas = document.getElementById('hockeyCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let player = { x: canvas.width / 2 - 25, width: 50 };
+  let cpu = { x: canvas.width / 2 - 25, width: 50 };
+  let puck = { x: canvas.width / 2, y: canvas.height / 2, vx: 3, vy: 3 };
+  let cpuScore = 0;
+
+  canvas.addEventListener('touchmove', e => {
+    const rect = canvas.getBoundingClientRect();
+    player.x = e.touches[0].clientX - rect.left - player.width / 2;
+  });
+
+  function resetPuck() {
+    puck.x = canvas.width / 2;
+    puck.y = canvas.height / 2;
+    puck.vx = 3;
+    puck.vy = 3;
+  }
+
+  function updateHockey() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(player.x, canvas.height - 20, player.width, 10);
+    ctx.fillRect(cpu.x, 10, cpu.width, 10);
+    ctx.beginPath();
+    ctx.arc(puck.x, puck.y, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    puck.x += puck.vx;
+    puck.y += puck.vy;
+
+    if (puck.x < 0 || puck.x > canvas.width) puck.vx *= -1;
+
+    if (puck.y < 20 && puck.x > cpu.x && puck.x < cpu.x + cpu.width) puck.vy *= -1;
+    if (puck.y > canvas.height - 30 && puck.x > player.x && puck.x < player.x + player.width) {
+      puck.vy *= -1;
+      puck.vx *= 1.1;
+      puck.vy *= 1.1;
+    }
+
+    if (puck.y < 0) resetPuck();
+    if (puck.y > canvas.height) {
+      cpuScore++;
+      if (cpuScore >= 3) {
+        alert("Компьютер победил!");
+        location.reload();
+      }
+      resetPuck();
+    }
+
+    if (cpu.x + cpu.width / 2 < puck.x) cpu.x += 2;
+    if (cpu.x + cpu.width / 2 > puck.x) cpu.x -= 2;
+  }
+
+  function loop() {
+    updateHockey();
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+</script>
+
+
+<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:1001;">
+  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin:80px auto 0 auto; background:#000;"></canvas>
+</div>
+
+<script>
+function openTortGame() {
+  document.getElementById("topMenu")?.classList.add("game-hidden");
+  document.getElementById("mainContent")?.classList.add("game-hidden");
+  document.getElementById("footer")?.classList.add("game-hidden");
+  document.getElementById("tortGameCanvasWrapper").style.display = "block";
+  startTortGame();
+}
+
+function startTortGame() {
+  const canvas = document.getElementById('tortGameCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let platforms = [
+    { x: canvas.width / 2 - 80, y: canvas.height - 30, width: 160 },
+    { x: canvas.width / 2 - 70, y: canvas.height - 55, width: 140 }
+  ];
+  let falling = null;
+  let direction = 1;
+  let score = 0;
+  let currentWidth = 130;
+
+
+function spawnPlatform() {
+  currentWidth -= 5;
+  if (direction > 0) {
+    falling = { x: 0, y: 0, width: currentWidth };
+  } else {
+    falling = { x: canvas.width - currentWidth, y: 0, width: currentWidth };
+  }
+  direction *= -1;
+}
+;
+    direction *= -1;
+  }
+
+  function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    platforms.forEach(p => {
+      ctx.fillStyle = '#ffc107';
+      ctx.fillRect(p.x, p.y, p.width, 20);
+    });
+    if (falling) {
+      falling.x += 4 * direction;
+      falling.y += 3;
+      ctx.fillStyle = '#ff5722';
+      ctx.fillRect(falling.x, falling.y, falling.width, 20);
+    }
+  }
+
+  function drop() {
+    if (!falling) return;
+    const top = platforms[platforms.length - 1];
+    const fallCenter = falling.x + falling.width / 2;
+    const topCenter = top.x + top.width / 2;
+    if (Math.abs(fallCenter - topCenter) < top.width / 2) {
+      platforms.push({
+        x: falling.x,
+        y: top.y - 22,
+        width: falling.width
+      });
+      score++;
+      spawnPlatform();
+    } else {
+      alert("Игра окончена! Счёт: " + score);
+      location.reload();
+    }
+    falling = null;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === ' ') drop();
+  });
+
+  spawnPlatform();
+
+  function loop() {
+    update();
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+</script>
+
+
+<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:1001;">
+  <canvas id="tortGameCanvas" width="400" height="600" style="display:block; margin:80px auto 0 auto; background:#000;"></canvas>
+</div>
+
+<script>
+function openTortGame() {
+  document.getElementById("topMenu")?.classList.add("game-hidden");
+  document.getElementById("mainContent")?.classList.add("game-hidden");
+  document.getElementById("footer")?.classList.add("game-hidden");
+  document.getElementById("tortGameCanvasWrapper").style.display = "block";
+  startTortGame();
+}
+
+function startTortGame() {
+  const canvas = document.getElementById('tortGameCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let platforms = [
+    { x: canvas.width / 2 - 80, y: canvas.height - 30, width: 160 },
+    { x: canvas.width / 2 - 70, y: canvas.height - 55, width: 140 }
+  ];
+  let falling = null;
+  let direction = 1;
+  let score = 0;
+  let currentWidth = 130;
+
+  function spawnPlatform() {
+    currentWidth = Math.max(30, currentWidth - 5);
+    if (direction > 0) {
+      falling = { x: 0, y: 0, width: currentWidth };
+    } else {
+      falling = { x: canvas.width - currentWidth, y: 0, width: currentWidth };
+    }
+    direction *= -1;
+  }
+
+  function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    platforms.forEach(p => {
+      ctx.fillStyle = '#ffc107';
+      ctx.fillRect(p.x, p.y, p.width, 20);
+    });
+    if (falling) {
+      falling.x += 4 * direction;
+      falling.y += 3;
+      ctx.fillStyle = '#ff5722';
+      ctx.fillRect(falling.x, falling.y, falling.width, 20);
+    }
+  }
+
+  function drop() {
+    if (!falling) return;
+    const top = platforms[platforms.length - 1];
+    const fallCenter = falling.x + falling.width / 2;
+    const topCenter = top.x + top.width / 2;
+    if (Math.abs(fallCenter - topCenter) < top.width / 2) {
+      platforms.push({
+        x: falling.x,
+        y: top.y - 22,
+        width: falling.width
+      });
+      score++;
+      spawnPlatform();
+    } else {
+      alert("Игра окончена! Счёт: " + score);
+      location.reload();
+    }
+    falling = null;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === ' ') drop();
+  });
+
+  spawnPlatform();
+  function loop() {
+    update();
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
 </script>
 
 </body>
