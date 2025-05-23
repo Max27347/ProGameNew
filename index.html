@@ -3444,23 +3444,8 @@ updateAppearance() {
 
 
 <script>
+function openEarnCoins() {}
 function openEarnCoins() {
-    alert('Игра временно недоступна.');
-}
-</script>
-
-
-<!-- Мини-игра "Earn Coins" -->
-<div id="earnCoinsGame" class="leaderboard-container hidden">
-  <div class="leaderboard-title">Earn Coins</div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; padding: 2rem;">
-    <p style="color: white; font-size: 1.2rem;">Игра пока пуста...</p>
-    <button onclick="closeEarnCoins()" class="play-game-button" style="background: #dc3545;">Выйти</button>
-  </div>
-</div>
-
-<script>
-  function openEarnCoins() {
     document.getElementById("gamesContainer").classList.add("hidden");
     document.getElementById("earnCoinsGame").classList.remove("hidden");
   }
@@ -3471,5 +3456,179 @@ function openEarnCoins() {
   }
 </script>
 
+
+<div id="catchGame" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 1000;">
+  <div id="catchScore" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 1.5rem;">Счёт: 0</div>
+  <div id="catchPlayer" style="position: absolute; bottom: 10px; width: 80px; height: 20px; background: #4caf50; left: 50%; transform: translateX(-50%);"></div>
+  <div id="catchOver" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; display: none;">Игра окончена</div>
+  <button onclick="closeCatchGame()" style="position: absolute; top: 10px; right: 10px; background: #dc3545; color: white; padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer;">Выйти</button>
+</div>
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const player = document.getElementById("catchPlayer");
+  const game = document.getElementById("catchGame");
+
+  let isTouching = false;
+
+  game.addEventListener("touchstart", (e) => {
+    isTouching = true;
+    movePlayer(e.touches[0].clientX);
+  });
+
+  game.addEventListener("touchmove", (e) => {
+    if (isTouching) {
+      movePlayer(e.touches[0].clientX);
+    }
+  });
+
+  game.addEventListener("touchend", () => {
+    isTouching = false;
+  });
+
+  function movePlayer(x) {
+    const gameRect = game.getBoundingClientRect();
+    const playerWidth = player.offsetWidth;
+    let newLeft = x - gameRect.left - playerWidth / 2;
+    newLeft = Math.max(0, Math.min(newLeft, game.clientWidth - playerWidth));
+    player.style.left = newLeft + "px";
+  }
+});
+</script>
+
 </body>
+
+<script>
+let catchScore = 0;
+let catchSpeed = 12;
+let isCatchGameOver = false;
+
+function openEarnCoins() {
+    document.getElementById('gamesContainer').classList.add('hidden');
+    document.getElementById('catchGame').style.display = 'block';
+    startCatchGame();
+}
+
+function closeCatchGame() {
+    document.getElementById('catchGame').style.display = 'none';
+    document.getElementById('gamesContainer').classList.remove('hidden');
+    isCatchGameOver = true;
+}
+
+
+let keys = {};
+let targetX = null;
+
+document.addEventListener('keydown', e => keys[e.key] = true);
+document.addEventListener('keyup', e => keys[e.key] = false);
+
+function movePlayerSmooth() {
+    const player = document.getElementById('catchPlayer');
+    const game = document.getElementById('catchGame');
+    const maxLeft = game.clientWidth - player.offsetWidth;
+
+    if (keys['ArrowLeft']) {
+        targetX = Math.max(0, player.offsetLeft - 100);
+    }
+    if (keys['ArrowRight']) {
+        targetX = Math.min(maxLeft, player.offsetLeft + 100);
+    }
+
+    if (targetX !== null) {
+        let currentX = player.offsetLeft;
+        let dx = (targetX - currentX) * 0.05;
+        if (Math.abs(dx) < 1) {
+            dx = 0;
+            targetX = null;
+        }
+        player.style.left = (currentX + dx) + 'px';
+    }
+
+    requestAnimationFrame(movePlayerSmooth);
+}
+
+function startCatchGame() {
+    movePlayerSmooth();
+    const game = document.getElementById('catchGame');
+    const player = document.getElementById('catchPlayer');
+    const scoreEl = document.getElementById('catchScore');
+    const gameOverEl = document.getElementById('catchOver');
+    catchScore = 0;
+    catchSpeed = 2;
+    isCatchGameOver = false;
+    scoreEl.textContent = "Счёт: 0";
+    gameOverEl.style.display = "none";
+
+    document.onkeydown = function(e) {
+        const step = 50;
+        const maxLeft = game.clientWidth - player.offsetWidth;
+        let left = player.offsetLeft;
+        if (e.key === 'ArrowLeft') left -= step;
+        if (e.key === 'ArrowRight') left += step;
+        player.style.left = Math.max(0, Math.min(left, maxLeft)) + 'px';
+
+    movePlayerSmooth();}
+
+    const spawn = setInterval(() => {
+        if (!isCatchGameOver && document.getElementsByClassName('coin').length === 0) {
+            createCatchCoin();
+        }
+    }, 1000);
+}
+
+function createCatchCoin() {
+    const game = document.getElementById('catchGame');
+    const player = document.getElementById('catchPlayer');
+    const scoreEl = document.getElementById('catchScore');
+    const gameOverEl = document.getElementById('catchOver');
+    const coin = document.createElement('div');
+    coin.style.position = 'absolute';
+    coin.style.width = '30px';
+    coin.style.height = '30px';
+    coin.style.borderRadius = '50%';
+    coin.style.background = 'gold';
+    coin.style.top = '0';
+    coin.style.left = Math.random() * (game.clientWidth - 30) + 'px';
+    game.appendChild(coin);
+
+    let pos = 0;
+    const fall = setInterval(() => {
+        if (isCatchGameOver) {
+            clearInterval(fall);
+            coin.remove();
+            return;
+        }
+        pos += catchSpeed * 3;
+        coin.style.top = pos + 'px';
+
+        const coinRect = coin.getBoundingClientRect();
+        const playerRect = player.getBoundingClientRect();
+
+        if (
+            coinRect.bottom >= playerRect.top &&
+            coinRect.left < playerRect.right &&
+            coinRect.right > playerRect.left
+        ) {
+            clearInterval(fall);
+            coin.remove();
+            catchScore++;
+            catchSpeed += 0.1;
+            scoreEl.textContent = 'Счёт: ' + catchScore;
+        } else if (pos >= game.clientHeight - 30) {
+            clearInterval(fall);
+            coin.remove();
+            isCatchGameOver = true;
+            gameOverEl.style.display = 'block';
+        }
+    }, 20);
+}
+</script>
+
 </html>
