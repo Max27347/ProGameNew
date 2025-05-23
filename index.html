@@ -4529,6 +4529,33 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const particleCanvas = document.getElementById("particleCanvas");
+  const confettiCanvas = document.getElementById("confettiCanvas");
+
+  if (particleCanvas && typeof ParticleSystem !== "undefined") {
+    const particleSystem = new ParticleSystem(particleCanvas, 90);
+    particleSystem.resize();
+    particleSystem.animate(); // <- ЭТО ВАЖНО: запускает отрисовку
+    window.addEventListener("resize", () => particleSystem.resize());
+  }
+
+  if (confettiCanvas && typeof ConfettiSystem !== "undefined") {
+    const confettiSystem = new ConfettiSystem(confettiCanvas, 100);
+    confettiSystem.resize();
+    confettiSystem.animate(); // <- запускает анимацию конфетти (если включено)
+    window.addEventListener("resize", () => confettiSystem.resize());
+  }
+
+  if (typeof ClickEffectPool !== "undefined") {
+    const effectPool = new ClickEffectPool();
+    document.addEventListener("click", (e) => {
+      effectPool.showEffect(e.clientX, e.clientY);
+    });
+  }
+});
+</script>
 
 </body>
 </html>
