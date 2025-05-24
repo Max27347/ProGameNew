@@ -3489,6 +3489,17 @@ window.closeMinigame = function() {
 <!-- Мини-игра "Лови звезды" -->
 <style>
   #catchGame {
+
+  #catchGame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(white 1px, transparent 0);
+    background-size: 10px 10px;
+    opacity: 0.08;
+    z-index: 0;
+  }
+
     position: fixed;
     inset: 0;
     background: black;
@@ -3499,7 +3510,7 @@ window.closeMinigame = function() {
   #rocket {
     position: absolute;
     bottom: 20px;
-    width: 60px;
+    width: 80px;
     height: auto;
     transition: left 0.1s linear;
   }
