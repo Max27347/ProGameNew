@@ -3796,8 +3796,6 @@ let gameEnded = false;
   }
 
   function gameLoop() {
-  if (moveLeft) rocket.x = Math.max(0, rocket.x - 6);
-  if (moveRight) rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 6);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawRocket();
     drawStars();
@@ -3887,8 +3885,6 @@ function spawnStar() {
 }
 
 function gameLoop() {
-  if (moveLeft) rocket.x = Math.max(0, rocket.x - 6);
-  if (moveRight) rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 6);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawRocket();
   drawStars();
@@ -3932,10 +3928,6 @@ setInterval(spawnStar, 700);
   <button onclick="closeEarnCoins()" style="margin-top:20px;padding:10px 20px;font-size:18px;">Назад</button>
 </div>
 
-
-
-
-
 <canvas id="catchGameCanvas" style="display:block; background:#000; border-radius:12px;"></canvas>
 </div>
 <script>
@@ -3959,54 +3951,6 @@ function closeEarnCoins() {
 }
 
 function startCatchGame() {
-  let dragging = false;
-
-  canvas.addEventListener('touchstart', function (e) {
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-
-    if (
-      x >= rocket.x &&
-      x <= rocket.x + rocket.width &&
-      y >= rocket.y &&
-      y <= rocket.y + rocket.height
-    ) {
-      dragging = true;
-    }
-  });
-
-  canvas.addEventListener('touchmove', function (e) {
-    if (dragging) {
-      const touch = e.touches[0];
-      const rect = canvas.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      rocket.x = Math.max(0, Math.min(canvas.width - rocket.width, x - rocket.width / 2));
-    }
-  });
-
-  canvas.addEventListener('touchend', function () {
-    dragging = false;
-  });
-
-
-
-  function handleTouchStart(e) {
-    if (e.target.id === 'leftZone') moveLeft = true;
-    if (e.target.id === 'rightZone') moveRight = true;
-  }
-
-  function handleTouchEnd(e) {
-    moveLeft = false;
-    moveRight = false;
-  }
-
-
-
-
-
-
   const canvas = document.getElementById('catchGameCanvas');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
@@ -4078,8 +4022,6 @@ document.getElementById("scoreCount").textContent = score;
   }
 
   function gameLoop() {
-  if (moveLeft) rocket.x = Math.max(0, rocket.x - 6);
-  if (moveRight) rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 6);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawRocket();
     drawStars();
