@@ -3615,7 +3615,7 @@ function resizeStarCanvas() {
 function animateStarBackground() {
   if (!gameRunning) return;
   starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-  starCtx.fillStyle = 'white';
+  starCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
   starArray.forEach(star => {
     starCtx.beginPath();
     starCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
