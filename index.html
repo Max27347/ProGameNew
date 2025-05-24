@@ -2921,34 +2921,7 @@ updateAppearance() {
                     if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
                 }
             }
-
-  function createStarElement() {
-    const wrapper = document.createElement('div');
-    wrapper.style.position = 'absolute';
-    wrapper.style.width = '40px';
-    wrapper.style.height = '40px';
-    wrapper.style.pointerEvents = 'none';
-
-    const xmlns = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(xmlns, "svg");
-    svg.setAttribute("width", "40");
-    svg.setAttribute("height", "40");
-    svg.setAttribute("viewBox", "0 0 100 100");
-
-    const path = document.createElementNS(xmlns, "path");
-    path.setAttribute("fill", "gold");
-    path.setAttribute("stroke", "orange");
-    path.setAttribute("stroke-width", "2");
-    path.setAttribute("d",
-      "M50 5 L61 35 L95 35 L68 57 L78 90 L50 70 L22 90 L32 57 L5 35 L39 35 Z"
-    );
-
-    svg.appendChild(path);
-    wrapper.appendChild(svg);
-    return wrapper;
-  }
-
-document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", () => {
                 const elements = {
                     loadingScreen: document.getElementById("loadingScreen"),
                     loadingPercent: document.getElementById("loadingPercent"),
@@ -3531,7 +3504,8 @@ catchGame.addEventListener('touchmove', e => {
     starInterval = setInterval(() => {
       if (!gameRunning) return;
 
-      const star = createStarElement();
+      const star = document.createElement('img');
+      star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
       star.classList.add('star');
       star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
       catchGame.appendChild(star);
