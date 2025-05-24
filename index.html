@@ -3463,124 +3463,154 @@ updateAppearance() {
 </div>
 
 <script>
-  const catchGame = document.getElementById('catchGame');
-  const rocket = document.getElementById('rocket');
-  const scoreDisplay = document.getElementById('score');
-  const quitBtn = document.getElementById('quitCatchGame');
+class CatchGame {
+  constructor() {
+    this.catchGame = document.getElementById('catchGame');
+    this.rocket = document.getElementById('rocket');
+    this.scoreDisplay = document.getElementById('score');
+    this.quitBtn = document.getElementById('quitCatchGame');
+    this.score = 0;
+    this.gameRunning = false;
+    this.stars = [];
+    this.baseSpeed = 200; // Пикселей/секунду
+    this.speedIncrease = 50; // Ускорение (пикселей/секунду^2)
+    this.starInterval = 500; // 0.5 секунды между звездами
+    this.lastStarTime = 0;
+    this.lastFrameTime = performance.now();
 
-  let score = 0;
-  let gameRunning = false;
-  let starInterval;
-
-  function startCatchGame() {
-    score = 0;
-    scoreDisplay.textContent = 'Score: 0';
-    rocket.style.left = '50%';
-    catchGame.style.display = 'block';
-    gameRunning = true;
-    spawnStars();
+    // Обработчики событий
+    this.quitBtn.addEventListener('click', () => this.endGame());
+    this.catchGame.addEventListener('touchmove', (e) => this.moveRocketTouch(e));
+    this.catchGame.addEventListener('mousemove', (e) => this.moveRocketMouse(e));
+    document.addEventListener('keydown', (e) => this.moveRocketKeys(e));
   }
 
-  function endCatchGame() {
-    gameRunning = false;
-    catchGame.style.display = 'none';
-    alert('Game Over! Your score: ' + score);
-    document.querySelectorAll('.star').forEach(s => s.remove());
-    clearInterval(starInterval);
+  startGame() {
+    this.score = 0;
+    this.baseSpeed = 200;
+    this.stars = [];
+    this.scoreDisplay.textContent = 'Score: 0';
+    this.rocket.style.left = '50%';
+    this.catchGame.style.display = 'block';
+    this.gameRunning = true;
+    this.lastFrameTime = performance.now();
+    this.lastStarTime = performance.now();
+    this.update();
   }
 
-  quitBtn.onclick = endCatchGame;
-
-
-catchGame.addEventListener('touchmove', e => {
+  moveRocketTouch(e) {
+    e.preventDefault();
     const touch = e.touches[0];
     let x = touch.clientX - 30;
     x = Math.max(0, Math.min(window.innerWidth - 60, x));
-    rocket.style.left = x + 'px';
-  });
-
-  function spawnStars() {
-    let speed = 4;
-    starInterval = setInterval(() => {
-      if (!gameRunning) return;
-
-      const star = document.createElement('img');
-      star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
-      star.classList.add('star');
-      star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
-      catchGame.appendChild(star);
-
-      let top = 0;
-speed = Math.min(speed + 0.2, 25);
-      const fall = setInterval(() => {
-        if (!gameRunning) return clearInterval(fall);
-
-        top += speed;
-        star.style.top = top + 'px';
-
-        const rocketRect = rocket.getBoundingClientRect();
-        const starRect = star.getBoundingClientRect();
-
-        if (
-          rocketRect.left < starRect.right &&
-          rocketRect.right > starRect.left &&
-          rocketRect.top < starRect.bottom &&
-          rocketRect.bottom > starRect.top
-        ) {
-          score++;
-          scoreDisplay.textContent = 'Score: ' + score;
-          star.remove();
-          clearInterval(fall);
-        }
-
-        if (top > window.innerHeight - 40) {
-          star.remove();
-          clearInterval(fall);
-          endCatchGame();
-        }
-      }, 30);
-    }, 1000);
+    this.rocket.style.left = x + 'px';
   }
-</script>
 
-
-
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  if (playBtn) {
-    playBtn.removeAttribute("disabled");
-    playBtn.addEventListener("click", startCatchGame);
+  moveRocketMouse(e) {
+    let x = e.clientX - 30;
+    x = Math.max(0, Math.min(window.innerWidth - 60, x));
+    this.rocket.style.left = x + 'px';
   }
-});
-</script>
 
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  if (playBtn) {
-    playBtn.addEventListener("click", startCatchGame);
+  moveRocketKeys(e) {
+    const rocketRect = this.rocket.getBoundingClientRect();
+    let x = parseFloat(this.rocket.style.left || '50%');
+    if (e.key === 'ArrowLeft') {
+      x = Math.max(0, x - 5);
+    } else if (e.key === 'ArrowRight') {
+      x = Math.min(window.innerWidth - 60, x + 5);
+    }
+    this.rocket.style.left = x + 'px';
   }
-});
-</script>
 
-</body>
-</html>
+  spawnStar() {
+    const star = document.createElement('img');
+    star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
+    star.classList.add('star');
+    star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+    star.style.top = '0px';
+    this.catchGame.appendChild(star);
+    this.stars.push({ element: star, y: 0 });
+  }
 
-<script>
-function openMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'flex';
+  update() {
+    if (!this.gameRunning) return;
+
+    const currentTime = performance.now();
+    const deltaTime = (currentTime - this.lastFrameTime) / 1000; // Время в секундах
+    this.lastFrameTime = currentTime;
+
+    // Создание новой звезды
+    if (currentTime - this.lastStarTime > this.starInterval) {
+      this.spawnStar();
+      this.lastStarTime = currentTime;
+    }
+
+    // Увеличение скорости
+    this.baseSpeed += this.speedIncrease * deltaTime;
+
+    // Обновление позиций звёзд
+    this.stars = this.stars.filter(star => {
+      star.y += this.baseSpeed * deltaTime; // Плавное движение
+      star.element.style.top = star.y + 'px';
+
+      const rocketRect = this.rocket.getBoundingClientRect();
+      const starRect = star.element.getBoundingClientRect();
+
+      // Проверка столкновения
+      if (
+        rocketRect.left < starRect.right &&
+        rocketRect.right > starRect.left &&
+        rocketRect.top < starRect.bottom &&
+        rocketRect.bottom > starRect.top
+      ) {
+        this.score++;
+        this.scoreDisplay.textContent = `Score: ${this.score}`;
+        star.element.remove();
+        return false; // Удалить звезду
+      }
+
+      // Удаление звёзд, вышедших за экран
+      if (star.y > window.innerHeight - 40) {
+        star.element.remove();
+        return false;
+      }
+
+      return true;
+    });
+
+    // Если звезда достигла низа, игра заканчивается
+    if (this.stars.some(star => star.y > window.innerHeight - 40)) {
+      this.endGame();
+    }
+
+    requestAnimationFrame(() => this.update());
+  }
+
+  endGame() {
+    this.gameRunning = false;
+    this.catchGame.style.display = 'none';
+    this.stars.forEach(star => star.element.remove());
+    this.stars = [];
+    alert('Game Over! Your score: ' + this.score);
+
+    // Возврат в главное меню
+    document.getElementById('mainContent').classList.remove('hidden-opacity');
+    document.getElementById('mainContent').classList.add('visible');
+    document.querySelector('.menu-item[data-menu="home"]').classList.add('highlighted');
+    document.querySelector('.menu-item[data-menu="games"]').classList.remove('highlighted');
   }
 }
-function closeMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'none';
+
+// Инициализация игры
+document.addEventListener('DOMContentLoaded', () => {
+  const playBtn = document.querySelector('.minigame-play[data-game="earnCoins"]');
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      document.getElementById('gamesContainer').classList.add('hidden');
+      document.getElementById('gamesContainer').classList.remove('visible');
+      new CatchGame().startGame();
+    });
   }
-}
+});
 </script>
