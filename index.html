@@ -1846,10 +1846,48 @@ for (let i = 0; i < this.particles.length; i++) {
                 }
             }
             class CharacterController {
+
+    attachTouchListeners() {
+        const characterEl = this.ui.elements.character;
+        this.dragging = false;
+        this.dragOffsetX = 0;
+
+        characterEl.addEventListener("pointerdown", (e) => {
+            const rect = characterEl.getBoundingClientRect();
+            const touchX = e.clientX;
+            const touchY = e.clientY;
+
+            if (
+                touchX >= rect.left &&
+                touchX <= rect.right &&
+                touchY >= rect.top &&
+                touchY <= rect.bottom
+            ) {
+                this.dragging = true;
+                this.dragOffsetX = touchX - rect.left;
+            }
+        });
+
+        window.addEventListener("pointermove", (e) => {
+            if (!this.dragging) return;
+
+            const touchX = e.clientX;
+            const newLeft = touchX - this.dragOffsetX;
+
+            characterEl.style.position = "absolute";
+            characterEl.style.left = `${newLeft}px`;
+        });
+
+        window.addEventListener("pointerup", () => {
+            this.dragging = false;
+        });
+    }
+
                 constructor(state, ui, effectPool, confettiSystem) {
                     this.state = state;
                     this.ui = ui;
-                    this.effectPool = effectPool;
+
+        this.attachTouchListeners();this.effectPool = effectPool;
                     this.confettiSystem = confettiSystem;
                     this.listeners = [];
                     this.lastTapTime = 0;
