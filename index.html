@@ -3532,7 +3532,7 @@ window.closeMinigame = function() {
 <div id="catchGame">
   <div id="score">Score: 0</div>
   <button id="quitCatchGame">✕ Quit</button>
-  <img id="rocket" src="https://banner2.cleanpng.com/20180214/qxq/av2wwyy9z.webp" alt="Rocket">
+  <img id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png" alt="Rocket">
 </div>
 
 <script>
@@ -3573,6 +3573,7 @@ catchGame.addEventListener('touchmove', e => {
   });
 
   function spawnStars() {
+    let speed = 4;
     starInterval = setInterval(() => {
       if (!gameRunning) return;
 
@@ -3583,10 +3584,11 @@ catchGame.addEventListener('touchmove', e => {
       catchGame.appendChild(star);
 
       let top = 0;
+speed = Math.min(speed + 0.2, 15);
       const fall = setInterval(() => {
         if (!gameRunning) return clearInterval(fall);
 
-        top += 4;
+        top += speed;
         star.style.top = top + 'px';
 
         const rocketRect = rocket.getBoundingClientRect();
