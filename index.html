@@ -3426,7 +3426,7 @@ updateAppearance() {
   #rocket {
     position: absolute;
     bottom: 20px;
-    width: 60px;
+    width: 80px;
     height: auto;
     transition: left 0.1s linear;
   }
@@ -3499,8 +3499,8 @@ let minSpawnRate = 300;
 
 catchGame.addEventListener('touchmove', e => {
     const touch = e.touches[0];
-    let x = touch.clientX - 30;
-    x = Math.max(0, Math.min(window.innerWidth - 60, x));
+    let x = touch.clientX - 40;
+    x = Math.max(0, Math.min(window.innerWidth - 80, x));
     rocket.style.left = x + 'px';
   });
 
