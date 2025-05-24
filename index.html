@@ -3432,134 +3432,65 @@ updateAppearance() {
 
 
 <style>
-.minigame-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  z-index: 100;
-  display: none;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 1rem;
-}
-.quit-button {
-  background: transparent;
-  color: #fff;
-  font-size: 1.5rem;
-  border: none;
-  cursor: pointer;
-  padding: 1rem;
-}
+  .minigame-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem;
+  }
+  .quit-button {
+    background: transparent;
+    color: #fff;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+  }
 </style>
 
-
-
-<script>
-window.openEarnCoins = function() {
-  openMinigame();
-}
-window.openMinigame = function() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'flex';
-  }
-}
-window.closeMinigame = function() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'none';
-  }
-}
-</script>
-
+<div class="minigame-screen" id="minigameScreen" style="display:none;">
+  <button class="quit-button" id="quitMinigame">✕ Quit</button>
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const playBtn = document.getElementById("earnCoinsPlayBtn");
     const minigameScreen = document.getElementById("minigameScreen");
     const quitBtn = document.getElementById("quitMinigame");
 
     if (playBtn && minigameScreen) {
-        playBtn.addEventListener("click", () => {
-            minigameScreen.style.display = "flex";
-        });
+      // Активируем кнопку Play, снимая disabled
+      playBtn.removeAttribute("disabled");
+
+      // Показываем экран при клике Play
+      playBtn.addEventListener("click", () => {
+        minigameScreen.style.display = "flex";
+      });
     }
 
     if (quitBtn && minigameScreen) {
-        quitBtn.addEventListener("click", () => {
-            minigameScreen.style.display = "none";
-        });
+      // Скрываем экран при клике Quit
+      quitBtn.addEventListener("click", () => {
+        minigameScreen.style.display = "none";
+      });
     }
-});
+  });
+
+  // Можно отдельно объявить для вызова из html-атрибутов, если надо
+  function openMinigame() {
+    const screen = document.getElementById('minigameScreen');
+    if (screen) screen.style.display = 'flex';
+  }
+  function closeMinigame() {
+    const screen = document.getElementById('minigameScreen');
+    if (screen) screen.style.display = 'none';
+  }
 </script>
 
-
-<div class="minigame-screen" id="minigameScreen" style="display:none;">
-  <button class="quit-button" onclick="closeMinigame()">✕ Quit</button>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  const minigameScreen = document.getElementById("minigameScreen");
-
-  if (playBtn && minigameScreen) {
-    playBtn.removeAttribute("disabled");
-    playBtn.addEventListener("click", () => {
-      minigameScreen.style.display = "flex";
-    });
-  }
-});
-
-function closeMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'none';
-  }
-}
-</script>
-
-<style>
-.minigame-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  z-index: 9999;
-  display: none;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 1rem;
-}
-.quit-button {
-  background: transparent;
-  color: #fff;
-  font-size: 1.5rem;
-  border: none;
-  cursor: pointer;
-  padding: 1rem;
-}
-</style>
-
-</body>
-</html>
-
-<script>
-function openMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'flex';
-  }
-}
-function closeMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'none';
-  }
-}
-</script>
