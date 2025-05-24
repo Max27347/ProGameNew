@@ -3775,6 +3775,28 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+
+<div id="tortGameWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111; z-index:1000;">
+  <div style="position:absolute; top:20px; left:20px; font-size:24px; color:white;">Торт</div>
+  <button onclick="closeTortGame()" style="position:absolute; top:20px; right:20px; z-index:1001; padding:6px 14px; background:#dc3545; color:#fff; border:none; border-radius:6px;">Назад</button>
+</div>
+
+<script>
+function openTortGame() {
+  document.getElementById("mainContent")?.classList.add("game-hidden");
+  document.getElementById("topMenu")?.classList.add("game-hidden");
+  document.getElementById("footer")?.classList.add("game-hidden");
+  document.getElementById("tortGameWrapper").style.display = "block";
+}
+
+function closeTortGame() {
+  document.getElementById("mainContent")?.classList.remove("game-hidden");
+  document.getElementById("topMenu")?.classList.remove("game-hidden");
+  document.getElementById("footer")?.classList.remove("game-hidden");
+  document.getElementById("tortGameWrapper").style.display = "none";
+}
+</script>
+
 </body>
 
 <script>
