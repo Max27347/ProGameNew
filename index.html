@@ -3489,17 +3489,6 @@ window.closeMinigame = function() {
 <!-- Мини-игра "Лови звезды" -->
 <style>
   #catchGame {
-
-  #catchGame::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(white 1px, transparent 0);
-    background-size: 10px 10px;
-    opacity: 0.08;
-    z-index: 0;
-  }
-
     position: fixed;
     inset: 0;
     background: black;
@@ -3510,7 +3499,7 @@ window.closeMinigame = function() {
   #rocket {
     position: absolute;
     bottom: 20px;
-    width: 80px;
+    width: 60px;
     height: auto;
     transition: left 0.1s linear;
   }
@@ -3595,7 +3584,7 @@ catchGame.addEventListener('touchmove', e => {
       catchGame.appendChild(star);
 
       let top = 0;
-speed = Math.min(speed + 0.2, 15);
+speed = Math.min(speed + 0.2, 25);
       const fall = setInterval(() => {
         if (!gameRunning) return clearInterval(fall);
 
