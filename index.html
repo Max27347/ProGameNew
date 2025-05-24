@@ -3500,7 +3500,7 @@ catchGame.addEventListener('touchmove', e => {
   });
 
   function spawnStars() {
-    let speed = 4;
+    let globalSpeed = 4;
     starInterval = setInterval(() => {
       if (!gameRunning) return;
 
@@ -3511,34 +3511,42 @@ catchGame.addEventListener('touchmove', e => {
       catchGame.appendChild(star);
 
       let top = 0;
-speed = Math.min(speed + 0.2, 25);
-      const fall = setInterval(() => {
-        if (!gameRunning) return clearInterval(fall);
+const speed = Math.min(globalSpeed + 0.2, 25);
+    globalSpeed = speed;
 
-        top += speed;
-        star.style.top = top + 'px';
+let startTime = null;
+function animateStar(timestamp) {
+  if (!startTime) startTime = timestamp;
+  const elapsed = timestamp - startTime;
 
-        const rocketRect = rocket.getBoundingClientRect();
-        const starRect = star.getBoundingClientRect();
+  const top = elapsed * speed / 16;
+  star.style.top = top + 'px';
 
-        if (
-          rocketRect.left < starRect.right &&
-          rocketRect.right > starRect.left &&
-          rocketRect.top < starRect.bottom &&
-          rocketRect.bottom > starRect.top
-        ) {
-          score++;
-          scoreDisplay.textContent = 'Score: ' + score;
-          star.remove();
-          clearInterval(fall);
-        }
+  const rocketRect = rocket.getBoundingClientRect();
+  const starRect = star.getBoundingClientRect();
 
-        if (top > window.innerHeight - 40) {
-          star.remove();
-          clearInterval(fall);
-          endCatchGame();
-        }
-      }, 30);
+  if (
+    rocketRect.left < starRect.right &&
+    rocketRect.right > starRect.left &&
+    rocketRect.top < starRect.bottom &&
+    rocketRect.bottom > starRect.top
+  ) {
+    score++;
+    scoreDisplay.textContent = 'Score: ' + score;
+    star.remove();
+    return;
+  }
+
+  if (top > window.innerHeight - 40) {
+    star.remove();
+    endCatchGame();
+    return;
+  }
+
+  if (gameRunning) requestAnimationFrame(animateStar);
+}
+requestAnimationFrame(animateStar);
+
     }, 1000);
   }
 </script>
