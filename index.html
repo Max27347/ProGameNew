@@ -3468,6 +3468,11 @@ updateAppearance() {
   const scoreDisplay = document.getElementById('score');
   const quitBtn = document.getElementById('quitCatchGame');
 
+let globalSpeed = 4;
+let spawnRate = 1000;
+let spawnRateDecrement = 50;
+let minSpawnRate = 300;
+
   let score = 0;
   let gameRunning = false;
   let starInterval;
@@ -3499,56 +3504,62 @@ catchGame.addEventListener('touchmove', e => {
     rocket.style.left = x + 'px';
   });
 
-  function spawnStars() {
-    let globalSpeed = 4;
-    starInterval = setInterval(() => {
-      if (!gameRunning) return;
+function spawnStars() {
+  function spawnLoop() {
+    if (!gameRunning) return;
 
-      const star = document.createElement('img');
-      star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
-      star.classList.add('star');
-      star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
-      catchGame.appendChild(star);
+    const star = document.createElement('img');
+    star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
+    star.classList.add('star');
+    star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+    star.style.top = '0px';
+    catchGame.appendChild(star);
 
-      let top = 0;
-const speed = Math.min(globalSpeed + 0.2, 25);
-    globalSpeed = speed;
+    let speed = Math.min(globalSpeed += 0.05, 25); // увеличиваем скорость
+    let startTime = null;
 
-let startTime = null;
-function animateStar(timestamp) {
-  if (!startTime) startTime = timestamp;
-  const elapsed = timestamp - startTime;
+    function animateStar(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const top = elapsed * speed / 16;
+      star.style.top = top + 'px';
 
-  const top = elapsed * speed / 16;
-  star.style.top = top + 'px';
+      const rocketRect = rocket.getBoundingClientRect();
+      const starRect = star.getBoundingClientRect();
 
-  const rocketRect = rocket.getBoundingClientRect();
-  const starRect = star.getBoundingClientRect();
+      if (
+        rocketRect.left < starRect.right &&
+        rocketRect.right > starRect.left &&
+        rocketRect.top < starRect.bottom &&
+        rocketRect.bottom > starRect.top
+      ) {
+        score++;
+        scoreDisplay.textContent = 'Score: ' + score;
+        star.remove();
+        return;
+      }
 
-  if (
-    rocketRect.left < starRect.right &&
-    rocketRect.right > starRect.left &&
-    rocketRect.top < starRect.bottom &&
-    rocketRect.bottom > starRect.top
-  ) {
-    score++;
-    scoreDisplay.textContent = 'Score: ' + score;
-    star.remove();
-    return;
+      if (top > window.innerHeight - 40) {
+        star.remove();
+        endCatchGame();
+        return;
+      }
+
+      if (gameRunning) requestAnimationFrame(animateStar);
+    }
+    requestAnimationFrame(animateStar);
+
+    // Уменьшаем интервал и запускаем следующий спавн
+    if (spawnRate > minSpawnRate) {
+      spawnRate -= spawnRateDecrement;
+    }
+
+    setTimeout(spawnLoop, spawnRate);
   }
 
-  if (top > window.innerHeight - 40) {
-    star.remove();
-    endCatchGame();
-    return;
-  }
-
-  if (gameRunning) requestAnimationFrame(animateStar);
+  spawnLoop();
 }
-requestAnimationFrame(animateStar);
 
-    }, 1000);
-  }
 </script>
 
 <script>
@@ -3577,8 +3588,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 function openMinigame() {
   const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'flex';
+  if (screen) {ex';
   }
 }
 function closeMinigame() {
