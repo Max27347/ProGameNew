@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<meta content="Notcoin-inspired clicker game" name="description"/>
-<title>Clicker Game</title>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-<style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta name="description" content="Notcoin-inspired clicker game" />
+        <title>Clicker Game</title>
+        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+        <style>
             * {
                 margin: 0;
                 padding: 0;
@@ -1084,6 +1083,7 @@
             }
 
         </style>
+
 <style>
   .quests-arrow {
     position: absolute;
@@ -1107,234 +1107,239 @@
     right: 1rem;
   }
 </style>
-<style>
 
-.play-game-button:hover {
-    background: linear-gradient(135deg, #218838, #1e7e34);
-    transform: scale(1.05);
+
+<style>
+#gamesContainer .claim-button {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  font-weight: bold;
 }
-.play-game-button:active {
-    background: linear-gradient(135deg, #1e7e34, #1c7430);
-    transform: scale(0.95);
+#gamesContainer .claim-button:hover {
+  background-color: #45a049 !important;
 }
 </style>
+
 </head>
-<body>
-<div class="loading-screen" id="loadingScreen">
-<div class="loading-ring"></div>
-<span class="loading-percent" id="loadingPercent">0%</span>
-</div>
-<header class="top-menu game-hidden" id="topMenu">
-<div class="top-menu-left">
-<img alt="Player Avatar" class="player-avatar" draggable="false" src="https://placehold.co/40x40"/>
-<div class="player-info">
-<span class="player-nickname">Player123</span>
-<span class="player-max-coins">
-<img alt="Gem Stone" class="gem-icon" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<span id="totalCoins">8000</span>
-</span>
-</div>
-</div>
-<div class="top-menu-right">
-<span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
-<div class="wallet-container">
-<button id="disconnect-wallet">Disconnect Wallet</button>
-</div>
-</div>
-</header>
-<canvas class="game-hidden" id="particleCanvas"></canvas>
-<canvas class="game-hidden" id="confettiCanvas"></canvas>
-<main class="game-hidden" id="mainContent">
-<div class="income-counter" id="incomeCounter">
-<span id="incomeRate">0</span> Diamonds/h
-                <img alt="Gem Stone" class="gem-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-</div>
-<div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
-<div class="coin-counter visible" id="coinCounter">
-<div class="coin-line">
-<span id="coinCount">8000</span>
-<img alt="Gem Stone" class="coin-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="donation-line" id="starDonation" style="cursor: pointer;">
-<span id="starCount">0</span>
-<img alt="Star" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" style="width: 24px; height: 24px; vertical-align: middle;"/>
-</div>
-</div>
-</div>
-<div class="character-container">
-<img alt="Controller" class="character" draggable="false" id="character" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-</div>
-</main>
-<div class="shop-container hidden" id="shopContainer">
-<div class="shop-title">Cases</div>
-<div class="cases-container">
-<div class="case-container" data-case="diamond-rain">
-<img alt="Diamond Rain" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp"/>
-<div class="case-name">Diamond Rain</div>
-<div class="case-price">100 Diamonds</div>
-</div>
-<div class="case-container" data-case="character-magic">
-<img alt="Character Magic" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp"/>
-<div class="case-name">Character Magic</div>
-<div class="case-price">Free (Test)</div>
-</div>
-<div class="cases-container">
-<div class="case-container" data-case="telegram-gift">
-<img alt="Telegram Gift" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Exclusive</div>
-<div class="case-price">Free</div>
-</div>
-<div class="case-container" data-case="telegram-gift-2">
-<img alt="Telegram Gift 2" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Telegram Gift</div>
-<div class="case-price">Free</div>
-</div>
-<!-- Остальные кейсы остаются без изменений -->
-</div>
-</div>
-</div>
-<div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-title">Inventory</div>
-<div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
-</div>
-<div class="market-container hidden" id="marketContainer">
-<div class="market-title">Market</div>
-<div id="ton-connect"></div>
-<div class="filters-container">
-<select class="filter-select" id="characterFilter">
-<option value="">All Characters</option>
-</select>
-<select class="filter-select" id="backgroundFilter">
-<option value="">All Backgrounds</option>
-</select>
-<select class="sort-select" id="priceSort">
-<option value="newest">Newest First</option>
-<option value="price-desc">Price: High to Low</option>
-<option value="price-asc">Price: Low to High</option>
-</select>
-</div>
-<div class="market-items-container" id="marketItems"></div>
-</div>
-<div class="leaderboard-container hidden" id="leaderboardContainer">
-<div class="leaderboard-title">Leaderboard</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<table class="leaderboard-table" id="leaderboardTable">
-<thead>
-<tr>
-<th>Rank</th>
-<th>Player</th>
-<th>Diamonds</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-<div class="shop-arrow left hidden" id="shopArrowLeft">&lt;</div>
-<div class="shop-arrow right hidden" id="shopArrowRight">&gt;</div>
-<div class="inventory-arrow left hidden" id="inventoryArrowLeft">&lt;</div>
-<div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+    <body>
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-ring"></div>
+            <span class="loading-percent" id="loadingPercent">0%</span>
+        </div>
+        <header class="top-menu game-hidden" id="topMenu">
+            <div class="top-menu-left">
+                <img src="https://placehold.co/40x40" alt="Player Avatar" class="player-avatar" draggable="false" />
+                <div class="player-info">
+                    <span class="player-nickname">Player123</span>
+                    <span class="player-max-coins">
+                        <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" />
+                        <span id="totalCoins">8000</span>
+                    </span>
+                </div>
+            </div>
+            <div class="top-menu-right">
+                <span class="player-rank">Rank: 1</span>
+                <span class="player-stats">World of Consoles</span>
+                <div class="wallet-container">
+                    <button id="disconnect-wallet">Disconnect Wallet</button>
+                </div>
+            </div>
+        </header>
+        <canvas id="particleCanvas" class="game-hidden"></canvas>
+        <canvas id="confettiCanvas" class="game-hidden"></canvas>
+        <main class="game-hidden" id="mainContent">
+            <div class="income-counter" id="incomeCounter">
+                <span id="incomeRate">0</span> Diamonds/h
+                <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="gem-icon" draggable="false" />
+            </div>
+            <div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
+
+            <div class="coin-counter visible" id="coinCounter">
+                <div class="coin-line">
+                    <span id="coinCount">8000</span>
+                    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem Stone" class="coin-icon" draggable="false" />
+
+                    <div class="donation-line" id="starDonation" style="cursor: pointer;">
+                        <span id="starCount">0</span>
+                        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Star" style="width: 24px; height: 24px; vertical-align: middle;" />
+                    </div>
+                </div>
+            </div>
+            <div class="character-container">
+                <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Controller" class="character" id="character" draggable="false" />
+            </div>
+        </main>
+        <div class="shop-container hidden" id="shopContainer">
+            <div class="shop-title">Cases</div>
+            <div class="cases-container">
+                <div class="case-container" data-case="diamond-rain">
+                    <img src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" alt="Diamond Rain" class="case-image" draggable="false" />
+                    <div class="case-name">Diamond Rain</div>
+                    <div class="case-price">100 Diamonds</div>
+                </div>
+                <div class="case-container" data-case="character-magic">
+                    <img src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" alt="Character Magic" class="case-image" draggable="false" />
+                    <div class="case-name">Character Magic</div>
+                    <div class="case-price">Free (Test)</div>
+                </div>
+                <div class="cases-container">
+                    <div class="case-container" data-case="telegram-gift">
+                        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift" class="case-image" draggable="false" />
+                        <div class="case-name">Exclusive</div>
+                        <div class="case-price">Free</div>
+                    </div>
+                    <div class="case-container" data-case="telegram-gift-2">
+                        <img src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" alt="Telegram Gift 2" class="case-image" draggable="false" />
+                        <div class="case-name">Telegram Gift</div>
+                        <div class="case-price">Free</div>
+                    </div>
+
+                    <!-- Остальные кейсы остаются без изменений -->
+                </div>
+            </div>
+        </div>
+        <div class="inventory-container hidden" id="inventoryContainer">
+            <div class="inventory-title">Inventory</div>
+            <div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
+        </div>
+        <div class="market-container hidden" id="marketContainer">
+            <div class="market-title">Market</div>
+            <div id="ton-connect"></div>
+            <div class="filters-container">
+                <select class="filter-select" id="characterFilter">
+                    <option value="">All Characters</option>
+                </select>
+                <select class="filter-select" id="backgroundFilter">
+                    <option value="">All Backgrounds</option>
+                </select>
+                <select class="sort-select" id="priceSort">
+                    <option value="newest">Newest First</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="price-asc">Price: Low to High</option>
+                </select>
+            </div>
+            <div class="market-items-container" id="marketItems"></div>
+        </div>
+        <div class="leaderboard-container hidden" id="leaderboardContainer">
+            <div class="leaderboard-title">Leaderboard</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <table class="leaderboard-table" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Diamonds</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="shop-arrow left hidden" id="shopArrowLeft"><</div>
+        <div class="shop-arrow right hidden" id="shopArrowRight">></div>
+        <div class="inventory-arrow left hidden" id="inventoryArrowLeft"><</div>
+        <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+
+
 <div class="leaderboard-container hidden" id="gamesContainer">
-<div class="leaderboard-title">Minigames</div>
-<div class="cases-container">
-<div class="case-container">
-<img alt="Click Challenge" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Earn Coins</div>
-<div class="case-price">
-<button class="play-game-button" onclick="openEarnCoins()">Play</button>
+  <div class="leaderboard-title">Minigames</div>
+  <div class="cases-container">
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
+      <div class="case-name">Earn Coins</div>
+      <div class="case-price"><button class="claim-button" onclick="openMinigame()">Play</button>
+      </div>
+    </div>
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" alt="Memory Match" class="case-image" draggable="false" />
+      <div class="case-name">Tort</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Memory Match starting!')">Play</button>
+      </div>
+    </div>
+    <div class="case-container">
+      <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Score Rush" class="case-image" draggable="false" />
+      <div class="case-name">Select Coins</div>
+      <div class="case-price">
+        <button class="claim-button" onclick="alert('Score Rush starting!')">Play</button>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-<div class="case-container">
-<img alt="Memory Match" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Tort</div>
-<div class="case-price">
-<button class="play-game-button" onclick="openTortGame()">Play</button>
-</div>
-</div>
-<div class="case-container">
-<img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Select Coins</div>
-<div class="case-price">
-<button class="play-game-button" onclick="alert('Score Rush starting!')">Play</button>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
 
 <footer class="game-hidden" id="footer">
-<div class="footer-menu-container">
-<div class="footer-menu">
-<div class="menu-item highlighted" data-menu="home">
-<img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp"/>
-<span>Home</span>
-</div>
-<div class="menu-item" data-menu="shop">
-<img alt="Shop" draggable="false" src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp"/>
-<span>Shop</span>
-</div>
-<div class="menu-item" data-menu="market">
-<img alt="Market" draggable="false" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<span>Market</span>
-</div>
-<div class="menu-item" data-menu="quests">
-<img alt="Quests" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<span>Quests</span>
-</div>
-<div class="menu-item" data-menu="games">
-<img alt="Games" draggable="false" src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp"/>
-<span>Games</span>
-</div>
-</div>
-</div>
-</footer>
-<div class="leaderboard-container hidden" id="questsContainer">
-<div class="leaderboard-title">Quests</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" style="color: #4fc3f7;" target="_blank">Telegram</a></div>
-<div class="case-price">
-<button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Click the controller 50 times</div>
-<div class="case-price">
-<button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<div class="case-name">Earn 100 Stars</div>
-<div class="case-price">
-<button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Reach Top 10 in Leaderboard</div>
-<div class="case-price">
-<button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="case-name">Earn 3000 Diamonds</div>
-<div class="case-price">
-<button class="claim-button">Claim 100 <img alt="Gem" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px; vertical-align: middle;"/></button>
-</div>
-</div>
-</div>
-</div>
-<div class="leaderboard-container hidden" id="friendsContainer">
-<div class="leaderboard-title">Friends</div>
-<div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
-<button onclick="
+            <div class="footer-menu-container">
+                <div class="footer-menu">
+                    <div class="menu-item highlighted" data-menu="home">
+                        <img src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" alt="Home" draggable="false" />
+                        <span>Home</span>
+                    </div>
+                    <div class="menu-item" data-menu="shop">
+                        <img src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" alt="Shop" draggable="false" />
+                        <span>Shop</span>
+                    </div>
+                    <div class="menu-item" data-menu="market">
+                        <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" alt="Market" draggable="false" />
+                        <span>Market</span>
+                    </div>
+                    <div class="menu-item" data-menu="quests">
+                        <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" alt="Quests" draggable="false" />
+                        <span>Quests</span>
+                    </div>
+                    <div class="menu-item" data-menu="games">
+                        <img src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" alt="Games" draggable="false" />
+                        <span>Games</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="leaderboard-container hidden" id="questsContainer">
+            <div class="leaderboard-title">Quests</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" class="case-image" />
+                    <div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" target="_blank" style="color: #4fc3f7;">Telegram</a></div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" class="case-image" />
+                    <div class="case-name">Click the controller 50 times</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" class="case-image" />
+                    <div class="case-name">Earn 100 Stars</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" class="case-image" />
+                    <div class="case-name">Reach Top 10 in Leaderboard</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+
+                <div class="case-container">
+                    <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" class="case-image" />
+                    <div class="case-name">Earn 3000 Diamonds</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 100 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" alt="Gem" style="width: 16px; height: 16px; vertical-align: middle;" /></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard-container hidden" id="friendsContainer">
+            <div class="leaderboard-title">Friends</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
+                <button
+                    onclick="
     navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
     const copiedMessage = document.createElement('div');
     copiedMessage.textContent = 'Ссылка скопирована';
@@ -1347,15 +1352,18 @@
     copiedMessage.style.padding = '1rem';
     copiedMessage.style.borderRadius = '12px';
     document.body.appendChild(copiedMessage);
-    setTimeout(() =&gt; copiedMessage.remove(), 1500);
-    " style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;">
+    setTimeout(() => copiedMessage.remove(), 1500);
+    "
+                    style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;"
+                >
                     Copy Invite Link
                 </button>
-<div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;"/></div>
-<div>No friends yet</div>
-</div>
-</div>
-<script>
+                <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;" /></div>
+                <div>No friends yet</div>
+            </div>
+        </div>
+
+        <script>
             const CONFIG = { PARTICLE_COUNT: 50, CLICK_EFFECT_DURATION: 1000, RESIZE_DEBOUNCE: 200, CONFETTI_COUNT: 30, MAX_SCALE: 1.4, MIN_SCALE: 1, SCALE_INCREMENT: 0.1, INCOME_INTERVAL: 3600000 };
             const SKINS = [
                 { src: "https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp", gradient: "radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)", color: "#FFFFFF", worldName: "World of Consoles" },
@@ -1656,8 +1664,6 @@ for (let i = 0; i < this.particles.length; i++) {
                 resize() {
                     this.canvas.width = window.innerWidth;
                     this.canvas.height = window.innerHeight;
-
-
                     for (let i = 0; i < this.particles.length; i++) {
                         const p = this.particles[i];
                         p.x = Math.random() * this.canvas.width;
@@ -1744,8 +1750,6 @@ for (let i = 0; i < this.particles.length; i++) {
                 resize() {
                     this.canvas.width = window.innerWidth;
                     this.canvas.height = window.innerHeight;
-
-
                     this.particles = [];
                     if (this.isAnimating) {
                         for (let i = 0; i < this.maxCount; i++) {
@@ -1846,48 +1850,10 @@ for (let i = 0; i < this.particles.length; i++) {
                 }
             }
             class CharacterController {
-
-    attachTouchListeners() {
-        const characterEl = this.ui.elements.character;
-        this.dragging = false;
-        this.dragOffsetX = 0;
-
-        characterEl.addEventListener("pointerdown", (e) => {
-            const rect = characterEl.getBoundingClientRect();
-            const touchX = e.clientX;
-            const touchY = e.clientY;
-
-            if (
-                touchX >= rect.left &&
-                touchX <= rect.right &&
-                touchY >= rect.top &&
-                touchY <= rect.bottom
-            ) {
-                this.dragging = true;
-                this.dragOffsetX = touchX - rect.left;
-            }
-        });
-
-        window.addEventListener("pointermove", (e) => {
-            if (!this.dragging) return;
-
-            const touchX = e.clientX;
-            const newLeft = touchX - this.dragOffsetX;
-
-            characterEl.style.position = "absolute";
-            characterEl.style.left = `${newLeft}px`;
-        });
-
-        window.addEventListener("pointerup", () => {
-            this.dragging = false;
-        });
-    }
-
                 constructor(state, ui, effectPool, confettiSystem) {
                     this.state = state;
                     this.ui = ui;
-
-        this.attachTouchListeners();this.effectPool = effectPool;
+                    this.effectPool = effectPool;
                     this.confettiSystem = confettiSystem;
                     this.listeners = [];
                     this.lastTapTime = 0;
@@ -2999,7 +2965,8 @@ updateAppearance() {
                 window.addEventListener("beforeunload", () => game.destroy());
             });
         </script>
-<script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
                 const sections = {
@@ -3054,7 +3021,8 @@ updateAppearance() {
                 });
             });
         </script>
-<script>
+
+        <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
             const incomeTimer = document.getElementById("incomeTimer");
@@ -3103,27 +3071,31 @@ updateAppearance() {
                 });
             });
         </script>
-<div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
-<div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
-<h2 style="margin-bottom: 1rem;">Support the Game</h2>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
-<div style="margin-top: 1rem;">
-<button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
-</div>
-</div>
-</div>
-<script>
+
+        <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
+                <h2 style="margin-bottom: 1rem;">Support the Game</h2>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
+                <div style="margin-top: 1rem;">
+                    <button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
         </script>
-<!-- Reward Animation Container -->
-<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
-<div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
-</div>
-<script>
+
+        <!-- Reward Animation Container -->
+        <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
+            <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
+        </div>
+
+        <script>
             function showRewardAnimation(animationPath) {
                 const container = document.getElementById("rewardAnimationContainer");
                 const animEl = document.getElementById("rewardAnimation");
@@ -3143,7 +3115,8 @@ updateAppearance() {
                 showRewardAnimation(randomPath);
             }
         </script>
-<script>
+
+        <script>
             let walletConnected = false;
 
             function toggleWallet() {
@@ -3167,12 +3140,14 @@ updateAppearance() {
                 console.log("Wallet disconnected");
             }
         </script>
-<script>
+
+        <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
         </script>
-<script>
+
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3186,7 +3161,8 @@ updateAppearance() {
                 }
             }
         </script>
-<script>
+
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3204,7 +3180,8 @@ updateAppearance() {
                 alert("x4 boost feature coming soon!");
             }
         </script>
-<script>
+
+        <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
                 openCasesCount++;
@@ -3232,7 +3209,8 @@ updateAppearance() {
                 setTimeout(() => msg.remove(), 1500);
             }
         </script>
-<script>
+
+        <script>
             let clicks = 0;
             let telegramVisited = false;
             let stars = 0;
@@ -3294,7 +3272,8 @@ updateAppearance() {
                 setTimeout(() => msg.remove(), 1500);
             }
         </script>
-<script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
                 let telegramVisited = false;
@@ -3361,8 +3340,11 @@ updateAppearance() {
                 }
             });
         </script>
+
 <div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
 <div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
+
+
 <script>
   const newQuestsArrowLeft = document.getElementById('newQuestsArrowLeft');
   const newQuestsArrowRight = document.getElementById('newQuestsArrowRight');
@@ -3379,6 +3361,8 @@ updateAppearance() {
     });
   });
 </script>
+
+
 <script>
   let showingFriends = false;
 
@@ -3408,6 +3392,8 @@ updateAppearance() {
   document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
   document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
 </script>
+
+
 <script>
   document.querySelectorAll(".menu-item").forEach(item => {
     item.addEventListener("click", () => {
@@ -3426,670 +3412,93 @@ updateAppearance() {
 </script>
 
 
-<div class="game-card" style="text-align: center;">
-<div style="color: white; margin-top: 0.5rem;"></div>
+
+  </div>
+    </div>
+    <div class="game-card" style="text-align: center;">
+      <div style="color: white; margin-top: 0.5rem;"></div>
+    </div>
+  </div>
 </div>
 
 
-
-<div id="catchGame" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 1000;">
-<div id="catchScore" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 1.5rem;">Счёт: 0</div>
-<div id="catchPlayer" style="position: absolute; bottom: 10px; width: 80px; height: 20px; background: #4caf50; left: 50%; transform: translateX(-50%);"></div>
-<div id="catchOver" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; display: none;">Игра окончена</div>
-<button onclick="closeCatchGame()" style="position: absolute; top: 10px; right: 10px; background: #dc3545; color: white; padding: 0.5rem 1rem; border: none; border-radius: 10px; cursor: pointer;">Выйти</button>
-</div>
-<!-- Cake and Hockey Games -->
-<div id="cakeGame" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111;">
-<canvas height="600" id="cakeCanvas" style="display:block; margin:0 auto;" width="400"></canvas>
-</div>
-<div id="hockeyGame" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111;">
-<canvas height="600" id="hockeyCanvas" style="display:block; margin:0 auto;" width="400"></canvas>
+<!-- Earn Coins Modal -->
+<div id="earnCoinsModal" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9);">
+  <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; flex-direction:column; position:relative;">
+    <button onclick="closeEarnCoins()" style="position:absolute; top:20px; right:20px; z-index:1010; padding:10px 20px; font-size:16px;">Закрыть</button>
+    <iframe srcdoc="&lt;!DOCTYPE html&gt;&#10;&lt;html lang=&quot;ru&quot;&gt;&#10;&lt;head&gt;&#10;    &lt;meta charset=&quot;UTF-8&quot;&gt;&#10;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;&#10;    &lt;title&gt;Лови Монеты!&lt;/title&gt;&#10;    &lt;style&gt;&#10;        body {&#10;            display: flex;&#10;            justify-content: center;&#10;            align-items: center;&#10;            height: 100vh;&#10;            margin: 0;&#10;            background-color: #f0f0f0;&#10;            font-family: Arial, sans-serif;&#10;            overflow: hidden;&#10;        }&#10;        #gameCanvas {&#10;            border: 2px solid #333;&#10;            background-color: #87ceeb;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;        }&#10;        #score {&#10;            position: absolute;&#10;            top: 20px;&#10;            left: 20px;&#10;            font-size: 24px;&#10;            font-weight: bold;&#10;            color: #333;&#10;            z-index: 10;&#10;        }&#10;        #gameOver {&#10;            position: absolute;&#10;            display: none;&#10;            flex-direction: column;&#10;            justify-content: center;&#10;            align-items: center;&#10;            background-color: rgba(0, 0, 0, 0.7);&#10;            color: white;&#10;            width: 100%;&#10;            height: 100%;&#10;            max-width: 800px;&#10;            max-height: 600px;&#10;            z-index: 20;&#10;        }&#10;        #gameOver h2 {&#10;            font-size: 32px;&#10;            margin: 10px;&#10;        }&#10;        #gameOver p {&#10;            font-size: 24px;&#10;            margin: 10px;&#10;        }&#10;        #restartButton {&#10;            padding: 10px 20px;&#10;            font-size: 18px;&#10;            background-color: #ffd700;&#10;            border: none;&#10;            border-radius: 5px;&#10;            cursor: pointer;&#10;        }&#10;        @media (max-width: 600px) {&#10;            #score {&#10;                font-size: 18px;&#10;            }&#10;            #gameOver h2 {&#10;                font-size: 24px;&#10;            }&#10;            #gameOver p {&#10;                font-size: 18px;&#10;            }&#10;            #restartButton {&#10;                font-size: 16px;&#10;                padding: 8px 16px;&#10;            }&#10;        }&#10;    &lt;/style&gt;&#10;&lt;/head&gt;&#10;&lt;body&gt;&#10;    &lt;div id=&quot;score&quot;&gt;Счет: 0&lt;/div&gt;&#10;    &lt;div id=&quot;gameOver&quot;&gt;&#10;        &lt;h2&gt;Игра окончена!&lt;/h2&gt;&#10;        &lt;p id=&quot;finalScore&quot;&gt;Счет: 0&lt;/p&gt;&#10;        &lt;button id=&quot;restartButton&quot;&gt;Играть снова&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;canvas id=&quot;gameCanvas&quot; width=&quot;800&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;&#10;    &lt;div style=&quot;position: absolute; top: 20px; right: 20px; z-index: 30;&quot;&gt;&#10;        &lt;button onclick=&quot;openEarnCoins()&quot; style=&quot;padding: 10px 20px; font-size: 16px;&quot;&gt;Play Mini Game&lt;/button&gt;&#10;    &lt;/div&gt;&#10;    &lt;div id=&quot;earnCoinsModal&quot; style=&quot;display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9);&quot;&gt;&#10;        &lt;div style=&quot;width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; position: relative;&quot;&gt;&#10;            &lt;button onclick=&quot;closeEarnCoins()&quot; style=&quot;position: absolute; top: 20px; right: 20px; z-index: 1010; padding: 10px 20px; font-size: 16px;&quot;&gt;Закрыть&lt;/button&gt;&#10;            &lt;iframe id=&quot;earnCoinsIframe&quot; srcdoc=&quot;&quot; width=&quot;800&quot; height=&quot;600&quot; style=&quot;max-width: 95vw; max-height: 90vh; border: none; background: white;&quot;&gt;&lt;/iframe&gt;&#10;        &lt;/div&gt;&#10;    &lt;/div&gt;&#10;    &lt;script&gt;&#10;        function openEarnCoins() {&#10;            const html = document.documentElement.outerHTML;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = html;&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;block&quot;;&#10;        }&#10;&#10;        function closeEarnCoins() {&#10;            document.getElementById(&quot;earnCoinsModal&quot;).style.display = &quot;none&quot;;&#10;            document.getElementById(&quot;earnCoinsIframe&quot;).srcdoc = &quot;&quot;;&#10;        }&#10;    &lt;/script&gt;&#10;    &lt;script&gt;&#10;        // Игра &quot;Earn Coins&quot;&#10;        const canvas = document.getElementById(&#x27;gameCanvas&#x27;);&#10;        const ctx = canvas.getContext(&#x27;2d&#x27;);&#10;        const scoreDisplay = document.getElementById(&#x27;score&#x27;);&#10;        const gameOverScreen = document.getElementById(&#x27;gameOver&#x27;);&#10;        const finalScoreDisplay = document.getElementById(&#x27;finalScore&#x27;);&#10;        const restartButton = document.getElementById(&#x27;restartButton&#x27;);&#10;&#10;        function resizeCanvas() {&#10;            const aspectRatio = 800 / 600;&#10;            let width = window.innerWidth;&#10;            let height = window.innerHeight;&#10;            if (width / height &gt; aspectRatio) {&#10;                width = height * aspectRatio;&#10;            } else {&#10;                height = width / aspectRatio;&#10;            }&#10;            canvas.style.width = `${width}px`;&#10;            canvas.style.height = `${height}px`;&#10;            canvas.width = 800;&#10;            canvas.height = 600;&#10;        }&#10;        window.addEventListener(&#x27;resize&#x27;, resizeCanvas);&#10;        resizeCanvas();&#10;&#10;        const player = {&#10;            x: canvas.width / 2 - 50,&#10;            y: canvas.height - 50,&#10;            width: 100,&#10;            height: 50,&#10;            speed: 10&#10;        };&#10;&#10;        let coins = [];&#10;        let score = 0;&#10;        let coinSpeed = 2;&#10;        let gameActive = true;&#10;        let keys = { ArrowLeft: false, ArrowRight: false };&#10;        let isDragging = false;&#10;        let touchX = 0;&#10;&#10;        document.addEventListener(&#x27;keydown&#x27;, (e) =&gt; {&#10;            if (gameActive &amp;&amp; e.key in keys) keys[e.key] = true;&#10;        });&#10;        document.addEventListener(&#x27;keyup&#x27;, (e) =&gt; {&#10;            if (e.key in keys) keys[e.key] = false;&#10;        });&#10;&#10;        canvas.addEventListener(&#x27;touchstart&#x27;, (e) =&gt; {&#10;            if (!gameActive) return;&#10;            e.preventDefault();&#10;            isDragging = true;&#10;            touchX = e.touches[0].clientX;&#10;        });&#10;        canvas.addEventListener(&#x27;touchmove&#x27;, (e) =&gt; {&#10;            if (!gameActive || !isDragging) return;&#10;            e.preventDefault();&#10;            const deltaX = (e.touches[0].clientX - touchX) * (canvas.width / canvas.clientWidth);&#10;            touchX = e.touches[0].clientX;&#10;            player.x += deltaX;&#10;            if (player.x &lt; 0) player.x = 0;&#10;            if (player.x &gt; canvas.width - player.width) player.x = canvas.width - player.width;&#10;        });&#10;        canvas.addEventListener(&#x27;touchend&#x27;, () =&gt; {&#10;            isDragging = false;&#10;        });&#10;&#10;        function spawnCoin() {&#10;            if (!gameActive) return;&#10;            const coin = {&#10;                x: Math.random() * (canvas.width - 30),&#10;                y: 0,&#10;                width: 30,&#10;                height: 30,&#10;                speed: coinSpeed&#10;            };&#10;            coins.push(coin);&#10;        }&#10;&#10;        function spawnCoins() {&#10;            if (!gameActive) return;&#10;            spawnCoin();&#10;            setTimeout(spawnCoins, 1000 - Math.min(score * 50, 700));&#10;        }&#10;&#10;        function endGame() {&#10;            gameActive = false;&#10;            finalScoreDisplay.textContent = `Счет: ${score}`;&#10;            gameOverScreen.style.display = &#x27;flex&#x27;;&#10;        }&#10;&#10;        function restartGame() {&#10;            gameActive = true;&#10;            score = 0;&#10;            coinSpeed = 2;&#10;            coins = [];&#10;            player.x = canvas.width / 2 - 50;&#10;            keys = { ArrowLeft: false, ArrowRight: false };&#10;            isDragging = false;&#10;            scoreDisplay.textContent = `Счет: 0`;&#10;            gameOverScreen.style.display = &#x27;none&#x27;;&#10;            spawnCoins();&#10;            if (!window.gameLoopRunning) {&#10;                window.gameLoopRunning = true;&#10;                requestAnimationFrame(update);&#10;            }&#10;        }&#10;&#10;        restartButton.addEventListener(&#x27;click&#x27;, restartGame);&#10;&#10;        function update() {&#10;            if (!gameActive) {&#10;                window.gameLoopRunning = false;&#10;                return;&#10;            }&#10;&#10;            if (keys.ArrowLeft &amp;&amp; player.x &gt; 0) player.x -= player.speed;&#10;            if (keys.ArrowRight &amp;&amp; player.x &lt; canvas.width - player.width) player.x += player.speed;&#10;&#10;            coins.forEach((coin, index) =&gt; {&#10;                coin.y += coin.speed;&#10;                coin.speed = coinSpeed;&#10;&#10;                const playerActiveHeight = player.height * 0.2;&#10;                const playerActiveBottom = player.y + playerActiveHeight;&#10;                const playerActiveWidth = 80;&#10;                const playerActiveLeft = player.x + (player.width - playerActiveWidth) / 2;&#10;                const playerActiveRight = playerActiveLeft + playerActiveWidth;&#10;&#10;                if (&#10;                    coin.y + coin.height &gt;= player.y &amp;&amp;&#10;                    coin.y &lt;= playerActiveBottom &amp;&amp;&#10;                    coin.x + coin.width &gt;= playerActiveLeft &amp;&amp;&#10;                    coin.x &lt;= playerActiveRight&#10;                ) {&#10;                    score += 10;&#10;                    coins.splice(index, 1);&#10;                    scoreDisplay.textContent = `Счет: ${score}`;&#10;                    coinSpeed += 0.05;&#10;                }&#10;&#10;                if (coin.y &gt; canvas.height) {&#10;                    coins.splice(index, 1);&#10;                    endGame();&#10;                }&#10;            });&#10;&#10;            ctx.clearRect(0, 0, canvas.width, canvas.height);&#10;            ctx.fillStyle = &#x27;#8b4513&#x27;;&#10;            ctx.fillRect(player.x, player.y, player.width, player.height);&#10;            ctx.fillStyle = &#x27;#ffd700&#x27;;&#10;            coins.forEach(coin =&gt; {&#10;                ctx.beginPath();&#10;                ctx.arc(coin.x + coin.width / 2, coin.y + coin.height / 2, coin.width / 2, 0, Math.PI * 2);&#10;                ctx.fill();&#10;            });&#10;&#10;            requestAnimationFrame(update);&#10;        }&#10;&#10;        window.gameLoopRunning = true;&#10;        spawnCoins();&#10;        requestAnimationFrame(update);&#10;    &lt;/script&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;&#10;" width="800" height="600" style="max-width:95vw; max-height:90vh; border:none; background:white;"></iframe>
+  </div>
 </div>
 <script>
-function startCake() {
-  document.getElementById('gamesContainer').classList.add('hidden');
-  document.getElementById('cakeGame').style.display = 'block';
-  initCakeGame();
-}
-function startHockey() {
-  document.getElementById('gamesContainer').classList.add('hidden');
-  document.getElementById('hockeyGame').style.display = 'block';
-  initHockeyGame();
-}
-
-// Cake Game
-function initCakeGame() {
-      canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-
-  const baseWidth = 150;
-  let currentWidth = baseWidth;
-  let platforms = [
-    { x: canvas.width / 2 - baseWidth / 2, y: canvas.height - 40, width: baseWidth }
-];
-  let falling = null;
-  let direction = 1;
-  let score = 0;
-let gameEnded = false;
-
-
-function spawnPlatform() {
-  currentWidth -= 5;
-  if (direction > 0) {
-    falling = { x: 0, y: 0, width: currentWidth };
-  } else {
-    falling = { x: canvas.width - currentWidth, y: 0, width: currentWidth };
+  function openEarnCoins() {
+    document.getElementById("earnCoinsModal").style.display = "block";
   }
-  direction *= -1;
-}
-;
-    direction *= -1;
+  function closeEarnCoins() {
+    document.getElementById("earnCoinsModal").style.display = "none";
   }
-
-  function updateCake() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    platforms.forEach(p => {
-      ctx.fillStyle = '#ff9800';
-      ctx.fillRect(p.x, p.y, p.width, 20);
-    });
-    if (falling) {
-      falling.x += 4 * direction;
-      ctx.fillStyle = '#ff5722';
-      ctx.fillRect(falling.x, falling.y, falling.width, 20);
-    }
-  }
-
-  function drop() {
-    if (!falling) return;
-    const top = platforms[platforms.length - 1];
-    const fallCenter = falling.x + falling.width / 2;
-    const topCenter = top.x + top.width / 2;
-    if (Math.abs(fallCenter - topCenter) < top.width / 2) {
-      platforms.push({
-        x: falling.x,
-        y: top.y - 22,
-        width: falling.width
-      });
-      score++;
-      spawnPlatform();
-    } else {
-      alert("Игра окончена! Счёт: " + score);
-      location.reload();
-    }
-    falling = null;
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === ' ') drop();
-  });
-
-// spawnPlatform();  // removed: undefined spawnPlatform
-
-// Hockey Game
-function initHockeyGame() {
-      canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-
-  let player = { x: canvas.width / 2 - 25, width: 50 };
-  let cpu = { x: canvas.width / 2 - 25, width: 50 };
-  let puck = { x: canvas.width / 2, y: canvas.height / 2, vx: 3, vy: 3 };
-  let cpuScore = 0;
-
-  canvas.addEventListener('touchmove', e => {
-    const rect = canvas.getBoundingClientRect();
-    player.x = e.touches[0].clientX - rect.left - player.width / 2;
-  });
-
-  function resetPuck() {
-    puck.x = canvas.width / 2;
-    puck.y = canvas.height / 2;
-    puck.vx = 3;
-    puck.vy = 3;
-  }
-
-  function updateHockey() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'white';
-    ctx.fillRect(player.x, canvas.height - 20, player.width, 10);
-    ctx.fillRect(cpu.x, 10, cpu.width, 10);
-    ctx.beginPath();
-    ctx.arc(puck.x, puck.y, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    puck.x += puck.vx;
-    puck.y += puck.vy;
-
-    if (puck.x < 0 || puck.x > canvas.width) puck.vx *= -1;
-
-    if (puck.y < 20 && puck.x > cpu.x && puck.x < cpu.x + cpu.width) puck.vy *= -1;
-    if (puck.y > canvas.height - 30 && puck.x > player.x && puck.x < player.x + player.width) {
-      puck.vy *= -1;
-      puck.vx *= 1.1;
-      puck.vy *= 1.1;
-    }
-
-    if (puck.y < 0) resetPuck();
-    if (puck.y > canvas.height) {
-      cpuScore++;
-      if (cpuScore >= 3) {
-        alert("Компьютер победил!");
-        location.reload();
-      }
-      resetPuck();
-    }
-
-    if (cpu.x + cpu.width / 2 < puck.x) cpu.x += 2;
-    if (cpu.x + cpu.width / 2 > puck.x) cpu.x -= 2;
-  }
-
-  function loop() {
-    updateHockey();
-    requestAnimationFrame(loop);
-  }
-  loop();
-}
 </script>
-<div id="tortGameCanvasWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:1001;">
-<canvas height="600" id="tortGameCanvas" style="display:block; margin:80px auto 0 auto; background:#000;" width="400"></canvas>
+
+
+<style>
+.minigame-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 1rem;
+}
+.quit-button {
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  padding: 1rem;
+}
+</style>
+<div class="minigame-screen" id="minigameScreen">
+  <button class="quit-button" onclick="closeMinigame()">✕ Quit</button>
 </div>
+
+
 <script>
-function openTortGame() {
-  document.getElementById("topMenu")?.classList.add("game-hidden");
-  document.getElementById("mainContent")?.classList.add("game-hidden");
-  document.getElementById("footer")?.classList.add("game-hidden");
-  document.getElementById("tortGameCanvasWrapper").style.display = "block";
-  startTortGame();
+window.openEarnCoins = function() {
+  openMinigame();
 }
-
-function startTortGame() {
-      canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-
-  let platforms = [
-    { x: canvas.width / 2 - 80, y: canvas.height - 30, width: 160 },
-    { x: canvas.width / 2 - 70, y: canvas.height - 55, width: 140 }
-  ];
-  let falling = null;
-  let direction = 1;
-  let score = 0;
-let gameEnded = false;
-  let currentWidth = 130;
-
-
-function spawnPlatform() {
-  currentWidth -= 5;
-  if (direction > 0) {
-    falling = { x: 0, y: 0, width: currentWidth };
-  } else {
-    falling = { x: canvas.width - currentWidth, y: 0, width: currentWidth };
+window.openMinigame = function() {
+  const screen = document.getElementById('minigameScreen');
+  if (screen) {
+    screen.style.display = 'flex';
   }
-  direction *= -1;
 }
-;
-    direction *= -1;
+window.closeMinigame = function() {
+  const screen = document.getElementById('minigameScreen');
+  if (screen) {
+    screen.style.display = 'none';
   }
-
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const player = document.getElementById("catchPlayer");
-  const game = document.getElementById("catchGame");
-
-  let targetLeft = 0;
-  let animationFrame;
-
-  function movePlayerSmoothly() {
-    const currentLeft = parseFloat(getComputedStyle(player).left);
-    const diff = targetLeft - currentLeft;
-    if (Math.abs(diff) > 1) {
-      player.style.left = currentLeft + diff * 0.1 + "px";
-      animationFrame = requestAnimationFrame(movePlayerSmoothly);
-    } else {
-      player.style.left = targetLeft + "px";
-    }
-  }
-
-  function setTargetLeft(x) {
-    const gameRect = game.getBoundingClientRect();
-    const playerWidth = player.offsetWidth;
-    targetLeft = Math.min(Math.max(0, x - gameRect.left - playerWidth / 2), game.clientWidth - playerWidth);
-    cancelAnimationFrame(animationFrame);
-    animationFrame = requestAnimationFrame(movePlayerSmoothly);
-  }
-
-  game.addEventListener("touchstart", e => {
-    if (e.touches.length > 0) {
-      setTargetLeft(e.touches[0].clientX);
-    }
-  });
-
-  game.addEventListener("touchmove", e => {
-    if (e.touches.length > 0) {
-      setTargetLeft(e.touches[0].clientX);
-    }
-  });
-
-  document.addEventListener("keydown", e => {
-    const step = 10;
-    const currentLeft = parseFloat(getComputedStyle(player).left);
-    if (e.key === "ArrowLeft") {
-      targetLeft = Math.max(0, currentLeft - step);
-    } else if (e.key === "ArrowRight") {
-      targetLeft = Math.min(game.clientWidth - player.offsetWidth, currentLeft + step);
-    }
-    cancelAnimationFrame(animationFrame);
-    animationFrame = requestAnimationFrame(movePlayerSmoothly);
-  });
-});
-</script>
-<div id="tortGameWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111; z-index:1000;">
-
-<button onclick="closeTortGame()" style="position:absolute; top:20px; right:20px; z-index:1001; padding:6px 14px; background:#dc3545; color:#fff; border:none; border-radius:6px;">Назад</button>
-</div>
-<script>
-function openTortGame() {
-  document.getElementById("mainContent")?.classList.add("game-hidden");
-  document.getElementById("topMenu")?.classList.add("game-hidden");
-  document.getElementById("footer")?.classList.add("game-hidden");
-  document.getElementById("tortGameWrapper").style.display = "block";
-}
-
-function closeTortGame() {
-  document.getElementById("mainContent")?.classList.remove("game-hidden");
-  document.getElementById("topMenu")?.classList.remove("game-hidden");
-  document.getElementById("footer")?.classList.remove("game-hidden");
-  document.getElementById("tortGameWrapper").style.display = "none";
 }
 </script>
 
-<!-- Mini-game: Catch the Stars -->
-
-
-<!-- Earn Coins Game -->
-<script>
-function openEarnCoins() {
-  document.getElementById("mainContent")?.classList.add("game-hidden");
-  document.getElementById("topMenu")?.classList.add("game-hidden");
-  document.getElementById("footer")?.classList.add("game-hidden");
-  document.getElementById("earnCoinsGameWrapper").style.display = "block";
-  }
-
-;
-
-  let score = 0;
-let gameEnded = false;
-
-  function drawRocket() {
-    ctx.fillStyle = '#00ffff';
-    ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
-  }
-
-  function drawStars() {
-    ctx.fillStyle = '#ffd700';
-    stars.forEach(star => {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, 10, 0, Math.PI * 2);
-      ctx.fill();
-    });
-  }
-
-  function updateStars() {
-    for (let i = stars.length - 1; i >= 0; i--) {
-      stars[i].y += 2;
-      if (
-        stars[i].y > rocket.y &&
-        stars[i].x > rocket.x &&
-        stars[i].x < rocket.x + rocket.width
-      ) {
-        stars.splice(i, 1);
-        score++;
-        document.getElementById('starCount').textContent = score;
-      }
-    else if (stars[i].y > canvas.height) {
-      if (!gameEnded) {
-        endGame();
-        return;
-      }
-      stars.splice(i, 1);
-
-      }
-    }
-  }
-
-  function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawRocket();
-    drawStars();
-    updateStars();
-    window.gameLoopId = requestAnimationFrame(loop);
-  }
-
-  function spawnStar() {
-    stars.push({ x: Math.random() * (canvas.width - 20) + 10, y: -10 });
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft') {
-      rocket.x = Math.max(0, rocket.x - 40);
-    } else if (e.key === 'ArrowRight') {
-      rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 40);
-    }
-  });
-
-  stars.length = 0;
-  score = 0;
-  loop();
-  window.spawnIntervalId = setInterval(spawnStar, 700);
-</script>
-
-<script>
-resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-
-    let score = 0;
-let gameEnded = false;
-
-  function drawRocket() {
-    ctx.fillStyle = '#00ffff';
-    ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
-  }
-
-  function drawStars() {
-    ctx.fillStyle = '#ffd700';
-    for (const star of stars) {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, 10, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function updateStars() {
-    for (let i = stars.length - 1; i >= 0; i--) {
-      stars[i].y += 2;
-      if (
-        stars[i].y > rocket.y &&
-        stars[i].x > rocket.x &&
-        stars[i].x < rocket.x + rocket.width
-      ) {
-        stars.splice(i, 1);
-        score++;
-      }
-    else if (stars[i].y > canvas.height) {
-      if (!gameEnded) {
-        endGame();
-        return;
-      }
-      stars.splice(i, 1);
-
-      }
-    }
-  }
-
-  function spawnStar() {
-    stars.push({ x: Math.random() * (canvas.width - 20) + 10, y: -10 });
-  }
-
-  function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawRocket();
-    drawStars();
-    updateStars();
-    requestAnimationFrame(gameLoop);
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      rocket.x = Math.max(0, rocket.x - 40);
-    } else if (e.key === 'ArrowRight') {
-      rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 40);
-    }
-  });
-
-  spawnStar();
-  setInterval(spawnStar, 700);
-
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-
-    rocket.y = canvas.height - 60;
-  rocket.x = canvas.width / 2 - 20;
-  });
-
-  gameLoop();
-
-</script>
-
-<script>
-
-// Resize canvas to fullscreen
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-// Game logic
-
-let score = 0;
-let gameEnded = false;
-
-function drawRocket() {
-  ctx.fillStyle = '#00ffff';
-  ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
-}
-
-function drawStars() {
-  ctx.fillStyle = '#ffd700';
-  for (const star of stars) {
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, 10, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function updateStars() {
-  for (let i = stars.length - 1; i >= 0; i--) {
-    stars[i].y += 2;
-    if (
-      stars[i].y > rocket.y &&
-      stars[i].x > rocket.x &&
-      stars[i].x < rocket.x + rocket.width
-    ) {
-      stars.splice(i, 1);
-      score++;
-    }
-    else if (stars[i].y > canvas.height) {
-      if (!gameEnded) {
-        endGame();
-        return;
-      }
-      stars.splice(i, 1);
-
-    }
-  }
-}
-
-function spawnStar() {
-  stars.push({ x: Math.random() * (canvas.width - 20) + 10, y: -10 });
-}
-
-function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawRocket();
-  drawStars();
-  updateStars();
-  requestAnimationFrame(gameLoop);
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') {
-    rocket.x = Math.max(0, rocket.x - 40);
-  } else if (e.key === 'ArrowRight') {
-    rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 40);
-  }
-});
-
-spawnStar();
-setInterval(spawnStar, 700);
-
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-
-    rocket.y = canvas.height - 60;
-  rocket.x = canvas.width / 2 - 20;
-  });
-
-  gameLoop();
-</script>
-
-<div id="earnCoinsWrapper" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#111; z-index:1000;">
-
-  <button onclick="closeEarnCoins()" style="position:absolute; top:20px; right:20px; z-index:1001; padding:6px 14px; background:#dc3545; color:#fff; border:none; border-radius:6px;">Назад</button>
-
-<div id="earnCoinsHUD" style="position:fixed;top:20px;left:20px;z-index:1001;color:white;font-size:24px;">
-  Очки: <span id="scoreCount">0</span>
-</div>
-<div id="gameOverScreen" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:32px;z-index:1002;text-align:center;">
-  <div>Игра окончена</div>
-  <div>Ваш счет: <span id="finalScore">0</span></div>
-  <button onclick="closeEarnCoins()" style="margin-top:20px;padding:10px 20px;font-size:18px;">Назад</button>
-</div>
-
-<canvas id="catchGameCanvas" style="display:block; background:#000; border-radius:12px;"></canvas>
-</div>
-<script>
-function openEarnCoins() {
-  document.getElementById("mainContent")?.classList.add("game-hidden");
-  document.getElementById("topMenu")?.classList.add("game-hidden");
-  document.getElementById("footer")?.classList.add("game-hidden");
-  document.getElementById("earnCoinsWrapper").style.display = "block";
-  startCatchGame();
-}
-
-function closeEarnCoins() {
-  document.getElementById("mainContent")?.classList.remove("game-hidden");
-  document.getElementById("topMenu")?.classList.remove("game-hidden");
-  document.getElementById("footer")?.classList.remove("game-hidden");
-  document.getElementById("earnCoinsWrapper").style.display = "none";
-  document.getElementById('gameOverScreen').style.display = 'none';
-  document.getElementById('scoreCount').textContent = '0';
-  document.getElementById('scoreCount').parentElement.style.display = 'block';
-  document.getElementById('catchGameCanvas').style.display = 'block';
-}
-
-function startCatchGame() {
-  const canvas = document.getElementById('catchGameCanvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const rocket = { width: 40, height: 40, x: canvas.width / 2 - 20, y: canvas.height - 60 };
-  const stars = [];
-
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowLeft') {
-      rocket.x = Math.max(0, rocket.x - 40);
-    } else if (e.key === 'ArrowRight') {
-      rocket.x = Math.min(canvas.width - rocket.width, rocket.x + 40);
-    }
-  });
-
-
-function endGame() {
-  gameEnded = true;
-  cancelAnimationFrame(animationId);
-  clearInterval(window.starInterval);
-  document.getElementById('gameOverScreen').style.display = 'block';
-  document.getElementById('scoreCount').parentElement.style.display = 'none';
-  document.getElementById('catchGameCanvas').style.display = 'none';
-  document.getElementById('finalScore').textContent = score;
-}
-
-
-
-    let score = 0;
-let gameEnded = false;
-  let animationId;
-
-  function drawRocket() {
-    ctx.fillStyle = '#0ff';
-    ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
-  }
-
-  function drawStars() {
-    ctx.fillStyle = '#ffd700';
-    for (let star of stars) {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, 10, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function updateStars() {
-    for (let i = stars.length - 1; i >= 0; i--) {
-      stars[i].y += 2;
-      if (
-        stars[i].y > rocket.y &&
-        stars[i].x > rocket.x &&
-        stars[i].x < rocket.x + rocket.width
-      ) {
-        stars.splice(i, 1);
-        score += 1;
-document.getElementById("scoreCount").textContent = score;
-      }
-    else if (stars[i].y > canvas.height) {
-      if (!gameEnded) {
-        endGame();
-        return;
-      }
-      stars.splice(i, 1);
-
-      }
-    }
-  }
-
-  function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawRocket();
-    drawStars();
-    updateStars();
-    animationId = requestAnimationFrame(gameLoop);
-  }
-
-  function spawnStar() {
-    stars.push({ x: Math.random() * 390 + 5, y: -10 });
-  }
-
-
-
-  score = 0;
-  stars.length = 0;
-  clearInterval(window.starInterval);
-  cancelAnimationFrame(animationId);
-
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-
-    rocket.y = canvas.height - 60;
-  rocket.x = canvas.width / 2 - 20;
-  });
-
-  gameLoop();
-  window.starInterval = setInterval(spawnStar, 800);
-}
-</script>
 </body>
 </html>
+
+<script>
+function openMinigame() {
+  const screen = document.getElementById('minigameScreen');
+  if (screen) {
+    screen.style.display = 'flex';
+  }
+}
+function closeMinigame() {
+  const screen = document.getElementById('minigameScreen');
+  if (screen) {
+    screen.style.display = 'none';
+  }
+}
+</script>
