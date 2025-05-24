@@ -3721,6 +3721,60 @@ function spawnPlatform() {
 }
 </script>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const player = document.getElementById("catchPlayer");
+  const game = document.getElementById("catchGame");
+
+  let targetLeft = 0;
+  let animationFrame;
+
+  function movePlayerSmoothly() {
+    const currentLeft = parseFloat(getComputedStyle(player).left);
+    const diff = targetLeft - currentLeft;
+    if (Math.abs(diff) > 1) {
+      player.style.left = currentLeft + diff * 0.1 + "px";
+      animationFrame = requestAnimationFrame(movePlayerSmoothly);
+    } else {
+      player.style.left = targetLeft + "px";
+    }
+  }
+
+  function setTargetLeft(x) {
+    const gameRect = game.getBoundingClientRect();
+    const playerWidth = player.offsetWidth;
+    targetLeft = Math.min(Math.max(0, x - gameRect.left - playerWidth / 2), game.clientWidth - playerWidth);
+    cancelAnimationFrame(animationFrame);
+    animationFrame = requestAnimationFrame(movePlayerSmoothly);
+  }
+
+  game.addEventListener("touchstart", e => {
+    if (e.touches.length > 0) {
+      setTargetLeft(e.touches[0].clientX);
+    }
+  });
+
+  game.addEventListener("touchmove", e => {
+    if (e.touches.length > 0) {
+      setTargetLeft(e.touches[0].clientX);
+    }
+  });
+
+  document.addEventListener("keydown", e => {
+    const step = 10;
+    const currentLeft = parseFloat(getComputedStyle(player).left);
+    if (e.key === "ArrowLeft") {
+      targetLeft = Math.max(0, currentLeft - step);
+    } else if (e.key === "ArrowRight") {
+      targetLeft = Math.min(game.clientWidth - player.offsetWidth, currentLeft + step);
+    }
+    cancelAnimationFrame(animationFrame);
+    animationFrame = requestAnimationFrame(movePlayerSmoothly);
+  });
+});
+</script>
+
 </body>
 
 <script>
