@@ -1120,6 +1120,24 @@
 }
 </style>
 
+
+<style>
+.minigame-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.minigame-button:hover {
+  background-color: #45a049;
+}
+</style>
+
 </head>
     <body>
         <div class="loading-screen" id="loadingScreen">
@@ -1247,7 +1265,7 @@
     <div class="case-container">
       <img src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" alt="Click Challenge" class="case-image" draggable="false" />
       <div class="case-name">Earn Coins</div>
-      <div class="case-price"><button class="claim-button" onclick="openMinigame()">Play</button>
+      <div class="case-price"><button class="minigame-button" id="earnCoinsPlayBtn" disabled>Play</button>
       </div>
     </div>
     <div class="case-container">
@@ -3484,6 +3502,77 @@ window.closeMinigame = function() {
   }
 }
 </script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const playBtn = document.getElementById("earnCoinsPlayBtn");
+    const minigameScreen = document.getElementById("minigameScreen");
+    const quitBtn = document.getElementById("quitMinigame");
+
+    if (playBtn && minigameScreen) {
+        playBtn.addEventListener("click", () => {
+            minigameScreen.style.display = "flex";
+        });
+    }
+
+    if (quitBtn && minigameScreen) {
+        quitBtn.addEventListener("click", () => {
+            minigameScreen.style.display = "none";
+        });
+    }
+});
+</script>
+
+
+<div class="minigame-screen" id="minigameScreen" style="display:none;">
+  <button class="quit-button" onclick="closeMinigame()">✕ Quit</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const playBtn = document.getElementById("earnCoinsPlayBtn");
+  const minigameScreen = document.getElementById("minigameScreen");
+
+  if (playBtn && minigameScreen) {
+    playBtn.removeAttribute("disabled");
+    playBtn.addEventListener("click", () => {
+      minigameScreen.style.display = "flex";
+    });
+  }
+});
+
+function closeMinigame() {
+  const screen = document.getElementById('minigameScreen');
+  if (screen) {
+    screen.style.display = 'none';
+  }
+}
+</script>
+
+<style>
+.minigame-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 1rem;
+}
+.quit-button {
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  padding: 1rem;
+}
+</style>
 
 </body>
 </html>
