@@ -3654,13 +3654,13 @@ startCatchGame = function() {
   let movingAnimation = null;
 
   const game = document.getElementById("game");
-  let scoreDisplay = document.getElementById("score2");
+  let scoreDisplay2 = document.getElementById("score2");
 
   function startCakeGame() {
     stack = [];
     score2 = 0;
     game.innerHTML = '<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>';
-    scoreDisplay = document.getElementById("score2");
+    scoreDisplay2 = document.getElementById("score2");
     createBaseBlock();
     createMovingBlock();
   }
@@ -3739,7 +3739,7 @@ startCatchGame = function() {
     currentBlock = null;
     direction *= -1;
     score2++;
-    scoreDisplay.textContent = "Score: " + score2;
+    scoreDisplay2.textContent = "Score: " + score2;
     createMovingBlock();
   }
 
