@@ -2580,11 +2580,11 @@ updateAppearance() {
                         this.state.setShopViewActive(false);
                         this.state.setMarketViewActive(false);
                         this.state.setLeaderboardViewActive(false);
-                        this.ui.elements.mainContent.classList.remove("hidden-opacity");
+                        if (this.ui.elements.mainContent) this.ui.elements.mainContent.classList.remove("hidden-opacity");
                         this.ui.elements.mainContent.classList.add("visible");
                         this.ui.elements.coinCounter.classList.remove("hidden");
                         this.ui.elements.coinCounter.classList.add("visible");
-                        this.ui.elements.character.classList.remove("hidden-opacity");
+                        if (this.ui.elements.character) this.ui.elements.character.classList.remove("hidden-opacity");
                         this.ui.elements.character.classList.add("visible");
                         this.ui.elements.shopContainer.classList.remove("visible");
                         this.ui.elements.shopContainer.classList.add("hidden");
@@ -2783,11 +2783,11 @@ updateAppearance() {
                         this.state.setMarketViewActive(false);
 
                         // Восстанавливаем содержимое главной страницы
-                        this.ui.elements.mainContent.classList.remove("hidden-opacity");
+                        if (this.ui.elements.mainContent) this.ui.elements.mainContent.classList.remove("hidden-opacity");
                         this.ui.elements.mainContent.classList.add("visible");
                         this.ui.elements.coinCounter.classList.remove("hidden");
                         this.ui.elements.coinCounter.classList.add("visible");
-                        this.ui.elements.character.classList.remove("hidden-opacity");
+                        if (this.ui.elements.character) this.ui.elements.character.classList.remove("hidden-opacity");
                         this.ui.elements.character.classList.add("visible");
 
                         // Скрываем все остальные контейнеры
@@ -3710,7 +3710,15 @@ startCatchGame = function() {
       (currentBlock.speed > 0 && currentBlock.x > window.innerWidth) ||
       (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
     ) {
-      alert("Game Over! Final Score: " + score2);
+
+alert("Game Over! Final Score: " + score2);
+
+const cakeGameEl = document.getElementById("cakeGame");
+if (cakeGameEl) {
+  cakeGameEl.style.display = "none";
+}
+
+
       currentBlock = null;
       cancelAnimationFrame(movingAnimation);
       return;
@@ -3728,7 +3736,15 @@ startCatchGame = function() {
     const overlapWidth = overlapRight - overlapLeft;
 
     if (overlapWidth <= 0) {
-      alert("Game Over! Final Score: " + score2);
+
+alert("Game Over! Final Score: " + score2);
+
+const cakeGameEl = document.getElementById("cakeGame");
+if (cakeGameEl) {
+  cakeGameEl.style.display = "none";
+}
+
+
       currentBlock = null;
       return;
     }
@@ -3765,5 +3781,54 @@ startCatchGame = function() {
 
     cakeGame.addEventListener("click", placeBlock);
   });
+
+
+// TORT GAME LOGIC (финальная версия с задержкой 500мс)
+const tortGameBtn = document.getElementById('tortGamePlayBtn');
+const tortGameContainer = document.getElementById('tortGameContainer');
+const tortExitBtn = document.getElementById('tortExitBtn');
+const tortExitPrompt = document.getElementById('tortExitPrompt');
+const confirmExitBtn = document.getElementById('confirmExitBtn');
+
+let tortGameInterval = null;
+
+tortGameBtn?.addEventListener('click', () => {
+
+const tortGameContainer = document.getElementById("tortGameContainer");
+if (tortGameContainer) {
+  tortGameContainer.style.display = 'flex';
+}
+
+
+setTimeout(() => {
+  const container = document.getElementById("tortGameContainer");
+  if (container) {
+    container.classList.remove("hidden-opacity");
+  }
+}, 10);
+
+
+    tortGameInterval = setInterval(() => {
+        console.log('Игра TORT работает...');
+    }, 1000);
+});
+
+tortExitBtn?.addEventListener('click', () => {
+    clearInterval(tortGameInterval);
+    tortExitPrompt.style.display = 'block';
+    setTimeout(() => tortExitPrompt.classList.remove('hidden-opacity'), 10);
+});
+
+confirmExitBtn?.addEventListener('click', () => {
+    tortExitPrompt.classList.add('hidden-opacity');
+    setTimeout(() => {
+        tortExitPrompt.style.display = 'none';
+    }, 500);
+
+    tortGameContainer.classList.add('hidden-opacity');
+    setTimeout(() => {
+        tortGameContainer.style.display = 'none';
+    }, 500);
+});
 </script>
 
