@@ -3901,9 +3901,9 @@ confirmExitBtn?.addEventListener('click', () => {
     const outcome = Math.random();
     const playerShouldWin = outcome < 0.4;
 
+    const baseSpeed = 1.0;
+    const variation = 0.5;
     let speed1, speed2;
-    const baseSpeed = 1.5;
-    const variation = 0.8;
 
     if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
       speed1 = baseSpeed + variation;
@@ -3925,6 +3925,12 @@ confirmExitBtn?.addEventListener('click', () => {
         result.textContent = (winner === String(chosen))
           ? "Вы выиграли! Победил: " + winName
           : "Вы проиграли. Победил: " + winName;
+
+        // Автоматически сгенерировать новых участников через 2 сек
+        setTimeout(() => {
+          resetRace();
+          chosen = null;
+        }, 2000);
       } else {
         animationFrame = requestAnimationFrame(step);
       }
