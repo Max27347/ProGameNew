@@ -3634,11 +3634,11 @@ startCatchGame = function() {
   function createBaseBlock() {
     const base = document.createElement("div");
     base.className = "block cake2";
-    base.style.width = "180px";
-    base.style.left = "calc(50% - 90px)";
+    base.style.width = "150px";
+    base.style.left = "calc(50% - 75px)";
     base.style.bottom = "0px";
     game.appendChild(base);
-    stack.push({ left: window.innerWidth / 2 - 90, width: 180, bottom: 0 });
+    stack.push({ left: window.innerWidth / 2 - 75, width: 150, bottom: 0 });
   }
 
   function createMovingBlock() {
@@ -3677,7 +3677,7 @@ startCatchGame = function() {
       (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
     ) {
       alert("Game Over! Final Score: " + score2);
-    cakeGame.style.display = "none";
+      cakeGame.style.display = "none";
       currentBlock = null;
       cancelAnimationFrame(movingAnimation);
       return;
@@ -3696,7 +3696,7 @@ startCatchGame = function() {
 
     if (overlapWidth <= 0) {
       alert("Game Over! Final Score: " + score2);
-    cakeGame.style.display = "none";
+      cakeGame.style.display = "none";
       currentBlock = null;
       return;
     }
