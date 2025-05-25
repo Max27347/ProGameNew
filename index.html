@@ -3623,6 +3623,7 @@ startCatchGame = function() {
     border-radius: 6px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     transition: opacity 0.3s ease-in;
+    will-change: transform;
   }
   .cake1 {
     background: linear-gradient(to top, #f7c59f, #fcd5ce);
@@ -3681,17 +3682,20 @@ startCatchGame = function() {
     const block = document.createElement("div");
     const colorList = ['cake1', 'cake2', 'cake3', 'cake4', 'cake5'];
     block.className = "block " + colorList[Math.floor(Math.random() * colorList.length)];
+
     const dir = Math.random() < 0.5 ? 1 : -1;
-    block.style.left = dir === 1 ? "-100px" : window.innerWidth + "px";
+    const initialX = dir === 1 ? -100 : window.innerWidth;
+    block.style.left = "0px"; // позиционируем через transform
     block.style.width = newWidth + "px";
     block.style.bottom = last.bottom + 30 + "px";
+    block.style.transform = `translateX(${initialX}px)`;
     game.appendChild(block);
 
     currentBlock = {
       el: block,
       width: newWidth,
       bottom: last.bottom + 30,
-      x: dir === 1 ? -100 : window.innerWidth,
+      x: initialX,
       speed: dir === 1
         ? (score2 >= 10 ? (Math.random() * 1 + 2.5) : (Math.random() * 0.6 + 1.5))
         : -(score2 >= 10 ? (Math.random() * 1 + 2.5) : (Math.random() * 0.6 + 1.5))
@@ -3704,7 +3708,7 @@ startCatchGame = function() {
   function moveBlock() {
     if (!currentBlock) return;
     currentBlock.x += currentBlock.speed;
-    currentBlock.el.style.left = currentBlock.x + "px";
+    currentBlock.el.style.transform = `translateX(${currentBlock.x}px)`;
 
     if (
       (currentBlock.speed > 0 && currentBlock.x > window.innerWidth) ||
@@ -3733,8 +3737,11 @@ startCatchGame = function() {
       return;
     }
 
-    currentBlock.el.style.left = overlapLeft + "px";
-    currentBlock.el.style.width = overlapWidth + "px";
+    const block = currentBlock.el;
+    block.style.transform = "translateX(0)";
+    block.style.left = overlapLeft + "px";
+    block.style.width = overlapWidth + "px";
+
     stack.push({ left: overlapLeft, width: overlapWidth, bottom: currentBlock.bottom });
     currentBlock = null;
     direction *= -1;
@@ -3766,4 +3773,3 @@ startCatchGame = function() {
     cakeGame.addEventListener("click", placeBlock);
   });
 </script>
-
