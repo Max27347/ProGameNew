@@ -3830,7 +3830,8 @@ confirmExitBtn?.addEventListener('click', () => {
 </script>
 
 <!-- Мини-игра "Гонки" -->
-<div id="raceGame" style="position: fixed; inset: 0; background: #222; display: none; z-index: 10000; flex-direction: column; align-items: center; color: white;">
+<div id="raceGame" style="position: fixed; inset: 0; background: linear-gradient(to bottom right, #1a1a1a, #333333);
+; display: none; z-index: 10000; flex-direction: column; align-items: center; color: white;">
   <button id="quitRaceGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: white; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
   <h1 style="margin-top: 20px;">Choose who wins</h1>
   <div class="race-container" style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 20px;">
@@ -3842,9 +3843,31 @@ confirmExitBtn?.addEventListener('click', () => {
     </div>
   </div>
   <div class="buttons" style="margin-top: 30px; display: flex; gap: 30px;">
-    <button id="choose1">...</button>
-    <button id="choose2">...</button>
-  </div>
+  <button id="choose1" style="
+    padding: 12px 32px;
+    font-size: 18px;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  ">...</button>
+
+  <button id="choose2" style="
+    padding: 12px 32px;
+    font-size: 18px;
+    background: linear-gradient(to right, #ff8c00, #ff3c00);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  ">...</button>
+</div>
+
   <div id="raceResult" style="margin-top: 30px; font-size: 24px; font-weight: bold;"></div>
 </div>
 
