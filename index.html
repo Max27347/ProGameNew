@@ -3650,7 +3650,7 @@ startCatchGame = function() {
   let stack = [];
   let currentBlock = null;
   let direction = 1;
-  let score = 0;
+  let score2 = 0;
   let movingAnimation = null;
 
   const game = document.getElementById("game");
@@ -3658,7 +3658,7 @@ startCatchGame = function() {
 
   function startCakeGame() {
     stack = [];
-    score = 0;
+    score2 = 0;
     game.innerHTML = '<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>';
     scoreDisplay = document.getElementById("score2");
     createBaseBlock();
@@ -3693,8 +3693,8 @@ startCatchGame = function() {
       bottom: last.bottom + 30,
       x: dir === 1 ? -100 : window.innerWidth,
       speed: dir === 1
-        ? (score >= 10 ? (Math.random() * 1.5 + 3.5) : (Math.random() * 1 + 2.5))
-        : -(score >= 10 ? (Math.random() * 1.5 + 3.5) : (Math.random() * 1 + 2.5))
+        ? (score2 >= 10 ? (Math.random() * 1.5 + 3.5) : (Math.random() * 1 + 2.5))
+        : -(score2 >= 10 ? (Math.random() * 1.5 + 3.5) : (Math.random() * 1 + 2.5))
     };
 
     cancelAnimationFrame(movingAnimation);
@@ -3710,7 +3710,7 @@ startCatchGame = function() {
       (currentBlock.speed > 0 && currentBlock.x > window.innerWidth) ||
       (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
     ) {
-      alert("Game Over! Final Score: " + score);
+      alert("Game Over! Final Score: " + score2);
       currentBlock = null;
       cancelAnimationFrame(movingAnimation);
       return;
@@ -3728,7 +3728,7 @@ startCatchGame = function() {
     const overlapWidth = overlapRight - overlapLeft;
 
     if (overlapWidth <= 0) {
-      alert("Game Over! Final Score: " + score);
+      alert("Game Over! Final Score: " + score2);
       currentBlock = null;
       return;
     }
@@ -3738,8 +3738,8 @@ startCatchGame = function() {
     stack.push({ left: overlapLeft, width: overlapWidth, bottom: currentBlock.bottom });
     currentBlock = null;
     direction *= -1;
-    score++;
-    scoreDisplay.textContent = "Score: " + score;
+    score2++;
+    scoreDisplay.textContent = "Score: " + score2;
     createMovingBlock();
   }
 
@@ -3763,7 +3763,6 @@ startCatchGame = function() {
       });
     }
 
-    // Только внутри игры
     cakeGame.addEventListener("click", placeBlock);
   });
 </script>
