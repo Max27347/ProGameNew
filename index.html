@@ -2959,26 +2959,60 @@ updateAppearance() {
             });
         </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const tortBtn = document.getElementById("tortGamePlayBtn");
-  const cakeGame = document.getElementById("cakeGame");
-  const quitBtn = document.getElementById("quitCakeGame");
+            document.addEventListener("DOMContentLoaded", function () {
+                const menuItems = document.querySelectorAll(".menu-item");
+                const sections = {
+                    home: document.getElementById("mainContent"),
+                    shop: document.getElementById("shopContainer"),
+                    market: document.getElementById("marketContainer"),
+                    quests: document.getElementById("questsContainer"),
+                    friends: document.getElementById("friendsContainer"),
+                };
+                const coinCounter = document.getElementById("coinCounter");
+                const incomeCounter = document.getElementById("incomeCounter");
+                const incomeTimer = document.getElementById("incomeTimer");
 
-  if (tortBtn && cakeGame) {
-    tortBtn.removeAttribute("disabled");
-    tortBtn.addEventListener("click", function () {
-      cakeGame.style.display = "block";
-    });
-  }
+                menuItems.forEach((item) => {
+                    item.addEventListener("click", () => {
+                        const selected = item.getAttribute("data-menu");
 
-  if (quitBtn) {
-    quitBtn.addEventListener("click", function (event) {
-      event.stopPropagation(); // предотвращает срабатывание placeBlock
-      cakeGame.style.display = "none";
-    });
-  }
-});
-</script>
+                        for (let key in sections) {
+                            if (sections[key]) {
+                                sections[key].classList.remove("visible");
+                                sections[key].classList.add("hidden");
+                            }
+                        }
+
+                        // Show selected section
+                        if (sections[selected]) {
+                            sections[selected].classList.remove("hidden");
+                            sections[selected].classList.add("visible");
+                        }
+
+                        // Toggle visibility of home-only elements
+
+                        const isHome = selected === "home";
+                        const topMenu = document.querySelector(".top-menu");
+                        if (isHome) {
+                            topMenu.style.display = "flex";
+                        } else {
+                            topMenu.style.display = "none";
+                        }
+
+                        [coinCounter, incomeCounter, incomeTimer].forEach((el) => {
+                            if (!el) return;
+                            if (isHome) {
+                                el.classList.add("visible");
+                                el.classList.remove("hidden");
+                            } else {
+                                el.classList.remove("visible");
+                                el.classList.add("hidden");
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
 <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
@@ -3634,11 +3668,11 @@ startCatchGame = function() {
   function createBaseBlock() {
     const base = document.createElement("div");
     base.className = "block cake2";
-    base.style.width = "150px";
-    base.style.left = "calc(50% - 75px)";
+    base.style.width = "180px";
+    base.style.left = "calc(50% - 90px)";
     base.style.bottom = "0px";
     game.appendChild(base);
-    stack.push({ left: window.innerWidth / 2 - 75, width: 150, bottom: 0 });
+    stack.push({ left: window.innerWidth / 2 - 90, width: 180, bottom: 0 });
   }
 
   function createMovingBlock() {
@@ -3659,8 +3693,8 @@ startCatchGame = function() {
       bottom: last.bottom + 30,
       x: dir === 1 ? -100 : window.innerWidth,
       speed: dir === 1
-        ? (score2 >= 10 ? (Math.random() * 1.5 + 2.8) : (Math.random() * 0.8 + 1.8))
-        : -(score2 >= 10 ? (Math.random() * 1.5 + 2.8) : (Math.random() * 0.8 + 1.8))
+        ? (score2 >= 10 ? (Math.random() * 1 + 2.5) : (Math.random() * 0.6 + 1.5))
+        : -(score2 >= 10 ? (Math.random() * 1 + 2.5) : (Math.random() * 0.6 + 1.5))
     };
 
     cancelAnimationFrame(movingAnimation);
@@ -3677,7 +3711,6 @@ startCatchGame = function() {
       (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
     ) {
       alert("Game Over! Final Score: " + score2);
-      cakeGame.style.display = "none";
       currentBlock = null;
       cancelAnimationFrame(movingAnimation);
       return;
@@ -3696,7 +3729,6 @@ startCatchGame = function() {
 
     if (overlapWidth <= 0) {
       alert("Game Over! Final Score: " + score2);
-      cakeGame.style.display = "none";
       currentBlock = null;
       return;
     }
@@ -3727,9 +3759,11 @@ startCatchGame = function() {
     if (quitBtn) {
       quitBtn.addEventListener("click", function () {
         cakeGame.style.display = "none";
+        cancelAnimationFrame(movingAnimation);
       });
     }
 
     cakeGame.addEventListener("click", placeBlock);
   });
 </script>
+
