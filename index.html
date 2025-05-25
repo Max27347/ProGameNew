@@ -3902,8 +3902,8 @@ confirmExitBtn?.addEventListener('click', () => {
     const playerShouldWin = outcome < 0.4;
 
     let speed1, speed2;
-    const baseSpeed = 4;
-    const variation = 2;
+    const baseSpeed = 1.5;
+    const variation = 0.8;
 
     if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
       speed1 = baseSpeed + variation;
