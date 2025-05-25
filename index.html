@@ -3668,11 +3668,11 @@ startCatchGame = function() {
   function createBaseBlock() {
     const base = document.createElement("div");
     base.className = "block cake2";
-    base.style.width = "180px";
-    base.style.left = "calc(50% - 90px)";
+    base.style.width = "150px";
+    base.style.left = "calc(50% - 75px)";
     base.style.bottom = "0px";
     game.appendChild(base);
-    stack.push({ left: window.innerWidth / 2 - 90, width: 180, bottom: 0 });
+    stack.push({ left: window.innerWidth / 2 - 75, width: 150, bottom: 0 });
   }
 
   function createMovingBlock() {
@@ -3693,8 +3693,8 @@ startCatchGame = function() {
       bottom: last.bottom + 30,
       x: dir === 1 ? -100 : window.innerWidth,
       speed: dir === 1
-        ? (score2 >= 10 ? (Math.random() * 1 + 2.5) : (Math.random() * 0.6 + 1.5))
-        : -(score2 >= 10 ? (Math.random() * 1 + 2.5) : (Math.random() * 0.6 + 1.5))
+        ? (score2 >= 10 ? (Math.random() * 1.5 + 2.8) : (Math.random() * 0.8 + 1.8))
+        : -(score2 >= 10 ? (Math.random() * 1.5 + 2.8) : (Math.random() * 0.8 + 1.8))
     };
 
     cancelAnimationFrame(movingAnimation);
@@ -3783,7 +3783,6 @@ if (cakeGameEl) {
   });
 
 
-// TORT GAME LOGIC (финальная версия с задержкой 500мс)
 const tortGameBtn = document.getElementById('tortGamePlayBtn');
 const tortGameContainer = document.getElementById('tortGameContainer');
 const tortExitBtn = document.getElementById('tortExitBtn');
