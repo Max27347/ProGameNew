@@ -1129,6 +1129,7 @@
 </style>
 </head>
 <body>
+<style>#raceGameContainer{display:none!important;}</style>
 <div class="loading-screen" id="loadingScreen">
 <div class="loading-ring"></div>
 <span class="loading-percent" id="loadingPercent">0%</span>
@@ -1259,9 +1260,9 @@
 </div>
 <div class="case-container">
 <img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Select Coins</div>
+<div class="case-name">Гонки</div>
 <div class="case-price">
-<button class="claim-button" onclick="alert('Score Rush starting!')">Play</button>
+<button class="minigame-button" id="raceGamePlayBtn">Play</button>
 </div>
 </div>
 </div>
@@ -3607,15 +3608,13 @@ startCatchGame = function() {
   originalStartCatchGame();
 };
 </script>
-
 <!-- Мини-игра "Торт" -->
 <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
-  <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-  <div id="game" style="position: relative; width: 100vw; height: 100vh;">
-    <div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
-  </div>
+<button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+<div id="game" style="position: relative; width: 100vw; height: 100vh;">
+<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
 </div>
-
+</div>
 <style>
   .block {
     position: absolute;
@@ -3645,7 +3644,6 @@ startCatchGame = function() {
     border: 2px solid #cccccc;
   }
 </style>
-
 <script>
   let stack = [];
   let currentBlock = null;
@@ -3830,4 +3828,139 @@ confirmExitBtn?.addEventListener('click', () => {
     }, 500);
 });
 </script>
+
 <!-- Мини-игра "Гонки" -->
+<div id="raceGame" style="position: fixed; inset: 0; background: #222; display: none; z-index: 10000; flex-direction: column; align-items: center; color: white;">
+  <button id="quitRaceGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: white; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+  <h1 style="margin-top: 20px;">Выбери, кто победит</h1>
+  <div class="race-container" style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 20px;">
+    <div class="track" id="track1" style="width: 600px; height: 60px; background: #444; margin: 20px 0; position: relative; border-radius: 10px;">
+      <img class="vehicle" id="v1" src="" style="position: absolute; top: 5px; left: 0; height: 50px;" />
+    </div>
+    <div class="track" id="track2" style="width: 600px; height: 60px; background: #444; margin: 20px 0; position: relative; border-radius: 10px;">
+      <img class="vehicle" id="v2" src="" style="position: absolute; top: 5px; left: 0; height: 50px;" />
+    </div>
+  </div>
+  <div class="buttons" style="margin-top: 30px; display: flex; gap: 30px;">
+    <button id="choose1">...</button>
+    <button id="choose2">...</button>
+  </div>
+  <div id="raceResult" style="margin-top: 30px; font-size: 24px; font-weight: bold;"></div>
+</div>
+
+<script>
+  const vehicles = [
+    "https://e7.pngegg.com/pngimages/200/203/png-clipart-car-fiat-automobiles-fiat-500-computer-icons-business-car-compact-car-vintage-car.png",
+    "https://img2.clipart-library.com/27/picture-of-airplane-clipart/picture-of-airplane-clipart-20.png",
+    "https://www.pngmart.com/files/23/Sailboat-PNG-Pic.png",
+    "https://clipart-library.com/2023/15153-illustration-of-an-army-tank-pv.png",
+    "https://e7.pngegg.com/pngimages/515/543/png-clipart-bicycle-car-motor-vehicle-motorcycle-bicycle-purple-bicycle.png"
+  ];
+
+  let v1 = null;
+  let v2 = null;
+  let result = null;
+  let chosen = null;
+  let interval;
+  let pos1 = 0, pos2 = 0;
+
+  function getVehicleName(src) {
+    if (src.includes("car")) return "Машина";
+    if (src.includes("airplane")) return "Самолет";
+    if (src.includes("Sailboat")) return "Корабль";
+    if (src.includes("tank")) return "Танк";
+    if (src.includes("bicycle")) return "Мотоцикл";
+    return "Транспорт";
+  }
+
+  function pickTwoRandomVehicles() {
+    const indexes = [...Array(vehicles.length).keys()];
+    const i1 = indexes.splice(Math.floor(Math.random() * indexes.length), 1)[0];
+    const i2 = indexes[Math.floor(Math.random() * indexes.length)];
+    return [vehicles[i1], vehicles[i2]];
+  }
+
+  function resetRace() {
+    const [src1, src2] = pickTwoRandomVehicles();
+    v1.src = src1;
+    v2.src = src2;
+    v1.style.left = "0px";
+    v2.style.left = "0px";
+    document.getElementById("choose1").textContent = getVehicleName(src1);
+    document.getElementById("choose2").textContent = getVehicleName(src2);
+    result.textContent = "";
+    pos1 = 0;
+    pos2 = 0;
+  }
+
+  function startRace() {
+    clearInterval(interval);
+    pos1 = 0;
+    pos2 = 0;
+    const outcome = Math.random();
+    const playerShouldWin = outcome < 0.4;
+
+    let speed1, speed2;
+    const baseSpeed = 4;
+    const variation = 2;
+
+    if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
+      speed1 = baseSpeed + variation;
+      speed2 = baseSpeed + Math.random();
+    } else {
+      speed1 = baseSpeed + Math.random();
+      speed2 = baseSpeed + variation;
+    }
+
+    interval = setInterval(() => {
+      pos1 += speed1;
+      pos2 += speed2;
+      v1.style.left = pos1 + "px";
+      v2.style.left = pos2 + "px";
+      if (pos1 >= 540 || pos2 >= 540) {
+        clearInterval(interval);
+        const winner = pos1 > pos2 ? "1" : "2";
+        const winName = winner === "1" ? getVehicleName(v1.src) : getVehicleName(v2.src);
+        result.textContent = (winner === String(chosen))
+          ? "Вы выиграли! Победил: " + winName
+          : "Вы проиграли. Победил: " + winName;
+      }
+    }, 50);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const playBtn = document.getElementById("raceGamePlayBtn");
+    const raceGame = document.getElementById("raceGame");
+    const quitBtn = document.getElementById("quitRaceGame");
+
+    v1 = document.getElementById("v1");
+    v2 = document.getElementById("v2");
+    result = document.getElementById("raceResult");
+
+    document.getElementById("choose1").onclick = () => {
+      chosen = 1;
+      startRace();
+    };
+    document.getElementById("choose2").onclick = () => {
+      chosen = 2;
+      startRace();
+    };
+
+    if (playBtn && raceGame) {
+      playBtn.addEventListener("click", () => {
+        raceGame.style.display = "flex";
+        resetRace();
+      });
+    }
+
+    if (quitBtn) {
+      quitBtn.addEventListener("click", () => {
+        raceGame.style.display = "none";
+        clearInterval(interval);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
