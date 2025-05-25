@@ -3861,7 +3861,7 @@ confirmExitBtn?.addEventListener('click', () => {
   let v2 = null;
   let result = null;
   let chosen = null;
-  let interval;
+  let animationFrame;
   let pos1 = 0, pos2 = 0;
 
   function getVehicleName(src) {
@@ -3884,8 +3884,8 @@ confirmExitBtn?.addEventListener('click', () => {
     const [src1, src2] = pickTwoRandomVehicles();
     v1.src = src1;
     v2.src = src2;
-    v1.style.left = "0px";
-    v2.style.left = "0px";
+    v1.style.transform = "translateX(0px)";
+    v2.style.transform = "translateX(0px)";
     document.getElementById("choose1").textContent = getVehicleName(src1);
     document.getElementById("choose2").textContent = getVehicleName(src2);
     result.textContent = "";
@@ -3894,9 +3894,10 @@ confirmExitBtn?.addEventListener('click', () => {
   }
 
   function startRace() {
-    clearInterval(interval);
+    cancelAnimationFrame(animationFrame);
     pos1 = 0;
     pos2 = 0;
+
     const outcome = Math.random();
     const playerShouldWin = outcome < 0.4;
 
@@ -3912,20 +3913,24 @@ confirmExitBtn?.addEventListener('click', () => {
       speed2 = baseSpeed + variation;
     }
 
-    interval = setInterval(() => {
+    function step() {
       pos1 += speed1;
       pos2 += speed2;
-      v1.style.left = pos1 + "px";
-      v2.style.left = pos2 + "px";
+      v1.style.transform = `translateX(${pos1}px)`;
+      v2.style.transform = `translateX(${pos2}px)`;
+
       if (pos1 >= 540 || pos2 >= 540) {
-        clearInterval(interval);
         const winner = pos1 > pos2 ? "1" : "2";
         const winName = winner === "1" ? getVehicleName(v1.src) : getVehicleName(v2.src);
         result.textContent = (winner === String(chosen))
           ? "Вы выиграли! Победил: " + winName
           : "Вы проиграли. Победил: " + winName;
+      } else {
+        animationFrame = requestAnimationFrame(step);
       }
-    }, 50);
+    }
+
+    animationFrame = requestAnimationFrame(step);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -3956,7 +3961,7 @@ confirmExitBtn?.addEventListener('click', () => {
     if (quitBtn) {
       quitBtn.addEventListener("click", () => {
         raceGame.style.display = "none";
-        clearInterval(interval);
+        cancelAnimationFrame(animationFrame);
       });
     }
   });
