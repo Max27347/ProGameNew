@@ -3830,28 +3830,23 @@ confirmExitBtn?.addEventListener('click', () => {
 </script>
 
 <!-- Мини-игра "Гонки" -->
-<div id="raceGame" style="position: fixed; inset: 0; background: linear-gradient(#1c1c1c, #333); display: none; z-index: 10000; flex-direction: column; align-items: center; color: white; font-family: sans-serif;">
-  <button id="quitRaceGame" style="position: absolute; top: 15px; right: 20px; background: transparent; color: white; font-size: 2rem; border: none; cursor: pointer;">✕</button>
-
-  <h1 style="margin-top: 40px; font-size: 36px; letter-spacing: 1px;">Choose who wins</h1>
-
-  <div class="race-container" style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 40px;">
-    <div class="track" id="track1" style="width: 700px; height: 70px; background: linear-gradient(to right, #555, #777); margin: 20px 0; position: relative; border-radius: 15px; overflow: hidden;">
-      <img class="vehicle" id="v1" src="" style="position: absolute; top: 10px; left: 0; height: 50px; transition: transform 0.05s;" />
+<div id="raceGame" style="position: fixed; inset: 0; background: #222; display: none; z-index: 10000; flex-direction: column; align-items: center; color: white;">
+  <button id="quitRaceGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: white; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+  <h1 style="margin-top: 20px;">Choose who wins</h1>
+  <div class="race-container" style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 20px;">
+    <div class="track" id="track1" style="width: 600px; height: 60px; background: #444; margin: 20px 0; position: relative; border-radius: 10px;">
+      <img class="vehicle" id="v1" src="" style="position: absolute; top: 5px; left: 0; height: 50px;" />
     </div>
-    <div class="track" id="track2" style="width: 700px; height: 70px; background: linear-gradient(to right, #777, #555); margin: 20px 0; position: relative; border-radius: 15px; overflow: hidden;">
-      <img class="vehicle" id="v2" src="" style="position: absolute; top: 10px; left: 0; height: 50px; transition: transform 0.05s;" />
+    <div class="track" id="track2" style="width: 600px; height: 60px; background: #444; margin: 20px 0; position: relative; border-radius: 10px;">
+      <img class="vehicle" id="v2" src="" style="position: absolute; top: 5px; left: 0; height: 50px;" />
     </div>
   </div>
-
-  <div class="buttons" style="margin-top: 30px; display: flex; gap: 40px;">
-    <button id="choose1" style="padding: 12px 28px; font-size: 18px; background: #00aaff; color: white; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s;">...</button>
-    <button id="choose2" style="padding: 12px 28px; font-size: 18px; background: #ffaa00; color: white; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s;">...</button>
+  <div class="buttons" style="margin-top: 30px; display: flex; gap: 30px;">
+    <button id="choose1">...</button>
+    <button id="choose2">...</button>
   </div>
-
-  <div id="raceResult" style="margin-top: 40px; font-size: 24px; font-weight: bold; text-shadow: 1px 1px 2px black;"></div>
+  <div id="raceResult" style="margin-top: 30px; font-size: 24px; font-weight: bold;"></div>
 </div>
-
 
 <script>
   const vehicles = [
