@@ -3608,6 +3608,22 @@ startCatchGame = function() {
   originalStartCatchGame();
 };
 </script>
+<script>
+document.addEventListener("keydown", function (e) {
+  if (!gameRunning) return;
+  const step = 20;
+  let left = parseInt(rocket.style.left) || 0;
+
+  if (e.key === "ArrowLeft") {
+    left = Math.max(0, left - step);
+    rocket.style.left = left + "px";
+  } else if (e.key === "ArrowRight") {
+    left = Math.min(window.innerWidth - rocket.offsetWidth, left + step);
+    rocket.style.left = left + "px";
+  }
+});
+</script>
+
 <!-- Мини-игра "Торт" -->
 <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
 <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
