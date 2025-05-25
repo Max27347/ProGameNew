@@ -3685,7 +3685,7 @@ startCatchGame = function() {
 
     const dir = Math.random() < 0.5 ? 1 : -1;
     const initialX = dir === 1 ? -100 : window.innerWidth;
-    block.style.left = "0px"; // позиционируем через transform
+    block.style.left = "0px";
     block.style.width = newWidth + "px";
     block.style.bottom = last.bottom + 30 + "px";
     block.style.transform = `translateX(${initialX}px)`;
@@ -3764,7 +3764,8 @@ startCatchGame = function() {
     }
 
     if (quitBtn) {
-      quitBtn.addEventListener("click", function () {
+      quitBtn.addEventListener("click", function (e) {
+        e.stopPropagation(); // ⛔ чтобы клик не ушёл вверх
         cakeGame.style.display = "none";
         cancelAnimationFrame(movingAnimation);
       });
