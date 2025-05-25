@@ -3957,6 +3957,7 @@ confirmExitBtn?.addEventListener('click', () => {
   let chosen = null;
   let animationFrame;
   let pos1 = 0, pos2 = 0;
+  let finishLine = 540; // значение по умолчанию
 
   function getVehicleName(src) {
     if (src.includes("bmw")) return "Car";
@@ -3985,6 +3986,10 @@ confirmExitBtn?.addEventListener('click', () => {
     result.textContent = "";
     pos1 = 0;
     pos2 = 0;
+
+    // Пересчёт границы финиша
+    const trackWidth = document.getElementById("track1").offsetWidth;
+    finishLine = trackWidth - 60; // 60 — примерная ширина транспорта
   }
 
   function startRace() {
@@ -4013,14 +4018,13 @@ confirmExitBtn?.addEventListener('click', () => {
       v1.style.transform = `translateX(${pos1}px)`;
       v2.style.transform = `translateX(${pos2}px)`;
 
-      if (pos1 >= 540 || pos2 >= 540) {
+      if (pos1 >= finishLine || pos2 >= finishLine) {
         const winner = pos1 > pos2 ? "1" : "2";
         const winName = winner === "1" ? getVehicleName(v1.src) : getVehicleName(v2.src);
         result.textContent = (winner === String(chosen))
           ? "Вы выиграли! Победил: " + winName
           : "Вы проиграли. Победил: " + winName;
 
-        // Автоматически сгенерировать новых участников через 2 сек
         setTimeout(() => {
           resetRace();
           chosen = null;
