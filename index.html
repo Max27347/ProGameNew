@@ -3872,7 +3872,7 @@ confirmExitBtn?.addEventListener('click', () => {
         position: absolute;
         top: 5px;
         left: 0;
-        height: 50px;
+        height: 30px;
         transform: translateX(0px);
       ">
     </div>
@@ -3890,7 +3890,7 @@ confirmExitBtn?.addEventListener('click', () => {
         position: absolute;
         top: 5px;
         left: 0;
-        height: 50px;
+        height: 30px;
         transform: translateX(0px);
       ">
     </div>
@@ -4000,8 +4000,8 @@ confirmExitBtn?.addEventListener('click', () => {
     const outcome = Math.random();
     const playerShouldWin = outcome < 0.4;
 
-    const baseSpeed = 1.0;
-    const variation = 0.5;
+    const baseSpeed = 0.7;
+    const variation = 0.3;
     let speed1, speed2;
 
     if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
