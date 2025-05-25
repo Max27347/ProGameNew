@@ -3600,7 +3600,6 @@ window.addEventListener('resize', () => {
   if (gameRunning) resizeStarCanvas();
 });
 
-// Добавить вызов при старте игры
 const originalStartCatchGame = startCatchGame;
 startCatchGame = function() {
   resizeStarCanvas();
@@ -3611,42 +3610,160 @@ startCatchGame = function() {
 
 <!-- Мини-игра "Торт" -->
 <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
-<button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+  <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+  <div id="game" style="position: relative; width: 100vw; height: 100vh;">
+    <div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
+  </div>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const tortBtn = document.getElementById("tortGamePlayBtn");
-  const cakeGame = document.getElementById("cakeGame");
-  const quitBtn = document.getElementById("quitCakeGame");
 
-  if (tortBtn && cakeGame) {
-    tortBtn.removeAttribute("disabled");
-    tortBtn.addEventListener("click", function () {
-      cakeGame.style.display = "block";
-    });
+<style>
+  .block {
+    position: absolute;
+    height: 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: opacity 0.3s ease-in;
+  }
+  .cake1 {
+    background: linear-gradient(to top, #f7c59f, #fcd5ce);
+    border: 2px solid #d58a7b;
+  }
+  .cake2 {
+    background: linear-gradient(to top, #ffc0cb, #ffe0eb);
+    border: 2px solid #cc6688;
+  }
+  .cake3 {
+    background: linear-gradient(to top, #ffffff, #f2f2f2);
+    border: 2px solid #ccc;
+  }
+  .cake4 {
+    background: linear-gradient(to top, #ffccdd, #ffe6f0);
+    border: 2px solid #e892a2;
+  }
+  .cake5 {
+    background: linear-gradient(to top, #ffffff, #f9f9f9);
+    border: 2px solid #cccccc;
+  }
+</style>
+
+<script>
+  let stack = [];
+  let currentBlock = null;
+  let direction = 1;
+  let score = 0;
+  let movingAnimation = null;
+
+  const game = document.getElementById("game");
+  let scoreDisplay = document.getElementById("score2");
+
+  function startCakeGame() {
+    stack = [];
+    score = 0;
+    game.innerHTML = '<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>';
+    scoreDisplay = document.getElementById("score2");
+    createBaseBlock();
+    createMovingBlock();
   }
 
-  if (quitBtn) {
-    quitBtn.addEventListener("click", function () {
-      cakeGame.style.display = "none";
-    });
+  function createBaseBlock() {
+    const base = document.createElement("div");
+    base.className = "block cake2";
+    base.style.width = "260px";
+    base.style.left = "calc(50% - 130px)";
+    base.style.bottom = "0px";
+    game.appendChild(base);
+    stack.push({ left: window.innerWidth / 2 - 130, width: 260, bottom: 0 });
   }
-});
+
+  function createMovingBlock() {
+    const last = stack[stack.length - 1];
+    const newWidth = last.width;
+    const block = document.createElement("div");
+    const colorList = ['cake1', 'cake2', 'cake3', 'cake4', 'cake5'];
+    block.className = "block " + colorList[Math.floor(Math.random() * colorList.length)];
+    const dir = Math.random() < 0.5 ? 1 : -1;
+    block.style.left = dir === 1 ? "-100px" : window.innerWidth + "px";
+    block.style.width = newWidth + "px";
+    block.style.bottom = last.bottom + 30 + "px";
+    game.appendChild(block);
+
+    currentBlock = {
+      el: block,
+      width: newWidth,
+      bottom: last.bottom + 30,
+      x: dir === 1 ? -100 : window.innerWidth,
+      speed: dir === 1
+        ? (score >= 10 ? (Math.random() * 1.5 + 3.5) : (Math.random() * 1 + 2.5))
+        : -(score >= 10 ? (Math.random() * 1.5 + 3.5) : (Math.random() * 1 + 2.5))
+    };
+
+    cancelAnimationFrame(movingAnimation);
+    moveBlock();
+  }
+
+  function moveBlock() {
+    if (!currentBlock) return;
+    currentBlock.x += currentBlock.speed;
+    currentBlock.el.style.left = currentBlock.x + "px";
+
+    if (
+      (currentBlock.speed > 0 && currentBlock.x > window.innerWidth) ||
+      (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
+    ) {
+      alert("Game Over! Final Score: " + score);
+      currentBlock = null;
+      cancelAnimationFrame(movingAnimation);
+      return;
+    }
+
+    movingAnimation = requestAnimationFrame(moveBlock);
+  }
+
+  function placeBlock() {
+    if (!currentBlock) return;
+
+    const last = stack[stack.length - 1];
+    const overlapLeft = Math.max(currentBlock.x, last.left);
+    const overlapRight = Math.min(currentBlock.x + currentBlock.width, last.left + last.width);
+    const overlapWidth = overlapRight - overlapLeft;
+
+    if (overlapWidth <= 0) {
+      alert("Game Over! Final Score: " + score);
+      currentBlock = null;
+      return;
+    }
+
+    currentBlock.el.style.left = overlapLeft + "px";
+    currentBlock.el.style.width = overlapWidth + "px";
+    stack.push({ left: overlapLeft, width: overlapWidth, bottom: currentBlock.bottom });
+    currentBlock = null;
+    direction *= -1;
+    score++;
+    scoreDisplay.textContent = "Score: " + score;
+    createMovingBlock();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const tortBtn = document.getElementById("tortGamePlayBtn");
+    const cakeGame = document.getElementById("cakeGame");
+    const quitBtn = document.getElementById("quitCakeGame");
+
+    if (tortBtn && cakeGame) {
+      tortBtn.removeAttribute("disabled");
+      tortBtn.addEventListener("click", function () {
+        cakeGame.style.display = "block";
+        startCakeGame();
+      });
+    }
+
+    if (quitBtn) {
+      quitBtn.addEventListener("click", function () {
+        cakeGame.style.display = "none";
+        cancelAnimationFrame(movingAnimation);
+      });
+    }
+
+    // Только внутри игры
+    cakeGame.addEventListener("click", placeBlock);
+  });
 </script>
-</body>
-</html>
-<script>
-function openMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'block';
-  }
-}
-function closeMinigame() {
-  const screen = document.getElementById('minigameScreen');
-  if (screen) {
-    screen.style.display = 'none';
-  }
-}
-</script>
-<!-- Мини-игра "Торт" -->
