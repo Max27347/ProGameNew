@@ -6,7 +6,8 @@
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
 <meta content="Notcoin-inspired clicker game" name="description"/>
 <title>Clicker Game</title>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<script>
+</script>
 <style>
             * {
                 margin: 0;
@@ -1093,6 +1094,15 @@
   pointer-events: none;
 }
 
+
+@keyframes flipCoin {
+  0% { transform: rotateY(0); }
+  50% { transform: rotateY(720deg); }
+  100% { transform: rotateY(1440deg); }
+}
+#coinImage {
+  transition: transform 1.5s ease;
+}
 </style>
 <style>
   .quests-arrow {
@@ -1127,7 +1137,18 @@
   background-color: #45a049 !important;
 }
 </style>
-</head>
+<style>
+@keyframes flipCoin {
+  0% { transform: rotateY(0); }
+  50% { transform: rotateY(720deg); }
+  100% { transform: rotateY(1440deg); }
+}
+#coinFlipGame .coin {
+  width: 120px;
+  height: 120px;
+  transition: transform 1.5s ease;
+}
+</style></head>
 <body>
 <style>#raceGameContainer{display:none!important;}</style>
 <div class="loading-screen" id="loadingScreen">
@@ -1258,14 +1279,7 @@
 <div class="case-name">Tort</div>
 <div class="case-price"><button class="minigame-button" id="tortGamePlayBtn">Play</button></div>
 </div>
-<div class="case-container">
-<img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Гонки</div>
-<div class="case-price">
-<button class="minigame-button" id="raceGamePlayBtn">Play</button>
-</div>
-</div>
-</div>
+<div class="case-container"><img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/><div class="case-name">Гонки</div><div class="case-price"><button class="minigame-button" id="raceGamePlayBtn">Play</button></div></div><div class="case-container"><img alt="Coin Flip" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/coin_1fa99.webp"/><div class="case-name">Монетка</div><div class="case-price"><button class="minigame-button" id="coinFlipPlayBtn">Play</button></div></div></div>
 </div>
 <footer class="game-hidden" id="footer">
 <div class="footer-menu-container">
@@ -1324,13 +1338,6 @@
 <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
 </div>
 </div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="case-name">Earn 3000 Diamonds</div>
-<div class="case-price">
-<button class="claim-button">Claim 100 <img alt="Gem" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px; vertical-align: middle;"/></button>
-</div>
-</div>
 </div>
 </div>
 <div class="leaderboard-container hidden" id="friendsContainer">
@@ -1349,12 +1356,13 @@
     copiedMessage.style.padding = '1rem';
     copiedMessage.style.borderRadius = '12px';
     document.body.appendChild(copiedMessage);
-    setTimeout(() =&gt; copiedMessage.remove(), 1500);
     " style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;">
                     Copy Invite Link
                 </button>
 <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;"/></div>
-<div>No friends yet</div>
+<div>No friends yet
+
+</div>
 </div>
 </div>
 <script>
@@ -2958,7 +2966,7 @@ updateAppearance() {
                 game.initialize();
                 window.addEventListener("beforeunload", () => game.destroy());
             });
-        </script>
+</script>
 <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
@@ -3013,7 +3021,7 @@ updateAppearance() {
                     });
                 });
             });
-        </script>
+</script>
 <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
@@ -3062,7 +3070,7 @@ updateAppearance() {
                     item.classList.add("highlighted");
                 });
             });
-        </script>
+</script>
 <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
 <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
 <h2 style="margin-bottom: 1rem;">Support the Game</h2>
@@ -3078,7 +3086,7 @@ updateAppearance() {
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
-        </script>
+</script>
 <!-- Reward Animation Container -->
 <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
 <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
@@ -3102,7 +3110,7 @@ updateAppearance() {
                 const randomPath = animations[Math.floor(Math.random() * animations.length)];
                 showRewardAnimation(randomPath);
             }
-        </script>
+</script>
 <script>
             let walletConnected = false;
 
@@ -3126,12 +3134,12 @@ updateAppearance() {
             function disconnectWallet() {
                 console.log("Wallet disconnected");
             }
-        </script>
+</script>
 <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
-        </script>
+</script>
 <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
@@ -3145,7 +3153,7 @@ updateAppearance() {
                     document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
                 }
             }
-        </script>
+</script>
 <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
@@ -3163,7 +3171,7 @@ updateAppearance() {
             function activateX4() {
                 alert("x4 boost feature coming soon!");
             }
-        </script>
+</script>
 <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
@@ -3189,9 +3197,8 @@ updateAppearance() {
                 msg.style.borderRadius = "12px";
                 msg.style.zIndex = 9999;
                 document.body.appendChild(msg);
-                setTimeout(() => msg.remove(), 1500);
             }
-        </script>
+</script>
 <script>
             let clicks = 0;
             let telegramVisited = false;
@@ -3251,9 +3258,8 @@ updateAppearance() {
                 msg.style.borderRadius = "12px";
                 msg.style.zIndex = 9999;
                 document.body.appendChild(msg);
-                setTimeout(() => msg.remove(), 1500);
             }
-        </script>
+</script>
 <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
@@ -3317,10 +3323,9 @@ updateAppearance() {
                     msg.style.borderRadius = "12px";
                     msg.style.zIndex = 9999;
                     document.body.appendChild(msg);
-                    setTimeout(() => msg.remove(), 1500);
                 }
             });
-        </script>
+</script>
 <div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
 <div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
 <script>
@@ -3612,7 +3617,9 @@ startCatchGame = function() {
 <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
 <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
 <div id="game" style="position: relative; width: 100vw; height: 100vh;">
-<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
+<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0
+
+</div>
 </div>
 </div>
 <style>
@@ -3828,7 +3835,6 @@ confirmExitBtn?.addEventListener('click', () => {
     }, 500);
 });
 </script>
-
 <!-- Мини-игра "Гонки" -->
 <div id="raceGame" style="
   position: fixed;
@@ -3844,7 +3850,7 @@ confirmExitBtn?.addEventListener('click', () => {
   font-family: sans-serif;
   overflow-y: auto;
 ">
-  <button id="quitRaceGame" style="
+<button id="quitRaceGame" style="
     position: absolute;
     top: 15px;
     right: 20px;
@@ -3854,11 +3860,9 @@ confirmExitBtn?.addEventListener('click', () => {
     border: none;
     cursor: pointer;
   ">✕</button>
-
-  <h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
-
-  <div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
-    <div class="track" id="track1" style="
+<h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
+<div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
+<div class="track" id="track1" style="
       width: 90vw;
       max-width: 600px;
       height: 60px;
@@ -3868,15 +3872,15 @@ confirmExitBtn?.addEventListener('click', () => {
       border-radius: 12px;
       overflow: hidden;
     ">
-      <img class="vehicle" id="v1" src="" style="
+<img class="vehicle" id="v1" src="" style="
         position: absolute;
         top: 5px;
         left: 0;
         height: 45px;
         transform: translateX(0px);
-      ">
-    </div>
-    <div class="track" id="track2" style="
+      "/>
+</div>
+<div class="track" id="track2" style="
       width: 90vw;
       max-width: 600px;
       height: 60px;
@@ -3886,17 +3890,16 @@ confirmExitBtn?.addEventListener('click', () => {
       border-radius: 12px;
       overflow: hidden;
     ">
-      <img class="vehicle" id="v2" src="" style="
+<img class="vehicle" id="v2" src="" style="
         position: absolute;
         top: 5px;
         left: 0;
         height: 45px;
         transform: translateX(0px);
-      ">
-    </div>
-  </div>
-
-  <div class="buttons" style="
+      "/>
+</div>
+</div>
+<div class="buttons" style="
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
@@ -3904,7 +3907,7 @@ confirmExitBtn?.addEventListener('click', () => {
     gap: 20px;
     width: 100%;
   ">
-    <button id="choose1" style="
+<button id="choose1" style="
       padding: 14px 24px;
       font-size: 5vw;
       max-width: 300px;
@@ -3917,8 +3920,7 @@ confirmExitBtn?.addEventListener('click', () => {
       transition: all 0.3s ease;
       flex: 1;
     ">...</button>
-
-    <button id="choose2" style="
+<button id="choose2" style="
       padding: 14px 24px;
       font-size: 5vw;
       max-width: 300px;
@@ -3931,9 +3933,8 @@ confirmExitBtn?.addEventListener('click', () => {
       transition: all 0.3s ease;
       flex: 1;
     ">...</button>
-  </div>
-
-  <div id="raceResult" style="
+</div>
+<div id="raceResult" style="
     margin-top: 30px;
     font-size: 5vw;
     font-weight: bold;
@@ -3941,7 +3942,6 @@ confirmExitBtn?.addEventListener('click', () => {
     text-shadow: 1px 1px 2px black;
   "></div>
 </div>
-
 <script>
   const vehicles = [
     "https://freepngimg.com/thumb/bmw/22658-4-bmw-m3-photos.png",
@@ -4070,6 +4070,114 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   });
 </script>
+<!-- Мини-игра "Монетка" -->
+<!-- Мини-игра Монетка -->
+<style>
+@keyframes flipCoin {
+  0% { transform: rotateY(0); }
+  50% { transform: rotateY(720deg); }
+  100% { transform: rotateY(1440deg); }
+}
+</style>
+<!-- Пользовательская версия игры "Монетка" -->
+<div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
+<button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+<h1 style="color: #333;">Heads or Tails</h1>
+<div class="controls" style="margin-bottom: 20px;">
+<button onclick="choose('Heads')">Heads</button>
+<button onclick="choose('Tails')">Tails</button>
+</div>
+<div id="coin" style="width: 120px; height: 120px; background-size: cover; background-position: center; border-radius: 50%; margin: 20px; position: relative; transform-style: preserve-3d; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>
+<div id="result" style="font-size: 24px; font-weight: bold; margin-top: 20px;"></div>
+</div>
+<style>
+@keyframes tossCoin {
+  0%   { transform: translateY(0) rotateY(0deg); opacity: 1; }
+  25%  { transform: translateY(-150px) rotateY(360deg); opacity: 0.8; }
+  50%  { transform: translateY(-200px) rotateY(720deg); opacity: 0.6; }
+  75%  { transform: translateY(-150px) rotateY(1080deg); opacity: 0.8; }
+  100% { transform: translateY(0) rotateY(1440deg); opacity: 1; }
+}
+.flip {
+  animation: tossCoin 1.5s ease-in-out;
+}
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+}
+button:hover {
+  background-color: #0056b3;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  let userChoice = null;
+  const coin = document.getElementById('coin');
+  const result = document.getElementById('result');
+  const coinGame = document.getElementById('coinFlipGame');
+  const playBtn = document.getElementById('coinFlipPlayBtn');
+  const quitBtn = document.getElementById('quitCoinFlipGame');
 
+  const headsURL = "https://image.pngaaa.com/973/432973-middle.png";
+  const tailsURL = "https://avatars.mds.yandex.net/i?id=1ed4de7e6b69fa91fffa7735e321531d25ca14cf-7761242-images-thumbs&n=13";
+
+  coin.style.backgroundImage = `url('${tailsURL}')`;
+
+  if (playBtn) {
+    playBtn.addEventListener("click", () => {
+      coinGame.style.display = "flex";
+      result.textContent = "";
+      coin.style.backgroundImage = `url('${tailsURL}')`;
+    });
+  }
+
+  if (quitBtn) {
+    quitBtn.addEventListener("click", () => {
+      coinGame.style.display = "none";
+    });
+  }
+
+  window.choose = function(choice) {
+    userChoice = choice;
+    result.textContent = `You chose: ${choice}`;
+    flipCoin();
+  }
+
+  function flipCoin() {
+    const outcome = Math.random() < 0.5 ? 'Heads' : 'Tails';
+    let flipCount = 0;
+
+    const interval = setInterval(() => {
+      // Чередуем картинки
+      coin.style.backgroundImage = (flipCount % 2 === 0)
+        ? `url('${headsURL}')`
+        : `url('${tailsURL}')`;
+      flipCount++;
+    }, 100); // быстрое переключение для имитации вращения
+
+    coin.classList.add('flip');
+
+    setTimeout(() => {
+      clearInterval(interval);
+      const finalImage = (outcome === 'Heads') ? headsURL : tailsURL;
+      coin.style.backgroundImage = `url('${finalImage}')`;
+      coin.classList.remove('flip');
+
+      if (userChoice === outcome) {
+        result.textContent = `Congratulations! It's ${outcome}. You win!`;
+      } else {
+        result.textContent = `Sorry! It's ${outcome}. You lose.`;
+      }
+    }, 1500);
+  }
+});
+</script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </body>
 </html>
