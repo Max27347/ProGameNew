@@ -7,37 +7,7 @@
         <meta name="description" content="hamberus" />
         <title>World of Consoles - Игра</title>
         <link rel="stylesheet" href="styles.css" />
-        <script>
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        <script></script>
         <style>
             * {
                 margin: 0;
@@ -3002,37 +2972,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                 game.initialize();
                 window.addEventListener("beforeunload", () => game.destroy());
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
@@ -3087,37 +3027,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     });
                 });
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
@@ -3166,37 +3076,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     item.classList.add("highlighted");
                 });
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
             <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
                 <h2 style="margin-bottom: 1rem;">Support the Game</h2>
@@ -3212,37 +3092,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <!-- Reward Animation Container -->
         <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
             <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
@@ -3251,218 +3101,83 @@ document.querySelectorAll('.menu-item').forEach(item => {
             function showRewardAnimation(animationPath) {
                 const container = document.getElementById("rewardAnimationContainer");
                 const animEl = document.getElementById("rewardAnimation");
+
                 container.style.display = "block";
                 animEl.innerHTML = "";
+
                 setTimeout(() => {
                     container.style.display = "none";
                     animEl.innerHTML = "";
                 }, 3000);
             }
+
             function openTelegramGiftCase() {
                 const animations = ["images/cookie.json", "images/bottle.json", "images/clock.json", "images/heart.json", "images/rocket.json"];
                 const randomPath = animations[Math.floor(Math.random() * animations.length)];
                 showRewardAnimation(randomPath);
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             let walletConnected = false;
+
             function toggleWallet() {
                 const btn = document.getElementById("connectWalletBtn");
                 if (!walletConnected) {
-                    connectWallet();
+                    connectWallet(); // ваша функция подключения
                     btn.textContent = "Disconnect Wallet";
                     walletConnected = true;
                 } else {
-                    disconnectWallet();
+                    disconnectWallet(); // функция отключения
                     btn.textContent = "Connect Wallet";
                     walletConnected = false;
                 }
             }
+
+            // Заглушка: замените на настоящую реализацию
             function connectWallet() {
                 console.log("Wallet connected");
             }
             function disconnectWallet() {
                 console.log("Wallet disconnected");
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
+
+                // Скрытие стрелок по умолчанию
                 document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "none"));
+
+                // Отображение стрелок только в inventory
+                if (section === "inventory") {
+                    document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
+                }
+            }
+        </script>
+        <script>
+            function showSection(section) {
+                document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
+                document.getElementById(section + "Container")?.classList.remove("hidden");
+
+                // Скрытие стрелок
+                document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "none"));
+
+                // Показывать стрелки только в инвентаре
                 if (section === "inventory") {
                     document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
                 }
             }
 
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
-        <script>
-            function showSection(section) {
-                document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
-                document.getElementById(section + "Container")?.classList.remove("hidden");
-                document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "none"));
-                if (section === "inventory") {
-                    document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
-                }
-            }
             function activateX4() {
                 alert("x4 boost feature coming soon!");
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
@@ -3474,6 +3189,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
             document.querySelectorAll(".case-container").forEach((caseElement) => {
                 caseElement.addEventListener("click", incrementCaseCount);
             });
+
             function showUpgradeMessage() {
                 const msg = document.createElement("div");
                 msg.textContent = "Улучшение куплено";
@@ -3488,51 +3204,24 @@ document.querySelectorAll('.menu-item').forEach(item => {
                 msg.style.zIndex = 9999;
                 document.body.appendChild(msg);
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             let clicks = 0;
             let telegramVisited = false;
             let stars = 0;
             let leaderboardTop10 = true; // Simplified check
             let diamondGoalReached = false;
+
             document.getElementById("character").addEventListener("click", () => {
                 clicks++;
                 updateQuestButtons();
             });
+
             document.querySelector("a[href*='t.me']").addEventListener("click", () => {
                 telegramVisited = true;
                 updateQuestButtons();
             });
+
             function updateQuestButtons() {
                 const buttons = document.querySelectorAll(".claim-button");
                 if (telegramVisited) buttons[0].disabled = false;
@@ -3545,6 +3234,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     buttons[4].disabled = false;
                 }
             }
+
             document.querySelectorAll(".claim-button").forEach((btn, i) => {
                 btn.disabled = true;
                 btn.addEventListener("click", () => {
@@ -3560,6 +3250,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     showNotification("Награда получена");
                 });
             });
+
             function showNotification(message) {
                 const msg = document.createElement("div");
                 msg.textContent = message;
@@ -3574,37 +3265,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                 msg.style.zIndex = 9999;
                 document.body.appendChild(msg);
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
@@ -3670,37 +3331,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     document.body.appendChild(msg);
                 }
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
         <div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
         <script>
@@ -3718,37 +3349,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     }
                 });
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             let showingFriends = false;
 
@@ -3759,11 +3360,13 @@ document.querySelectorAll('.menu-item').forEach(item => {
                 if (!quests || !friends) return;
 
                 if (showingFriends) {
+                    // показать квесты
                     quests.classList.remove("hidden");
                     quests.classList.add("visible");
                     friends.classList.add("hidden");
                     friends.classList.remove("visible");
                 } else {
+                    // показать друзей
                     friends.classList.remove("hidden");
                     friends.classList.add("visible");
                     quests.classList.add("hidden");
@@ -3772,39 +3375,10 @@ document.querySelectorAll('.menu-item').forEach(item => {
 
                 showingFriends = !showingFriends;
             }
+
             document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
             document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             document.querySelectorAll(".menu-item").forEach((item) => {
                 item.addEventListener("click", () => {
@@ -3820,37 +3394,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     }
                 });
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <!-- Мини-игра "Лови звезды" -->
         <style>
             #catchGame {
@@ -4006,37 +3550,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
 
                 spawnLoop();
             }
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const playBtn = document.getElementById("earnCoinsPlayBtn");
@@ -4045,37 +3559,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     playBtn.addEventListener("click", startCatchGame);
                 }
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const playBtn = document.getElementById("earnCoinsPlayBtn");
@@ -4083,37 +3567,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     playBtn.addEventListener("click", startCatchGame);
                 }
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <script>
             const starCanvas = document.getElementById("minigameStarfield");
             const starCtx = starCanvas.getContext("2d");
@@ -4157,37 +3611,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                 animateStarBackground();
                 originalStartCatchGame();
             };
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <!-- Мини-игра "Торт" -->
         <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
             <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
@@ -4394,37 +3818,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     tortGameContainer.style.display = "none";
                 }, 500);
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <!-- Мини-игра "Гонки" -->
         <div
             id="raceGame"
@@ -4617,37 +4011,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     });
                 }
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
+        </script>
         <style>
             @keyframes flipCoin {
                 0% {
@@ -4764,68 +4128,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
                     }, 1500);
                 }
             });
-
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
-        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js">
-function hideAllArrows() {
-    document.querySelectorAll('.shop-arrow, .inventory-arrow').forEach(arrow => {
-        arrow.classList.remove('visible');
-        arrow.classList.add('hidden');
-    });
-}
-
-
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const target = item.dataset.menu;
-
-        // Скрыть все стрелки
-        if (target !== "shop" && target !== "inventory") {
-            hideAllArrows();
-        }
-
-        // Скрыть все разделы
-        document.querySelectorAll('.shop-container, .inventory-container, .market-container, .leaderboard-container')
-            .forEach(el => el.classList.add('hidden'));
-
-        // Показать нужный раздел
-        const container = document.getElementById(`${target}Container`);
-        if (container) {
-            container.classList.remove('hidden');
-        }
-    });
-});
-
-</script>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+        </script>
+        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     </body>
 </html>
