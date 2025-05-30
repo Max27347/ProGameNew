@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<meta content="Notcoin-inspired clicker game" name="description"/>
-<title>Clicker Game</title>
-<script>
-</script>
-<style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="hamberus" />
+        <title>World of Consoles - Игра</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script></script>
+        <style>
             * {
                 margin: 0;
                 padding: 0;
@@ -1084,267 +1084,290 @@
                 gap: 0.3rem;
             }
 
+            #minigameStarfield {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            }
 
-#minigameStarfield {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
+            @keyframes flipCoin {
+                0% {
+                    transform: rotateY(0);
+                }
+                50% {
+                    transform: rotateY(720deg);
+                }
+                100% {
+                    transform: rotateY(1440deg);
+                }
+            }
+            #coinImage {
+                transition: transform 1.5s ease;
+            }
+        </style>
+        <style>
+            .quests-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 2rem;
+                color: white;
+                background: rgba(0, 0, 0, 0.4);
+                padding: 0.5rem;
+                border-radius: 50%;
+                z-index: 10;
+                cursor: pointer;
+                display: none;
+            }
 
+            .quests-arrow.left {
+                left: 1rem;
+            }
 
-@keyframes flipCoin {
-  0% { transform: rotateY(0); }
-  50% { transform: rotateY(720deg); }
-  100% { transform: rotateY(1440deg); }
-}
-#coinImage {
-  transition: transform 1.5s ease;
-}
-</style>
-<style>
-  .quests-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    color: white;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 0.5rem;
-    border-radius: 50%;
-    z-index: 10;
-    cursor: pointer;
-    display: none;
-  }
-
-  .quests-arrow.left {
-    left: 1rem;
-  }
-
-  .quests-arrow.right {
-    right: 1rem;
-  }
-</style>
-<style>
-#gamesContainer .claim-button {
-  background-color: #4CAF50 !important;
-  color: white !important;
-  font-weight: bold;
-}
-#gamesContainer .claim-button:hover {
-  background-color: #45a049 !important;
-}
-</style>
-<style>
-@keyframes flipCoin {
-  0% { transform: rotateY(0); }
-  50% { transform: rotateY(720deg); }
-  100% { transform: rotateY(1440deg); }
-}
-#coinFlipGame .coin {
-  width: 120px;
-  height: 120px;
-  transition: transform 1.5s ease;
-}
-</style></head>
-<body>
-<style>#raceGameContainer{display:none!important;}</style>
-<div class="loading-screen" id="loadingScreen">
-<div class="loading-ring"></div>
-<span class="loading-percent" id="loadingPercent">0%</span>
-</div>
-<header class="top-menu game-hidden" id="topMenu">
-<div class="top-menu-left">
-<img alt="Player Avatar" class="player-avatar" draggable="false" src="https://placehold.co/40x40"/>
-<div class="player-info">
-<span class="player-nickname">Player123</span>
-<span class="player-max-coins">
-<img alt="Gem Stone" class="gem-icon" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<span id="totalCoins">8000</span>
-</span>
-</div>
-</div>
-<div class="top-menu-right">
-<span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
-<div class="wallet-container">
-<button id="disconnect-wallet">Disconnect Wallet</button>
-</div>
-</div>
-</header>
-<canvas class="game-hidden" id="particleCanvas"></canvas>
-<canvas class="game-hidden" id="confettiCanvas"></canvas>
-<main class="game-hidden" id="mainContent">
-<div class="income-counter" id="incomeCounter">
-<span id="incomeRate">0</span> Diamonds/h
-                <img alt="Gem Stone" class="gem-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-</div>
-<div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
-<div class="coin-counter visible" id="coinCounter">
-<div class="coin-line">
-<span id="coinCount">8000</span>
-<img alt="Gem Stone" class="coin-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp"/>
-<div class="donation-line" id="starDonation" style="cursor: pointer;">
-<span id="starCount">0</span>
-<img alt="Star" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" style="width: 24px; height: 24px; vertical-align: middle;"/>
-</div>
-</div>
-</div>
-<div class="character-container">
-<img alt="Controller" class="character" draggable="false" id="character" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-</div>
-</main>
-<div class="shop-container hidden" id="shopContainer">
-<div class="shop-title">Cases</div>
-<div class="cases-container">
-<div class="case-container" data-case="diamond-rain">
-<img alt="Diamond Rain" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp"/>
-<div class="case-name">Diamond Rain</div>
-<div class="case-price">100 Diamonds</div>
-</div>
-<div class="case-container" data-case="character-magic">
-<img alt="Character Magic" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp"/>
-<div class="case-name">Character Magic</div>
-<div class="case-price">Free (Test)</div>
-</div>
-<div class="cases-container">
-<div class="case-container" data-case="telegram-gift">
-<img alt="Telegram Gift" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Exclusive</div>
-<div class="case-price">Free</div>
-</div>
-<div class="case-container" data-case="telegram-gift-2">
-<img alt="Telegram Gift 2" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp"/>
-<div class="case-name">Telegram Gift</div>
-<div class="case-price">Free</div>
-</div>
-<!-- Остальные кейсы остаются без изменений -->
-</div>
-</div>
-</div>
-<div class="inventory-container hidden" id="inventoryContainer">
-<div class="inventory-title">Inventory</div>
-<div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
-</div>
-<div class="market-container hidden" id="marketContainer">
-<div class="market-title">Market</div>
-<div id="ton-connect"></div>
-<div class="filters-container">
-<select class="filter-select" id="characterFilter">
-<option value="">All Characters</option>
-</select>
-<select class="filter-select" id="backgroundFilter">
-<option value="">All Backgrounds</option>
-</select>
-<select class="sort-select" id="priceSort">
-<option value="newest">Newest First</option>
-<option value="price-desc">Price: High to Low</option>
-<option value="price-asc">Price: Low to High</option>
-</select>
-</div>
-<div class="market-items-container" id="marketItems"></div>
-</div>
-<div class="leaderboard-container hidden" id="leaderboardContainer">
-<div class="leaderboard-title">Leaderboard</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<table class="leaderboard-table" id="leaderboardTable">
-<thead>
-<tr>
-<th>Rank</th>
-<th>Player</th>
-<th>Diamonds</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-<div class="shop-arrow left hidden" id="shopArrowLeft">&lt;</div>
-<div class="shop-arrow right hidden" id="shopArrowRight">&gt;</div>
-<div class="inventory-arrow left hidden" id="inventoryArrowLeft">&lt;</div>
-<div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
-<div class="leaderboard-container hidden" id="gamesContainer">
-<div class="leaderboard-title">Minigames</div>
-<div class="cases-container">
-<div class="case-container">
-<img alt="Click Challenge" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Earn Coins</div>
-<div class="case-price"><button class="minigame-button" id="earnCoinsPlayBtn">Play</button>
-</div>
-</div>
-<div class="case-container">
-<img alt="Memory Match" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Tort</div>
-<div class="case-price"><button class="minigame-button" id="tortGamePlayBtn">Play</button></div>
-</div>
-<div class="case-container"><img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/><div class="case-name">Гонки</div><div class="case-price"><button class="minigame-button" id="raceGamePlayBtn">Play</button></div></div><div class="case-container"><img alt="Coin Flip" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/coin_1fa99.webp"/><div class="case-name">Монетка</div><div class="case-price"><button class="minigame-button" id="coinFlipPlayBtn">Play</button></div></div></div>
-</div>
-<footer class="game-hidden" id="footer">
-<div class="footer-menu-container">
-<div class="footer-menu">
-<div class="menu-item highlighted" data-menu="home">
-<img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp"/>
-<span>Home</span>
-</div>
-<div class="menu-item" data-menu="shop">
-<img alt="Shop" draggable="false" src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp"/>
-<span>Shop</span>
-</div>
-<div class="menu-item" data-menu="market">
-<img alt="Market" draggable="false" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<span>Market</span>
-</div>
-<div class="menu-item" data-menu="quests">
-<img alt="Quests" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<span>Quests</span>
-</div>
-<div class="menu-item" data-menu="games">
-<img alt="Games" draggable="false" src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp"/>
-<span>Games</span>
-</div>
-</div>
-</div>
-</footer>
-<div class="leaderboard-container hidden" id="questsContainer">
-<div class="leaderboard-title">Quests</div>
-<div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp"/>
-<div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" style="color: #4fc3f7;" target="_blank">Telegram</a></div>
-<div class="case-price">
-<button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp"/>
-<div class="case-name">Click the controller 50 times</div>
-<div class="case-price">
-<button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp"/>
-<div class="case-name">Earn 100 Stars</div>
-<div class="case-price">
-<button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-<div class="case-container">
-<img class="case-image" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp"/>
-<div class="case-name">Reach Top 10 in Leaderboard</div>
-<div class="case-price">
-<button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;"/></button>
-</div>
-</div>
-</div>
-</div>
-<div class="leaderboard-container hidden" id="friendsContainer">
-<div class="leaderboard-title">Friends</div>
-<div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
-<button onclick="
-    navigator.clipboard.writeText('https://t.me/nexari_bot?start=ref123');
+            .quests-arrow.right {
+                right: 1rem;
+            }
+        </style>
+        <style>
+            #gamesContainer .claim-button {
+                background-color: #4caf50 !important;
+                color: white !important;
+                font-weight: bold;
+            }
+            #gamesContainer .claim-button:hover {
+                background-color: #45a049 !important;
+            }
+        </style>
+        <style>
+            @keyframes flipCoin {
+                0% {
+                    transform: rotateY(0);
+                }
+                50% {
+                    transform: rotateY(720deg);
+                }
+                100% {
+                    transform: rotateY(1440deg);
+                }
+            }
+            #coinFlipGame .coin {
+                width: 120px;
+                height: 120px;
+                transition: transform 1.5s ease;
+            }
+        </style>
+    </head>
+    <body>
+        <style>
+            #raceGameContainer {
+                display: none !important;
+            }
+        </style>
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-ring"></div>
+            <span class="loading-percent" id="loadingPercent">0%</span>
+        </div>
+        <header class="top-menu game-hidden" id="topMenu">
+            <div class="top-menu-left">
+                <img alt="Player Avatar" class="player-avatar" draggable="false" src="https://placehold.co/40x40" />
+                <div class="player-info">
+                    <span class="player-nickname">Player123</span>
+                    <span class="player-max-coins">
+                        <img alt="Gem Stone" class="gem-icon" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" />
+                        <span id="totalCoins">8000</span>
+                    </span>
+                </div>
+            </div>
+            <div class="top-menu-right">
+                <span class="player-rank">Rank: 1</span>
+                <span class="player-stats">World of Consoles</span>
+            </div>
+        </header>
+        <canvas class="game-hidden" id="particleCanvas"></canvas>
+        <canvas class="game-hidden" id="confettiCanvas"></canvas>
+        <main class="game-hidden" id="mainContent">
+            <div class="income-counter" id="incomeCounter">
+                <span id="incomeRate">0</span> Diamonds/h
+                <img alt="Gem Stone" class="gem-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" />
+            </div>
+            <div class="income-timer" id="incomeTimer"><span id="timerDisplay">00:00</span><span id="x4Button" onclick="activateX4()" style="margin-left: 8px; font-weight: bold; color: gold; cursor: pointer;">x4</span></div>
+            <div class="coin-counter visible" id="coinCounter">
+                <div class="coin-line">
+                    <span id="coinCount">8000</span>
+                    <img alt="Gem Stone" class="coin-icon" draggable="false" src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" />
+                    <div class="donation-line" id="starDonation" style="cursor: pointer;">
+                        <span id="starCount">0</span>
+                        <img alt="Star" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" style="width: 24px; height: 24px; vertical-align: middle;" />
+                    </div>
+                </div>
+            </div>
+            <div class="character-container">
+                <img alt="Controller" class="character" draggable="false" id="character" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" />
+            </div>
+        </main>
+        <div class="shop-container hidden" id="shopContainer">
+            <div class="shop-title">Cases</div>
+            <div class="cases-container">
+                <div class="case-container" data-case="diamond-rain">
+                    <img alt="Diamond Rain" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/popcorn_1f37f.webp" />
+                    <div class="case-name">Diamond Rain</div>
+                    <div class="case-price">100 Diamonds</div>
+                </div>
+                <div class="case-container" data-case="character-magic">
+                    <img alt="Character Magic" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/luggage_1f9f3.webp" />
+                    <div class="case-name">Character Magic</div>
+                    <div class="case-price">Free (Test)</div>
+                </div>
+                <div class="cases-container">
+                    <div class="case-container" data-case="telegram-gift">
+                        <img alt="Telegram Gift" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" />
+                        <div class="case-name">Exclusive</div>
+                        <div class="case-price">Free</div>
+                    </div>
+                    <div class="case-container" data-case="telegram-gift-2">
+                        <img alt="Telegram Gift 2" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/crystal-ball_1f52e.webp" />
+                        <div class="case-name">Telegram Gift</div>
+                        <div class="case-price">Free</div>
+                    </div>
+                    <!-- Остальные кейсы остаются без изменений -->
+                </div>
+            </div>
+        </div>
+        <div class="inventory-container hidden" id="inventoryContainer">
+            <div class="inventory-title">Inventory</div>
+            <div class="inventory-items-container" id="inventoryItems" style="max-height: 300px; overflow-y: auto;"></div>
+        </div>
+        <div class="market-container hidden" id="marketContainer">
+            <div class="market-title">Market</div>
+            <div id="ton-connect"></div>
+            <div class="filters-container">
+                <select class="filter-select" id="characterFilter">
+                    <option value="">All Characters</option>
+                </select>
+                <select class="filter-select" id="backgroundFilter">
+                    <option value="">All Backgrounds</option>
+                </select>
+                <select class="sort-select" id="priceSort">
+                    <option value="newest">Newest First</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="price-asc">Price: Low to High</option>
+                </select>
+            </div>
+            <div class="market-items-container" id="marketItems"></div>
+        </div>
+        <div class="leaderboard-container hidden" id="leaderboardContainer">
+            <div class="leaderboard-title">Leaderboard</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <table class="leaderboard-table" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Diamonds</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="shop-arrow left hidden" id="shopArrowLeft">&lt;</div>
+        <div class="shop-arrow right hidden" id="shopArrowRight">&gt;</div>
+        <div class="inventory-arrow left hidden" id="inventoryArrowLeft">&lt;</div>
+        <div class="inventory-arrow right hidden" id="inventoryArrowRight">&gt;</div>
+        <div class="leaderboard-container hidden" id="gamesContainer">
+            <div class="leaderboard-title">Minigames</div>
+            <div class="cases-container">
+                <div class="case-container">
+                    <img alt="Click Challenge" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" />
+                    <div class="case-name">Earn Coins</div>
+                    <div class="case-price"><button class="minigame-button" id="earnCoinsPlayBtn">Play</button></div>
+                </div>
+                <div class="case-container">
+                    <img alt="Memory Match" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" />
+                    <div class="case-name">Tort</div>
+                    <div class="case-price"><button class="minigame-button" id="tortGamePlayBtn">Play</button></div>
+                </div>
+                <div class="case-container">
+                    <img alt="Score Rush" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" />
+                    <div class="case-name">Гонки</div>
+                    <div class="case-price"><button class="minigame-button" id="raceGamePlayBtn">Play</button></div>
+                </div>
+                <div class="case-container">
+                    <img alt="Coin Flip" class="case-image" draggable="false" src="https://em-content.zobj.net/source/telegram/386/coin_1fa99.webp" />
+                    <div class="case-name">Монетка</div>
+                    <div class="case-price"><button class="minigame-button" id="coinFlipPlayBtn">Play</button></div>
+                </div>
+            </div>
+        </div>
+        <footer class="game-hidden" id="footer">
+            <div class="footer-menu-container">
+                <div class="footer-menu">
+                    <div class="menu-item highlighted" data-menu="home">
+                        <img alt="Home" draggable="false" src="https://em-content.zobj.net/source/telegram/386/television_1f4fa.webp" />
+                        <span>Home</span>
+                    </div>
+                    <div class="menu-item" data-menu="shop">
+                        <img alt="Shop" draggable="false" src="https://em-content.zobj.net/source/telegram/386/money-with-wings_1f4b8.webp" />
+                        <span>Shop</span>
+                    </div>
+                    <div class="menu-item" data-menu="market">
+                        <img alt="Market" draggable="false" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" />
+                        <span>Market</span>
+                    </div>
+                    <div class="menu-item" data-menu="quests">
+                        <img alt="Quests" draggable="false" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" />
+                        <span>Quests</span>
+                    </div>
+                    <div class="menu-item" data-menu="games">
+                        <img alt="Games" draggable="false" src="https://em-content.zobj.net/source/telegram/386/revolving-hearts_1f49e.webp" />
+                        <span>Games</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="leaderboard-container hidden" id="questsContainer">
+            <div class="leaderboard-title">Quests</div>
+            <div class="leaderboard-table-container" style="max-height: 400px; overflow-y: auto;">
+                <div class="case-container">
+                    <img class="case-image" src="https://em-content.zobj.net/source/telegram/386/memo_1f4dd.webp" />
+                    <div class="case-name">Subscribe to our <a href="https://t.me/nexari_community" style="color: #4fc3f7;" target="_blank">Telegram</a></div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 50 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img class="case-image" src="https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp" />
+                    <div class="case-name">Click the controller 50 times</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 150 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img class="case-image" src="https://em-content.zobj.net/source/telegram/386/star_2b50.webp" />
+                    <div class="case-name">Earn 100 Stars</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+                <div class="case-container">
+                    <img class="case-image" src="https://em-content.zobj.net/source/telegram/386/trophy_1f3c6.webp" />
+                    <div class="case-name">Reach Top 10 in Leaderboard</div>
+                    <div class="case-price">
+                        <button class="claim-button">Claim 500 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 16px; height: 16px;" /></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="leaderboard-container hidden" id="friendsContainer">
+            <div class="leaderboard-title">Friends</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1rem;">
+                <button
+                    onclick="
+    navigator.clipboard.writeText('https://t.me/nexari_bot?start=user_id');
     const copiedMessage = document.createElement('div');
     copiedMessage.textContent = 'Ссылка скопирована';
     copiedMessage.style.position = 'fixed';
@@ -1356,16 +1379,16 @@
     copiedMessage.style.padding = '1rem';
     copiedMessage.style.borderRadius = '12px';
     document.body.appendChild(copiedMessage);
-    " style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;">
+    "
+                    style="padding: 0.5rem 1rem; background: #fff; color: #000; border-radius: 12px; font-weight: 600;"
+                >
                     Copy Invite Link
                 </button>
-<div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;"/></div>
-<div>No friends yet
-
-</div>
-</div>
-</div>
-<script>
+                <div style="font-size: 1.2rem; color: #0ff; font-weight: bold;">+200 <img src="https://em-content.zobj.net/source/telegram/386/gem-stone_1f48e.webp" style="width: 20px; height: 20px; vertical-align: middle;" /></div>
+                <div>No friends yet</div>
+            </div>
+        </div>
+        <script>
             const CONFIG = { PARTICLE_COUNT: 50, CLICK_EFFECT_DURATION: 1000, RESIZE_DEBOUNCE: 200, CONFETTI_COUNT: 30, MAX_SCALE: 1.4, MIN_SCALE: 1, SCALE_INCREMENT: 0.1, INCOME_INTERVAL: 3600000 };
             const SKINS = [
                 { src: "https://em-content.zobj.net/source/telegram/386/video-game_1f3ae.webp", gradient: "radial-gradient(circle at 50% 50%,rgba(255,255,255,0.2),transparent 70%)", color: "#FFFFFF", worldName: "World of Consoles" },
@@ -1383,46 +1406,46 @@
                 { src: "https://em-content.zobj.net/source/telegram/386/chicken_1f414.webp", name: "Chicken" },
                 { src: "https://em-content.zobj.net/source/telegram/386/baby-chick_1f424.webp", name: "Baby Chick" },
             ];
-const BACKGROUND_GRADIENTS = [
-  'linear-gradient(135deg, #ffafbd, #ffc3a0)',
-  'linear-gradient(135deg, #89f7fe, #66a6ff)',
-  'linear-gradient(135deg, #f6d365, #fda085)',
-  'linear-gradient(135deg, #84fab0, #8fd3f4)',
-  '#ffcc70',
-  'linear-gradient(135deg, #d299c2, #fef9d7)',
-  '#000000',
-  'linear-gradient(135deg, #667eea, #764ba2)',
-  'linear-gradient(135deg, #ffecd2, #fcb69f)',
-  '#d3f8e2',
-  '#f6e7d7',
-  '#b2fefa',
-  'linear-gradient(135deg, #e0c3fc, #8ec5fc)',
-  '#d1c4e9',
-  '#f48fb1',
-  '#ffe082',
-  '#bcaaa4',
-  '#ffab91',
-  '#ce93d8',
-  '#90caf9',
-  '#a5d6a7',
-  '#b0bec5',
-  '#b39ddb',
-  '#ef9a9a',
-  '#a1887f'
-];
+            const BACKGROUND_GRADIENTS = [
+                "linear-gradient(135deg, #ffafbd, #ffc3a0)",
+                "linear-gradient(135deg, #89f7fe, #66a6ff)",
+                "linear-gradient(135deg, #f6d365, #fda085)",
+                "linear-gradient(135deg, #84fab0, #8fd3f4)",
+                "#ffcc70",
+                "linear-gradient(135deg, #d299c2, #fef9d7)",
+                "#000000",
+                "linear-gradient(135deg, #667eea, #764ba2)",
+                "linear-gradient(135deg, #ffecd2, #fcb69f)",
+                "#d3f8e2",
+                "#f6e7d7",
+                "#b2fefa",
+                "linear-gradient(135deg, #e0c3fc, #8ec5fc)",
+                "#d1c4e9",
+                "#f48fb1",
+                "#ffe082",
+                "#bcaaa4",
+                "#ffab91",
+                "#ce93d8",
+                "#90caf9",
+                "#a5d6a7",
+                "#b0bec5",
+                "#b39ddb",
+                "#ef9a9a",
+                "#a1887f",
+            ];
 
             const MUTATION_GRADIENT = "radial-gradient(circle at 50% 50%, #FFD700, #FF4500 70%)";
             const MARKET_SKINS = [
-                { id: "skin1", character: CHARACTERS[1], background: BACKGROUND_GRADIENTS[0], price: 500, timestamp: Date.now() - 10000, isMutated: true},
-                { id: "skin2", character: CHARACTERS[2], background: BACKGROUND_GRADIENTS[1], price: 750, timestamp: Date.now() - 9000, isMutated: true},
-                { id: "skin3", character: CHARACTERS[3], background: BACKGROUND_GRADIENTS[2], price: 300, timestamp: Date.now() - 8000, isMutated: true},
-                { id: "skin4", character: CHARACTERS[4], background: BACKGROUND_GRADIENTS[3], price: 1000, timestamp: Date.now() - 7000, isMutated: true},
-                { id: "skin5", character: CHARACTERS[5], background: BACKGROUND_GRADIENTS[4], price: 600, timestamp: Date.now() - 6000, isMutated: true},
-                { id: "skin6", character: CHARACTERS[6], background: BACKGROUND_GRADIENTS[5], price: 450, timestamp: Date.now() - 5000, isMutated: true},
-                { id: "skin7", character: CHARACTERS[7], background: BACKGROUND_GRADIENTS[6], price: 800, timestamp: Date.now() - 4000, isMutated: true},
-                { id: "skin8", character: CHARACTERS[8], background: BACKGROUND_GRADIENTS[7], price: 550, timestamp: Date.now() - 3000, isMutated: true},
-                { id: "skin9", character: CHARACTERS[9], background: BACKGROUND_GRADIENTS[8], price: 700, timestamp: Date.now() - 2000, isMutated: true},
-                { id: "skin10", character: CHARACTERS[10], background: BACKGROUND_GRADIENTS[9], price: 400, timestamp: Date.now() - 1000, isMutated: true},
+                { id: "skin1", character: CHARACTERS[1], background: BACKGROUND_GRADIENTS[0], price: 500, timestamp: Date.now() - 10000, isMutated: true },
+                { id: "skin2", character: CHARACTERS[2], background: BACKGROUND_GRADIENTS[1], price: 750, timestamp: Date.now() - 9000, isMutated: true },
+                { id: "skin3", character: CHARACTERS[3], background: BACKGROUND_GRADIENTS[2], price: 300, timestamp: Date.now() - 8000, isMutated: true },
+                { id: "skin4", character: CHARACTERS[4], background: BACKGROUND_GRADIENTS[3], price: 1000, timestamp: Date.now() - 7000, isMutated: true },
+                { id: "skin5", character: CHARACTERS[5], background: BACKGROUND_GRADIENTS[4], price: 600, timestamp: Date.now() - 6000, isMutated: true },
+                { id: "skin6", character: CHARACTERS[6], background: BACKGROUND_GRADIENTS[5], price: 450, timestamp: Date.now() - 5000, isMutated: true },
+                { id: "skin7", character: CHARACTERS[7], background: BACKGROUND_GRADIENTS[6], price: 800, timestamp: Date.now() - 4000, isMutated: true },
+                { id: "skin8", character: CHARACTERS[8], background: BACKGROUND_GRADIENTS[7], price: 550, timestamp: Date.now() - 3000, isMutated: true },
+                { id: "skin9", character: CHARACTERS[9], background: BACKGROUND_GRADIENTS[8], price: 700, timestamp: Date.now() - 2000, isMutated: true },
+                { id: "skin10", character: CHARACTERS[10], background: BACKGROUND_GRADIENTS[9], price: 400, timestamp: Date.now() - 1000, isMutated: true },
             ];
             this.rainbowInterval = null;
 
@@ -1441,7 +1464,6 @@ const BACKGROUND_GRADIENTS = [
                     this.selectedCharacter = null;
                     this.nextIncomeTime = 0;
                     this.isTimerStarted = false;
-                    this.walletConnected = false;
                     this.walletAddress = null;
                     this.leaderboard = [
                         { nickname: "Player123", coins: 1000, rank: 1 },
@@ -1608,7 +1630,6 @@ const BACKGROUND_GRADIENTS = [
                         if (p.x < 0 || p.x > this.canvas.width) p.speedX *= -1;
                         if (p.y < 0 || p.y > this.canvas.height) p.speedY *= -1;
                     }
-
                 }
                 draw() {
                     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -1630,24 +1651,23 @@ const BACKGROUND_GRADIENTS = [
                         this.ctx.fill();
                     }
                     // Draw lines between close particles
-for (let i = 0; i < this.particles.length; i++) {
-    const p1 = this.particles[i];
-    for (let j = i + 1; j < this.particles.length; j++) {
-        const p2 = this.particles[j];
-        const dx = p1.x - p2.x;
-        const dy = p1.y - p2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < 80) {
-            const opacity = 1 - distance / 80;
-            this.ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
-            this.ctx.beginPath();
-            this.ctx.moveTo(p1.x, p1.y);
-            this.ctx.lineTo(p2.x, p2.y);
-            this.ctx.stroke();
-        }
-    }
-}
-
+                    for (let i = 0; i < this.particles.length; i++) {
+                        const p1 = this.particles[i];
+                        for (let j = i + 1; j < this.particles.length; j++) {
+                            const p2 = this.particles[j];
+                            const dx = p1.x - p2.x;
+                            const dy = p1.y - p2.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            if (distance < 80) {
+                                const opacity = 1 - distance / 80;
+                                this.ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(p1.x, p1.y);
+                                this.ctx.lineTo(p2.x, p2.y);
+                                this.ctx.stroke();
+                            }
+                        }
+                    }
                 }
                 start() {
                     if (this.isAnimating) return;
@@ -1878,55 +1898,54 @@ for (let i = 0; i < this.particles.length; i++) {
                     const totalIncomeRate = selectedCharacter ? selectedCharacter.incomeRate || 100 : 100;
                     this.ui.queueUpdate("incomeRate", totalIncomeRate);
                 }
-updateAppearance() {
-    const currentSkin = SKINS[0];
-    const selectedCharacter = this.state.getSelectedCharacter();
+                updateAppearance() {
+                    const currentSkin = SKINS[0];
+                    const selectedCharacter = this.state.getSelectedCharacter();
 
-    if (selectedCharacter) {
-        this.ui.queueUpdate("characterSrc", selectedCharacter.src);
+                    if (selectedCharacter) {
+                        this.ui.queueUpdate("characterSrc", selectedCharacter.src);
 
-        if (selectedCharacter.isMutated) {
-            const bg = selectedCharacter.background || MUTATION_GRADIENT;
+                        if (selectedCharacter.isMutated) {
+                            const bg = selectedCharacter.background || MUTATION_GRADIENT;
 
-            if (bg === '#000000' || bg.toLowerCase().includes('black')) {
-                document.body.style.backgroundImage = '';
-                document.body.style.background = '#000';
+                            if (bg === "#000000" || bg.toLowerCase().includes("black")) {
+                                document.body.style.backgroundImage = "";
+                                document.body.style.background = "#000";
 
-                if (this.rainbowInterval) clearInterval(this.rainbowInterval);
-                // [удалено] радужный setInterval эффект при черном фоне
-            } else {
-                if (this.rainbowInterval) {
-                    clearInterval(this.rainbowInterval);
-                    this.rainbowInterval = null;
+                                if (this.rainbowInterval) clearInterval(this.rainbowInterval);
+                                // [удалено] радужный setInterval эффект при черном фоне
+                            } else {
+                                if (this.rainbowInterval) {
+                                    clearInterval(this.rainbowInterval);
+                                    this.rainbowInterval = null;
+                                }
+                                document.body.classList.remove("rainbow-flash");
+                                document.body.style.backgroundImage = bg;
+                            }
+
+                            this.ui.queueUpdate("highlightColor", "#FFD700");
+                        } else {
+                            // обычный персонаж
+                            if (this.rainbowInterval) {
+                                clearInterval(this.rainbowInterval);
+                                this.rainbowInterval = null;
+                            }
+                            document.body.classList.remove("rainbow-flash");
+                            document.body.style.background = "";
+                            document.body.style.backgroundImage = "";
+
+                            // 🔁 Сбросить цвета меню
+                            document.documentElement.style.setProperty("--highlight-color", "#fff");
+                            document.documentElement.style.setProperty("--top-menu-bg", "rgba(30, 30, 30, 0.85)");
+                            document.documentElement.style.setProperty("--footer-bg", "rgba(30, 30, 30, 0.85)");
+                            document.documentElement.style.setProperty("--counter-bg", "rgba(30, 30, 30, 0.85)");
+                        }
+                    }
+
+                    this.ui.queueUpdate("worldName", currentSkin.worldName);
+                    this.ui.applyUpdates();
+                    this.updateIncomeRate();
                 }
-                document.body.classList.remove('rainbow-flash');
-                document.body.style.backgroundImage = bg;
-            }
-
-            this.ui.queueUpdate("highlightColor", "#FFD700");
-        } else {
-            // обычный персонаж
-            if (this.rainbowInterval) {
-                clearInterval(this.rainbowInterval);
-                this.rainbowInterval = null;
-            }
-            document.body.classList.remove('rainbow-flash');
-            document.body.style.background = '';
-            document.body.style.backgroundImage = '';
-
-            // 🔁 Сбросить цвета меню
-            document.documentElement.style.setProperty('--highlight-color', '#fff');
-            document.documentElement.style.setProperty('--top-menu-bg', 'rgba(30, 30, 30, 0.85)');
-            document.documentElement.style.setProperty('--footer-bg', 'rgba(30, 30, 30, 0.85)');
-            document.documentElement.style.setProperty('--counter-bg', 'rgba(30, 30, 30, 0.85)');
-        }
-    }
-
-    this.ui.queueUpdate("worldName", currentSkin.worldName);
-    this.ui.applyUpdates();
-    this.updateIncomeRate();
-}
-
 
                 handleTap(e) {
                     e.preventDefault();
@@ -2028,18 +2047,6 @@ updateAppearance() {
                             };
                         }
                         this.tonConnectUI.onStatusChange((walletInfo) => {
-                            if (walletInfo) {
-                                const address = walletInfo.account.address;
-                                this.state.setWalletConnected(true, address);
-                                this.ui.toggleDisconnectButton(true);
-                                this.ui.toggleConnectButton(false);
-                            } else {
-                                this.state.setWalletConnected(false, null);
-                                this.ui.toggleDisconnectButton(false);
-                                if (this.ui.elements.marketContainer.classList.contains("visible")) {
-                                    this.ui.toggleConnectButton(true);
-                                }
-                            }
                             this.ui.applyUpdates();
                         });
                         const disconnectListener = async () => {
@@ -2276,11 +2283,11 @@ updateAppearance() {
                         buyButton.addEventListener("pointerdown", () => {
                             if (this.state.getCoins() >= skin.price) {
                                 this.state.addToInventory({
-    src: skin.character.src,
-    name: skin.character.name,
-    background: skin.background,
-    isMutated: skin.isMutated || false
-});
+                                    src: skin.character.src,
+                                    name: skin.character.name,
+                                    background: skin.background,
+                                    isMutated: skin.isMutated || false,
+                                });
 
                                 this.availableMarketSkins = this.availableMarketSkins.filter((s) => s.id !== skin.id);
                                 this.updateMarketDisplay();
@@ -2951,7 +2958,6 @@ updateAppearance() {
                     inventoryArrowLeft: document.getElementById("inventoryArrowLeft"),
                     inventoryArrowRight: document.getElementById("inventoryArrowRight"),
                     tonConnect: document.getElementById("ton-connect"),
-                    disconnectWallet: document.getElementById("disconnect-wallet"),
                     totalCoins: document.getElementById("totalCoins"),
                     playerStats: document.querySelector(".player-stats"),
                     characterFilter: document.getElementById("characterFilter"),
@@ -2966,8 +2972,8 @@ updateAppearance() {
                 game.initialize();
                 window.addEventListener("beforeunload", () => game.destroy());
             });
-</script>
-<script>
+        </script>
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const menuItems = document.querySelectorAll(".menu-item");
                 const sections = {
@@ -3021,8 +3027,8 @@ updateAppearance() {
                     });
                 });
             });
-</script>
-<script>
+        </script>
+        <script>
             const mainContent = document.getElementById("mainContent");
             const incomeCounter = document.getElementById("incomeCounter");
             const incomeTimer = document.getElementById("incomeTimer");
@@ -3070,28 +3076,28 @@ updateAppearance() {
                     item.classList.add("highlighted");
                 });
             });
-</script>
-<div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
-<div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
-<h2 style="margin-bottom: 1rem;">Support the Game</h2>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
-<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
-<div style="margin-top: 1rem;">
-<button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
-</div>
-</div>
-</div>
-<script>
+        </script>
+        <div id="donationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
+                <h2 style="margin-bottom: 1rem;">Support the Game</h2>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
+                <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
+                <div style="margin-top: 1rem;">
+                    <button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
+                </div>
+            </div>
+        </div>
+        <script>
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
-</script>
-<!-- Reward Animation Container -->
-<div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
-<div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
-</div>
-<script>
+        </script>
+        <!-- Reward Animation Container -->
+        <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
+            <div id="rewardAnimation" style="width: 100%; height: 100%;"></div>
+        </div>
+        <script>
             function showRewardAnimation(animationPath) {
                 const container = document.getElementById("rewardAnimationContainer");
                 const animEl = document.getElementById("rewardAnimation");
@@ -3110,8 +3116,8 @@ updateAppearance() {
                 const randomPath = animations[Math.floor(Math.random() * animations.length)];
                 showRewardAnimation(randomPath);
             }
-</script>
-<script>
+        </script>
+        <script>
             let walletConnected = false;
 
             function toggleWallet() {
@@ -3134,13 +3140,13 @@ updateAppearance() {
             function disconnectWallet() {
                 console.log("Wallet disconnected");
             }
-</script>
-<script>
+        </script>
+        <script>
             function activateX4() {
                 alert("x4 boost upgrade coming soon!");
             }
-</script>
-<script>
+        </script>
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3153,8 +3159,8 @@ updateAppearance() {
                     document.querySelectorAll(".inventory-arrow").forEach((el) => (el.style.display = "block"));
                 }
             }
-</script>
-<script>
+        </script>
+        <script>
             function showSection(section) {
                 document.querySelectorAll(".section").forEach((s) => s.classList.add("hidden"));
                 document.getElementById(section + "Container")?.classList.remove("hidden");
@@ -3171,8 +3177,8 @@ updateAppearance() {
             function activateX4() {
                 alert("x4 boost feature coming soon!");
             }
-</script>
-<script>
+        </script>
+        <script>
             let openCasesCount = 0;
             function incrementCaseCount() {
                 openCasesCount++;
@@ -3198,8 +3204,8 @@ updateAppearance() {
                 msg.style.zIndex = 9999;
                 document.body.appendChild(msg);
             }
-</script>
-<script>
+        </script>
+        <script>
             let clicks = 0;
             let telegramVisited = false;
             let stars = 0;
@@ -3259,8 +3265,8 @@ updateAppearance() {
                 msg.style.zIndex = 9999;
                 document.body.appendChild(msg);
             }
-</script>
-<script>
+        </script>
+        <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let clicks = 0;
                 let telegramVisited = false;
@@ -3325,859 +3331,804 @@ updateAppearance() {
                     document.body.appendChild(msg);
                 }
             });
-</script>
-<div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
-<div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
-<script>
-  const newQuestsArrowLeft = document.getElementById('newQuestsArrowLeft');
-  const newQuestsArrowRight = document.getElementById('newQuestsArrowRight');
-
-  document.querySelectorAll(".menu-item").forEach(item => {
-    item.addEventListener("click", () => {
-      const menu = item.getAttribute("data-menu");
-      const isQuests = menu === "quests";
-
-      if (newQuestsArrowLeft && newQuestsArrowRight) {
-        newQuestsArrowLeft.style.display = isQuests ? "block" : "none";
-        newQuestsArrowRight.style.display = isQuests ? "block" : "none";
-      }
-    });
-  });
-</script>
-<script>
-  let showingFriends = false;
-
-  function toggleQuestsAndFriends() {
-    const quests = document.getElementById("questsContainer");
-    const friends = document.getElementById("friendsContainer");
-
-    if (!quests || !friends) return;
-
-    if (showingFriends) {
-      // показать квесты
-      quests.classList.remove("hidden");
-      quests.classList.add("visible");
-      friends.classList.add("hidden");
-      friends.classList.remove("visible");
-    } else {
-      // показать друзей
-      friends.classList.remove("hidden");
-      friends.classList.add("visible");
-      quests.classList.add("hidden");
-      quests.classList.remove("visible");
-    }
-
-    showingFriends = !showingFriends;
-  }
-
-  document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
-  document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
-</script>
-<script>
-  document.querySelectorAll(".menu-item").forEach(item => {
-    item.addEventListener("click", () => {
-      const menu = item.getAttribute("data-menu");
-      document.querySelectorAll(".leaderboard-container").forEach(container => {
-        container.classList.add("hidden");
-        container.classList.remove("visible");
-      });
-      const active = document.getElementById(menu + "Container");
-      if (active) {
-        active.classList.remove("hidden");
-        active.classList.add("visible");
-      }
-    });
-  });
-</script>
-<!-- Мини-игра "Лови звезды" -->
-<style>
-  #catchGame {
-    position: fixed;
-    inset: 0;
-    background: black;
-    z-index: 10000;
-    display: none;
-    overflow: hidden;
-  }
-  #rocket {
-    position: absolute;
-    bottom: 20px;
-    width: 80px;
-    height: auto;
-    transition: left 0.1s linear;
-  }
-  .star {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 0;
-  }
-  #score {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.5rem;
-    color: white;
-  }
-  #quitCatchGame {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    color: white;
-    font-size: 1.5rem;
-    border: none;
-    cursor: pointer;
-  }
-  .minigame-button {
-  background: linear-gradient(135deg, #4facfe, #00f2fe); /* градиент */
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 12px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
-}
-</style>
-<div id="catchGame">
-<canvas id="minigameStarfield"></canvas>
-<div id="score">Score: 0</div>
-<button id="quitCatchGame">✕ Quit</button>
-<img alt="Rocket" id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png"/>
-</div>
-<script>
-  const catchGame = document.getElementById('catchGame');
-  const rocket = document.getElementById('rocket');
-  const scoreDisplay = document.getElementById('score');
-  const quitBtn = document.getElementById('quitCatchGame');
-
-let globalSpeed = 4;
-let spawnRate = 1000;
-let spawnRateDecrement = 50;
-let minSpawnRate = 300;
-
-  let score = 0;
-  let gameRunning = false;
-  let starInterval;
-
-  function startCatchGame() {
-  globalSpeed = 4;
-  spawnRate = 1200;
-    score = 0;
-    scoreDisplay.textContent = 'Score: 0';
-    rocket.style.left = '50%';
-    catchGame.style.display = 'block';
-    gameRunning = true;
-  resizeStarCanvas();
-  animateStarBackground();
-    spawnStars();
-  }
-
-  function endCatchGame() {
-    gameRunning = false;
-    catchGame.style.display = 'none';
-    alert('Game Over! Your score: ' + score);
-    document.querySelectorAll('.star').forEach(s => s.remove());
-    clearInterval(starInterval);
-  }
-
-  quitBtn.onclick = endCatchGame;
-
-
-catchGame.addEventListener('touchmove', e => {
-    const touch = e.touches[0];
-    let x = touch.clientX - 40;
-    x = Math.max(0, Math.min(window.innerWidth - 80, x));
-    rocket.style.left = x + 'px';
-  });
-
-function spawnStars() {
-  function spawnLoop() {
-    if (!gameRunning) return;
-
-    const star = document.createElement('img');
-    star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
-    star.classList.add('star');
-    star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
-    star.style.top = '0px';
-    catchGame.appendChild(star);
-
-    let speed = Math.min(globalSpeed += 0.05, 25); // увеличиваем скорость
-    let startTime = null;
-
-    function animateStar(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const top = elapsed * speed / 16;
-      star.style.top = top + 'px';
-
-      const rocketRect = rocket.getBoundingClientRect();
-      const starRect = star.getBoundingClientRect();
-
-      if (
-        rocketRect.left < starRect.right &&
-        rocketRect.right > starRect.left &&
-        rocketRect.top < starRect.bottom &&
-        rocketRect.bottom > starRect.top
-      ) {
-        score++;
-        scoreDisplay.textContent = 'Score: ' + score;
-        star.remove();
-        return;
-      }
-
-      if (top > window.innerHeight - 40) {
-        star.remove();
-        endCatchGame();
-        return;
-      }
-
-      if (gameRunning) requestAnimationFrame(animateStar);
-    }
-    requestAnimationFrame(animateStar);
-
-    // Уменьшаем интервал и запускаем следующий спавн
-    if (spawnRate > minSpawnRate) {
-      spawnRate -= spawnRateDecrement;
-    }
-
-    setTimeout(spawnLoop, spawnRate);
-  }
-
-  spawnLoop();
-}
-
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  if (playBtn) {
-    playBtn.removeAttribute("disabled");
-    playBtn.addEventListener("click", startCatchGame);
-  }
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  if (playBtn) {
-    playBtn.addEventListener("click", startCatchGame);
-  }
-});
-</script>
-<script>
-const starCanvas = document.getElementById('minigameStarfield');
-const starCtx = starCanvas.getContext('2d');
-let starArray = [];
-
-function resizeStarCanvas() {
-  starCanvas.width = catchGame.offsetWidth;
-  starCanvas.height = catchGame.offsetHeight;
-  starArray = Array.from({ length: 100 }, () => ({
-    x: Math.random() * starCanvas.width,
-    y: Math.random() * starCanvas.height,
-    size: Math.random() * 2,
-    speed: Math.random() * 0.4 + 0.2
-  }));
-}
-
-function animateStarBackground() {
-  if (!gameRunning) return;
-  starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-  starCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-  starArray.forEach(star => {
-    starCtx.beginPath();
-    starCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-    starCtx.fill();
-    star.y += star.speed;
-    if (star.y > starCanvas.height) {
-      star.y = 0;
-      star.x = Math.random() * starCanvas.width;
-    }
-  });
-  requestAnimationFrame(animateStarBackground);
-}
-
-window.addEventListener('resize', () => {
-  if (gameRunning) resizeStarCanvas();
-});
-
-const originalStartCatchGame = startCatchGame;
-startCatchGame = function() {
-  resizeStarCanvas();
-  animateStarBackground();
-  originalStartCatchGame();
-};
-</script>
-<!-- Мини-игра "Торт" -->
-<div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
-<button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-<div id="game" style="position: relative; width: 100vw; height: 100vh;">
-<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0
-
-</div>
-</div>
-</div>
-<style>
-  .block {
-    position: absolute;
-    height: 30px;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: opacity 0.3s ease-in;
-  }
-  .cake1 {
-    background: linear-gradient(to top, #f7c59f, #fcd5ce);
-    border: 2px solid #d58a7b;
-  }
-  .cake2 {
-    background: linear-gradient(to top, #ffc0cb, #ffe0eb);
-    border: 2px solid #cc6688;
-  }
-  .cake3 {
-    background: linear-gradient(to top, #ffffff, #f2f2f2);
-    border: 2px solid #ccc;
-  }
-  .cake4 {
-    background: linear-gradient(to top, #ffccdd, #ffe6f0);
-    border: 2px solid #e892a2;
-  }
-  .cake5 {
-    background: linear-gradient(to top, #ffffff, #f9f9f9);
-    border: 2px solid #cccccc;
-  }
-</style>
-<script>
-  let stack = [];
-  let currentBlock = null;
-  let direction = 1;
-  let score2 = 0;
-  let movingAnimation = null;
-
-  const game = document.getElementById("game");
-  let scoreDisplay2 = document.getElementById("score2");
-
-  function startCakeGame() {
-    stack = [];
-    score2 = 0;
-    game.innerHTML = '<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>';
-    scoreDisplay2 = document.getElementById("score2");
-    createBaseBlock();
-    createMovingBlock();
-  }
-
-  function createBaseBlock() {
-    const base = document.createElement("div");
-    base.className = "block cake2";
-    base.style.width = "150px";
-    base.style.left = "calc(50% - 75px)";
-    base.style.bottom = "0px";
-    game.appendChild(base);
-    stack.push({ left: window.innerWidth / 2 - 75, width: 150, bottom: 0 });
-  }
-
-  function createMovingBlock() {
-    const last = stack[stack.length - 1];
-    const newWidth = last.width;
-    const block = document.createElement("div");
-    const colorList = ['cake1', 'cake2', 'cake3', 'cake4', 'cake5'];
-    block.className = "block " + colorList[Math.floor(Math.random() * colorList.length)];
-    const dir = Math.random() < 0.5 ? 1 : -1;
-    block.style.left = dir === 1 ? "-100px" : window.innerWidth + "px";
-    block.style.width = newWidth + "px";
-    block.style.bottom = last.bottom + 30 + "px";
-    game.appendChild(block);
-
-    currentBlock = {
-      el: block,
-      width: newWidth,
-      bottom: last.bottom + 30,
-      x: dir === 1 ? -100 : window.innerWidth,
-      speed: dir === 1
-        ? (score2 >= 10 ? (Math.random() * 1.5 + 2.8) : (Math.random() * 0.8 + 1.8))
-        : -(score2 >= 10 ? (Math.random() * 1.5 + 2.8) : (Math.random() * 0.8 + 1.8))
-    };
-
-    cancelAnimationFrame(movingAnimation);
-    moveBlock();
-  }
-
-  function moveBlock() {
-    if (!currentBlock) return;
-    currentBlock.x += currentBlock.speed;
-    currentBlock.el.style.left = currentBlock.x + "px";
-
-    if (
-      (currentBlock.speed > 0 && currentBlock.x > window.innerWidth) ||
-      (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
-    ) {
-
-alert("Game Over! Final Score: " + score2);
-
-const cakeGameEl = document.getElementById("cakeGame");
-if (cakeGameEl) {
-  cakeGameEl.style.display = "none";
-}
-
-
-      currentBlock = null;
-      cancelAnimationFrame(movingAnimation);
-      return;
-    }
-
-    movingAnimation = requestAnimationFrame(moveBlock);
-  }
-
-  function placeBlock() {
-    if (!currentBlock) return;
-
-    const last = stack[stack.length - 1];
-    const overlapLeft = Math.max(currentBlock.x, last.left);
-    const overlapRight = Math.min(currentBlock.x + currentBlock.width, last.left + last.width);
-    const overlapWidth = overlapRight - overlapLeft;
-
-    if (overlapWidth <= 0) {
-
-alert("Game Over! Final Score: " + score2);
-
-const cakeGameEl = document.getElementById("cakeGame");
-if (cakeGameEl) {
-  cakeGameEl.style.display = "none";
-}
-
-
-      currentBlock = null;
-      return;
-    }
-
-    currentBlock.el.style.left = overlapLeft + "px";
-    currentBlock.el.style.width = overlapWidth + "px";
-    stack.push({ left: overlapLeft, width: overlapWidth, bottom: currentBlock.bottom });
-    currentBlock = null;
-    direction *= -1;
-    score2++;
-    scoreDisplay2.textContent = "Score: " + score2;
-    createMovingBlock();
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const tortBtn = document.getElementById("tortGamePlayBtn");
-    const cakeGame = document.getElementById("cakeGame");
-    const quitBtn = document.getElementById("quitCakeGame");
-
-    if (tortBtn && cakeGame) {
-      tortBtn.removeAttribute("disabled");
-      tortBtn.addEventListener("click", function () {
-        cakeGame.style.display = "block";
-        startCakeGame();
-      });
-    }
-
-    if (quitBtn) {
-      quitBtn.addEventListener("click", function () {
-        cakeGame.style.display = "none";
-        cancelAnimationFrame(movingAnimation);
-      });
-    }
-
-    cakeGame.addEventListener("click", placeBlock);
-  });
-
-
-const tortGameBtn = document.getElementById('tortGamePlayBtn');
-const tortGameContainer = document.getElementById('tortGameContainer');
-const tortExitBtn = document.getElementById('tortExitBtn');
-const tortExitPrompt = document.getElementById('tortExitPrompt');
-const confirmExitBtn = document.getElementById('confirmExitBtn');
-
-let tortGameInterval = null;
-
-tortGameBtn?.addEventListener('click', () => {
-
-const tortGameContainer = document.getElementById("tortGameContainer");
-if (tortGameContainer) {
-  tortGameContainer.style.display = 'flex';
-}
-
-
-setTimeout(() => {
-  const container = document.getElementById("tortGameContainer");
-  if (container) {
-    container.classList.remove("hidden-opacity");
-  }
-}, 10);
-
-
-    tortGameInterval = setInterval(() => {
-        console.log('Игра TORT работает...');
-    }, 1000);
-});
-
-tortExitBtn?.addEventListener('click', () => {
-    clearInterval(tortGameInterval);
-    tortExitPrompt.style.display = 'block';
-    setTimeout(() => tortExitPrompt.classList.remove('hidden-opacity'), 10);
-});
-
-confirmExitBtn?.addEventListener('click', () => {
-    tortExitPrompt.classList.add('hidden-opacity');
-    setTimeout(() => {
-        tortExitPrompt.style.display = 'none';
-    }, 500);
-
-    tortGameContainer.classList.add('hidden-opacity');
-    setTimeout(() => {
-        tortGameContainer.style.display = 'none';
-    }, 500);
-});
-</script>
-<!-- Мини-игра "Гонки" -->
-<div id="raceGame" style="
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(to bottom right, #1a1a1a, #333333);
-  display: none;
-  z-index: 10000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-  color: white;
-  font-family: sans-serif;
-  overflow-y: auto;
-">
-<button id="quitRaceGame" style="
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: transparent;
-    color: white;
-    font-size: 2rem;
-    border: none;
-    cursor: pointer;
-  ">✕</button>
-<h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
-<div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
-<div class="track" id="track1" style="
-      width: 90vw;
-      max-width: 600px;
-      height: 60px;
-      background: #444;
-      margin: 15px 0;
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-    ">
-<img class="vehicle" id="v1" src="" style="
-        position: absolute;
-        top: 5px;
-        left: 0;
-        height: 45px;
-        transform: translateX(0px);
-      "/>
-</div>
-<div class="track" id="track2" style="
-      width: 90vw;
-      max-width: 600px;
-      height: 60px;
-      background: #444;
-      margin: 15px 0;
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-    ">
-<img class="vehicle" id="v2" src="" style="
-        position: absolute;
-        top: 5px;
-        left: 0;
-        height: 45px;
-        transform: translateX(0px);
-      "/>
-</div>
-</div>
-<div class="buttons" style="
-    margin-top: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-  ">
-<button id="choose1" style="
-      padding: 14px 24px;
-      font-size: 5vw;
-      max-width: 300px;
-      background: linear-gradient(to right, #00c6ff, #0072ff);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      flex: 1;
-    ">...</button>
-<button id="choose2" style="
-      padding: 14px 24px;
-      font-size: 5vw;
-      max-width: 300px;
-      background: linear-gradient(to right, #ff8c00, #ff3c00);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      flex: 1;
-    ">...</button>
-</div>
-<div id="raceResult" style="
-    margin-top: 30px;
-    font-size: 5vw;
-    font-weight: bold;
-    text-align: center;
-    text-shadow: 1px 1px 2px black;
-  "></div>
-</div>
-<script>
-  const vehicles = [
-    "https://freepngimg.com/thumb/bmw/22658-4-bmw-m3-photos.png",
-    "https://img2.clipart-library.com/27/picture-of-airplane-clipart/picture-of-airplane-clipart-20.png",
-    "https://www.pngmart.com/files/23/Sailboat-PNG-Pic.png",
-    "https://clipart-library.com/2023/15153-illustration-of-an-army-tank-pv.png",
-    "https://i2.wp.com/webstockreview.net/images/motorcycle-clipart-svg-5.png"
-  ];
-
-  let v1 = null;
-  let v2 = null;
-  let result = null;
-  let chosen = null;
-  let animationFrame;
-  let pos1 = 0, pos2 = 0;
-  let finishLine = 540; // значение по умолчанию
-
-  function getVehicleName(src) {
-    if (src.includes("bmw")) return "Car";
-    if (src.includes("airplane")) return "Airplane";
-    if (src.includes("Sailboat")) return "Ship";
-    if (src.includes("tank")) return "Tank";
-    if (src.includes("motorcycle")) return "Bike";
-    return "Transport";
-  }
-
-  function pickTwoRandomVehicles() {
-    const indexes = [...Array(vehicles.length).keys()];
-    const i1 = indexes.splice(Math.floor(Math.random() * indexes.length), 1)[0];
-    const i2 = indexes[Math.floor(Math.random() * indexes.length)];
-    return [vehicles[i1], vehicles[i2]];
-  }
-
-  function resetRace() {
-    const [src1, src2] = pickTwoRandomVehicles();
-    v1.src = src1;
-    v2.src = src2;
-    v1.style.transform = "translateX(0px)";
-    v2.style.transform = "translateX(0px)";
-    document.getElementById("choose1").textContent = getVehicleName(src1);
-    document.getElementById("choose2").textContent = getVehicleName(src2);
-    result.textContent = "";
-    pos1 = 0;
-    pos2 = 0;
-
-    // Пересчёт границы финиша
-    const trackWidth = document.getElementById("track1").offsetWidth;
-    finishLine = trackWidth - 60; // 60 — примерная ширина транспорта
-  }
-
-  function startRace() {
-    cancelAnimationFrame(animationFrame);
-    pos1 = 0;
-    pos2 = 0;
-
-    const outcome = Math.random();
-    const playerShouldWin = outcome < 0.4;
-
-    const baseSpeed = 0.7;
-    const variation = 0.3;
-    let speed1, speed2;
-
-    if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
-      speed1 = baseSpeed + variation;
-      speed2 = baseSpeed + Math.random();
-    } else {
-      speed1 = baseSpeed + Math.random();
-      speed2 = baseSpeed + variation;
-    }
-
-    function step() {
-      pos1 += speed1;
-      pos2 += speed2;
-      v1.style.transform = `translateX(${pos1}px)`;
-      v2.style.transform = `translateX(${pos2}px)`;
-
-      if (pos1 >= finishLine || pos2 >= finishLine) {
-        const winner = pos1 > pos2 ? "1" : "2";
-        const winName = winner === "1" ? getVehicleName(v1.src) : getVehicleName(v2.src);
-        result.textContent = (winner === String(chosen))
-          ? "Вы выиграли! Победил: " + winName
-          : "Вы проиграли. Победил: " + winName;
-
-        setTimeout(() => {
-          resetRace();
-          chosen = null;
-        }, 2000);
-      } else {
-        animationFrame = requestAnimationFrame(step);
-      }
-    }
-
-    animationFrame = requestAnimationFrame(step);
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const playBtn = document.getElementById("raceGamePlayBtn");
-    const raceGame = document.getElementById("raceGame");
-    const quitBtn = document.getElementById("quitRaceGame");
-
-    v1 = document.getElementById("v1");
-    v2 = document.getElementById("v2");
-    result = document.getElementById("raceResult");
-
-    document.getElementById("choose1").onclick = () => {
-      chosen = 1;
-      startRace();
-    };
-    document.getElementById("choose2").onclick = () => {
-      chosen = 2;
-      startRace();
-    };
-
-    if (playBtn && raceGame) {
-      playBtn.addEventListener("click", () => {
-        raceGame.style.display = "flex";
-        resetRace();
-      });
-    }
-
-    if (quitBtn) {
-      quitBtn.addEventListener("click", () => {
-        raceGame.style.display = "none";
-        cancelAnimationFrame(animationFrame);
-      });
-    }
-  });
-</script>
-<!-- Мини-игра "Монетка" -->
-<!-- Мини-игра Монетка -->
-<style>
-@keyframes flipCoin {
-  0% { transform: rotateY(0); }
-  50% { transform: rotateY(720deg); }
-  100% { transform: rotateY(1440deg); }
-}
-</style>
-<!-- Пользовательская версия игры "Монетка" -->
-<div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
-<button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-<h1 style="color: #333;">Heads or Tails</h1>
-<div class="controls" style="margin-bottom: 20px;">
-<button onclick="choose('Heads')">Heads</button>
-<button onclick="choose('Tails')">Tails</button>
-</div>
-<div id="coin" style="width: 120px; height: 120px; background-size: cover; background-position: center; border-radius: 50%; margin: 20px; position: relative; transform-style: preserve-3d; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>
-<div id="result" style="font-size: 24px; font-weight: bold; margin-top: 20px;"></div>
-</div>
-<style>
-@keyframes tossCoin {
-  0%   { transform: translateY(0) rotateY(0deg); opacity: 1; }
-  25%  { transform: translateY(-150px) rotateY(360deg); opacity: 0.8; }
-  50%  { transform: translateY(-200px) rotateY(720deg); opacity: 0.6; }
-  75%  { transform: translateY(-150px) rotateY(1080deg); opacity: 0.8; }
-  100% { transform: translateY(0) rotateY(1440deg); opacity: 1; }
-}
-.flip {
-  animation: tossCoin 1.5s ease-in-out;
-}
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-}
-button:hover {
-  background-color: #0056b3;
-}
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  let userChoice = null;
-  const coin = document.getElementById('coin');
-  const result = document.getElementById('result');
-  const coinGame = document.getElementById('coinFlipGame');
-  const playBtn = document.getElementById('coinFlipPlayBtn');
-  const quitBtn = document.getElementById('quitCoinFlipGame');
-
-  const headsURL = "https://image.pngaaa.com/973/432973-middle.png";
-  const tailsURL = "https://avatars.mds.yandex.net/i?id=1ed4de7e6b69fa91fffa7735e321531d25ca14cf-7761242-images-thumbs&n=13";
-
-  coin.style.backgroundImage = `url('${tailsURL}')`;
-
-  if (playBtn) {
-    playBtn.addEventListener("click", () => {
-      coinGame.style.display = "flex";
-      result.textContent = "";
-      coin.style.backgroundImage = `url('${tailsURL}')`;
-    });
-  }
-
-  if (quitBtn) {
-    quitBtn.addEventListener("click", () => {
-      coinGame.style.display = "none";
-    });
-  }
-
-  window.choose = function(choice) {
-    userChoice = choice;
-    result.textContent = `You chose: ${choice}`;
-    flipCoin();
-  }
-
-  function flipCoin() {
-    const outcome = Math.random() < 0.5 ? 'Heads' : 'Tails';
-    let flipCount = 0;
-
-    const interval = setInterval(() => {
-      // Чередуем картинки
-      coin.style.backgroundImage = (flipCount % 2 === 0)
-        ? `url('${headsURL}')`
-        : `url('${tailsURL}')`;
-      flipCount++;
-    }, 100); // быстрое переключение для имитации вращения
-
-    coin.classList.add('flip');
-
-    setTimeout(() => {
-      clearInterval(interval);
-      const finalImage = (outcome === 'Heads') ? headsURL : tailsURL;
-      coin.style.backgroundImage = `url('${finalImage}')`;
-      coin.classList.remove('flip');
-
-      if (userChoice === outcome) {
-        result.textContent = `Congratulations! It's ${outcome}. You win!`;
-      } else {
-        result.textContent = `Sorry! It's ${outcome}. You lose.`;
-      }
-    }, 1500);
-  }
-});
-</script>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-</body>
+        </script>
+        <div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
+        <div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
+        <script>
+            const newQuestsArrowLeft = document.getElementById("newQuestsArrowLeft");
+            const newQuestsArrowRight = document.getElementById("newQuestsArrowRight");
+
+            document.querySelectorAll(".menu-item").forEach((item) => {
+                item.addEventListener("click", () => {
+                    const menu = item.getAttribute("data-menu");
+                    const isQuests = menu === "quests";
+
+                    if (newQuestsArrowLeft && newQuestsArrowRight) {
+                        newQuestsArrowLeft.style.display = isQuests ? "block" : "none";
+                        newQuestsArrowRight.style.display = isQuests ? "block" : "none";
+                    }
+                });
+            });
+        </script>
+        <script>
+            let showingFriends = false;
+
+            function toggleQuestsAndFriends() {
+                const quests = document.getElementById("questsContainer");
+                const friends = document.getElementById("friendsContainer");
+
+                if (!quests || !friends) return;
+
+                if (showingFriends) {
+                    // показать квесты
+                    quests.classList.remove("hidden");
+                    quests.classList.add("visible");
+                    friends.classList.add("hidden");
+                    friends.classList.remove("visible");
+                } else {
+                    // показать друзей
+                    friends.classList.remove("hidden");
+                    friends.classList.add("visible");
+                    quests.classList.add("hidden");
+                    quests.classList.remove("visible");
+                }
+
+                showingFriends = !showingFriends;
+            }
+
+            document.getElementById("newQuestsArrowLeft").addEventListener("click", toggleQuestsAndFriends);
+            document.getElementById("newQuestsArrowRight").addEventListener("click", toggleQuestsAndFriends);
+        </script>
+        <script>
+            document.querySelectorAll(".menu-item").forEach((item) => {
+                item.addEventListener("click", () => {
+                    const menu = item.getAttribute("data-menu");
+                    document.querySelectorAll(".leaderboard-container").forEach((container) => {
+                        container.classList.add("hidden");
+                        container.classList.remove("visible");
+                    });
+                    const active = document.getElementById(menu + "Container");
+                    if (active) {
+                        active.classList.remove("hidden");
+                        active.classList.add("visible");
+                    }
+                });
+            });
+        </script>
+        <!-- Мини-игра "Лови звезды" -->
+        <style>
+            #catchGame {
+                position: fixed;
+                inset: 0;
+                background: black;
+                z-index: 10000;
+                display: none;
+                overflow: hidden;
+            }
+            #rocket {
+                position: absolute;
+                bottom: 20px;
+                width: 80px;
+                height: auto;
+                transition: left 0.1s linear;
+            }
+            .star {
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                top: 0;
+            }
+            #score {
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 1.5rem;
+                color: white;
+            }
+            #quitCatchGame {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: transparent;
+                color: white;
+                font-size: 1.5rem;
+                border: none;
+                cursor: pointer;
+            }
+            .minigame-button {
+                background: linear-gradient(135deg, #4facfe, #00f2fe); /* градиент */
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                font-weight: bold;
+                padding: 12px 24px;
+                border-radius: 12px;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transition: transform 0.1s ease, box-shadow 0.2s ease;
+            }
+        </style>
+        <div id="catchGame">
+            <canvas id="minigameStarfield"></canvas>
+            <div id="score">Score: 0</div>
+            <button id="quitCatchGame">✕ Quit</button>
+            <img alt="Rocket" id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png" />
+        </div>
+        <script>
+            const catchGame = document.getElementById("catchGame");
+            const rocket = document.getElementById("rocket");
+            const scoreDisplay = document.getElementById("score");
+            const quitBtn = document.getElementById("quitCatchGame");
+
+            let globalSpeed = 4;
+            let spawnRate = 1000;
+            let spawnRateDecrement = 50;
+            let minSpawnRate = 300;
+
+            let score = 0;
+            let gameRunning = false;
+            let starInterval;
+
+            function startCatchGame() {
+                globalSpeed = 4;
+                spawnRate = 1200;
+                score = 0;
+                scoreDisplay.textContent = "Score: 0";
+                rocket.style.left = "50%";
+                catchGame.style.display = "block";
+                gameRunning = true;
+                resizeStarCanvas();
+                animateStarBackground();
+                spawnStars();
+            }
+
+            function endCatchGame() {
+                gameRunning = false;
+                catchGame.style.display = "none";
+                alert("Game Over! Your score: " + score);
+                document.querySelectorAll(".star").forEach((s) => s.remove());
+                clearInterval(starInterval);
+            }
+
+            quitBtn.onclick = endCatchGame;
+
+            catchGame.addEventListener("touchmove", (e) => {
+                const touch = e.touches[0];
+                let x = touch.clientX - 40;
+                x = Math.max(0, Math.min(window.innerWidth - 80, x));
+                rocket.style.left = x + "px";
+            });
+
+            function spawnStars() {
+                function spawnLoop() {
+                    if (!gameRunning) return;
+
+                    const star = document.createElement("img");
+                    star.src = "https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png";
+                    star.classList.add("star");
+                    star.style.left = Math.random() * (window.innerWidth - 40) + "px";
+                    star.style.top = "0px";
+                    catchGame.appendChild(star);
+
+                    let speed = Math.min((globalSpeed += 0.05), 25); // увеличиваем скорость
+                    let startTime = null;
+
+                    function animateStar(timestamp) {
+                        if (!startTime) startTime = timestamp;
+                        const elapsed = timestamp - startTime;
+                        const top = (elapsed * speed) / 16;
+                        star.style.top = top + "px";
+
+                        const rocketRect = rocket.getBoundingClientRect();
+                        const starRect = star.getBoundingClientRect();
+
+                        if (rocketRect.left < starRect.right && rocketRect.right > starRect.left && rocketRect.top < starRect.bottom && rocketRect.bottom > starRect.top) {
+                            score++;
+                            scoreDisplay.textContent = "Score: " + score;
+                            star.remove();
+                            return;
+                        }
+
+                        if (top > window.innerHeight - 40) {
+                            star.remove();
+                            endCatchGame();
+                            return;
+                        }
+
+                        if (gameRunning) requestAnimationFrame(animateStar);
+                    }
+                    requestAnimationFrame(animateStar);
+
+                    // Уменьшаем интервал и запускаем следующий спавн
+                    if (spawnRate > minSpawnRate) {
+                        spawnRate -= spawnRateDecrement;
+                    }
+
+                    setTimeout(spawnLoop, spawnRate);
+                }
+
+                spawnLoop();
+            }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const playBtn = document.getElementById("earnCoinsPlayBtn");
+                if (playBtn) {
+                    playBtn.removeAttribute("disabled");
+                    playBtn.addEventListener("click", startCatchGame);
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const playBtn = document.getElementById("earnCoinsPlayBtn");
+                if (playBtn) {
+                    playBtn.addEventListener("click", startCatchGame);
+                }
+            });
+        </script>
+        <script>
+            const starCanvas = document.getElementById("minigameStarfield");
+            const starCtx = starCanvas.getContext("2d");
+            let starArray = [];
+
+            function resizeStarCanvas() {
+                starCanvas.width = catchGame.offsetWidth;
+                starCanvas.height = catchGame.offsetHeight;
+                starArray = Array.from({ length: 100 }, () => ({
+                    x: Math.random() * starCanvas.width,
+                    y: Math.random() * starCanvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.4 + 0.2,
+                }));
+            }
+
+            function animateStarBackground() {
+                if (!gameRunning) return;
+                starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+                starCtx.fillStyle = "rgba(255, 255, 255, 0.3)";
+                starArray.forEach((star) => {
+                    starCtx.beginPath();
+                    starCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    starCtx.fill();
+                    star.y += star.speed;
+                    if (star.y > starCanvas.height) {
+                        star.y = 0;
+                        star.x = Math.random() * starCanvas.width;
+                    }
+                });
+                requestAnimationFrame(animateStarBackground);
+            }
+
+            window.addEventListener("resize", () => {
+                if (gameRunning) resizeStarCanvas();
+            });
+
+            const originalStartCatchGame = startCatchGame;
+            startCatchGame = function () {
+                resizeStarCanvas();
+                animateStarBackground();
+                originalStartCatchGame();
+            };
+        </script>
+        <!-- Мини-игра "Торт" -->
+        <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
+            <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+            <div id="game" style="position: relative; width: 100vw; height: 100vh;">
+                <div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
+            </div>
+        </div>
+        <style>
+            .block {
+                position: absolute;
+                height: 30px;
+                border-radius: 6px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                transition: opacity 0.3s ease-in;
+            }
+            .cake1 {
+                background: linear-gradient(to top, #f7c59f, #fcd5ce);
+                border: 2px solid #d58a7b;
+            }
+            .cake2 {
+                background: linear-gradient(to top, #ffc0cb, #ffe0eb);
+                border: 2px solid #cc6688;
+            }
+            .cake3 {
+                background: linear-gradient(to top, #ffffff, #f2f2f2);
+                border: 2px solid #ccc;
+            }
+            .cake4 {
+                background: linear-gradient(to top, #ffccdd, #ffe6f0);
+                border: 2px solid #e892a2;
+            }
+            .cake5 {
+                background: linear-gradient(to top, #ffffff, #f9f9f9);
+                border: 2px solid #cccccc;
+            }
+        </style>
+        <script>
+            let stack = [];
+            let currentBlock = null;
+            let direction = 1;
+            let score2 = 0;
+            let movingAnimation = null;
+
+            const game = document.getElementById("game");
+            let scoreDisplay2 = document.getElementById("score2");
+
+            function startCakeGame() {
+                stack = [];
+                score2 = 0;
+                game.innerHTML = '<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>';
+                scoreDisplay2 = document.getElementById("score2");
+                createBaseBlock();
+                createMovingBlock();
+            }
+
+            function createBaseBlock() {
+                const base = document.createElement("div");
+                base.className = "block cake2";
+                base.style.width = "150px";
+                base.style.left = "calc(50% - 75px)";
+                base.style.bottom = "0px";
+                game.appendChild(base);
+                stack.push({ left: window.innerWidth / 2 - 75, width: 150, bottom: 0 });
+            }
+
+            function createMovingBlock() {
+                const last = stack[stack.length - 1];
+                const newWidth = last.width;
+                const block = document.createElement("div");
+                const colorList = ["cake1", "cake2", "cake3", "cake4", "cake5"];
+                block.className = "block " + colorList[Math.floor(Math.random() * colorList.length)];
+                const dir = Math.random() < 0.5 ? 1 : -1;
+                block.style.left = dir === 1 ? "-100px" : window.innerWidth + "px";
+                block.style.width = newWidth + "px";
+                block.style.bottom = last.bottom + 30 + "px";
+                game.appendChild(block);
+
+                currentBlock = {
+                    el: block,
+                    width: newWidth,
+                    bottom: last.bottom + 30,
+                    x: dir === 1 ? -100 : window.innerWidth,
+                    speed: dir === 1 ? (score2 >= 10 ? Math.random() * 1.5 + 2.8 : Math.random() * 0.8 + 1.8) : -(score2 >= 10 ? Math.random() * 1.5 + 2.8 : Math.random() * 0.8 + 1.8),
+                };
+
+                cancelAnimationFrame(movingAnimation);
+                moveBlock();
+            }
+
+            function moveBlock() {
+                if (!currentBlock) return;
+                currentBlock.x += currentBlock.speed;
+                currentBlock.el.style.left = currentBlock.x + "px";
+
+                if ((currentBlock.speed > 0 && currentBlock.x > window.innerWidth) || (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)) {
+                    alert("Game Over! Final Score: " + score2);
+
+                    const cakeGameEl = document.getElementById("cakeGame");
+                    if (cakeGameEl) {
+                        cakeGameEl.style.display = "none";
+                    }
+
+                    currentBlock = null;
+                    cancelAnimationFrame(movingAnimation);
+                    return;
+                }
+
+                movingAnimation = requestAnimationFrame(moveBlock);
+            }
+
+            function placeBlock() {
+                if (!currentBlock) return;
+
+                const last = stack[stack.length - 1];
+                const overlapLeft = Math.max(currentBlock.x, last.left);
+                const overlapRight = Math.min(currentBlock.x + currentBlock.width, last.left + last.width);
+                const overlapWidth = overlapRight - overlapLeft;
+
+                if (overlapWidth <= 0) {
+                    alert("Game Over! Final Score: " + score2);
+
+                    const cakeGameEl = document.getElementById("cakeGame");
+                    if (cakeGameEl) {
+                        cakeGameEl.style.display = "none";
+                    }
+
+                    currentBlock = null;
+                    return;
+                }
+
+                currentBlock.el.style.left = overlapLeft + "px";
+                currentBlock.el.style.width = overlapWidth + "px";
+                stack.push({ left: overlapLeft, width: overlapWidth, bottom: currentBlock.bottom });
+                currentBlock = null;
+                direction *= -1;
+                score2++;
+                scoreDisplay2.textContent = "Score: " + score2;
+                createMovingBlock();
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const tortBtn = document.getElementById("tortGamePlayBtn");
+                const cakeGame = document.getElementById("cakeGame");
+                const quitBtn = document.getElementById("quitCakeGame");
+
+                if (tortBtn && cakeGame) {
+                    tortBtn.removeAttribute("disabled");
+                    tortBtn.addEventListener("click", function () {
+                        cakeGame.style.display = "block";
+                        startCakeGame();
+                    });
+                }
+
+                if (quitBtn) {
+                    quitBtn.addEventListener("click", function () {
+                        cakeGame.style.display = "none";
+                        cancelAnimationFrame(movingAnimation);
+                    });
+                }
+
+                cakeGame.addEventListener("click", placeBlock);
+            });
+
+            const tortGameBtn = document.getElementById("tortGamePlayBtn");
+            const tortGameContainer = document.getElementById("tortGameContainer");
+            const tortExitBtn = document.getElementById("tortExitBtn");
+            const tortExitPrompt = document.getElementById("tortExitPrompt");
+            const confirmExitBtn = document.getElementById("confirmExitBtn");
+
+            let tortGameInterval = null;
+
+            tortGameBtn?.addEventListener("click", () => {
+                const tortGameContainer = document.getElementById("tortGameContainer");
+                if (tortGameContainer) {
+                    tortGameContainer.style.display = "flex";
+                }
+
+                setTimeout(() => {
+                    const container = document.getElementById("tortGameContainer");
+                    if (container) {
+                        container.classList.remove("hidden-opacity");
+                    }
+                }, 10);
+
+                tortGameInterval = setInterval(() => {
+                    console.log("Игра TORT работает...");
+                }, 1000);
+            });
+
+            tortExitBtn?.addEventListener("click", () => {
+                clearInterval(tortGameInterval);
+                tortExitPrompt.style.display = "block";
+                setTimeout(() => tortExitPrompt.classList.remove("hidden-opacity"), 10);
+            });
+
+            confirmExitBtn?.addEventListener("click", () => {
+                tortExitPrompt.classList.add("hidden-opacity");
+                setTimeout(() => {
+                    tortExitPrompt.style.display = "none";
+                }, 500);
+
+                tortGameContainer.classList.add("hidden-opacity");
+                setTimeout(() => {
+                    tortGameContainer.style.display = "none";
+                }, 500);
+            });
+        </script>
+        <!-- Мини-игра "Гонки" -->
+        <div
+            id="raceGame"
+            style="
+                position: fixed;
+                inset: 0;
+                background: linear-gradient(to bottom right, #1a1a1a, #333333);
+                display: none;
+                z-index: 10000;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 20px;
+                color: white;
+                font-family: sans-serif;
+                overflow-y: auto;
+            "
+        >
+            <button id="quitRaceGame" style="position: absolute; top: 15px; right: 20px; background: transparent; color: white; font-size: 2rem; border: none; cursor: pointer;">✕</button>
+            <h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
+            <div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
+                <div class="track" id="track1" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
+                    <img class="vehicle" id="v1" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);" />
+                </div>
+                <div class="track" id="track2" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
+                    <img class="vehicle" id="v2" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);" />
+                </div>
+            </div>
+            <div class="buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+                <button
+                    id="choose1"
+                    style="
+                        padding: 14px 24px;
+                        font-size: 5vw;
+                        max-width: 300px;
+                        background: linear-gradient(to right, #00c6ff, #0072ff);
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                        transition: all 0.3s ease;
+                        flex: 1;
+                    "
+                >
+                    ...
+                </button>
+                <button
+                    id="choose2"
+                    style="
+                        padding: 14px 24px;
+                        font-size: 5vw;
+                        max-width: 300px;
+                        background: linear-gradient(to right, #ff8c00, #ff3c00);
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                        transition: all 0.3s ease;
+                        flex: 1;
+                    "
+                >
+                    ...
+                </button>
+            </div>
+            <div id="raceResult" style="margin-top: 30px; font-size: 5vw; font-weight: bold; text-align: center; text-shadow: 1px 1px 2px black;"></div>
+        </div>
+        <script>
+            const vehicles = [
+                "https://freepngimg.com/thumb/bmw/22658-4-bmw-m3-photos.png",
+                "https://img2.clipart-library.com/27/picture-of-airplane-clipart/picture-of-airplane-clipart-20.png",
+                "https://www.pngmart.com/files/23/Sailboat-PNG-Pic.png",
+                "https://clipart-library.com/2023/15153-illustration-of-an-army-tank-pv.png",
+                "https://i2.wp.com/webstockreview.net/images/motorcycle-clipart-svg-5.png",
+            ];
+
+            let v1 = null;
+            let v2 = null;
+            let result = null;
+            let chosen = null;
+            let animationFrame;
+            let pos1 = 0,
+                pos2 = 0;
+            let finishLine = 540; // значение по умолчанию
+
+            function getVehicleName(src) {
+                if (src.includes("bmw")) return "Car";
+                if (src.includes("airplane")) return "Airplane";
+                if (src.includes("Sailboat")) return "Ship";
+                if (src.includes("tank")) return "Tank";
+                if (src.includes("motorcycle")) return "Bike";
+                return "Transport";
+            }
+
+            function pickTwoRandomVehicles() {
+                const indexes = [...Array(vehicles.length).keys()];
+                const i1 = indexes.splice(Math.floor(Math.random() * indexes.length), 1)[0];
+                const i2 = indexes[Math.floor(Math.random() * indexes.length)];
+                return [vehicles[i1], vehicles[i2]];
+            }
+
+            function resetRace() {
+                const [src1, src2] = pickTwoRandomVehicles();
+                v1.src = src1;
+                v2.src = src2;
+                v1.style.transform = "translateX(0px)";
+                v2.style.transform = "translateX(0px)";
+                document.getElementById("choose1").textContent = getVehicleName(src1);
+                document.getElementById("choose2").textContent = getVehicleName(src2);
+                result.textContent = "";
+                pos1 = 0;
+                pos2 = 0;
+                const trackWidth = document.getElementById("track1").offsetWidth;
+                finishLine = trackWidth - 60;
+            }
+
+            function startRace() {
+                cancelAnimationFrame(animationFrame);
+                pos1 = 0;
+                pos2 = 0;
+
+                const outcome = Math.random();
+                const playerShouldWin = outcome < 0.4;
+
+                const baseSpeed = 0.7;
+                const variation = 0.3;
+                let speed1, speed2;
+
+                if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
+                    speed1 = baseSpeed + variation;
+                    speed2 = baseSpeed + Math.random();
+                } else {
+                    speed1 = baseSpeed + Math.random();
+                    speed2 = baseSpeed + variation;
+                }
+
+                function step() {
+                    pos1 += speed1;
+                    pos2 += speed2;
+                    v1.style.transform = `translateX(${pos1}px)`;
+                    v2.style.transform = `translateX(${pos2}px)`;
+
+                    if (pos1 >= finishLine || pos2 >= finishLine) {
+                        const winner = pos1 > pos2 ? "1" : "2";
+                        const winName = winner === "1" ? getVehicleName(v1.src) : getVehicleName(v2.src);
+                        result.textContent = winner === String(chosen) ? "Вы выиграли! Победил: " + winName : "Вы проиграли. Победил: " + winName;
+
+                        setTimeout(() => {
+                            resetRace();
+                            chosen = null;
+                        }, 2000);
+                    } else {
+                        animationFrame = requestAnimationFrame(step);
+                    }
+                }
+
+                animationFrame = requestAnimationFrame(step);
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const playBtn = document.getElementById("raceGamePlayBtn");
+                const raceGame = document.getElementById("raceGame");
+                const quitBtn = document.getElementById("quitRaceGame");
+
+                v1 = document.getElementById("v1");
+                v2 = document.getElementById("v2");
+                result = document.getElementById("raceResult");
+
+                document.getElementById("choose1").onclick = () => {
+                    chosen = 1;
+                    startRace();
+                };
+                document.getElementById("choose2").onclick = () => {
+                    chosen = 2;
+                    startRace();
+                };
+
+                if (playBtn && raceGame) {
+                    playBtn.addEventListener("click", () => {
+                        raceGame.style.display = "flex";
+                        resetRace();
+                    });
+                }
+
+                if (quitBtn) {
+                    quitBtn.addEventListener("click", () => {
+                        raceGame.style.display = "none";
+                        cancelAnimationFrame(animationFrame);
+                    });
+                }
+            });
+        </script>
+        <style>
+            @keyframes flipCoin {
+                0% {
+                    transform: rotateY(0);
+                }
+                50% {
+                    transform: rotateY(720deg);
+                }
+                100% {
+                    transform: rotateY(1440deg);
+                }
+            }
+        </style>
+        <div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
+            <button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+            <h1 style="color: #333;">Heads or Tails</h1>
+            <div class="controls" style="margin-bottom: 20px;">
+                <button onclick="choose('Heads')">Heads</button>
+                <button onclick="choose('Tails')">Tails</button>
+            </div>
+            <div
+                id="coin"
+                style="width: 120px; height: 120px; background-size: cover; background-position: center; border-radius: 50%; margin: 20px; position: relative; transform-style: preserve-3d; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);"
+            ></div>
+            <div id="result" style="font-size: 24px; font-weight: bold; margin-top: 20px;"></div>
+        </div>
+        <style>
+            @keyframes tossCoin {
+                0% {
+                    transform: translateY(0) rotateY(0deg);
+                    opacity: 1;
+                }
+                25% {
+                    transform: translateY(-150px) rotateY(360deg);
+                    opacity: 0.8;
+                }
+                50% {
+                    transform: translateY(-200px) rotateY(720deg);
+                    opacity: 0.6;
+                }
+                75% {
+                    transform: translateY(-150px) rotateY(1080deg);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: translateY(0) rotateY(1440deg);
+                    opacity: 1;
+                }
+            }
+            .flip {
+                animation: tossCoin 1.5s ease-in-out;
+            }
+            button {
+                padding: 10px 20px;
+                margin: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: white;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                let userChoice = null;
+                const coin = document.getElementById("coin");
+                const result = document.getElementById("result");
+                const coinGame = document.getElementById("coinFlipGame");
+                const playBtn = document.getElementById("coinFlipPlayBtn");
+                const quitBtn = document.getElementById("quitCoinFlipGame");
+                const headsURL = "https://image.pngaaa.com/973/432973-middle.png";
+                const tailsURL = "https://avatars.mds.yandex.net/i?id=1ed4de7e6b69fa91fffa7735e321531d25ca14cf-7761242-images-thumbs&n=13";
+                coin.style.backgroundImage = `url('${tailsURL}')`;
+                if (playBtn) {
+                    playBtn.addEventListener("click", () => {
+                        coinGame.style.display = "flex";
+                        result.textContent = "";
+                        coin.style.backgroundImage = `url('${tailsURL}')`;
+                    });
+                }
+                if (quitBtn) {
+                    quitBtn.addEventListener("click", () => {
+                        coinGame.style.display = "none";
+                    });
+                }
+                window.choose = function (choice) {
+                    userChoice = choice;
+                    result.textContent = `You chose: ${choice}`;
+                    flipCoin();
+                };
+                function flipCoin() {
+                    const outcome = Math.random() < 0.5 ? "Heads" : "Tails";
+                    let flipCount = 0;
+                    const interval = setInterval(() => {
+                        coin.style.backgroundImage = flipCount % 2 === 0 ? `url('${headsURL}')` : `url('${tailsURL}')`;
+                        flipCount++;
+                    }, 100);
+                    coin.classList.add("flip");
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        const finalImage = outcome === "Heads" ? headsURL : tailsURL;
+                        coin.style.backgroundImage = `url('${finalImage}')`;
+                        coin.classList.remove("flip");
+
+                        if (userChoice === outcome) {
+                            result.textContent = `Congratulations! It's ${outcome}. You win!`;
+                        } else {
+                            result.textContent = `Sorry! It's ${outcome}. You lose.`;
+                        }
+                    }, 1500);
+                }
+            });
+        </script>
+        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    </body>
 </html>
