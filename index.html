@@ -6,7 +6,6 @@
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
 <meta content="Notcoin-inspired clicker game" name="description"/>
 <title>Clicker Game</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
             * {
                 margin: 0;
@@ -32,7 +31,13 @@
                 --tg-counter-bg: rgba(44, 47, 71, 0.85);
                 --tg-top-menu-bg: rgba(44, 47, 71, 0.85);
             }
-
+            [data-telegram="true"] {
+                --bg-color: var(--tg-bg-color);
+                --text-color: var(--tg-text-color);
+                --footer-bg: var(--tg-footer-bg);
+                --counter-bg: var(--tg-counter-bg);
+                --top-menu-bg: var(--tg-top-menu-bg);
+            }
             body {
                 min-height: 100vh;
                 display: flex;
@@ -3068,11 +3073,10 @@ updateAppearance() {
 <div style="background: #1e1e1e; padding: 2rem; border-radius: 16px; text-align: center; color: white; width: 90%; max-width: 400px;">
 <h2 style="margin-bottom: 1rem;">Support the Game</h2>
 <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #14b8a6; color: white; font-weight: bold;">Donate with TON</button>
-    <button id="buyDiamonds" style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
+<button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #7289da; color: white; font-weight: bold;">Donate with Telegram Stars</button>
 <button style="margin: 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; background: #f97316; color: white; font-weight: bold;">Donate with Card (₽)</button>
 <div style="margin-top: 1rem;">
 <button onclick="document.getElementById('donationModal').style.display='none';" style="background: none; border: none; color: gray; font-size: 0.9rem;">Close</button>
-
 </div>
 </div>
 </div>
@@ -3080,41 +3084,6 @@ updateAppearance() {
             document.getElementById("starDonation").addEventListener("click", function () {
                 document.getElementById("donationModal").style.display = "flex";
             });
-</script>
-<script>
-        document.addEventListener("DOMContentLoaded", () => {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-
-            document.getElementById("buyDiamonds").addEventListener("click", async () => {
-                const chatId = window.Telegram.WebApp.initDataUnsafe.user?.id || 0;
-                const response = await fetch("http://localhost:8000/create-invoice", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        product: "100 Diamonds",
-                        amount: 100,
-                        chat_id: chatId
-                    })
-                });
-                const { invoiceLink } = await response.json();
-                window.Telegram.WebApp.openInvoice(invoiceLink, (status) => {
-                    if (status === "paid") {
-                        updateDiamonds(100);
-                        window.Telegram.WebApp.showAlert("Thank you! You've received 100 Diamonds!");
-                    } else if (status === "cancelled") {
-                        window.Telegram.WebApp.showAlert("Payment cancelled.");
-                    }
-                });
-            });
-
-            function updateDiamonds(amount) {
-                let currentDiamonds = parseInt(localStorage.getItem("diamonds") || "8000");
-                currentDiamonds += amount;
-                localStorage.setItem("diamonds", currentDiamonds);
-                document.getElementById("diamondsDisplay").textContent = currentDiamonds;
-            }
-        });
 </script>
 <!-- Reward Animation Container -->
 <div id="rewardAnimationContainer" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 200px; height: 200px; display: none; pointer-events: none;">
