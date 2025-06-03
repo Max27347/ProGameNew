@@ -3834,112 +3834,27 @@ confirmExitBtn?.addEventListener('click', () => {
 });
 </script>
 <!-- Мини-игра "Гонки" -->
-<div id="raceGame" style="
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(to bottom right, #1a1a1a, #333333);
-  display: none;
-  z-index: 10000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-  color: white;
-  font-family: sans-serif;
-  overflow-y: auto;
-">
-<button id="quitRaceGame" style="
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: transparent;
-    color: white;
-    font-size: 2rem;
-    border: none;
-    cursor: pointer;
-  ">✕</button>
-<h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
-<div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
-<div class="track" id="track1" style="
-      width: 90vw;
-      max-width: 600px;
-      height: 60px;
-      background: #444;
-      margin: 15px 0;
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-    ">
-<img class="vehicle" id="v1" src="" style="
-        position: absolute;
-        top: 5px;
-        left: 0;
-        height: 45px;
-        transform: translateX(0px);
-      "/>
+<div id="raceGame" style="position: fixed; inset: 0; background: linear-gradient(to bottom right, #1a1a1a, #333); display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; color: white; font-family: sans-serif; overflow-y: auto;">
+  <button id="quitRaceGame" style="position: absolute; top: 15px; right: 20px; background: transparent; color: white; font-size: 2rem; border: none; cursor: pointer;">✕</button>
+  <h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
+
+  <div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
+    <div class="track" id="track1" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
+      <img class="vehicle" id="v1" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);" />
+    </div>
+    <div class="track" id="track2" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
+      <img class="vehicle" id="v2" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);" />
+    </div>
+  </div>
+
+  <div id="choiceButtons" class="buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+    <button id="choose1" style="padding: 14px 24px; font-size: 5vw; max-width: 300px; background: linear-gradient(to right, #00c6ff, #0072ff); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex: 1;">...</button>
+    <button id="choose2" style="padding: 14px 24px; font-size: 5vw; max-width: 300px; background: linear-gradient(to right, #ff8c00, #ff3c00); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex: 1;">...</button>
+  </div>
+
+  <div id="raceResult" style="margin-top: 30px; font-size: 5vw; font-weight: bold; text-align: center; text-shadow: 1px 1px 2px black;"></div>
 </div>
-<div class="track" id="track2" style="
-      width: 90vw;
-      max-width: 600px;
-      height: 60px;
-      background: #444;
-      margin: 15px 0;
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-    ">
-<img class="vehicle" id="v2" src="" style="
-        position: absolute;
-        top: 5px;
-        left: 0;
-        height: 45px;
-        transform: translateX(0px);
-      "/>
-</div>
-</div>
-<div class="buttons" style="
-    margin-top: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-  ">
-<button id="choose1" style="
-      padding: 14px 24px;
-      font-size: 5vw;
-      max-width: 300px;
-      background: linear-gradient(to right, #00c6ff, #0072ff);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      flex: 1;
-    ">...</button>
-<button id="choose2" style="
-      padding: 14px 24px;
-      font-size: 5vw;
-      max-width: 300px;
-      background: linear-gradient(to right, #ff8c00, #ff3c00);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      flex: 1;
-    ">...</button>
-</div>
-<div id="raceResult" style="
-    margin-top: 30px;
-    font-size: 5vw;
-    font-weight: bold;
-    text-align: center;
-    text-shadow: 1px 1px 2px black;
-  "></div>
-</div>
+
 <script>
   const vehicles = [
     "https://freepngimg.com/thumb/bmw/22658-4-bmw-m3-photos.png",
@@ -3949,13 +3864,9 @@ confirmExitBtn?.addEventListener('click', () => {
     "https://i2.wp.com/webstockreview.net/images/motorcycle-clipart-svg-5.png"
   ];
 
-  let v1 = null;
-  let v2 = null;
-  let result = null;
-  let chosen = null;
-  let animationFrame;
+  let v1, v2, result, chosen = null, animationFrame;
   let pos1 = 0, pos2 = 0;
-  let finishLine = 540; // значение по умолчанию
+  let finishLine = 540;
 
   function getVehicleName(src) {
     if (src.includes("bmw")) return "Car";
@@ -3984,16 +3895,19 @@ confirmExitBtn?.addEventListener('click', () => {
     result.textContent = "";
     pos1 = 0;
     pos2 = 0;
+    document.getElementById("choiceButtons").style.display = "flex";
 
-    // Пересчёт границы финиша
     const trackWidth = document.getElementById("track1").offsetWidth;
-    finishLine = trackWidth - 60; // 60 — примерная ширина транспорта
+    finishLine = trackWidth - 60;
   }
 
   function startRace() {
     cancelAnimationFrame(animationFrame);
     pos1 = 0;
     pos2 = 0;
+
+    // Скрываем кнопки выбора
+    document.getElementById("choiceButtons").style.display = "none";
 
     const outcome = Math.random();
     const playerShouldWin = outcome < 0.4;
