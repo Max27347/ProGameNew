@@ -3906,11 +3906,10 @@ confirmExitBtn?.addEventListener('click', () => {
     pos1 = 0;
     pos2 = 0;
 
-    // Скрываем кнопки выбора
     document.getElementById("choiceButtons").style.display = "none";
 
     const outcome = Math.random();
-    const playerShouldWin = outcome < 0.1;
+    const playerShouldWin = outcome < 0.3; // Четкая вероятность 30%
 
     const baseSpeed = 0.6;
     const variation = 0.4;
