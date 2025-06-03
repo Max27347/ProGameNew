@@ -4076,7 +4076,7 @@ confirmExitBtn?.addEventListener('click', () => {
   <h1>💣 Минное поле</h1>
   <div id="score3">Открыто клеток: 0</div>
   <div id="status3"></div>
-  <div id="shield-icon3" style="visibility: hidden; height: 30px; font-size: 22px;">🛡️ Защита активна</div>
+  <div id="shield-icon3" style="display:none; font-size:22px; height: 30px;">🛡️ Защита активна</div>
   <div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
   <button onclick="initGame3()">🔄 Новая игра</button>
 </div>
@@ -4094,24 +4094,19 @@ confirmExitBtn?.addEventListener('click', () => {
     border-radius: 4px;
     color: #fff;
   }
-
   .cell.open {
     background-color: #28a745;
     cursor: default;
   }
-
   .cell.bomb {
     background-color: red;
   }
-
   .cell.reveal-area {
-    background-color: #6a0dad !important; /* фиолетовая */
+    background-color: #6a0dad !important;
   }
-
   .cell.shield {
-    background-color: #ffd700 !important; /* жёлтая */
+    background-color: #ffd700 !important;
   }
-
   #score3, #status3 {
     height: 30px;
     display: flex;
@@ -4151,7 +4146,7 @@ confirmExitBtn?.addEventListener('click', () => {
     shieldActive3 = false;
     document.getElementById("status3").textContent = "";
     document.getElementById("score3").textContent = "Открыто клеток: 0";
-    document.getElementById("shield-icon3").style.visibility = "hidden";
+    document.getElementById("shield-icon3").style.display = "none";
 
     for (let y = 0; y < size3; y++) {
       board3[y] = [];
@@ -4188,7 +4183,6 @@ confirmExitBtn?.addEventListener('click', () => {
       const cell = board3[y][x];
       if (!cell.mine && !cell.bonus) {
         cell.bonus = type;
-        cell.el.classList.add(type); // Чтобы при открытии цвет сохранился
         placed++;
       }
     }
@@ -4206,7 +4200,7 @@ confirmExitBtn?.addEventListener('click', () => {
     if (cell.mine) {
       if (shieldActive3) {
         shieldActive3 = false;
-        document.getElementById("shield-icon3").style.visibility = "hidden";
+        document.getElementById("shield-icon3").style.display = "none";
         return;
       }
       cell.el.classList.add("bomb");
@@ -4231,11 +4225,9 @@ confirmExitBtn?.addEventListener('click', () => {
     if (cell.revealed) return;
     cell.revealed = true;
 
-    // сначала применяем бонусные цвета
     if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
     if (cell.bonus === 'shield') cell.el.classList.add('shield');
 
-    // потом открытие
     cell.el.classList.add("open");
   }
 
@@ -4248,7 +4240,6 @@ confirmExitBtn?.addEventListener('click', () => {
           if (!target.revealed) hiddenCells.push(target);
         }
       }
-
       const toReveal = [];
       for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
         const idx = Math.floor(Math.random() * hiddenCells.length);
@@ -4258,7 +4249,6 @@ confirmExitBtn?.addEventListener('click', () => {
         else selected.el.classList.add("open");
         toReveal.push(selected);
       }
-
       setTimeout(() => {
         toReveal.forEach(c => {
           if (!c.revealed) {
@@ -4268,16 +4258,13 @@ confirmExitBtn?.addEventListener('click', () => {
           }
         });
       }, 2000);
-
       cell.bonus = null;
-      cell.el.classList.add("used");
     }
 
     if (cell.bonus === 'shield') {
       shieldActive3 = true;
-      document.getElementById("shield-icon3").style.visibility = "visible";
+      document.getElementById("shield-icon3").style.display = "inline-block";
       cell.bonus = null;
-      cell.el.classList.remove("shield");
     }
   }
 
@@ -4308,6 +4295,7 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   }
 </script>
+
 
 
 
