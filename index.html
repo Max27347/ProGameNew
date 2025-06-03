@@ -3910,10 +3910,10 @@ confirmExitBtn?.addEventListener('click', () => {
     document.getElementById("choiceButtons").style.display = "none";
 
     const outcome = Math.random();
-    const playerShouldWin = outcome < 0.1;
+    const playerShouldWin = outcome < 0.2;
 
-    const baseSpeed = 0.7;
-    const variation = 0.3;
+    const baseSpeed = 0.6;
+    const variation = 0.4;
     let speed1, speed2;
 
     if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
