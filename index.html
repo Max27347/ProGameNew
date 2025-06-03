@@ -3905,11 +3905,10 @@ confirmExitBtn?.addEventListener('click', () => {
     cancelAnimationFrame(animationFrame);
     pos1 = 0;
     pos2 = 0;
-
     document.getElementById("choiceButtons").style.display = "none";
 
     const outcome = Math.random();
-    const playerShouldWin = outcome < 0.3; // Четкая вероятность 30%
+    const playerShouldWin = outcome < 0.3; // Точная вероятность победы 30%
 
     const baseSpeed = 0.6;
     const variation = 0.4;
@@ -3917,9 +3916,9 @@ confirmExitBtn?.addEventListener('click', () => {
 
     if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
       speed1 = baseSpeed + variation;
-      speed2 = baseSpeed + Math.random();
+      speed2 = baseSpeed + 0.2;
     } else {
-      speed1 = baseSpeed + Math.random();
+      speed1 = baseSpeed + 0.2;
       speed2 = baseSpeed + variation;
     }
 
