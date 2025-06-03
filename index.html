@@ -4181,18 +4181,20 @@ confirmExitBtn?.addEventListener('click', () => {
     placeBonus3('shield', 2);
   }
 
-  function placeBonus3(type, count) {
-    let placed = 0;
-    while (placed < count) {
-      const x = Math.floor(Math.random() * size3);
-      const y = Math.floor(Math.random() * size3);
-      const cell = board3[y][x];
-      if (!cell.mine && !cell.bonus) {
-        cell.bonus = type;
-        placed++;
-      }
+function placeBonus3(type, count) {
+  let placed = 0;
+  while (placed < count) {
+    const x = Math.floor(Math.random() * size3);
+    const y = Math.floor(Math.random() * size3);
+    const cell = board3[y][x];
+    if (!cell.mine && !cell.bonus) {
+      cell.bonus = type;
+      cell.el.classList.add(type); // ⬅️ добавляем CSS-класс, чтобы был цвет
+      placed++;
     }
   }
+}
+
 
   function onClick3(e) {
     if (gameOver3) return;
