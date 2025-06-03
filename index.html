@@ -4077,105 +4077,216 @@ confirmExitBtn?.addEventListener('click', () => {
   100% { transform: rotateY(1440deg); }
 }
 </style>
-<!-- Пользовательская версия игры "Монетка" -->
+<!-- Игра "Минное поле" -->
 <div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
-<button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-<h1 style="color: #333;">Heads or Tails</h1>
-<div class="controls" style="margin-bottom: 20px;">
-<button onclick="choose('Heads')">Heads</button>
-<button onclick="choose('Tails')">Tails</button>
+  <button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+
+  <h1>💣 Минное поле с бонусами</h1>
+  <div id="score3">Открыто клеток: 0</div>
+  <div id="status3"></div>
+  <div id="shield-icon3" style="display:none;font-size:22px;">🛡️ Защита активна</div>
+  <div id="game3" style="
+    display: grid;
+    grid-template-columns: repeat(8, 40px);
+    grid-template-rows: repeat(8, 40px);
+    gap: 2px;
+    justify-content: center;
+    margin: 20px auto;
+  "></div>
+  <button onclick="initGame3()">🔄 Новая игра</button>
 </div>
-<div id="coin" style="width: 120px; height: 120px; background-size: cover; background-position: center; border-radius: 50%; margin: 20px; position: relative; transform-style: preserve-3d; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>
-<div id="result" style="font-size: 24px; font-weight: bold; margin-top: 20px;"></div>
-</div>
+
 <style>
-@keyframes tossCoin {
-  0%   { transform: translateY(0) rotateY(0deg); opacity: 1; }
-  25%  { transform: translateY(-150px) rotateY(360deg); opacity: 0.8; }
-  50%  { transform: translateY(-200px) rotateY(720deg); opacity: 0.6; }
-  75%  { transform: translateY(-150px) rotateY(1080deg); opacity: 0.8; }
-  100% { transform: translateY(0) rotateY(1440deg); opacity: 1; }
-}
-.flip {
-  animation: tossCoin 1.5s ease-in-out;
-}
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-}
-button:hover {
-  background-color: #0056b3;
-}
+  .cell {
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .cell.open {
+    background-color: #28a745;
+    cursor: default;
+  }
+  .cell.bomb {
+    background-color: red;
+  }
+  .cell.reveal-area {
+    background-color: #6a0dad;
+  }
+  .cell.shield {
+    background-color: #ffd700;
+  }
 </style>
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  let userChoice = null;
-  const coin = document.getElementById('coin');
-  const result = document.getElementById('result');
-  const coinGame = document.getElementById('coinFlipGame');
-  const playBtn = document.getElementById('coinFlipPlayBtn');
-  const quitBtn = document.getElementById('quitCoinFlipGame');
-
-  const headsURL = "https://image.pngaaa.com/973/432973-middle.png";
-  const tailsURL = "https://avatars.mds.yandex.net/i?id=1ed4de7e6b69fa91fffa7735e321531d25ca14cf-7761242-images-thumbs&n=13";
-
-  coin.style.backgroundImage = `url('${tailsURL}')`;
-
-  if (playBtn) {
-    playBtn.addEventListener("click", () => {
-      coinGame.style.display = "flex";
-      result.textContent = "";
-      coin.style.backgroundImage = `url('${tailsURL}')`;
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("coinFlipPlayBtn")?.addEventListener("click", () => {
+      document.getElementById("coinFlipGame").style.display = "flex";
+      initGame3();
     });
-  }
 
-  if (quitBtn) {
-    quitBtn.addEventListener("click", () => {
-      coinGame.style.display = "none";
+    document.getElementById("quitCoinFlipGame").addEventListener("click", () => {
+      document.getElementById("coinFlipGame").style.display = "none";
     });
-  }
+  });
 
-  window.choose = function(choice) {
-    userChoice = choice;
-    result.textContent = `You chose: ${choice}`;
-    flipCoin();
-  }
+  const size3 = 8;
+  const mineCount3 = 10;
+  let board3 = [];
+  let revealed3 = 0;
+  let gameOver3 = false;
+  let shieldActive3 = false;
 
-  function flipCoin() {
-    const outcome = Math.random() < 0.5 ? 'Heads' : 'Tails';
-    let flipCount = 0;
+  function initGame3() {
+    const game3 = document.getElementById("game3");
+    game3.innerHTML = "";
+    board3 = [];
+    revealed3 = 0;
+    gameOver3 = false;
+    shieldActive3 = false;
+    document.getElementById("status3").textContent = "";
+    document.getElementById("score3").textContent = "Открыто клеток: 0";
+    document.getElementById("shield-icon3").style.display = "none";
 
-    const interval = setInterval(() => {
-      // Чередуем картинки
-      coin.style.backgroundImage = (flipCount % 2 === 0)
-        ? `url('${headsURL}')`
-        : `url('${tailsURL}')`;
-      flipCount++;
-    }, 100); // быстрое переключение для имитации вращения
-
-    coin.classList.add('flip');
-
-    setTimeout(() => {
-      clearInterval(interval);
-      const finalImage = (outcome === 'Heads') ? headsURL : tailsURL;
-      coin.style.backgroundImage = `url('${finalImage}')`;
-      coin.classList.remove('flip');
-
-      if (userChoice === outcome) {
-        result.textContent = `Congratulations! It's ${outcome}. You win!`;
-      } else {
-        result.textContent = `Sorry! It's ${outcome}. You lose.`;
+    for (let y = 0; y < size3; y++) {
+      board3[y] = [];
+      for (let x = 0; x < size3; x++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.dataset.x = x;
+        cell.dataset.y = y;
+        cell.addEventListener("click", onClick3);
+        board3[y][x] = { mine: false, revealed: false, el: cell, bonus: null };
+        game3.appendChild(cell);
       }
-    }, 1500);
+    }
+
+    let minesPlaced = 0;
+    while (minesPlaced < mineCount3) {
+      const x = Math.floor(Math.random() * size3);
+      const y = Math.floor(Math.random() * size3);
+      if (!board3[y][x].mine && !board3[y][x].bonus) {
+        board3[y][x].mine = true;
+        minesPlaced++;
+      }
+    }
+
+    placeBonus3('reveal-area', 3);
+    placeBonus3('shield', 2);
   }
-});
+
+  function placeBonus3(type, count) {
+    let placed = 0;
+    while (placed < count) {
+      const x = Math.floor(Math.random() * size3);
+      const y = Math.floor(Math.random() * size3);
+      const cell = board3[y][x];
+      if (!cell.mine && !cell.bonus) {
+        cell.bonus = type;
+        cell.el.classList.add(type); cell.el.classList.remove(type);
+        placed++;
+      }
+    }
+  }
+
+  function onClick3(e) {
+    if (gameOver3) return;
+
+    const x = parseInt(e.target.dataset.x);
+    const y = parseInt(e.target.dataset.y);
+    const cell = board3[y][x];
+
+    if (cell.revealed) return;
+
+    if (cell.mine) {
+      if (shieldActive3) {
+        shieldActive3 = false;
+        document.getElementById("shield-icon3").style.display = "none";
+        return;
+      }
+      cell.el.classList.add("bomb");
+      cell.el.textContent = "💣";
+      document.getElementById("status3").textContent = "💥 Вы проиграли!";
+      gameOver3 = true;
+      revealAllMines3();
+    } else {
+      applyBonus3(cell, x, y);
+      reveal3(cell);
+      revealed3++;
+      document.getElementById("score3").textContent = `Открыто клеток: ${revealed3}`;
+      if (revealed3 === size3 * size3 - mineCount3) {
+        document.getElementById("status3").textContent = "🎉 Победа!";
+        gameOver3 = true;
+      }
+    }
+  }
+
+  function reveal3(cell) {
+    if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
+    if (cell.bonus === 'shield') cell.el.classList.add('shield');
+    if (cell.revealed) return;
+    cell.revealed = true;
+    cell.el.classList.add("open");
+  }
+
+  function applyBonus3(cell, x, y) {
+    if (cell.bonus === 'reveal-area') {
+      const hiddenCells = [];
+      for (let yy = 0; yy < size3; yy++) {
+        for (let xx = 0; xx < size3; xx++) {
+          const target = board3[yy][xx];
+          if (!target.revealed) hiddenCells.push(target);
+        }
+      }
+      const toReveal = [];
+      for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
+        const idx = Math.floor(Math.random() * hiddenCells.length);
+        const selected = hiddenCells.splice(idx, 1)[0];
+        selected.el.style.outline = "2px solid #6a0dad";
+        if (selected.mine) selected.el.textContent = "💣";
+        else selected.el.classList.add("open");
+        toReveal.push(selected);
+      }
+      setTimeout(() => {
+        toReveal.forEach(c => {
+          if (!c.revealed) {
+            c.el.textContent = "";
+            if (!c.mine) c.el.classList.remove("open");
+            c.el.style.outline = "none";
+          }
+        });
+      }, 2000);
+      cell.bonus = null;
+      cell.el.classList.add("used");
+    }
+
+    if (cell.bonus === 'shield') {
+      shieldActive3 = true;
+      document.getElementById("shield-icon3").style.display = "inline-block";
+      cell.bonus = null;
+      cell.el.classList.remove("shield");
+    }
+  }
+
+  function revealAllMines3() {
+    for (let y = 0; y < size3; y++) {
+      for (let x = 0; x < size3; x++) {
+        const cell = board3[y][x];
+        if (cell.mine) {
+          cell.el.textContent = "💣";
+          cell.el.classList.add("bomb");
+        }
+      }
+    }
+  }
 </script>
+
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </body>
 </html>
