@@ -4068,31 +4068,16 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   });
 </script>
-<!-- Мини-игра "Монетка" -->
-<!-- Мини-игра Монетка -->
-<style>
-@keyframes flipCoin {
-  0% { transform: rotateY(0); }
-  50% { transform: rotateY(720deg); }
-  100% { transform: rotateY(1440deg); }
-}
-</style>
+
 <!-- Игра "Минное поле" -->
 <div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
   <button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
 
-  <h1>💣 Минное поле с бонусами</h1>
+  <h1>💣 Минное поле</h1>
   <div id="score3">Открыто клеток: 0</div>
   <div id="status3"></div>
   <div id="shield-icon3" style="display:none;font-size:22px;">🛡️ Защита активна</div>
-  <div id="game3" style="
-    display: grid;
-    grid-template-columns: repeat(8, 40px);
-    grid-template-rows: repeat(8, 40px);
-    gap: 2px;
-    justify-content: center;
-    margin: 20px auto;
-  "></div>
+  <div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
   <button onclick="initGame3()">🔄 Новая игра</button>
 </div>
 
@@ -4117,10 +4102,10 @@ confirmExitBtn?.addEventListener('click', () => {
     background-color: red;
   }
   .cell.reveal-area {
-    background-color: #6a0dad;
+    background-color: #6a0dad; /* фиолетовая */
   }
   .cell.shield {
-    background-color: #ffd700;
+    background-color: #ffd700; /* жёлтая */
   }
 </style>
 
@@ -4189,7 +4174,8 @@ confirmExitBtn?.addEventListener('click', () => {
       const cell = board3[y][x];
       if (!cell.mine && !cell.bonus) {
         cell.bonus = type;
-        cell.el.classList.add(type); cell.el.classList.remove(type);
+        cell.el.classList.add(type);
+        cell.el.classList.remove(type);
         placed++;
       }
     }
@@ -4223,6 +4209,7 @@ confirmExitBtn?.addEventListener('click', () => {
       if (revealed3 === size3 * size3 - mineCount3) {
         document.getElementById("status3").textContent = "🎉 Победа!";
         gameOver3 = true;
+        showAllBonuses3();
       }
     }
   }
@@ -4274,7 +4261,18 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   }
 
+  function showAllBonuses3() {
+    for (let y = 0; y < size3; y++) {
+      for (let x = 0; x < size3; x++) {
+        const cell = board3[y][x];
+        if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
+        if (cell.bonus === 'shield') cell.el.classList.add('shield');
+      }
+    }
+  }
+
   function revealAllMines3() {
+    showAllBonuses3();
     for (let y = 0; y < size3; y++) {
       for (let x = 0; x < size3; x++) {
         const cell = board3[y][x];
@@ -4286,6 +4284,7 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   }
 </script>
+
 
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </body>
