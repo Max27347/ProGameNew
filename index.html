@@ -4242,42 +4242,45 @@ function reveal3(cell) {
 
 
 
-  function applyBonus3(cell, x, y) {
-    if (cell.bonus === 'reveal-area') {
-      const hiddenCells = [];
-      for (let yy = 0; yy < size3; yy++) {
-        for (let xx = 0; xx < size3; xx++) {
-          const target = board3[yy][xx];
-          if (!target.revealed) hiddenCells.push(target);
+function applyBonus3(cell, x, y) {
+  if (cell.bonus === 'reveal-area') {
+    const hiddenCells = [];
+    for (let yy = 0; yy < size3; yy++) {
+      for (let xx = 0; xx < size3; xx++) {
+        const target = board3[yy][xx];
+        if (!target.revealed) hiddenCells.push(target);
+      }
+    }
+    const toReveal = [];
+    for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
+      const idx = Math.floor(Math.random() * hiddenCells.length);
+      const selected = hiddenCells.splice(idx, 1)[0];
+      selected.el.style.outline = "2px solid #6a0dad";
+      if (selected.mine) selected.el.textContent = "💣";
+      else selected.el.classList.add("open");
+      toReveal.push(selected);
+    }
+    setTimeout(() => {
+      toReveal.forEach(c => {
+        if (!c.revealed) {
+          c.el.textContent = "";
+          if (!c.mine) c.el.classList.remove("open");
+          c.el.style.outline = "none";
         }
-      }
-      const toReveal = [];
-      for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
-        const idx = Math.floor(Math.random() * hiddenCells.length);
-        const selected = hiddenCells.splice(idx, 1)[0];
-        selected.el.style.outline = "2px solid #6a0dad";
-        if (selected.mine) selected.el.textContent = "💣";
-        else selected.el.classList.add("open");
-        toReveal.push(selected);
-      }
-      setTimeout(() => {
-        toReveal.forEach(c => {
-          if (!c.revealed) {
-            c.el.textContent = "";
-            if (!c.mine) c.el.classList.remove("open");
-            c.el.style.outline = "none";
-          }
-        });
-      }, 2000);
-      cell.bonus = null;
-    }
-
-    if (cell.bonus === 'shield') {
-      shieldActive3 = true;
-      document.getElementById("shield-icon3").style.visibility = "visible";
-      cell.bonus = null;
-    }
+      });
+    }, 2000);
+    // Удаляем бонус, но не трогаем класс (цвет останется)
+    cell.bonus = null;
   }
+
+  if (cell.bonus === 'shield') {
+    shieldActive3 = true;
+    document.getElementById("shield-icon3").style.visibility = "visible";
+    // Удаляем бонус, но не трогаем класс
+    cell.bonus = null;
+  }
+}
+
 
   function showAllBonuses3() {
     for (let y = 0; y < size3; y++) {
