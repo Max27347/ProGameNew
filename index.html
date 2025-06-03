@@ -4102,11 +4102,22 @@ confirmExitBtn?.addEventListener('click', () => {
     background-color: red;
   }
   .cell.reveal-area {
-    background-color: #6a0dad; /* фиолетовая */
+    background-color: #6a0dad;
   }
   .cell.shield {
-    background-color: #ffd700; /* жёлтая */
+    background-color: #ffd700;
   }
+
+  #score3, #status3 {
+    height: 30px; /* фиксированная высота */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: 18px;
+    overflow: hidden;
+  }
+
 </style>
 
 <script>
@@ -4174,8 +4185,7 @@ confirmExitBtn?.addEventListener('click', () => {
       const cell = board3[y][x];
       if (!cell.mine && !cell.bonus) {
         cell.bonus = type;
-        cell.el.classList.add(type);
-        cell.el.classList.remove(type);
+        // не удаляем класс
         placed++;
       }
     }
@@ -4214,20 +4224,15 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   }
 
-function reveal3(cell) {
-  if (cell.revealed) return;
-  cell.revealed = true;
-  cell.el.classList.add("open");
+  function reveal3(cell) {
+    if (cell.revealed) return;
+    cell.revealed = true;
+    cell.el.classList.add("open");
 
-  // отобразим бонус сразу
-  if (cell.bonus === 'reveal-area') {
-    cell.el.classList.add('reveal-area');
+    // отображаем бонус сразу
+    if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
+    if (cell.bonus === 'shield') cell.el.classList.add('shield');
   }
-  if (cell.bonus === 'shield') {
-    cell.el.classList.add('shield');
-  }
-}
-
 
   function applyBonus3(cell, x, y) {
     if (cell.bonus === 'reveal-area') {
@@ -4291,6 +4296,7 @@ function reveal3(cell) {
     }
   }
 </script>
+
 
 
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
