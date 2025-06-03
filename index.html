@@ -4104,13 +4104,12 @@ confirmExitBtn?.addEventListener('click', () => {
     background-color: red;
   }
 
-  /* Поведение бонусов при открытии */
-  .cell.reveal-area.open {
-    background-color: #6a0dad !important;
+  .cell.reveal-area {
+    background-color: #6a0dad !important; /* фиолетовая */
   }
 
-  .cell.shield.open {
-    background-color: #ffd700 !important;
+  .cell.shield {
+    background-color: #ffd700 !important; /* жёлтая */
   }
 
   #score3, #status3 {
@@ -4181,20 +4180,19 @@ confirmExitBtn?.addEventListener('click', () => {
     placeBonus3('shield', 2);
   }
 
-function placeBonus3(type, count) {
-  let placed = 0;
-  while (placed < count) {
-    const x = Math.floor(Math.random() * size3);
-    const y = Math.floor(Math.random() * size3);
-    const cell = board3[y][x];
-    if (!cell.mine && !cell.bonus) {
-      cell.bonus = type;
-      cell.el.classList.add(type); // ⬅️ добавляем CSS-класс, чтобы был цвет
-      placed++;
+  function placeBonus3(type, count) {
+    let placed = 0;
+    while (placed < count) {
+      const x = Math.floor(Math.random() * size3);
+      const y = Math.floor(Math.random() * size3);
+      const cell = board3[y][x];
+      if (!cell.mine && !cell.bonus) {
+        cell.bonus = type;
+        cell.el.classList.add(type); // Чтобы при открытии цвет сохранился
+        placed++;
+      }
     }
   }
-}
-
 
   function onClick3(e) {
     if (gameOver3) return;
@@ -4233,11 +4231,11 @@ function placeBonus3(type, count) {
     if (cell.revealed) return;
     cell.revealed = true;
 
-    // сначала бонус
+    // сначала применяем бонусные цвета
     if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
     if (cell.bonus === 'shield') cell.el.classList.add('shield');
 
-    // затем open
+    // потом открытие
     cell.el.classList.add("open");
   }
 
@@ -4250,6 +4248,7 @@ function placeBonus3(type, count) {
           if (!target.revealed) hiddenCells.push(target);
         }
       }
+
       const toReveal = [];
       for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
         const idx = Math.floor(Math.random() * hiddenCells.length);
@@ -4259,6 +4258,7 @@ function placeBonus3(type, count) {
         else selected.el.classList.add("open");
         toReveal.push(selected);
       }
+
       setTimeout(() => {
         toReveal.forEach(c => {
           if (!c.revealed) {
@@ -4268,6 +4268,7 @@ function placeBonus3(type, count) {
           }
         });
       }, 2000);
+
       cell.bonus = null;
       cell.el.classList.add("used");
     }
@@ -4284,8 +4285,12 @@ function placeBonus3(type, count) {
     for (let y = 0; y < size3; y++) {
       for (let x = 0; x < size3; x++) {
         const cell = board3[y][x];
-        if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
-        if (cell.bonus === 'shield') cell.el.classList.add('shield');
+        if (!cell.revealed && cell.bonus === 'reveal-area') {
+          cell.el.classList.add('reveal-area');
+        }
+        if (!cell.revealed && cell.bonus === 'shield') {
+          cell.el.classList.add('shield');
+        }
       }
     }
   }
