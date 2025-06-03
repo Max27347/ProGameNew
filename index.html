@@ -4214,8 +4214,8 @@ confirmExitBtn?.addEventListener('click', () => {
       gameOver3 = true;
       revealAllMines3();
     } else {
-      applyBonus3(cell, x, y);
       reveal3(cell);
+      applyBonus3(cell, x, y);
       revealed3++;
       document.getElementById("score3").textContent = `Открыто клеток: ${revealed3}`;
       if (revealed3 === size3 * size3 - mineCount3) {
