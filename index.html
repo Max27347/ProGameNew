@@ -4076,7 +4076,7 @@ confirmExitBtn?.addEventListener('click', () => {
   <h1>💣 Минное поле</h1>
   <div id="score3">Открыто клеток: 0</div>
   <div id="status3"></div>
-  <div id="shield-icon3" style="display:none; font-size:22px; height: 30px;">🛡️ Защита активна</div>
+  <div id="shield-icon3" style="font-size:22px; min-height: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden;">🛡️ Защита активна</div>
   <div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
   <button onclick="initGame3()">🔄 Новая игра</button>
 </div>
@@ -4094,19 +4094,24 @@ confirmExitBtn?.addEventListener('click', () => {
     border-radius: 4px;
     color: #fff;
   }
+
   .cell.open {
     background-color: #28a745;
     cursor: default;
   }
+
   .cell.bomb {
     background-color: red;
   }
+
   .cell.reveal-area {
-    background-color: #6a0dad !important;
+    background-color: #6a0dad;
   }
+
   .cell.shield {
-    background-color: #ffd700 !important;
+    background-color: #ffd700;
   }
+
   #score3, #status3 {
     height: 30px;
     display: flex;
@@ -4146,7 +4151,7 @@ confirmExitBtn?.addEventListener('click', () => {
     shieldActive3 = false;
     document.getElementById("status3").textContent = "";
     document.getElementById("score3").textContent = "Открыто клеток: 0";
-    document.getElementById("shield-icon3").style.display = "none";
+    document.getElementById("shield-icon3").style.visibility = "hidden";
 
     for (let y = 0; y < size3; y++) {
       board3[y] = [];
@@ -4200,7 +4205,7 @@ confirmExitBtn?.addEventListener('click', () => {
     if (cell.mine) {
       if (shieldActive3) {
         shieldActive3 = false;
-        document.getElementById("shield-icon3").style.display = "none";
+        document.getElementById("shield-icon3").style.visibility = "hidden";
         return;
       }
       cell.el.classList.add("bomb");
@@ -4225,10 +4230,13 @@ confirmExitBtn?.addEventListener('click', () => {
     if (cell.revealed) return;
     cell.revealed = true;
 
-    if (cell.bonus === 'reveal-area') cell.el.classList.add('reveal-area');
-    if (cell.bonus === 'shield') cell.el.classList.add('shield');
-
-    cell.el.classList.add("open");
+    if (cell.bonus === 'reveal-area') {
+      cell.el.classList.add('reveal-area');
+    } else if (cell.bonus === 'shield') {
+      cell.el.classList.add('shield');
+    } else {
+      cell.el.classList.add("open");
+    }
   }
 
   function applyBonus3(cell, x, y) {
@@ -4263,7 +4271,7 @@ confirmExitBtn?.addEventListener('click', () => {
 
     if (cell.bonus === 'shield') {
       shieldActive3 = true;
-      document.getElementById("shield-icon3").style.display = "inline-block";
+      document.getElementById("shield-icon3").style.visibility = "visible";
       cell.bonus = null;
     }
   }
