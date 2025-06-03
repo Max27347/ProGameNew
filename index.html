@@ -3916,13 +3916,14 @@ confirmExitBtn?.addEventListener('click', () => {
     const variation = 0.4;
     let speed1, speed2;
 
-    if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
-      speed1 = baseSpeed + variation;
-      speed2 = baseSpeed + Math.random();
-    } else {
-      speed1 = baseSpeed + Math.random();
-      speed2 = baseSpeed + variation;
-    }
+if ((chosen === 1 && playerShouldWin) || (chosen === 2 && !playerShouldWin)) {
+  speed1 = baseSpeed + variation;
+  speed2 = baseSpeed + Math.random();
+} else {
+  speed1 = baseSpeed + Math.random();
+  speed2 = baseSpeed + variation + 0.2; // даём противнику заметное преимущество
+}
+
 
     function step() {
       pos1 += speed1;
