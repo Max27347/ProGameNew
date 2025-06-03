@@ -4226,17 +4226,20 @@ confirmExitBtn?.addEventListener('click', () => {
     }
   }
 
-  function reveal3(cell) {
-    if (cell.revealed) return;
-    cell.revealed = true;
+function reveal3(cell) {
+  if (cell.revealed) return;
+  cell.revealed = true;
 
-    if (cell.bonus === 'reveal-area') {
-      cell.el.classList.add('reveal-area');
-    } else if (cell.bonus === 'shield') {
-      cell.el.classList.add('shield');
-    } else {
-      cell.el.classList.add("open");
-    }
+  if (cell.bonus === 'reveal-area') {
+    cell.el.classList.add('reveal-area');
+  }
+  if (cell.bonus === 'shield') {
+    cell.el.classList.add('shield');
+  }
+
+  cell.el.classList.add("open");
+}
+
   }
 
   function applyBonus3(cell, x, y) {
