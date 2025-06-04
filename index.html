@@ -3524,9 +3524,7 @@ updateAppearance() {
   }
 
   function endCatchGame(isQuit = false) {
-    gameRunning = false;
-    document.querySelectorAll('.star').forEach(s => s.remove());
-    clearInterval(starInterval);
+    gameRunning = false; // Приостанавливаем игру, но не удаляем объекты
     gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
     finalScoreCatch.textContent = 'Your score: ' + score;
     gameOverModalCatch.style.display = 'flex';
@@ -3535,10 +3533,12 @@ updateAppearance() {
   quitBtn.onclick = () => endCatchGame(true);
 
   catchGame.addEventListener('touchmove', e => {
-    const touch = e.touches[0];
-    let x = touch.clientX - 40;
-    x = Math.max(0, Math.min(window.innerWidth - 80, x));
-    rocket.style.left = x + 'px';
+    if (gameRunning) {
+      const touch = e.touches[0];
+      let x = touch.clientX - 40;
+      x = Math.max(0, Math.min(window.innerWidth - 80, x));
+      rocket.style.left = x + 'px';
+    }
   });
 
   function spawnStars() {
@@ -3798,8 +3798,6 @@ updateAppearance() {
       (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
     ) {
       endCakeGame();
-      currentBlock = null;
-      cancelAnimationFrame(movingAnimation);
       return;
     }
 
@@ -3816,7 +3814,6 @@ updateAppearance() {
 
     if (overlapWidth <= 0) {
       endCakeGame();
-      currentBlock = null;
       return;
     }
 
@@ -3831,8 +3828,7 @@ updateAppearance() {
   }
 
   function endCakeGame(isQuit = false) {
-    document.querySelectorAll('.block').forEach(b => b.remove());
-    cancelAnimationFrame(movingAnimation);
+    gameRunning = false; // Предполагается, что можно добавить как глобальную переменную, но не удаляем объекты
     gameOverMessageCake.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
     finalScoreCake.textContent = 'Your score: ' + score2;
     gameOverModalCake.style.display = 'flex';
