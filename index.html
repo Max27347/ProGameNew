@@ -4061,7 +4061,7 @@ updateAppearance() {
   <div id="status3"></div>
   <div id="shield-icon3" style="font-size:22px; min-height: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden;">🛡️ Protection is active</div>
   <div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
-  <button onclick="initGame3()">🔄 New game</button>
+  <button onclick="initGame3()" class="minigame-button">🔄 New game</button>
 </div>
 
 <style>
@@ -4103,6 +4103,33 @@ updateAppearance() {
     margin-top: 10px;
     font-size: 18px;
     overflow: hidden;
+  }
+
+  /* Стиль для кнопки "New game" */
+  .minigame-button {
+    background: linear-gradient(135deg, #4facfe, #00f2fe); /* Градиентный фон */
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Тень для глубины */
+    transition: transform 0.1s ease, box-shadow 0.2s ease; /* Плавная анимация */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Расстояние между иконкой и текстом */
+  }
+
+  .minigame-button:hover {
+    transform: translateY(-2px); /* Лёгкое поднятие при наведении */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Усиленная тень при наведении */
+  }
+
+  .minigame-button:active {
+    transform: translateY(0); /* Возврат в исходное положение при нажатии */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 </style>
 
@@ -4209,61 +4236,58 @@ updateAppearance() {
     }
   }
 
-function reveal3(cell) {
-  if (cell.revealed) return;
-  cell.revealed = true;
+  function reveal3(cell) {
+    if (cell.revealed) return;
+    cell.revealed = true;
 
-  if (cell.bonus === 'reveal-area') {
-    cell.el.classList.add('reveal-area');
-  }
-  if (cell.bonus === 'shield') {
-    cell.el.classList.add('shield');
-  }
-
-  cell.el.classList.add("open");
-}
-
-
-
-function applyBonus3(cell, x, y) {
-  if (cell.bonus === 'reveal-area') {
-    const hiddenCells = [];
-    for (let yy = 0; yy < size3; yy++) {
-      for (let xx = 0; xx < size3; xx++) {
-        const target = board3[yy][xx];
-        if (!target.revealed) hiddenCells.push(target);
-      }
+    if (cell.bonus === 'reveal-area') {
+      cell.el.classList.add('reveal-area');
     }
-    const toReveal = [];
-    for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
-      const idx = Math.floor(Math.random() * hiddenCells.length);
-      const selected = hiddenCells.splice(idx, 1)[0];
-      selected.el.style.outline = "2px solid #6a0dad";
-      if (selected.mine) selected.el.textContent = "💣";
-      else selected.el.classList.add("open");
-      toReveal.push(selected);
+    if (cell.bonus === 'shield') {
+      cell.el.classList.add('shield');
     }
-    setTimeout(() => {
-      toReveal.forEach(c => {
-        if (!c.revealed) {
-          c.el.textContent = "";
-          if (!c.mine) c.el.classList.remove("open");
-          c.el.style.outline = "none";
+
+    cell.el.classList.add("open");
+  }
+
+  function applyBonus3(cell, x, y) {
+    if (cell.bonus === 'reveal-area') {
+      const hiddenCells = [];
+      for (let yy = 0; yy < size3; yy++) {
+        for (let xx = 0; xx < size3; xx++) {
+          const target = board3[yy][xx];
+          if (!target.revealed) hiddenCells.push(target);
         }
-      });
-    }, 2000);
-    // Удаляем бонус, но не трогаем класс (цвет останется)
-    cell.bonus = null;
-  }
+      }
+      const toReveal = [];
+      for (let i = 0; i < 5 && hiddenCells.length > 0; i++) {
+        const idx = Math.floor(Math.random() * hiddenCells.length);
+        const selected = hiddenCells.splice(idx, 1)[0];
+        selected.el.style.outline = "2px solid #6a0dad";
+        if (selected.mine) selected.el.textContent = "💣";
+        else selected.el.classList.add("open");
+        toReveal.push(selected);
+      }
+      setTimeout(() => {
+        toReveal.forEach(c => {
+          if (!c.revealed) {
+            c.el.textContent = "";
+            if (!c.mine) c.el.classList.remove("open");
+            c.el.style.outline = "none";
+          }
+        });
+      }, 2000);
+      // Удаляем бонус, но не трогаем класс (цвет останется)
+      cell.bonus = null;
+    }
 
-  if (cell.bonus === 'shield') {
-    shieldActive3 = true;
-    document.getElementById("shield-icon3").style.visibility = "visible";
-    // Удаляем бонус, но не трогаем класс
-    cell.bonus = null;
+    if (cell.bonus === 'shield') {
+      shieldActive3 = true;
+      document.getElementById("shield-icon3").style.visibility = "visible";
+      // Удаляем бонус, но не трогаем класс
+      cell.bonus = null;
+    }
   }
-}
-
 
   function showAllBonuses3() {
     for (let y = 0; y < size3; y++) {
