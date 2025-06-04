@@ -1148,21 +1148,24 @@
 }
 </style>
 <style>
-.market-item-container {
-    width: 120px;
-    max-width: 120px;
-    flex: 0 0 auto;
-    box-sizing: border-box;
+.inventory-container {
+    max-width: 700px !important;
+    width: 95% !important;
 }
-.market-items-container {
+
+.inventory-items-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
     gap: 1rem;
 }
-</style>
 
+.inventory-item-container {
+    width: 130px !important;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+}
+</style>
 </head>
 <body>
 <style>#raceGameContainer{display:none!important;}</style>
@@ -3495,18 +3498,18 @@ updateAppearance() {
   }
 </style>
 <div id="catchGame">
-  <canvas id="minigameStarfield"></canvas>
-  <div id="score">Score: 0</div>
-  <button id="quitCatchGame">✕ Quit</button>
-  <img alt="Rocket" id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png"/>
-  <!-- Модальное окно для окончания игры "Лови звёзды" -->
-  <div id="gameOverModalCatch">
-    <div class="modal-content">
-      <h2 id="gameOverMessageCatch">Game Over!</h2>
-      <p id="finalScoreCatch">Your score: 0</p>
-      <button class="close-button" onclick="document.getElementById('gameOverModalCatch').style.display='none'; document.getElementById('catchGame').style.display='none';">Close</button>
-    </div>
-  </div>
+<canvas id="minigameStarfield"></canvas>
+<div id="score">Score: 0</div>
+<button id="quitCatchGame">✕ Quit</button>
+<img alt="Rocket" id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png"/>
+<!-- Модальное окно для окончания игры "Лови звёзды" -->
+<div id="gameOverModalCatch">
+<div class="modal-content">
+<h2 id="gameOverMessageCatch">Game Over!</h2>
+<p id="finalScoreCatch">Your score: 0</p>
+<button class="close-button" onclick="document.getElementById('gameOverModalCatch').style.display='none'; document.getElementById('catchGame').style.display='none';">Close</button>
+</div>
+</div>
 </div>
 <script>
   const catchGame = document.getElementById('catchGame');
@@ -3668,18 +3671,18 @@ updateAppearance() {
 </script>
 <!-- Мини-игра "Торт" -->
 <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
-  <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-  <div id="game" style="position: relative; width: 100vw; height: 100vh;">
-    <div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
-  </div>
-  <!-- Модальное окно для окончания игры "Торт" -->
-  <div id="gameOverModalCake">
-    <div class="modal-content">
-      <h2 id="gameOverMessageCake">Game Over!</h2>
-      <p id="finalScoreCake">Your score: 0</p>
-      <button class="close-button" onclick="document.getElementById('gameOverModalCake').style.display='none'; document.getElementById('cakeGame').style.display='none';">Close</button>
-    </div>
-  </div>
+<button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+<div id="game" style="position: relative; width: 100vw; height: 100vh;">
+<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
+</div>
+<!-- Модальное окно для окончания игры "Торт" -->
+<div id="gameOverModalCake">
+<div class="modal-content">
+<h2 id="gameOverMessageCake">Game Over!</h2>
+<p id="finalScoreCake">Your score: 0</p>
+<button class="close-button" onclick="document.getElementById('gameOverModalCake').style.display='none'; document.getElementById('cakeGame').style.display='none';">Close</button>
+</div>
+</div>
 </div>
 <style>
   .block {
@@ -3923,26 +3926,22 @@ updateAppearance() {
 </script>
 <!-- Мини-игра "Гонки" -->
 <div id="raceGame" style="position: fixed; inset: 0; background: linear-gradient(to bottom right, #1a1a1a, #333); display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; color: white; font-family: sans-serif; overflow-y: auto;">
-  <button id="quitRaceGame" style="position: absolute; top: 15px; right: 20px; background: transparent; color: white; font-size: 2rem; border: none; cursor: pointer;">✕</button>
-  <h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
-
-  <div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
-    <div class="track" id="track1" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
-      <img class="vehicle" id="v1" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);" />
-    </div>
-    <div class="track" id="track2" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
-      <img class="vehicle" id="v2" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);" />
-    </div>
-  </div>
-
-  <div id="choiceButtons" class="buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
-    <button id="choose1" style="padding: 14px 24px; font-size: 5vw; max-width: 300px; background: linear-gradient(to right, #00c6ff, #0072ff); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex: 1;">...</button>
-    <button id="choose2" style="padding: 14px 24px; font-size: 5vw; max-width: 300px; background: linear-gradient(to right, #ff8c00, #ff3c00); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex: 1;">...</button>
-  </div>
-
-  <div id="raceResult" style="margin-top: 30px; font-size: 5vw; font-weight: bold; text-align: center; text-shadow: 1px 1px 2px black;"></div>
+<button id="quitRaceGame" style="position: absolute; top: 15px; right: 20px; background: transparent; color: white; font-size: 2rem; border: none; cursor: pointer;">✕</button>
+<h1 style="margin-top: 60px; font-size: 6vw; text-align: center;">Choose who wins</h1>
+<div class="race-container" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%;">
+<div class="track" id="track1" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
+<img class="vehicle" id="v1" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);"/>
 </div>
-
+<div class="track" id="track2" style="width: 90vw; max-width: 600px; height: 60px; background: #444; margin: 15px 0; position: relative; border-radius: 12px; overflow: hidden;">
+<img class="vehicle" id="v2" src="" style="position: absolute; top: 5px; left: 0; height: 45px; transform: translateX(0px);"/>
+</div>
+</div>
+<div class="buttons" id="choiceButtons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+<button id="choose1" style="padding: 14px 24px; font-size: 5vw; max-width: 300px; background: linear-gradient(to right, #00c6ff, #0072ff); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex: 1;">...</button>
+<button id="choose2" style="padding: 14px 24px; font-size: 5vw; max-width: 300px; background: linear-gradient(to right, #ff8c00, #ff3c00); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex: 1;">...</button>
+</div>
+<div id="raceResult" style="margin-top: 30px; font-size: 5vw; font-weight: bold; text-align: center; text-shadow: 1px 1px 2px black;"></div>
+</div>
 <script>
   const vehicles = [
     "https://freepngimg.com/thumb/bmw/22658-4-bmw-m3-photos.png",
@@ -4068,19 +4067,16 @@ updateAppearance() {
     }
   });
 </script>
-
 <!-- Игра "Минное поле" -->
 <div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
-  <button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-
-  <h1>💣 Минное поле</h1>
-  <div id="score3">Открыто клеток: 0</div>
-  <div id="status3"></div>
-  <div id="shield-icon3" style="font-size:22px; min-height: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden;">🛡️ Защита активна</div>
-  <div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
-  <button onclick="initGame3()">🔄 Новая игра</button>
+<button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+<h1>💣 Минное поле</h1>
+<div id="score3">Открыто клеток: 0</div>
+<div id="status3"></div>
+<div id="shield-icon3" style="font-size:22px; min-height: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden;">🛡️ Защита активна</div>
+<div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
+<button onclick="initGame3()">🔄 Новая игра</button>
 </div>
-
 <style>
   .cell {
     width: 40px;
@@ -4122,7 +4118,6 @@ updateAppearance() {
     overflow: hidden;
   }
 </style>
-
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("coinFlipPlayBtn")?.addEventListener("click", () => {
@@ -4309,10 +4304,6 @@ function applyBonus3(cell, x, y) {
     }
   }
 </script>
-
-
-
-
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </body>
 </html>
