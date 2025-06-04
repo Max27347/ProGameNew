@@ -3387,7 +3387,7 @@ updateAppearance() {
     });
   });
 </script>
-<!-- Мини-игра "Лови звезды" -->
+<!-- Мини-игра "Лови звёзды" -->
 <style>
   #catchGame {
     position: fixed;
@@ -3429,196 +3429,240 @@ updateAppearance() {
     cursor: pointer;
   }
   .minigame-button {
-  background: linear-gradient(135deg, #4facfe, #00f2fe); /* градиент */
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 12px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
-}
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+  }
+  /* Стили для модального окна окончания игры "Лови звёзды" */
+  #gameOverModalCatch {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10001;
+    justify-content: center;
+    align-items: center;
+  }
+  #gameOverModalCatch .modal-content {
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+    width: 90%;
+    max-width: 400px;
+  }
+  #gameOverModalCatch h2 {
+    margin-bottom: 1rem;
+  }
+  #gameOverModalCatch .close-button {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+  }
 </style>
 <div id="catchGame">
-<canvas id="minigameStarfield"></canvas>
-<div id="score">Score: 0</div>
-<button id="quitCatchGame">✕ Quit</button>
-<img alt="Rocket" id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png"/>
+  <canvas id="minigameStarfield"></canvas>
+  <div id="score">Score: 0</div>
+  <button id="quitCatchGame">✕ Quit</button>
+  <img alt="Rocket" id="rocket" src="https://clipart-library.com/images/Bcgje7dc8.png"/>
+  <!-- Модальное окно для окончания игры "Лови звёзды" -->
+  <div id="gameOverModalCatch">
+    <div class="modal-content">
+      <h2 id="gameOverMessageCatch">Game Over!</h2>
+      <p id="finalScoreCatch">Your score: 0</p>
+      <button class="close-button" onclick="document.getElementById('gameOverModalCatch').style.display='none'; document.getElementById('catchGame').style.display='none';">Close</button>
+    </div>
+  </div>
 </div>
 <script>
   const catchGame = document.getElementById('catchGame');
   const rocket = document.getElementById('rocket');
   const scoreDisplay = document.getElementById('score');
   const quitBtn = document.getElementById('quitCatchGame');
+  const gameOverModalCatch = document.getElementById('gameOverModalCatch');
+  const gameOverMessageCatch = document.getElementById('gameOverMessageCatch');
+  const finalScoreCatch = document.getElementById('finalScoreCatch');
 
-let globalSpeed = 4;
-let spawnRate = 1000;
-let spawnRateDecrement = 50;
-let minSpawnRate = 300;
+  let globalSpeed = 4;
+  let spawnRate = 1000;
+  let spawnRateDecrement = 50;
+  let minSpawnRate = 300;
 
   let score = 0;
   let gameRunning = false;
   let starInterval;
 
   function startCatchGame() {
-  globalSpeed = 4;
-  spawnRate = 1200;
+    globalSpeed = 4;
+    spawnRate = 1200;
     score = 0;
     scoreDisplay.textContent = 'Score: 0';
     rocket.style.left = '50%';
     catchGame.style.display = 'block';
     gameRunning = true;
-  resizeStarCanvas();
-  animateStarBackground();
+    resizeStarCanvas();
+    animateStarBackground();
     spawnStars();
   }
 
-  function endCatchGame() {
+  function endCatchGame(isQuit = false) {
     gameRunning = false;
-    catchGame.style.display = 'none';
-    alert('Game Over! Your score: ' + score);
     document.querySelectorAll('.star').forEach(s => s.remove());
     clearInterval(starInterval);
+    gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
+    finalScoreCatch.textContent = 'Your score: ' + score;
+    gameOverModalCatch.style.display = 'flex';
   }
 
-  quitBtn.onclick = endCatchGame;
+  quitBtn.onclick = () => endCatchGame(true);
 
-
-catchGame.addEventListener('touchmove', e => {
+  catchGame.addEventListener('touchmove', e => {
     const touch = e.touches[0];
     let x = touch.clientX - 40;
     x = Math.max(0, Math.min(window.innerWidth - 80, x));
     rocket.style.left = x + 'px';
   });
 
-function spawnStars() {
-  function spawnLoop() {
-    if (!gameRunning) return;
+  function spawnStars() {
+    function spawnLoop() {
+      if (!gameRunning) return;
 
-    const star = document.createElement('img');
-    star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
-    star.classList.add('star');
-    star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
-    star.style.top = '0px';
-    catchGame.appendChild(star);
+      const star = document.createElement('img');
+      star.src = 'https://i.pinimg.com/originals/3c/48/d3/3c48d3b9c636f8182f9f18c51eb70117.png';
+      star.classList.add('star');
+      star.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+      star.style.top = '0px';
+      catchGame.appendChild(star);
 
-    let speed = Math.min(globalSpeed += 0.05, 25); // увеличиваем скорость
-    let startTime = null;
+      let speed = Math.min(globalSpeed += 0.05, 25);
+      let startTime = null;
 
-    function animateStar(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const top = elapsed * speed / 16;
-      star.style.top = top + 'px';
+      function animateStar(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const top = elapsed * speed / 16;
+        star.style.top = top + 'px';
 
-      const rocketRect = rocket.getBoundingClientRect();
-      const starRect = star.getBoundingClientRect();
+        const rocketRect = rocket.getBoundingClientRect();
+        const starRect = star.getBoundingClientRect();
 
-      if (
-        rocketRect.left < starRect.right &&
-        rocketRect.right > starRect.left &&
-        rocketRect.top < starRect.bottom &&
-        rocketRect.bottom > starRect.top
-      ) {
-        score++;
-        scoreDisplay.textContent = 'Score: ' + score;
-        star.remove();
-        return;
+        if (
+          rocketRect.left < starRect.right &&
+          rocketRect.right > starRect.left &&
+          rocketRect.top < starRect.bottom &&
+          rocketRect.bottom > starRect.top
+        ) {
+          score++;
+          scoreDisplay.textContent = 'Score: ' + score;
+          star.remove();
+          return;
+        }
+
+        if (top > window.innerHeight - 40) {
+          star.remove();
+          endCatchGame();
+          return;
+        }
+
+        if (gameRunning) requestAnimationFrame(animateStar);
+      }
+      requestAnimationFrame(animateStar);
+
+      if (spawnRate > minSpawnRate) {
+        spawnRate -= spawnRateDecrement;
       }
 
-      if (top > window.innerHeight - 40) {
-        star.remove();
-        endCatchGame();
-        return;
-      }
-
-      if (gameRunning) requestAnimationFrame(animateStar);
-    }
-    requestAnimationFrame(animateStar);
-
-    // Уменьшаем интервал и запускаем следующий спавн
-    if (spawnRate > minSpawnRate) {
-      spawnRate -= spawnRateDecrement;
+      setTimeout(spawnLoop, spawnRate);
     }
 
-    setTimeout(spawnLoop, spawnRate);
+    spawnLoop();
   }
 
-  spawnLoop();
-}
-
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  if (playBtn) {
-    playBtn.removeAttribute("disabled");
-    playBtn.addEventListener("click", startCatchGame);
-  }
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("earnCoinsPlayBtn");
-  if (playBtn) {
-    playBtn.addEventListener("click", startCatchGame);
-  }
-});
-</script>
-<script>
-const starCanvas = document.getElementById('minigameStarfield');
-const starCtx = starCanvas.getContext('2d');
-let starArray = [];
-
-function resizeStarCanvas() {
-  starCanvas.width = catchGame.offsetWidth;
-  starCanvas.height = catchGame.offsetHeight;
-  starArray = Array.from({ length: 100 }, () => ({
-    x: Math.random() * starCanvas.width,
-    y: Math.random() * starCanvas.height,
-    size: Math.random() * 2,
-    speed: Math.random() * 0.4 + 0.2
-  }));
-}
-
-function animateStarBackground() {
-  if (!gameRunning) return;
-  starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-  starCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-  starArray.forEach(star => {
-    starCtx.beginPath();
-    starCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-    starCtx.fill();
-    star.y += star.speed;
-    if (star.y > starCanvas.height) {
-      star.y = 0;
-      star.x = Math.random() * starCanvas.width;
+  document.addEventListener("DOMContentLoaded", function () {
+    const playBtn = document.getElementById("earnCoinsPlayBtn");
+    if (playBtn) {
+      playBtn.removeAttribute("disabled");
+      playBtn.addEventListener("click", startCatchGame);
     }
   });
-  requestAnimationFrame(animateStarBackground);
-}
 
-window.addEventListener('resize', () => {
-  if (gameRunning) resizeStarCanvas();
-});
+  const starCanvas = document.getElementById('minigameStarfield');
+  const starCtx = starCanvas.getContext('2d');
+  let starArray = [];
 
-const originalStartCatchGame = startCatchGame;
-startCatchGame = function() {
-  resizeStarCanvas();
-  animateStarBackground();
-  originalStartCatchGame();
-};
+  function resizeStarCanvas() {
+    starCanvas.width = catchGame.offsetWidth;
+    starCanvas.height = catchGame.offsetHeight;
+    starArray = Array.from({ length: 100 }, () => ({
+      x: Math.random() * starCanvas.width,
+      y: Math.random() * starCanvas.height,
+      size: Math.random() * 2,
+      speed: Math.random() * 0.4 + 0.2
+    }));
+  }
+
+  function animateStarBackground() {
+    if (!gameRunning) {
+      starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      return;
+    }
+    starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+    starCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    starArray.forEach(star => {
+      starCtx.beginPath();
+      starCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      starCtx.fill();
+      star.y += star.speed;
+      if (star.y > starCanvas.height) {
+        star.y = 0;
+        star.x = Math.random() * starCanvas.width;
+      }
+    });
+    requestAnimationFrame(animateStarBackground);
+  }
+
+  window.addEventListener('resize', () => {
+    if (gameRunning) resizeStarCanvas();
+  });
+
+  const originalStartCatchGame = startCatchGame;
+  startCatchGame = function() {
+    resizeStarCanvas();
+    animateStarBackground();
+    originalStartCatchGame();
+  };
 </script>
 <!-- Мини-игра "Торт" -->
 <div id="cakeGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000;">
-<button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
-<div id="game" style="position: relative; width: 100vw; height: 100vh;">
-<div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0
-
-</div>
-</div>
+  <button id="quitCakeGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
+  <div id="game" style="position: relative; width: 100vw; height: 100vh;">
+    <div id="score2" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-family: sans-serif; font-size: 1.2rem;">Score: 0</div>
+  </div>
+  <!-- Модальное окно для окончания игры "Торт" -->
+  <div id="gameOverModalCake">
+    <div class="modal-content">
+      <h2 id="gameOverMessageCake">Game Over!</h2>
+      <p id="finalScoreCake">Your score: 0</p>
+      <button class="close-button" onclick="document.getElementById('gameOverModalCake').style.display='none'; document.getElementById('cakeGame').style.display='none';">Close</button>
+    </div>
+  </div>
 </div>
 <style>
   .block {
@@ -3648,6 +3692,42 @@ startCatchGame = function() {
     background: linear-gradient(to top, #ffffff, #f9f9f9);
     border: 2px solid #cccccc;
   }
+  /* Стили для модального окна окончания игры "Торт" */
+  #gameOverModalCake {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10001;
+    justify-content: center;
+    align-items: center;
+  }
+  #gameOverModalCake .modal-content {
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+    width: 90%;
+    max-width: 400px;
+  }
+  #gameOverModalCake h2 {
+    margin-bottom: 1rem;
+  }
+  #gameOverModalCake .close-button {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+  }
 </style>
 <script>
   let stack = [];
@@ -3658,6 +3738,10 @@ startCatchGame = function() {
 
   const game = document.getElementById("game");
   let scoreDisplay2 = document.getElementById("score2");
+  const cakeGame = document.getElementById("cakeGame");
+  const gameOverModalCake = document.getElementById("gameOverModalCake");
+  const gameOverMessageCake = document.getElementById("gameOverMessageCake");
+  const finalScoreCake = document.getElementById("finalScoreCake");
 
   function startCakeGame() {
     stack = [];
@@ -3713,15 +3797,7 @@ startCatchGame = function() {
       (currentBlock.speed > 0 && currentBlock.x > window.innerWidth) ||
       (currentBlock.speed < 0 && currentBlock.x + currentBlock.width < 0)
     ) {
-
-alert("Game Over! Final Score: " + score2);
-
-const cakeGameEl = document.getElementById("cakeGame");
-if (cakeGameEl) {
-  cakeGameEl.style.display = "none";
-}
-
-
+      endCakeGame();
       currentBlock = null;
       cancelAnimationFrame(movingAnimation);
       return;
@@ -3739,15 +3815,7 @@ if (cakeGameEl) {
     const overlapWidth = overlapRight - overlapLeft;
 
     if (overlapWidth <= 0) {
-
-alert("Game Over! Final Score: " + score2);
-
-const cakeGameEl = document.getElementById("cakeGame");
-if (cakeGameEl) {
-  cakeGameEl.style.display = "none";
-}
-
-
+      endCakeGame();
       currentBlock = null;
       return;
     }
@@ -3760,6 +3828,14 @@ if (cakeGameEl) {
     score2++;
     scoreDisplay2.textContent = "Score: " + score2;
     createMovingBlock();
+  }
+
+  function endCakeGame(isQuit = false) {
+    document.querySelectorAll('.block').forEach(b => b.remove());
+    cancelAnimationFrame(movingAnimation);
+    gameOverMessageCake.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
+    finalScoreCake.textContent = 'Your score: ' + score2;
+    gameOverModalCake.style.display = 'flex';
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -3777,61 +3853,56 @@ if (cakeGameEl) {
 
     if (quitBtn) {
       quitBtn.addEventListener("click", function () {
-        cakeGame.style.display = "none";
-        cancelAnimationFrame(movingAnimation);
+        endCakeGame(true);
       });
     }
 
     cakeGame.addEventListener("click", placeBlock);
   });
 
+  const tortGameBtn = document.getElementById('tortGamePlayBtn');
+  const tortGameContainer = document.getElementById('tortGameContainer');
+  const tortExitBtn = document.getElementById('tortExitBtn');
+  const tortExitPrompt = document.getElementById('tortExitPrompt');
+  const confirmExitBtn = document.getElementById('confirmExitBtn');
 
-const tortGameBtn = document.getElementById('tortGamePlayBtn');
-const tortGameContainer = document.getElementById('tortGameContainer');
-const tortExitBtn = document.getElementById('tortExitBtn');
-const tortExitPrompt = document.getElementById('tortExitPrompt');
-const confirmExitBtn = document.getElementById('confirmExitBtn');
+  let tortGameInterval = null;
 
-let tortGameInterval = null;
+  tortGameBtn?.addEventListener('click', () => {
+    const tortGameContainer = document.getElementById("tortGameContainer");
+    if (tortGameContainer) {
+      tortGameContainer.style.display = 'flex';
+    }
 
-tortGameBtn?.addEventListener('click', () => {
-
-const tortGameContainer = document.getElementById("tortGameContainer");
-if (tortGameContainer) {
-  tortGameContainer.style.display = 'flex';
-}
-
-
-setTimeout(() => {
-  const container = document.getElementById("tortGameContainer");
-  if (container) {
-    container.classList.remove("hidden-opacity");
-  }
-}, 10);
-
+    setTimeout(() => {
+      const container = document.getElementById("tortGameContainer");
+      if (container) {
+        container.classList.remove("hidden-opacity");
+      }
+    }, 10);
 
     tortGameInterval = setInterval(() => {
-        console.log('Игра TORT работает...');
+      console.log('Игра TORT работает...');
     }, 1000);
-});
+  });
 
-tortExitBtn?.addEventListener('click', () => {
+  tortExitBtn?.addEventListener('click', () => {
     clearInterval(tortGameInterval);
     tortExitPrompt.style.display = 'block';
     setTimeout(() => tortExitPrompt.classList.remove('hidden-opacity'), 10);
-});
+  });
 
-confirmExitBtn?.addEventListener('click', () => {
+  confirmExitBtn?.addEventListener('click', () => {
     tortExitPrompt.classList.add('hidden-opacity');
     setTimeout(() => {
-        tortExitPrompt.style.display = 'none';
+      tortExitPrompt.style.display = 'none';
     }, 500);
 
     tortGameContainer.classList.add('hidden-opacity');
     setTimeout(() => {
-        tortGameContainer.style.display = 'none';
+      tortGameContainer.style.display = 'none';
     }, 500);
-});
+  });
 </script>
 <!-- Мини-игра "Гонки" -->
 <div id="raceGame" style="position: fixed; inset: 0; background: linear-gradient(to bottom right, #1a1a1a, #333); display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; color: white; font-family: sans-serif; overflow-y: auto;">
