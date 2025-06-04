@@ -458,20 +458,22 @@
             .market-items-container {
                 height: 53vh;
             }
-            .case-container,
-            .inventory-item-container,
-            .market-item-container {
-                width: 50px;
-                background: #2e2e2e;
-                border-radius: 16px;
-                padding: 1rem;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-                cursor: pointer;
-                transition: background 0.3s ease;
-            }
+.case-container,
+.inventory-item-container,
+.market-item-container {
+    width: 50px;
+    flex: 0 0 auto; /* ← важно: предотвращает растягивание */
+    background: #2e2e2e;
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
             .upgrade-anim {
                 animation: upgradeGlow 0.5s ease-in-out;
             }
