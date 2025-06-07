@@ -3531,32 +3531,33 @@ function endCatchGame(isQuit = false) {
     gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
     finalScoreCatch.textContent = 'Your score: ' + score;
 
-    const earnedDiamonds = score * 10;
+    const earnedDiamonds = score * 1;
 
-    // Попытка начислить алмазы
-    if (typeof gameState !== 'undefined' && typeof gameState.addCoins === 'function') {
-      gameState.addCoins(earnedDiamonds);
+    // Получаем старое значение (если возможно)
+    let currentCoins = 0;
+    if (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function') {
+      currentCoins = gameState.getCoins();
+      gameState.addCoins(earnedDiamonds); // добавляем
     }
 
-    // Обновить coinCount (визуально)
-    const newCoinTotal = (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function')
-      ? Math.floor(gameState.getCoins())
-      : earnedDiamonds;
+    const newTotal = currentCoins + earnedDiamonds;
 
+    // Обновить #coinCount
     const coinCountEl = document.getElementById("coinCount");
-    if (coinCountEl) coinCountEl.textContent = newCoinTotal;
+    if (coinCountEl) coinCountEl.textContent = newTotal;
 
+    // Обновить #totalCoins
     const totalCoinsEl = document.getElementById("totalCoins");
-    if (totalCoinsEl) totalCoinsEl.textContent = newCoinTotal;
+    if (totalCoinsEl) totalCoinsEl.textContent = newTotal;
 
-    // Обновить UI через uiManager, если он есть
+    // Обновить UI (без замены, а с прибавлением уже выполненным)
     if (typeof uiManager !== 'undefined') {
-      uiManager.queueUpdate("coins", newCoinTotal);
-      uiManager.queueUpdate("totalCoins", newCoinTotal);
+      uiManager.queueUpdate("coins", newTotal);
+      uiManager.queueUpdate("totalCoins", newTotal);
       uiManager.applyUpdates();
     }
 
-    // Показ награды
+    // Показать сообщение о награде
     const rewardText = `💎 You earned <strong>${earnedDiamonds}</strong> diamonds!`;
     let rewardParagraph = document.getElementById("rewardParagraphCatch");
     if (!rewardParagraph) {
@@ -3577,6 +3578,7 @@ function endCatchGame(isQuit = false) {
     alert("Произошла ошибка при завершении игры. Попробуйте ещё раз.");
   }
 }
+
 
 
   quitBtn.onclick = () => endCatchGame(true);
