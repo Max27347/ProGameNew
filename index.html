@@ -1102,7 +1102,29 @@
   transition: transform 1.5s ease;
 }
 </style>
+<style>
+  .quests-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.5rem;
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+    display: none;
+  }
 
+  .quests-arrow.left {
+    left: 1rem;
+  }
+
+  .quests-arrow.right {
+    right: 1rem;
+  }
+</style>
 <style>
 #gamesContainer .claim-button {
   background-color: #4CAF50 !important;
@@ -3302,8 +3324,8 @@ updateAppearance() {
                 }
             });
 </script>
-<div class="shop-arrow left hidden" id="newQuestsArrowLeft">&lt;</div>
-<div class="shop-arrow right hidden" id="newQuestsArrowRight">&gt;</div>
+<div class="quests-arrow left" id="newQuestsArrowLeft">&lt;</div>
+<div class="quests-arrow right" id="newQuestsArrowRight">&gt;</div>
 <script>
   const newQuestsArrowLeft = document.getElementById('newQuestsArrowLeft');
   const newQuestsArrowRight = document.getElementById('newQuestsArrowRight');
