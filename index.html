@@ -1456,7 +1456,10 @@ const BACKGROUND_GRADIENTS = [
                     this.coins += amount;
                     this.updateLeaderboard();
                 }
-
+                resetCoins(value) {
+                    this.coins = value;
+                    this.updateLeaderboard();
+                }
                 isTelegramEnvironment() {
                     return this.isTelegram;
                 }
@@ -3519,65 +3522,14 @@ updateAppearance() {
     spawnStars();
   }
 
-function endCatchGame(isQuit = false) {
-  try {
+  function endCatchGame(isQuit = false) {
     gameRunning = false;
     document.querySelectorAll('.star').forEach(s => s.remove());
     clearInterval(starInterval);
-
     gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
     finalScoreCatch.textContent = 'Your score: ' + score;
-
-    const earnedDiamonds = score * 10;
-
-    // 1. Прибавляем алмазы
-    if (typeof gameState !== 'undefined' && typeof gameState.addCoins === 'function') {
-      gameState.addCoins(earnedDiamonds);
-    }
-
-    // 2. Получаем актуальное значение после прибавки
-    const updatedCoins = (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function')
-      ? gameState.getCoins()
-      : earnedDiamonds;
-
-    // 3. Обновляем DOM: визуальный счёт
-    const coinCountEl = document.getElementById("coinCount");
-    if (coinCountEl) coinCountEl.textContent = updatedCoins;
-
-    const totalCoinsEl = document.getElementById("totalCoins");
-    if (totalCoinsEl) totalCoinsEl.textContent = updatedCoins;
-
-    // 4. Удаляем ПОЛНОСТЬЮ любые обновления earnedDiamonds:
-    // ❌ Никаких uiManager.queueUpdate("coins", earnedDiamonds)
-
-    // 5. Обновляем UI ТОЛЬКО с актуальной суммой
-    if (typeof uiManager !== 'undefined') {
-      uiManager.queueUpdate("coins", updatedCoins);
-      uiManager.queueUpdate("totalCoins", updatedCoins);
-      uiManager.applyUpdates();
-    }
-
-    // 6. Показать сообщение о награде
-    const rewardText = `💎 You earned <strong>${earnedDiamonds}</strong> diamonds!`;
-    let rewardParagraph = document.getElementById("rewardParagraphCatch");
-    if (!rewardParagraph) {
-      rewardParagraph = document.createElement('p');
-      rewardParagraph.id = "rewardParagraphCatch";
-      rewardParagraph.style.marginTop = "1rem";
-      rewardParagraph.style.fontWeight = "bold";
-      rewardParagraph.style.fontSize = "1.2rem";
-      rewardParagraph.style.color = "#00f2fe";
-      document.querySelector('#gameOverModalCatch .modal-content').appendChild(rewardParagraph);
-    }
-    rewardParagraph.innerHTML = rewardText;
-
     gameOverModalCatch.style.display = 'flex';
-
-  } catch (e) {
-    console.error("Ошибка при завершении мини-игры:", e);
-    alert("Произошла ошибка при завершении игры. Попробуйте ещё раз.");
   }
-}
 
   quitBtn.onclick = () => endCatchGame(true);
 
