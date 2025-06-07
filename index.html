@@ -458,22 +458,20 @@
             .market-items-container {
                 height: 53vh;
             }
-.case-container,
-.inventory-item-container,
-.market-item-container {
-    width: 50px;
-    flex: 0 0 auto; /* ← важно: предотвращает растягивание */
-    background: #2e2e2e;
-    border-radius: 16px;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
+            .case-container,
+            .inventory-item-container,
+            .market-item-container {
+                width: 150px;
+                background: #2e2e2e;
+                border-radius: 16px;
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
             .upgrade-anim {
                 animation: upgradeGlow 0.5s ease-in-out;
             }
@@ -3450,6 +3448,7 @@ updateAppearance() {
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, 0.7);
     z-index: 10001;
     justify-content: center;
     align-items: center;
@@ -3701,6 +3700,7 @@ updateAppearance() {
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, 0.7);
     z-index: 10001;
     justify-content: center;
     align-items: center;
@@ -4053,15 +4053,15 @@ updateAppearance() {
 </script>
 
 <!-- Игра "Минное поле" -->
-<div id="coinFlipGame" style="position: fixed; inset: 0; background: linear-gradient(to top, #aee4ff, white); display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
+<div id="coinFlipGame" style="position: fixed; inset: 0; background: #f0f0f0; display: none; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: black; font-family: sans-serif;">
   <button id="quitCoinFlipGame" style="position: absolute; top: 10px; right: 10px; background: transparent; color: black; font-size: 1.5rem; border: none; cursor: pointer;">✕ Quit</button>
 
-  <h1>💣 Minifield</h1>
-  <div id="score3">Open cells: 0</div>
+  <h1>💣 Минное поле</h1>
+  <div id="score3">Открыто клеток: 0</div>
   <div id="status3"></div>
-  <div id="shield-icon3" style="font-size:22px; min-height: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden;">🛡️ Protection is active</div>
+  <div id="shield-icon3" style="font-size:22px; min-height: 30px; height: 30px; display: flex; align-items: center; justify-content: center; visibility: hidden;">🛡️ Защита активна</div>
   <div id="game3" style="display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); gap: 2px; justify-content: center; margin: 20px auto;"></div>
-  <button onclick="initGame3()">🔄 New game</button>
+  <button onclick="initGame3()">🔄 Новая игра</button>
 </div>
 
 <style>
@@ -4133,7 +4133,7 @@ updateAppearance() {
     gameOver3 = false;
     shieldActive3 = false;
     document.getElementById("status3").textContent = "";
-    document.getElementById("score3").textContent = "Open cells: 0";
+    document.getElementById("score3").textContent = "Открыто клеток: 0";
     document.getElementById("shield-icon3").style.visibility = "hidden";
 
     for (let y = 0; y < size3; y++) {
@@ -4193,16 +4193,16 @@ updateAppearance() {
       }
       cell.el.classList.add("bomb");
       cell.el.textContent = "💣";
-      document.getElementById("status3").textContent = "💥 You are lose!";
+      document.getElementById("status3").textContent = "💥 Вы проиграли!";
       gameOver3 = true;
       revealAllMines3();
     } else {
       reveal3(cell);
       applyBonus3(cell, x, y);
       revealed3++;
-      document.getElementById("score3").textContent = `Open cells: ${revealed3}`;
+      document.getElementById("score3").textContent = `Открыто клеток: ${revealed3}`;
       if (revealed3 === size3 * size3 - mineCount3) {
-        document.getElementById("status3").textContent = "🎉 Win!";
+        document.getElementById("status3").textContent = "🎉 Победа!";
         gameOver3 = true;
         showAllBonuses3();
       }
@@ -4292,6 +4292,10 @@ function applyBonus3(cell, x, y) {
     }
   }
 </script>
+
+
+
+
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </body>
 </html>
