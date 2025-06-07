@@ -4296,5 +4296,105 @@ function applyBonus3(cell, x, y) {
 
 
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+<script>
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const target = item.getAttribute('data-menu');
+
+        // Скрываем все разделы
+        const sections = [
+            'mainContent',
+            'shopContainer',
+            'inventoryContainer',
+            'marketContainer',
+            'leaderboardContainer',
+            'questsContainer',
+            'gamesContainer',
+            'friendsContainer'
+        ];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+
+        // Скрываем все стрелки
+        document.querySelectorAll('.shop-arrow, .inventory-arrow, .quests-arrow').forEach(arrow => {
+            arrow.classList.add('hidden');
+            arrow.classList.remove('visible');
+        });
+
+        // Показываем выбранный раздел
+        const showId = {
+            'home': 'mainContent',
+            'shop': 'shopContainer',
+            'market': 'marketContainer',
+            'quests': 'questsContainer',
+            'games': 'gamesContainer',
+            'friends': 'friendsContainer'
+        }[target];
+
+        const showEl = document.getElementById(showId);
+        if (showEl) showEl.classList.remove('hidden');
+    });
+});
+</script>
+
+
+<script>
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const target = item.getAttribute('data-menu');
+
+        // Скрываем все секции
+        const sections = [
+            'mainContent',
+            'shopContainer',
+            'inventoryContainer',
+            'marketContainer',
+            'leaderboardContainer',
+            'questsContainer',
+            'gamesContainer',
+            'friendsContainer'
+        ];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+
+        // Скрываем все стрелки
+        document.querySelectorAll('.shop-arrow, .inventory-arrow, .quests-arrow').forEach(arrow => {
+            arrow.classList.add('hidden');
+            arrow.classList.remove('visible');
+        });
+
+        // Показываем нужный раздел
+        const showId = {
+            'home': 'mainContent',
+            'shop': 'shopContainer',
+            'market': 'marketContainer',
+            'quests': 'questsContainer',
+            'games': 'gamesContainer',
+            'friends': 'friendsContainer'
+        }[target];
+
+        const showEl = document.getElementById(showId);
+        if (showEl) showEl.classList.remove('hidden');
+
+        // Если активен магазин — показываем стрелки магазина
+        if (target === 'shop') {
+            document.querySelectorAll('.shop-arrow').forEach(arrow => {
+                arrow.classList.remove('hidden');
+                arrow.classList.add('visible');
+            });
+        }
+
+        // Обновляем активный пункт меню
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('highlighted'));
+        item.classList.add('highlighted');
+    });
+});
+</script>
+
 </body>
 </html>
