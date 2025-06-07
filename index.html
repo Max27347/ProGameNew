@@ -3533,31 +3533,34 @@ function endCatchGame(isQuit = false) {
 
     const earnedDiamonds = score * 10;
 
-    // Прибавляем алмазы
+    // 1. Прибавляем алмазы
     if (typeof gameState !== 'undefined' && typeof gameState.addCoins === 'function') {
       gameState.addCoins(earnedDiamonds);
     }
 
-    // Получаем итоговое значение после прибавления
-    const totalCoins = (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function')
+    // 2. Получаем актуальное значение после прибавки
+    const updatedCoins = (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function')
       ? gameState.getCoins()
       : earnedDiamonds;
 
-    // Обновляем DOM вручную
+    // 3. Обновляем DOM: визуальный счёт
     const coinCountEl = document.getElementById("coinCount");
-    if (coinCountEl) coinCountEl.textContent = totalCoins;
+    if (coinCountEl) coinCountEl.textContent = updatedCoins;
 
     const totalCoinsEl = document.getElementById("totalCoins");
-    if (totalCoinsEl) totalCoinsEl.textContent = totalCoins;
+    if (totalCoinsEl) totalCoinsEl.textContent = updatedCoins;
 
-    // Обновляем UI через менеджер
+    // 4. Удаляем ПОЛНОСТЬЮ любые обновления earnedDiamonds:
+    // ❌ Никаких uiManager.queueUpdate("coins", earnedDiamonds)
+
+    // 5. Обновляем UI ТОЛЬКО с актуальной суммой
     if (typeof uiManager !== 'undefined') {
-      uiManager.queueUpdate("coins", totalCoins);
-      uiManager.queueUpdate("totalCoins", totalCoins);
+      uiManager.queueUpdate("coins", updatedCoins);
+      uiManager.queueUpdate("totalCoins", updatedCoins);
       uiManager.applyUpdates();
     }
 
-    // Показываем сообщение о награде
+    // 6. Показать сообщение о награде
     const rewardText = `💎 You earned <strong>${earnedDiamonds}</strong> diamonds!`;
     let rewardParagraph = document.getElementById("rewardParagraphCatch");
     if (!rewardParagraph) {
@@ -3578,7 +3581,6 @@ function endCatchGame(isQuit = false) {
     alert("Произошла ошибка при завершении игры. Попробуйте ещё раз.");
   }
 }
-
 
   quitBtn.onclick = () => endCatchGame(true);
 
