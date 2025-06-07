@@ -3522,14 +3522,40 @@ updateAppearance() {
     spawnStars();
   }
 
-  function endCatchGame(isQuit = false) {
-    gameRunning = false;
-    document.querySelectorAll('.star').forEach(s => s.remove());
-    clearInterval(starInterval);
-    gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
-    finalScoreCatch.textContent = 'Your score: ' + score;
-    gameOverModalCatch.style.display = 'flex';
+function endCatchGame(isQuit = false) {
+  gameRunning = false;
+  document.querySelectorAll('.star').forEach(s => s.remove());
+  clearInterval(starInterval);
+
+  // Основное сообщение
+  gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
+  finalScoreCatch.textContent = 'Your score: ' + score;
+
+  // Вычисляем и начисляем алмазы
+  const earnedDiamonds = score * 10;
+  if (typeof gameState !== 'undefined' && typeof uiManager !== 'undefined') {
+    gameState.addCoins(earnedDiamonds);
+    uiManager.queueUpdate("coins", gameState.getCoins());
+    uiManager.queueUpdate("totalCoins", gameState.getCoins());
+    uiManager.applyUpdates();
   }
+
+  // Создаём и добавляем сообщение о награде
+  const rewardText = `💎 You earned <strong>${earnedDiamonds}</strong> diamonds!`;
+  let rewardParagraph = document.getElementById("rewardParagraphCatch");
+  if (!rewardParagraph) {
+    rewardParagraph = document.createElement('p');
+    rewardParagraph.id = "rewardParagraphCatch";
+    rewardParagraph.style.marginTop = "1rem";
+    rewardParagraph.style.fontWeight = "bold";
+    rewardParagraph.style.fontSize = "1.2rem";
+    rewardParagraph.style.color = "#00f2fe";
+    document.querySelector('#gameOverModalCatch .modal-content').appendChild(rewardParagraph);
+  }
+  rewardParagraph.innerHTML = rewardText;
+
+  gameOverModalCatch.style.display = 'flex';
+}
 
   quitBtn.onclick = () => endCatchGame(true);
 
