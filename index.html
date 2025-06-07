@@ -1457,8 +1457,7 @@ const BACKGROUND_GRADIENTS = [
                     this.updateLeaderboard();
                 }
                 resetCoins(value) {
-                    console.warn('resetCoins was called — check if this is expected!');
-                    // this.coins = value; //  отключено для безопасности
+                    this.coins = value;
                     this.updateLeaderboard();
                 }
                 isTelegramEnvironment() {
@@ -3534,29 +3533,31 @@ function endCatchGame(isQuit = false) {
 
     const earnedDiamonds = score * 10;
 
-    let newTotal = earnedDiamonds;
-
     // Прибавляем алмазы
     if (typeof gameState !== 'undefined' && typeof gameState.addCoins === 'function') {
       gameState.addCoins(earnedDiamonds);
-      newTotal = gameState.getCoins(); // получаем ОБНОВЛЁННОЕ значение
     }
 
-    // Обновляем DOM
+    // Получаем итоговое значение после прибавления
+    const totalCoins = (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function')
+      ? gameState.getCoins()
+      : earnedDiamonds;
+
+    // Обновляем DOM вручную
     const coinCountEl = document.getElementById("coinCount");
-    if (coinCountEl) coinCountEl.textContent = newTotal;
+    if (coinCountEl) coinCountEl.textContent = totalCoins;
 
     const totalCoinsEl = document.getElementById("totalCoins");
-    if (totalCoinsEl) totalCoinsEl.textContent = newTotal;
+    if (totalCoinsEl) totalCoinsEl.textContent = totalCoins;
 
-    // Через UI менеджер
+    // Обновляем UI через менеджер
     if (typeof uiManager !== 'undefined') {
-      uiManager.queueUpdate("coins", newTotal);
-      uiManager.queueUpdate("totalCoins", newTotal);
+      uiManager.queueUpdate("coins", totalCoins);
+      uiManager.queueUpdate("totalCoins", totalCoins);
       uiManager.applyUpdates();
     }
 
-    // Сообщение о награде
+    // Показываем сообщение о награде
     const rewardText = `💎 You earned <strong>${earnedDiamonds}</strong> diamonds!`;
     let rewardParagraph = document.getElementById("rewardParagraphCatch");
     if (!rewardParagraph) {
@@ -3577,6 +3578,7 @@ function endCatchGame(isQuit = false) {
     alert("Произошла ошибка при завершении игры. Попробуйте ещё раз.");
   }
 }
+
 
   quitBtn.onclick = () => endCatchGame(true);
 
