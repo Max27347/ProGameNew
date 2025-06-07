@@ -1,111 +1,118 @@
-import os
-import sqlite3
-import asyncio
-from dotenv import load_dotenv
-from telegram import Update, Bot
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, PreCheckoutQueryHandler, MessageHandler, filters
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+import mysql.connector
+from mysql.connector import Error
 
-# Загружаем переменные из .env
-load_dotenv()
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-if not BOT_TOKEN:
-    raise ValueError("BOT_TOKEN не найден в переменных окружения")
-
-# Инициализируем FastAPI
-app = FastAPI()
-
-# Настраиваем CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://max27347.github.io"],  # Разрешаем запросы с вашего GitHub Pages
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],  # Разрешаем нужные методы
-    allow_headers=["Content-Type", "Authorization"],
-)
-
-# Инициализируем SQLite базу данных
-def init_db():
-    conn = sqlite3.connect("payments.db")
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS payments
-                 (chat_id TEXT, payment_id TEXT, TEXT PRIMARY KEY, amount INTEGER, payload TEXT, timestamp TEXT)''')
-    conn.commit()
-    conn.close()
-
-init_db()
-
-# Функция для команды /start
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Я бот для донатов через Telegram Stars 🎁")
-
-# Функция для создания счёта
-@app.post("/create-invoice")
-async def create_invoice(data: dict):
+def connect_to_database():
+    connection = None
+    cursor = None
     try:
-        product = data.get("product", "100 Diamonds")
-        amount = data.get("amount", 100)
-        chat_id = data.get("chat_id", "")
-
-        bot = await Bot.create(token=BOT_TOKEN)
-        invoice = await bot.create_invoice_link(
-            title=product,
-            description=f"Donate {amount} Diamonds to support World of Consoles",
-            payload=json.dumps({"product": product, "amount": amount, "chat_id": chat_id}),
-            currency="XTR",
-            prices=[{"label": product, "amount": amount * 100}]
+        # Устанавливаем соединение
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            port=3306
         )
-        return {"invoiceLink": invoice}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
-# Обработка предпроверки платежа
-async def pre_checkout_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.pre_checkout_query.answer(ok=True)
+        if connection.is_connected():
+            print("Успешно подключено к MySQL")
+            cursor = connection.cursor()
 
-# Обработка успешного платежа
-async def successful_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    payment = update.message.successful_payment
-    chat_id = update.message.chat_id
-    payment_id = payment.telegram_payment_charge_id
-    amount = payment.total_amount // 100
-    payload = payment.invoice_payload
+            # Выбираем базу данных
+            cursor.execute("USE progame;")
+            print("База данных 'progame' выбрана")
 
-    # Сохраняем платеж в базу данных
-    conn = sqlite3.connect("payments.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO payments (chat_id, payment_id, amount, payload, timestamp) VALUES (?, ?, ?, ?, datetime('now'))",
-              (str(chat_id), payment_id, amount, payload))
-    conn.commit()
-    conn.close()
+            # Создание таблицы Users
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS Users (
+                    user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                    username VARCHAR(50) UNIQUE NOT NULL,
+                    diamonds BIGINT DEFAULT 0,
+                    stars BIGINT DEFAULT 0,
+                    `rank` INT,
+                    wallet_address VARCHAR(100),
+                    telegram_id VARCHAR(50),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+            print("Таблица Users создана или уже существует")
 
-    await update.message.reply_text(f"Спасибо за донат! Вы получили {amount} алмазов!")
+            # Создание таблицы Quests
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS Quests (
+                    quest_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                    title VARCHAR(100) NOT NULL,
+                    description TEXT,
+                    reward_diamonds BIGINT,
+                    reward_stars BIGINT,
+                    is_active BOOLEAN DEFAULT TRUE
+                );
+            """)
+            print("Таблица Quests создана или уже существует")
 
-# Асинхронная функция для запуска бота
-async def run_bot():
-    bot_app = await ApplicationBuilder().token(BOT_TOKEN).build()
-    bot_app.add_handler(CommandHandler("start", start))
-    bot_app.add_handler(PreCheckoutQueryHandler(pre_checkout_query))
-    bot_app.add_handler(MessageHandler(filters.SuccessfulPayment, successful_payment))
-    await bot_app.initialize()
-    await bot_app.start()
-    await bot_app.updater.start_polling()
-    print("Бот запущен в режиме polling...")
+            # Создание таблицы Inventory
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS Inventory (
+                    inventory_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                    user_id BIGINT NOT NULL,
+                    item_id BIGINT NOT NULL,
+                    quantity INT DEFAULT 1,
+                    acquired_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+                );
+            """)
+            print("Таблица Inventory создана или уже существует")
 
-# Асинхронная функция для запуска FastAPI
-async def run_server():
-    config = uvicorn.Config(app, host="0.0.0.0", port=8000)
-    server = uvicorn.Server(config)
-    await server.serve()
-    print("FastAPI сервер запущен...")
+            # Создание таблицы Leaderboard
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS Leaderboard (
+                    leaderboard_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                    user_id BIGINT NOT NULL,
+                    username VARCHAR(50),
+                    diamonds BIGINT,
+                    `rank` INT,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+                );
+            """)
+            print("Таблица Leaderboard создана или уже существует")
 
-# Главная функция для запуска обоих
-async def main():
-    print("Запускаем сервер и бота...")
-    await asyncio.gather(run_bot(), run_server())
+            # Создание таблицы Donations
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS Donations (
+                    donation_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                    user_id BIGINT NOT NULL,
+                    amount DECIMAL(10, 2),
+                    currency VARCHAR(20) CHECK (currency IN ('TON', 'Stars', 'RUB')),
+                    donated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    status VARCHAR(20) CHECK (status IN ('pending', 'completed', 'failed')),
+                    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+                );
+            """)
+            print("Таблица Donations создана или уже существует")
 
-if __name__ == "__main__":
-    asyncio.run(main())
+            # Вставка данных в таблицу Users
+            cursor.execute("""
+                INSERT INTO Users (username, diamonds, stars, telegram_id) 
+                VALUES ('Player1', 1000, 50, '123456789');
+            """)
+            print("Данные успешно вставлены в таблицу Users")
+
+            # Фиксация изменений
+            connection.commit()
+
+    except Error as e:
+        print(f"Произошла ошибка: {e}")
+        if connection:
+            connection.rollback()  # Откат изменений в случае ошибки
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection and connection.is_connected():
+            connection.close()
+            print("Соединение с базой данных закрыто")
+
+
+# Вызов функции
+connect_to_database()
