@@ -1457,7 +1457,8 @@ const BACKGROUND_GRADIENTS = [
                     this.updateLeaderboard();
                 }
                 resetCoins(value) {
-                    this.coins = value;
+                    console.warn('resetCoins was called — check if this is expected!');
+                    // this.coins = value; //  отключено для безопасности
                     this.updateLeaderboard();
                 }
                 isTelegramEnvironment() {
