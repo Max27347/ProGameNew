@@ -175,10 +175,6 @@
                 font-size: 1rem;
                 font-weight: 600;
             }
-            .player-stats {
-                font-size: 0.9rem;
-                opacity: 0.8;
-            }
             .wallet-container {
                 display: flex;
                 flex-direction: column;
@@ -810,9 +806,6 @@
                 .player-rank {
                     font-size: 0.9rem;
                 }
-                .player-stats {
-                    font-size: 0.8rem;
-                }
                 .wallet-container {
                     gap: 0.3rem;
                 }
@@ -1166,7 +1159,6 @@
 </div>
 <div class="top-menu-right">
 <span class="player-rank">Rank: 1</span>
-<span class="player-stats">World of Consoles</span>
 <div class="wallet-container">
 <button id="disconnect-wallet">Disconnect Wallet</button>
 </div>
@@ -2951,7 +2943,6 @@ updateAppearance() {
                     tonConnect: document.getElementById("ton-connect"),
                     disconnectWallet: document.getElementById("disconnect-wallet"),
                     totalCoins: document.getElementById("totalCoins"),
-                    playerStats: document.querySelector(".player-stats"),
                     characterFilter: document.getElementById("characterFilter"),
                     backgroundFilter: document.getElementById("backgroundFilter"),
                     priceSort: document.getElementById("priceSort"),
