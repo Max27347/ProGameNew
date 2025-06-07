@@ -3531,33 +3531,31 @@ function endCatchGame(isQuit = false) {
     gameOverMessageCatch.textContent = isQuit ? 'You Quit the Game!' : 'Game Over!';
     finalScoreCatch.textContent = 'Your score: ' + score;
 
-    const earnedDiamonds = score * 1;
+    const earnedDiamonds = score * 10;
 
-    // Получаем старое значение (если возможно)
-    let currentCoins = 0;
-    if (typeof gameState !== 'undefined' && typeof gameState.getCoins === 'function') {
-      currentCoins = gameState.getCoins();
-      gameState.addCoins(earnedDiamonds); // добавляем
+    let newTotal = earnedDiamonds;
+
+    // Прибавляем алмазы
+    if (typeof gameState !== 'undefined' && typeof gameState.addCoins === 'function') {
+      gameState.addCoins(earnedDiamonds);
+      newTotal = gameState.getCoins(); // получаем ОБНОВЛЁННОЕ значение
     }
 
-    const newTotal = currentCoins + earnedDiamonds;
-
-    // Обновить #coinCount
+    // Обновляем DOM
     const coinCountEl = document.getElementById("coinCount");
     if (coinCountEl) coinCountEl.textContent = newTotal;
 
-    // Обновить #totalCoins
     const totalCoinsEl = document.getElementById("totalCoins");
     if (totalCoinsEl) totalCoinsEl.textContent = newTotal;
 
-    // Обновить UI (без замены, а с прибавлением уже выполненным)
+    // Через UI менеджер
     if (typeof uiManager !== 'undefined') {
       uiManager.queueUpdate("coins", newTotal);
       uiManager.queueUpdate("totalCoins", newTotal);
       uiManager.applyUpdates();
     }
 
-    // Показать сообщение о награде
+    // Сообщение о награде
     const rewardText = `💎 You earned <strong>${earnedDiamonds}</strong> diamonds!`;
     let rewardParagraph = document.getElementById("rewardParagraphCatch");
     if (!rewardParagraph) {
@@ -3578,8 +3576,6 @@ function endCatchGame(isQuit = false) {
     alert("Произошла ошибка при завершении игры. Попробуйте ещё раз.");
   }
 }
-
-
 
   quitBtn.onclick = () => endCatchGame(true);
 
